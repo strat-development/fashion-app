@@ -1,36 +1,29 @@
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { Image } from 'expo-image';
-import { StyleSheet } from 'react-native';
+import { ChatSection } from '@/components/outfit-constructor/ChatSection';
+import { ConstuctorSection } from '@/components/outfit-constructor/ConstructorSection';
+import { Button } from '@/components/ui/button';
+import { useViewContext } from '@/providers/chatViewContext';
+import { Text, View } from 'react-native';
 
 export default function HomeScreen() {
+  const { view, setView } = useViewContext();
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-    </ParallaxScrollView>
+    <>
+      {view === 'none' && (
+        <View className='flex flex-col items-center justify-center h-full bg-gray-900 gap-8'>
+          <Text className='text-2xl font-bold text-white text-center'>Welcome, how would like to create an outfit?</Text>
+          <View className='flex flex-col gap-4 items-center justify-center'>
+            <Button className='bg-blue-200' onPress={() => setView('outfitAIConstructor')}>
+              <Text className='text-lg'>AI Constructor</Text>
+            </Button>
+            <Button className='bg-blue-200' onPress={() => setView('outfitCreator')}>
+              <Text className='text-lg'>Create your own outfit</Text>
+            </Button>
+          </View>
+        </View>
+      )}
+      {view === 'outfitAIConstructor' && <ChatSection />}
+      {view === 'outfitCreator' && <ConstuctorSection />}
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});

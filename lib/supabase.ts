@@ -13,6 +13,9 @@ export const supabase = typeof window !== 'undefined' ? createClient(supabaseUrl
     persistSession: true,
     detectSessionInUrl: true,
   },
+  realtime: {
+    transport: window.WebSocket || WebSocket,
+  },
 }) : null;
 
 export function useSupabase() {
