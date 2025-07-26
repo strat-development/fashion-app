@@ -32,7 +32,7 @@ const mockOutfits: OutfitData[] = [
     comments: 12,
     isLiked: true,
     isSaved: false,
-    creator: "fashionista_23",
+    creator: "cycki_69",
     createdAt: "1 day ago",
     tags: ["Formal", "Business", "Professional"]
   },
@@ -44,19 +44,19 @@ const mockOutfits: OutfitData[] = [
     comments: 45,
     isLiked: true,
     isSaved: true,
-    creator: "street_style_guru",
+    creator: "dupajasiukaruzela",
     createdAt: "3 days ago",
     tags: ["Streetwear", "Urban", "Cool"]
   },
   {
     id: 4,
-    title: "Elegant Evening",
+    title: "Elegant Smoking Style",
     image: "https://via.placeholder.com/300x400/F7DC6F/FFFFFF?text=Outfit+4",
     likes: 198,
     comments: 31,
     isLiked: false,
     isSaved: true,
-    creator: "You",
+    creator: "david_duck",
     createdAt: "5 days ago",
     tags: ["Elegant", "Evening", "Formal"]
   }
@@ -202,7 +202,7 @@ export default function DashboardScreen() {
         return (
           <ScrollView className="flex-1 px-4">
             <View className="pt-6 pb-20">
-              <Text className="text-white text-2xl font-bold mb-6">Saved Outfits</Text>
+              <Text className="text-white text-xl font-semibold mb-6">Saved Outfits</Text>
               {savedOutfits.length > 0 ? (
                 savedOutfits.map(outfit => (
                   <OutfitCard
@@ -232,14 +232,14 @@ export default function DashboardScreen() {
           <ScrollView className="flex-1 px-4">
             <View className="pt-6 pb-20">
               <View className="flex-row items-center justify-between mb-6">
-                <Text className="text-white text-2xl font-bold">Your Creations</Text>
+                <Text className="text-white text-xl font-semibold">Your Creations</Text>
                 <Button 
                   onPress={handleCreateOutfit}
-                  className="bg-blue-600 rounded-full px-4 py-2"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl px-4 py-2"
                 >
                   <View className="flex-row items-center">
-                    <Plus size={18} color="white" />
-                    <Text className="text-white ml-2 font-medium">Create</Text>
+                    <Plus size={16} color="#FFFFFF" />
+                    <Text className="text-white ml-2 font-medium text-sm">Create</Text>
                   </View>
                 </Button>
               </View>
@@ -284,14 +284,12 @@ export default function DashboardScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
-      {/* Header */}
-      <View className="px-4 py-4 border-b border-white/10">
-        <Text className="text-white text-3xl font-bold text-center">Fashion Hub</Text>
-      </View>
+    <SafeAreaView className="flex-1 bg-gradient-to-b from-black to-gray-900">
+      {/* Minimal Header - just status bar space */}
+      <View className="h-2" />
 
       {/* Tab Navigation */}
-      <View className="flex-row bg-black/20 backdrop-blur-xl mx-4 mt-4 rounded-2xl p-2 border border-white/10">
+      <View className="flex-row bg-gray-900/90 backdrop-blur-xl mx-6 mt-2 rounded-full p-1 border border-gray-700/50">
         {[
           { key: 'feed', label: 'Feed', icon: Grid },
           { key: 'saved', label: 'Saved', icon: Bookmark },
@@ -301,17 +299,17 @@ export default function DashboardScreen() {
           <Pressable
             key={key}
             onPress={() => setActiveTab(key as TabType)}
-            className={`flex-1 items-center py-3 rounded-xl ${
-              activeTab === key ? 'bg-white/20' : ''
+            className={`flex-1 items-center py-3 rounded-full ${
+              activeTab === key ? 'bg-gradient-to-r from-purple-500 to-pink-500' : ''
             }`}
           >
             <Icon 
-              size={20} 
-              color={activeTab === key ? "white" : "rgba(255,255,255,0.6)"} 
+              size={18} 
+              color={activeTab === key ? "#FFFFFF" : "#9CA3AF"} 
             />
             <Text 
               className={`text-xs mt-1 font-medium ${
-                activeTab === key ? 'text-white' : 'text-white/60'
+                activeTab === key ? 'text-white' : 'text-gray-400'
               }`}
             >
               {label}

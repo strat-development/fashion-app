@@ -18,16 +18,16 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   onAction
 }) => {
   return (
-    <View className="items-center justify-center py-20">
-      <Icon size={60} color="rgba(255,255,255,0.3)" />
-      <Text className="text-white/60 text-lg mt-4">{title}</Text>
-      <Text className="text-white/40 text-center mt-2">{description}</Text>
+    <View className="items-center justify-center py-16">
+      <Icon size={48} color="#4B5563" />
+      <Text className="text-gray-300 text-base mt-4">{title}</Text>
+      <Text className="text-gray-500 text-center mt-2 text-sm">{description}</Text>
       {actionText && onAction && (
         <Pressable 
           onPress={onAction}
-          className="bg-blue-600 px-6 py-3 rounded-full mt-6"
+          className="bg-gray-800 px-4 py-2 rounded-lg mt-4"
         >
-          <Text className="text-white font-medium">{actionText}</Text>
+          <Text className="text-gray-300 font-medium text-sm">{actionText}</Text>
         </Pressable>
       )}
     </View>

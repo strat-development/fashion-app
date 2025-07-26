@@ -1,5 +1,4 @@
-import { Button } from '@/components/ui/button';
-import { Camera, Save, User, X } from 'lucide-react-native';
+import { Camera, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -45,15 +44,18 @@ export const ProfileEdit: React.FC<ProfileEditProps> = ({
       animationType="slide"
       presentationStyle="pageSheet"
     >
-      <SafeAreaView className="flex-1 bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
+      <SafeAreaView className="flex-1 bg-gradient-to-b from-black to-gray-900">
         {/* Header */}
-        <View className="flex-row items-center justify-between px-4 py-3 border-b border-white/10">
+        <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-800/50">
           <Pressable onPress={onClose} className="p-2">
-            <X size={24} color="white" />
+            <X size={24} color="#9CA3AF" />
           </Pressable>
-          <Text className="text-white font-bold text-lg">Edit Profile</Text>
-          <Pressable onPress={handleSave} className="p-2">
-            <Save size={24} color="#4CAF50" />
+          <Text className="text-white font-semibold text-lg">Edit Profile</Text>
+          <Pressable 
+            onPress={handleSave} 
+            className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
+          >
+            <Text className="text-white font-medium text-sm">Save</Text>
           </Pressable>
         </View>
 
@@ -62,7 +64,7 @@ export const ProfileEdit: React.FC<ProfileEditProps> = ({
             {/* Avatar Section */}
             <View className="items-center mb-8">
               <View className="relative">
-                <View className="w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full items-center justify-center">
+                <View className="w-24 h-24 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-gray-700/50 rounded-full items-center justify-center">
                   {profileData.avatar ? (
                     <Image 
                       source={{ uri: profileData.avatar }} 
@@ -70,82 +72,82 @@ export const ProfileEdit: React.FC<ProfileEditProps> = ({
                       resizeMode="cover"
                     />
                   ) : (
-                    <User size={40} color="white" />
+                    <User size={32} color="#9CA3AF" />
                   )}
                 </View>
                 <Pressable 
                   onPress={handleImagePicker}
-                  className="absolute -bottom-2 -right-2 bg-blue-600 p-2 rounded-full"
+                  className="absolute -bottom-2 -right-2 bg-gradient-to-r from-purple-600 to-pink-600 p-2 rounded-full border-2 border-black"
                 >
-                  <Camera size={16} color="white" />
+                  <Camera size={14} color="white" />
                 </Pressable>
               </View>
-              <Text className="text-white/60 text-sm mt-2">Tap to change photo</Text>
+              <Text className="text-gray-400 text-sm mt-2">Tap to change photo</Text>
             </View>
 
             {/* Name Field */}
             <View className="mb-6">
-              <Text className="text-white font-semibold text-lg mb-3">Display Name</Text>
+              <Text className="text-gray-300 font-medium text-base mb-3">Display Name</Text>
               <TextInput
                 value={profileData.name}
                 onChangeText={(text) => setProfileData(prev => ({ ...prev, name: text }))}
                 placeholder="Enter your name"
-                placeholderTextColor="rgba(255,255,255,0.5)"
-                className="bg-black/20 backdrop-blur-xl text-white px-4 py-4 rounded-2xl border border-white/10"
+                placeholderTextColor="#6B7280"
+                className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
                 maxLength={50}
               />
-              <Text className="text-white/40 text-sm mt-1">{profileData.name.length}/50</Text>
+              <Text className="text-gray-500 text-sm mt-1">{profileData.name.length}/50</Text>
             </View>
 
             {/* Bio Field */}
             <View className="mb-6">
-              <Text className="text-white font-semibold text-lg mb-3">Bio</Text>
+              <Text className="text-gray-300 font-medium text-base mb-3">Bio</Text>
               <TextInput
                 value={profileData.bio}
                 onChangeText={(text) => setProfileData(prev => ({ ...prev, bio: text }))}
                 placeholder="Tell us about your style..."
-                placeholderTextColor="rgba(255,255,255,0.5)"
-                className="bg-black/20 backdrop-blur-xl text-white px-4 py-4 rounded-2xl border border-white/10"
+                placeholderTextColor="#6B7280"
+                className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"
                 maxLength={200}
               />
-              <Text className="text-white/40 text-sm mt-1">{profileData.bio.length}/200</Text>
+              <Text className="text-gray-500 text-sm mt-1">{profileData.bio.length}/200</Text>
             </View>
 
             {/* Style Preferences */}
             <View className="mb-6">
-              <Text className="text-white font-semibold text-lg mb-3">Style Preferences</Text>
-              <View className="bg-black/20 backdrop-blur-xl rounded-2xl p-4 border border-white/10">
-                <Text className="text-white/80 text-base">
+              <Text className="text-gray-300 font-medium text-base mb-3">Style Preferences</Text>
+              <View className="bg-gray-800/30 border border-gray-700/30 rounded-lg p-4">
+                <Text className="text-gray-400 text-base">
                   Coming soon! Set your favorite styles, colors, and brands.
                 </Text>
               </View>
             </View>
 
             {/* Privacy Settings */}
-            <View className="mb-6">
-              <Text className="text-white font-semibold text-lg mb-3">Privacy</Text>
-              <View className="bg-black/20 backdrop-blur-xl rounded-2xl p-4 border border-white/10">
+            <View className="mb-8">
+              <Text className="text-gray-300 font-medium text-base mb-3">Privacy</Text>
+              <View className="bg-gray-800/30 border border-gray-700/30 rounded-lg p-4">
                 <View className="flex-row items-center justify-between mb-3">
-                  <Text className="text-white/80">Public Profile</Text>
-                  <View className="bg-green-600 w-12 h-6 rounded-full justify-center">
+                  <Text className="text-gray-300">Public Profile</Text>
+                  <View className="bg-gradient-to-r from-purple-600 to-pink-600 w-12 h-6 rounded-full justify-center">
                     <View className="bg-white w-5 h-5 rounded-full self-end mr-0.5" />
                   </View>
                 </View>
-                <Text className="text-white/60 text-sm">
+                <Text className="text-gray-500 text-sm">
                   Others can see your profile and created outfits
                 </Text>
               </View>
             </View>
 
-            <Button 
+            <Pressable 
               onPress={handleSave}
-              className="bg-blue-600 py-4 rounded-2xl"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 py-4 rounded-lg"
             >
-              <Text className="text-white font-bold text-lg">Save Changes</Text>
-            </Button>
+              <Text className="text-white font-semibold text-base text-center">Save Changes</Text>
+            </Pressable>
           </View>
         </ScrollView>
       </SafeAreaView>

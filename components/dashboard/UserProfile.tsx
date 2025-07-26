@@ -27,73 +27,73 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   onEditProfile
 }) => {
   return (
-    <ScrollView className="flex-1 px-4">
-      <View className="pt-6 pb-20">
+    <ScrollView className="flex-1 px-6">
+      <View className="pt-8 pb-20">
         {/* Profile Header */}
-        <View className="items-center mb-8">
-          <View className="w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full items-center justify-center mb-4">
-            <User size={40} color="white" />
+        <View className="items-center mb-10">
+          <View className="w-20 h-20 bg-gray-700 rounded-full items-center justify-center mb-4">
+            <User size={32} color="#9CA3AF" />
           </View>
-          <Text className="text-white text-2xl font-bold">{userName}</Text>
-          <Text className="text-white/60 text-base mt-1">Fashion Enthusiast</Text>
+          <Text className="text-white text-xl font-medium">{userName}</Text>
+          <Text className="text-gray-400 text-sm mt-1">Fashion Enthusiast</Text>
           
           {isOwnProfile && (
             <Pressable 
               onPress={onEditProfile}
-              className="bg-white/10 px-6 py-3 rounded-full mt-4 flex-row items-center"
+              className="bg-gray-800 px-4 py-2 rounded-lg mt-4 flex-row items-center"
             >
-              <Edit3 size={16} color="white" />
-              <Text className="text-white font-medium ml-2">Edit Profile</Text>
+              <Edit3 size={14} color="#9CA3AF" />
+              <Text className="text-gray-300 font-medium ml-2 text-sm">Edit Profile</Text>
             </Pressable>
           )}
         </View>
 
         {/* Bio Section */}
-        <View className="bg-black/20 backdrop-blur-xl rounded-2xl p-6 mb-6 border border-white/10">
-          <Text className="text-white text-lg font-semibold mb-3">Bio</Text>
-          <Text className="text-white/80 text-base leading-6">
+        <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 mb-5 border border-gray-800">
+          <Text className="text-white text-base font-medium mb-3">Bio</Text>
+          <Text className="text-gray-300 text-sm leading-5">
             {userBio}
           </Text>
         </View>
 
         {/* Stats */}
-        <View className="bg-black/20 backdrop-blur-xl rounded-2xl p-6 mb-6 border border-white/10">
-          <Text className="text-white text-lg font-semibold mb-4">Statistics</Text>
+        <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 mb-5 border border-gray-800">
+          <Text className="text-white text-base font-medium mb-4">Statistics</Text>
           <View className="flex-row justify-between">
             <View className="items-center">
-              <Text className="text-white text-2xl font-bold">{stats.createdOutfits}</Text>
-              <Text className="text-white/60 text-sm">Created</Text>
+              <Text className="text-white text-xl font-semibold">{stats.createdOutfits}</Text>
+              <Text className="text-gray-400 text-xs">Created</Text>
             </View>
             <View className="items-center">
-              <Text className="text-white text-2xl font-bold">{stats.savedOutfits}</Text>
-              <Text className="text-white/60 text-sm">Saved</Text>
+              <Text className="text-white text-xl font-semibold">{stats.savedOutfits}</Text>
+              <Text className="text-gray-400 text-xs">Saved</Text>
             </View>
             <View className="items-center">
-              <Text className="text-white text-2xl font-bold">{stats.totalLikes}</Text>
-              <Text className="text-white/60 text-sm">Likes</Text>
+              <Text className="text-white text-xl font-semibold">{stats.totalLikes}</Text>
+              <Text className="text-gray-400 text-xs">Likes</Text>
             </View>
             <View className="items-center">
-              <Text className="text-white text-2xl font-bold">{stats.followers}</Text>
-              <Text className="text-white/60 text-sm">Followers</Text>
+              <Text className="text-white text-xl font-semibold">{stats.followers}</Text>
+              <Text className="text-gray-400 text-xs">Followers</Text>
             </View>
           </View>
         </View>
 
         {/* Recent Activity */}
-        <View className="bg-black/20 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
-          <Text className="text-white text-lg font-semibold mb-4">Recent Activity</Text>
+        <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 border border-gray-800">
+          <Text className="text-white text-base font-medium mb-4">Recent Activity</Text>
           <View className="space-y-3">
             <View className="flex-row items-center">
-              <Trophy size={20} color="#FFD700" />
-              <Text className="text-white/80 ml-3">Your outfit got 50+ likes!</Text>
+              <Trophy size={16} color="#9CA3AF" />
+              <Text className="text-gray-300 ml-3 text-sm">Your outfit got 50+ likes!</Text>
             </View>
             <View className="flex-row items-center">
-              <Heart size={20} color="#FF4458" />
-              <Text className="text-white/80 ml-3">Liked 5 new outfits</Text>
+              <Heart size={16} color="#9CA3AF" />
+              <Text className="text-gray-300 ml-3 text-sm">Liked 5 new outfits</Text>
             </View>
             <View className="flex-row items-center">
-              <Plus size={20} color="#4ECDC4" />
-              <Text className="text-white/80 ml-3">Created "Summer Casual Look"</Text>
+              <Plus size={16} color="#9CA3AF" />
+              <Text className="text-gray-300 ml-3 text-sm">Created "Summer Casual Look"</Text>
             </View>
           </View>
         </View>
