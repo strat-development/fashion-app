@@ -9,7 +9,10 @@ import Auth from '@/components/Auth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { supabase } from '@/lib/supabase';
 import ViewContextProvider from '@/providers/chatViewContext';
+import UserContextProvider from '@/providers/userContext';
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import type { Session } from '@supabase/supabase-js';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import "../global.css";
 
 export default function RootLayout() {
@@ -18,6 +21,7 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
+  const queryClient = new QueryClient();
 
   useEffect(() => {
     supabase?.auth.getSession().then(({ data: { session } }) => {
@@ -45,13 +49,19 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <ViewContextProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ViewContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <SessionContextProvider supabaseClient={supabase as any}>
+          <UserContextProvider>
+            <ViewContextProvider>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+              <StatusBar style="auto" />
+            </ViewContextProvider>
+          </UserContextProvider>
+        </SessionContextProvider>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

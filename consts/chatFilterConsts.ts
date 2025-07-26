@@ -114,3 +114,30 @@ export const OutfitFit = [
         name: "Oversized Fit",
     }
 ]
+
+export const Currencies = [
+    {
+        name: "USD",
+        symbol: "$",
+    },
+    {
+        name: "EUR",
+        symbol: "€",
+    },
+    {
+        name: "GBP",
+        symbol: "£",
+    },
+    {
+        name: "JPY",
+        symbol: "¥",
+    },
+    {
+        name: "AUD",
+        symbol: "A$",
+    },
+    {
+        name: "CAD",
+        symbol: "C$",
+    }
+]

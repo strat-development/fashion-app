@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/consts/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Bot, Compass, LayoutDashboard, LogOut } from 'lucide-react-native';
 
