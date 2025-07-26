@@ -1,6 +1,5 @@
-import { Button } from '@/components/ui/button';
 import { OutfitColors, OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
-import { Plus, Save, Trash2, X } from 'lucide-react-native';
+import { Plus, Trash2, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -105,15 +104,18 @@ export const OutfitCreate: React.FC<OutfitCreateProps> = ({
       animationType="slide"
       presentationStyle="pageSheet"
     >
-      <SafeAreaView className="flex-1 bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
+      <SafeAreaView className="flex-1 bg-gradient-to-b from-black to-gray-900">
         {/* Header */}
-        <View className="flex-row items-center justify-between px-4 py-3 border-b border-white/10">
+        <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-800/50">
           <Pressable onPress={onClose} className="p-2">
-            <X size={24} color="white" />
+            <X size={24} color="#9CA3AF" />
           </Pressable>
-          <Text className="text-white font-bold text-lg">Create Outfit</Text>
-          <Pressable onPress={handleSave} className="p-2">
-            <Save size={24} color="#4CAF50" />
+          <Text className="text-white font-semibold text-lg">Create Outfit</Text>
+          <Pressable 
+            onPress={handleSave} 
+            className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
+          >
+            <Text className="text-white font-medium text-sm">Save</Text>
           </Pressable>
         </View>
 
@@ -121,7 +123,7 @@ export const OutfitCreate: React.FC<OutfitCreateProps> = ({
           <View className="pt-6 pb-20">
             {/* Images Section */}
             <View className="mb-6">
-              <Text className="text-white font-semibold text-lg mb-3">Photos</Text>
+              <Text className="text-gray-300 font-medium text-base mb-3">Photos</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View className="flex-row">
                   {outfitData.images.map((image, index) => (
@@ -133,7 +135,7 @@ export const OutfitCreate: React.FC<OutfitCreateProps> = ({
                       />
                       <Pressable 
                         onPress={() => removeImage(index)}
-                        className="absolute -top-2 -right-2 bg-red-600 p-1 rounded-full"
+                        className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-600 to-pink-600 p-1 rounded-full border-2 border-black"
                       >
                         <Trash2 size={12} color="white" />
                       </Pressable>
@@ -141,10 +143,10 @@ export const OutfitCreate: React.FC<OutfitCreateProps> = ({
                   ))}
                   <Pressable 
                     onPress={handleImagePicker}
-                    className="w-24 h-32 bg-black/20 backdrop-blur-xl rounded-xl border-2 border-dashed border-white/30 items-center justify-center"
+                    className="w-24 h-32 bg-gray-800/50 border-2 border-dashed border-gray-700/50 rounded-xl items-center justify-center"
                   >
-                    <Plus size={24} color="white" />
-                    <Text className="text-white/60 text-xs mt-1">Add Photo</Text>
+                    <Plus size={24} color="#9CA3AF" />
+                    <Text className="text-gray-400 text-xs mt-1">Add Photo</Text>
                   </Pressable>
                 </View>
               </ScrollView>
@@ -152,26 +154,26 @@ export const OutfitCreate: React.FC<OutfitCreateProps> = ({
 
             {/* Title Field */}
             <View className="mb-6">
-              <Text className="text-white font-semibold text-lg mb-3">Title</Text>
+              <Text className="text-gray-300 font-medium text-base mb-3">Title</Text>
               <TextInput
                 value={outfitData.title}
                 onChangeText={(text) => setOutfitData(prev => ({ ...prev, title: text }))}
                 placeholder="Enter outfit title"
-                placeholderTextColor="rgba(255,255,255,0.5)"
-                className="bg-black/20 backdrop-blur-xl text-white px-4 py-4 rounded-2xl border border-white/10"
+                placeholderTextColor="#6B7280"
+                className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
                 maxLength={50}
               />
             </View>
 
             {/* Description Field */}
             <View className="mb-6">
-              <Text className="text-white font-semibold text-lg mb-3">Description</Text>
+              <Text className="text-gray-300 font-medium text-base mb-3">Description</Text>
               <TextInput
                 value={outfitData.description}
                 onChangeText={(text) => setOutfitData(prev => ({ ...prev, description: text }))}
                 placeholder="Describe your outfit..."
-                placeholderTextColor="rgba(255,255,255,0.5)"
-                className="bg-black/20 backdrop-blur-xl text-white px-4 py-4 rounded-2xl border border-white/10"
+                placeholderTextColor="#6B7280"
+                className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
                 multiline
                 numberOfLines={3}
                 textAlignVertical="top"
@@ -181,19 +183,19 @@ export const OutfitCreate: React.FC<OutfitCreateProps> = ({
 
             {/* Style Tags */}
             <View className="mb-6">
-              <Text className="text-white font-semibold text-lg mb-3">Style Tags</Text>
+              <Text className="text-gray-300 font-medium text-base mb-3">Style Tags</Text>
               <View className="flex-row flex-wrap">
                 {OutfitStylesTags.map((style) => (
                   <Pressable
                     key={style.name}
                     onPress={() => toggleTag(style.name)}
-                    className={`px-3 py-2 rounded-full mr-2 mb-2 ${
+                    className={`px-3 py-2 rounded-full mr-2 mb-2 border ${
                       outfitData.tags.includes(style.name) 
-                        ? 'bg-blue-600' 
-                        : 'bg-white/10'
+                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 border-purple-500/50' 
+                        : 'bg-gray-800/30 border-gray-700/30'
                     }`}
                   >
-                    <Text className="text-white text-sm">{style.name}</Text>
+                    <Text className="text-gray-200 text-sm">{style.name}</Text>
                   </Pressable>
                 ))}
               </View>
@@ -201,23 +203,23 @@ export const OutfitCreate: React.FC<OutfitCreateProps> = ({
 
             {/* Colors */}
             <View className="mb-6">
-              <Text className="text-white font-semibold text-lg mb-3">Dominant Colors</Text>
+              <Text className="text-gray-300 font-medium text-base mb-3">Dominant Colors</Text>
               <View className="flex-row flex-wrap">
                 {OutfitColors.map((color) => (
                   <Pressable
                     key={color.name}
                     onPress={() => toggleColor(color.name)}
-                    className={`flex-row items-center px-3 py-2 rounded-full mr-2 mb-2 ${
+                    className={`flex-row items-center px-3 py-2 rounded-full mr-2 mb-2 border ${
                       outfitData.colors.includes(color.name) 
-                        ? 'bg-white/20' 
-                        : 'bg-white/10'
+                        ? 'bg-gray-700/50 border-gray-600/50' 
+                        : 'bg-gray-800/30 border-gray-700/30'
                     }`}
                   >
                     <View 
                       style={{ backgroundColor: color.hex }}
-                      className="w-4 h-4 rounded-full mr-2"
+                      className="w-4 h-4 rounded-full mr-2 border border-gray-600/30"
                     />
-                    <Text className="text-white text-sm">{color.name}</Text>
+                    <Text className="text-gray-200 text-sm">{color.name}</Text>
                   </Pressable>
                 ))}
               </View>
@@ -225,30 +227,30 @@ export const OutfitCreate: React.FC<OutfitCreateProps> = ({
 
             {/* Elements */}
             <View className="mb-8">
-              <Text className="text-white font-semibold text-lg mb-3">Outfit Elements</Text>
+              <Text className="text-gray-300 font-medium text-base mb-3">Outfit Elements</Text>
               <View className="flex-row flex-wrap">
                 {OutfitElements.map((element) => (
                   <Pressable
                     key={element.name}
                     onPress={() => toggleElement(element.name)}
-                    className={`px-3 py-2 rounded-full mr-2 mb-2 ${
+                    className={`px-3 py-2 rounded-full mr-2 mb-2 border ${
                       outfitData.elements.includes(element.name) 
-                        ? 'bg-green-600' 
-                        : 'bg-white/10'
+                        ? 'bg-gradient-to-r from-purple-600/70 to-pink-600/70 border-purple-500/50' 
+                        : 'bg-gray-800/30 border-gray-700/30'
                     }`}
                   >
-                    <Text className="text-white text-sm">{element.name}</Text>
+                    <Text className="text-gray-200 text-sm">{element.name}</Text>
                   </Pressable>
                 ))}
               </View>
             </View>
 
-            <Button 
+            <Pressable 
               onPress={handleSave}
-              className="bg-blue-600 py-4 rounded-2xl"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 py-4 rounded-lg"
             >
-              <Text className="text-white font-bold text-lg">Create Outfit</Text>
-            </Button>
+              <Text className="text-white font-semibold text-base text-center">Create Outfit</Text>
+            </Pressable>
           </View>
         </ScrollView>
       </SafeAreaView>

@@ -52,8 +52,8 @@ const mockOutfits: OutfitData[] = [
     id: 4,
     title: "Elegant Smoking Style",
     image: "https://via.placeholder.com/300x400/F7DC6F/FFFFFF?text=Outfit+4",
-    likes: 198,
-    comments: 31,
+    likes: 420,
+    comments: 1488,
     isLiked: false,
     isSaved: true,
     creator: "david_duck",
@@ -82,7 +82,7 @@ export default function DashboardScreen() {
   const [showOutfitCreate, setShowOutfitCreate] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData>({
     name: "Your Profile",
-    bio: "Passionate about fashion and style. Love creating unique outfit combinations and exploring new trends. Always looking for inspiration! ✨"
+    bio: "Passionate about fashion and style. "
   });
 
   const onRefresh = React.useCallback(() => {
@@ -200,7 +200,12 @@ export default function DashboardScreen() {
       case 'saved':
         const savedOutfits = outfits.filter(outfit => outfit.isSaved);
         return (
-          <ScrollView className="flex-1 px-4">
+          <ScrollView 
+            className="flex-1 px-4"
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
             <View className="pt-6 pb-20">
               <Text className="text-white text-xl font-semibold mb-6">Saved Outfits</Text>
               {savedOutfits.length > 0 ? (
@@ -229,7 +234,12 @@ export default function DashboardScreen() {
       case 'created':
         const createdOutfits = outfits.filter(outfit => outfit.creator === "You");
         return (
-          <ScrollView className="flex-1 px-4">
+          <ScrollView 
+            className="flex-1 px-4"
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
             <View className="pt-6 pb-20">
               <View className="flex-row items-center justify-between mb-6">
                 <Text className="text-white text-xl font-semibold">Your Creations</Text>
