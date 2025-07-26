@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { Button } from "@rneui/themed";
 import { router } from "expo-router";
 
-export default function LogoutScreen() {
+export default function DashboardScreen() {
     const handleLogout = async () => {
         try {
             await supabase?.auth.signOut();

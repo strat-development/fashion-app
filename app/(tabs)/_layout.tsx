@@ -27,13 +27,6 @@ export default function TabLayout() {
         }),
       }}>
       <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Chat',
-          tabBarIcon: ({ color }) => <Bot size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
@@ -41,9 +34,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="logout"
+        name="index"
         options={{
-          title: 'Logout',
+          title: 'Chat',
+          tabBarIcon: ({ color }) => <Bot size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="dashboard"
+        options={{
+          title: 'Dashboard',
           tabBarIcon: ({ color }) => <LayoutDashboard size={28} color={color} />,
         }}
       />

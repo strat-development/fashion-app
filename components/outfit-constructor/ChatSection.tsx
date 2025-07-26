@@ -1,5 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { OutfitColors, OutfitElements, OutfitFit, OutfitGender, OutfitStylesTags } from '@/consts/chatFilterConsts';
+import { Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectInput, SelectItem, SelectPortal, SelectTrigger } from "@/components/ui/select";
+import { Currencies, OutfitColors, OutfitElements, OutfitFit, OutfitGender, OutfitStylesTags } from '@/consts/chatFilterConsts';
 import { CheckBox } from '@rneui/themed';
 import { ChevronDown, ChevronUp } from 'lucide-react-native';
 import { useState } from 'react';
@@ -12,7 +13,10 @@ export const ChatSection = () => {
   const [outfitColor, setOutfitColor] = useState<string[]>(['']);
   const [outfitGender, setOutfitGender] = useState<string[]>(['']);
   const [outfitFit, setOutfitFit] = useState<string[]>(['']);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [lowestPrice, setLowestPrice] = useState<number>(0);
+  const [highestPrice, setHighestPrice] = useState<number>(0);
+  const [currency, setCurrency] = useState<string>('');
 
   return (
     <View className='flex flex-col items-center justify-center w-full h-full'>
@@ -239,6 +243,69 @@ export const ChatSection = () => {
                   />
                 ))}
               </View>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="price-range">
+            <AccordionTrigger>
+              {({ isExpanded }: { isExpanded: boolean }) => (
+                <>
+                  <Text className="text-2xl text-white font-bold">Select price range</Text>
+                  {isExpanded ? (
+                    <ChevronDown size={24} color="white" />
+                  ) : (
+                    <ChevronUp size={24} color="white" />
+                  )}
+                </>
+              )}
+            </AccordionTrigger>
+            <AccordionContent className="flex flex-col items-start gap-2">
+              <Text className="text-white">From:</Text>
+              <TextInput
+                value={`${lowestPrice}`}
+                onChangeText={(text) => setLowestPrice(Number(text))}
+                placeholder="Lowest price"
+                keyboardType="numeric"
+                className="p-4 bg-gray/10 border-[1px] border-white/10 backdrop-blur-xl text-white/80 rounded-lg mb-2"
+              />
+              <Text className="text-white">To:</Text>
+              <TextInput
+                value={`${highestPrice}`}
+                onChangeText={(text) => setHighestPrice(Number(text))}
+                placeholder="Highest price"
+                keyboardType="numeric"
+                className="p-4 bg-gray/10 border-[1px] border-white/10 backdrop-blur-xl text-white/80 rounded-lg"
+              />
+              <Text className="text-white text-sm mt-2">Currency:</Text>
+              <Select
+                selectedValue={currency}
+                onValueChange={(value: string) => setCurrency(value)}
+              >
+                <SelectTrigger className="bg-gray-800/10 border border-white/10 backdrop-blur-xl text-white/80 rounded-lg">
+                  <SelectInput
+                    placeholder="Select currency"
+                    className="text-white/80"
+                    value={currency}
+                  />
+                </SelectTrigger>
+                <SelectPortal>
+                  <SelectBackdrop className="bg-black/50 backdrop-blur-sm" />
+                  <SelectContent className="bg-gray-800 border border-white/10 rounded-lg overflow-hidden">
+                    <SelectDragIndicatorWrapper>
+                      <SelectDragIndicator className="bg-white/20" />
+                    </SelectDragIndicatorWrapper>
+                    {Currencies.map((currencyItem) => (
+                      <SelectItem
+                        key={currencyItem.name}
+                        value={currencyItem.name}
+                        label={currencyItem.name}
+                        className="px-4 py-3 border-b border-white/10 last:border-b-0 active:bg-gray-700"
+                      >
+                        <Text className="text-white">{currencyItem.name}</Text>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
