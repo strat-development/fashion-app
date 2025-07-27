@@ -1,3 +1,5 @@
+import { useFetchCreatedOutfits } from "@/fetchers/fetchCreatedOutfits";
+import { useFetchUser } from "@/fetchers/fetchUserByCreatedBy";
 import { Database } from "@/types/supabase";
 import { Bookmark, Heart, MessageCircle, Share, User } from 'lucide-react-native';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
@@ -11,8 +13,9 @@ export type OutfitData = Database['public']['Tables']['created-outfits']['Row'] 
 
 interface OutfitCardProps {
   outfit: OutfitData;
-  onToggleLike: (id: string) => void;
-  onToggleSave: (id: string) => void;
+  userName?: string;
+  onToggleLike?: (id: string) => void;
+  onToggleSave?: (id: string) => void;
   onComment?: (id: string) => void;
   onShare?: (id: string) => void;
   onPress?: (outfit: OutfitData) => void;
@@ -26,6 +29,10 @@ export const OutfitCard = ({
   onShare,
   onPress
 }: OutfitCardProps) => {
+  const { data: userData } = useFetchUser(outfit.created_by || '');
+
+  useFetchCreatedOutfits(outfit.created_by || '');
+
   const tags = Array.isArray(outfit.outfit_tags)
     ? outfit.outfit_tags
     : typeof outfit.outfit_tags === 'string'
@@ -41,7 +48,7 @@ export const OutfitCard = ({
             <User size={16} color="#FFFFFF" />
           </View>
           <View>
-            <Text className="text-white font-medium text-sm">{outfit.created_by || 'Anonymous'}</Text>
+            <Text className="text-white font-medium text-sm">{userData?.full_name || 'Anonymous'}</Text>
             <Text className="text-gray-400 text-xs">{outfit.created_at}</Text>
           </View>
         </View>
@@ -56,7 +63,7 @@ export const OutfitCard = ({
       <Pressable onPress={() => onPress?.(outfit)}>
         <View className="relative mb-3">
           <Image
-            source={{ uri: outfit.outfit_elements_data[0].image_url }}
+            // source={{ uri: outfit.outfit_elements_data[0].image_url }}
             className="w-full h-80 rounded-xl"
             resizeMode="cover"
           />
@@ -79,7 +86,7 @@ export const OutfitCard = ({
       <View className="flex-row items-center justify-between pt-2">
         <View className="flex-row items-center space-x-4">
           <Pressable
-            onPress={() => onToggleLike(outfit.outfit_id)}
+            // onPress={() => onToggleLike(outfit.outfit_id)}
             className="flex-row items-center"
           >
             <Heart
@@ -101,7 +108,7 @@ export const OutfitCard = ({
 
         <View className="flex-row items-center space-x-3">
           <Pressable
-            onPress={() => onToggleSave(outfit.outfit_id)}
+            // onPress={() => onToggleSave(outfit.outfit_id)}
             className="flex-row items-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 px-3 py-1 rounded-full border border-gray-600/30"
           >
             <Bookmark

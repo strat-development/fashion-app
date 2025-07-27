@@ -1,3 +1,4 @@
+import { useFetchUser } from '@/fetchers/fetchUserByCreatedBy';
 import { Bookmark, Heart, MessageCircle, Send, Share, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
@@ -55,6 +56,7 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
   onToggleLike,
   onToggleSave
 }) => {
+  const { data: userData } = useFetchUser(outfit.created_by || '');
   const [comments, setComments] = useState<Comment[]>(mockComments);
   const [newComment, setNewComment] = useState('');
 
@@ -77,10 +79,10 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
     setComments(prev => prev.map(comment =>
       comment.id === commentId
         ? {
-            ...comment,
-            isLiked: !comment.isLiked,
-            likes: comment.isLiked ? comment.likes - 1 : comment.likes + 1
-          }
+          ...comment,
+          isLiked: !comment.isLiked,
+          likes: comment.isLiked ? comment.likes - 1 : comment.likes + 1
+        }
         : comment
     ));
   };
@@ -99,8 +101,8 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
               <User size={16} color="white" />
             </View>
             <View>
-              <Text className="text-white font-semibold">{outfit.createdBy}</Text>
-              <Text className="text-white/60 text-sm">{outfit.createdAt}</Text>
+              <Text className="text-white font-semibold">{userData?.full_name || 'Anonymous'}</Text>
+              <Text className="text-white/60 text-sm">{outfit.created_at}</Text>
             </View>
           </View>
           <Pressable onPress={onClose} className="p-2">
@@ -111,16 +113,16 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
         <ScrollView className="flex-1">
           {/* Image */}
           <View className="relative">
-            <Image 
-              source={{ uri: outfit.image }} 
+            <Image
+              source={{ uri: outfit.outfit_elements_data || "" }}
               className="w-full h-96"
               resizeMode="cover"
             />
             <View className="absolute top-3 right-3 bg-black/50 backdrop-blur-md rounded-full p-2">
-              <Pressable onPress={() => onToggleSave(outfit.id)}>
-                <Bookmark 
-                  size={20} 
-                  color={outfit.isSaved ? "#FFD700" : "white"} 
+              <Pressable onPress={() => onToggleSave(outfit.comments)}>
+                <Bookmark
+                  size={20}
+                  color={outfit.isSaved ? "#FFD700" : "white"}
                   fill={outfit.isSaved ? "#FFD700" : "transparent"}
                 />
               </Pressable>
@@ -130,32 +132,33 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
           {/* Content */}
           <View className="p-4">
             {/* Title and Tags */}
-            <Text className="text-white font-bold text-2xl mb-3">{outfit.title}</Text>
+            <Text className="text-white font-bold text-2xl mb-3">{outfit.outfit_name}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
               <View className="flex-row">
-                {outfit.tags.map((tag, index) => (
-                  <View key={index} className="bg-white/10 px-3 py-1 rounded-full mr-2">
-                    <Text className="text-white/80 text-sm">{tag}</Text>
-                  </View>
-                ))}
+                {Array.isArray(outfit.outfit_tags) &&
+                  outfit.outfit_tags.map((tag, index) => (
+                    <View key={index} className="mr-2">
+                      <Text className="text-white font-medium text-sm">{tag}</Text>
+                    </View>
+                  ))}
               </View>
             </ScrollView>
 
             {/* Actions */}
             <View className="flex-row items-center justify-between mb-6 pb-4 border-b border-white/10">
               <View className="flex-row items-center space-x-6">
-                <Pressable 
+                <Pressable
                   onPress={() => onToggleLike(outfit.id)}
                   className="flex-row items-center"
                 >
-                  <Heart 
-                    size={28} 
-                    color={outfit.isLiked ? "#FF4458" : "white"} 
+                  <Heart
+                    size={28}
+                    color={outfit.isLiked ? "#FF4458" : "white"}
                     fill={outfit.isLiked ? "#FF4458" : "transparent"}
                   />
                   <Text className="text-white ml-2 font-medium text-lg">{outfit.likes}</Text>
                 </Pressable>
-                
+
                 <View className="flex-row items-center">
                   <MessageCircle size={28} color="white" />
                   <Text className="text-white ml-2 font-medium text-lg">{comments.length}</Text>
@@ -170,7 +173,7 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
 
             {/* Comments Section */}
             <Text className="text-white font-bold text-xl mb-4">Comments</Text>
-            
+
             {/* Add Comment */}
             <View className="flex-row items-center mb-6">
               <TextInput
@@ -181,7 +184,7 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
                 className="flex-1 bg-white/10 text-white px-4 py-3 rounded-full mr-3"
                 multiline
               />
-              <Pressable 
+              <Pressable
                 onPress={handleAddComment}
                 className="bg-blue-600 p-3 rounded-full"
               >
@@ -200,14 +203,14 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
                     <Text className="text-white font-semibold">{comment.user}</Text>
                     <Text className="text-white/60 text-sm ml-2">{comment.timestamp}</Text>
                   </View>
-                  
-                  <Pressable 
+
+                  <Pressable
                     onPress={() => toggleCommentLike(comment.id)}
                     className="flex-row items-center"
                   >
-                    <Heart 
-                      size={16} 
-                      color={comment.isLiked ? "#FF4458" : "white"} 
+                    <Heart
+                      size={16}
+                      color={comment.isLiked ? "#FF4458" : "white"}
                       fill={comment.isLiked ? "#FF4458" : "transparent"}
                     />
                     <Text className="text-white/80 ml-1 text-sm">{comment.likes}</Text>
