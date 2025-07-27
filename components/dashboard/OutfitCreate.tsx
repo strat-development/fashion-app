@@ -11,7 +11,8 @@ import {
 import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
 import { supabase } from '@/lib/supabase';
 import { useUserContext } from '@/providers/userContext';
-import { NewOutfitData, OutfitCreateProps, OutfitElementData } from '@/types/createOutfitTypes';
+import { OutfitCreateProps, OutfitElementData } from '@/types/createOutfitTypes';
+
 import { useMutation } from '@tanstack/react-query';
 import { Plus, Trash2, X } from 'lucide-react-native';
 import React, { useState } from 'react';
@@ -19,29 +20,40 @@ import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } fro
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-
+interface OutfitState {
+  outfit_name: string;
+  description: string | null;
+  outfit_tags: string[];
+  outfit_elements_data: OutfitElementData[];
+  created_at: string;
+  created_by: string | null;
+  outfit_id: string;
+}
 
 export const OutfitCreate = ({
   isVisible,
   onClose,
   isAnimated
 }: OutfitCreateProps) => {
+  const { userId } = useUserContext();
   const [elementData, setElementData] = useState<OutfitElementData>({
     type: '',
     price: null,
     imageUrl: '',
     siteUrl: ''
   });
-  const [outfitData, setOutfitData] = useState<NewOutfitData>({
-    outfitName: '',
-    description: '',
-    outfitTags: [],
-    outfitElements: [],
-    createdAt: new Date().toISOString(),
-    createdBy: '',
+
+  const [outfitData, setOutfitData] = useState<OutfitState>({
+    outfit_name: '',
+    description: null,
+    outfit_tags: [],
+    outfit_elements_data: [],
+    created_at: new Date().toISOString(),
+    created_by: userId || null,
+    outfit_id: ""
   });
+
   const [elementModalVisible, setElementModalVisible] = useState(false);
-  const { userId } = useUserContext();
 
   const createOutfitMutation = useMutation({
     mutationFn: async () => {
@@ -50,10 +62,10 @@ export const OutfitCreate = ({
       }
 
       const { data, error } = await supabase.from('created-outfits').insert({
-        outfit_name: outfitData.outfitName,
+        outfit_name: outfitData.outfit_name || null,
         description: outfitData.description || null,
-        outfit_tags: outfitData.outfitTags,
-        outfit_elements_data: outfitData.outfitElements,
+        outfit_tags: outfitData.outfit_name,
+        outfit_elements_data: outfitData.outfit_elements_data,
         created_at: new Date().toISOString(),
         created_by: userId,
       });
@@ -64,26 +76,29 @@ export const OutfitCreate = ({
     },
     onSuccess: () => {
       setOutfitData({
-        outfitName: '',
+        outfit_name: '',
         description: '',
-        outfitTags: [],
-        outfitElements: [],
-        createdAt: new Date().toISOString(),
-        createdBy: ''
+        outfit_tags: [],
+        outfit_elements_data: [],
+        created_at: new Date().toISOString(),
+        created_by: '',
+        outfit_id: ""
       });
+
       if (onClose) {
         onClose();
       }
+
       Alert.alert('Success', 'Outfit saved successfully!');
     },
   });
 
   const handleSave = () => {
-    if (!outfitData.outfitName.trim()) {
+    if (!outfitData.outfit_name?.trim()) {
       Alert.alert('Error', 'Outfit name is required');
       return;
     }
-    if (outfitData.outfitElements.length === 0) {
+    if (!outfitData.outfit_elements_data) {
       Alert.alert('Error', 'At least one outfit element is required');
       return;
     }
@@ -115,10 +130,11 @@ export const OutfitCreate = ({
 
     setOutfitData((prev) => ({
       ...prev,
-      outfitElements: [...prev.outfitElements, elementData],
+      outfit_elements_data: [
+        ...(Array.isArray(prev.outfit_elements_data) ? prev.outfit_elements_data : []),
+        elementData
+      ],
     }));
-
-    console.log('Updated outfitData:', outfitData);
 
     setElementData({
       type: '',
@@ -129,6 +145,7 @@ export const OutfitCreate = ({
 
     setElementModalVisible(false);
   };
+
   const handleSelectImage = async () => {
     launchImageLibrary({ mediaType: 'photo', quality: 1 }, async (response) => {
       if (response.didCancel) {
@@ -174,20 +191,39 @@ export const OutfitCreate = ({
   };
 
   const removeImage = (index: number) => {
-    setOutfitData((prev) => ({
-      ...prev,
-      outfit_elements_data: prev.outfitElements.filter((_, i) => i !== index),
-    }));
+    setOutfitData((prev) => {
+      const elementsData = Array.isArray(prev.outfit_elements_data)
+        ? prev.outfit_elements_data
+        : [];
+
+      return {
+        ...prev,
+        outfit_elements_data: elementsData.filter((_, i) => i !== index),
+      };
+    });
   };
 
   const toggleTag = (tag: string) => {
-    setOutfitData((prev) => ({
-      ...prev,
-      outfitTags: prev.outfitTags.includes(tag)
-        ? prev.outfitTags.filter((t) => t !== tag)
-        : [...prev.outfitTags, tag],
-    }));
+    setOutfitData((prev) => {
+      const currentTags = Array.isArray(prev.outfit_tags) ? prev.outfit_tags : [];
+      return {
+        ...prev,
+        outfit_tags: currentTags.includes(tag)
+          ? currentTags.filter((t) => t !== tag)
+          : [...currentTags, tag],
+      };
+    });
   };
+
+  const calculateTotalPrice = (elements: JSON | null): number => {
+    if (!Array.isArray(elements)) return 0;
+    return elements.reduce((total, element) => {
+      if (typeof element === 'object' && element !== null && 'price' in element) {
+        return total + (element.price || 0);
+      }
+      return total;
+    }, 0);
+  }
 
   return (
     <>
@@ -225,31 +261,34 @@ export const OutfitCreate = ({
                         <Plus size={24} color="#9CA3AF" />
                         <Text className="text-gray-400 text-xs mt-1">Add Element</Text>
                       </Pressable>
-                      {outfitData.outfitElements.map((element, index) => (
-                        <View key={index} className="relative border-2 border-gray-700/50 rounded-xl overflow-hidden">
-                          <Image
-                            source={{ uri: element.imageUrl }}
-                            className="w-24 h-32 rounded-xl"
-                            resizeMode="cover"
-                          />
-                          <Pressable
-                            onPress={() => removeImage(index)}
-                            className="absolute top-2 right-2 bg-gradient-to-r from-purple-600 to-pink-600 p-1 rounded-full border-2 border-black"
-                          >
-                            <Trash2 size={12} color="white" />
-                          </Pressable>
-                          <View className="absolute bottom-0 left-0 right-0 bg-black/50 px-2 py-1">
-                            <Text className="text-white text-xs">{element.type}</Text>
-                            <Text className="text-gray-400 text-xs">
-                              {element.price !== null ? `$${element.price.toFixed(2)}` : 'Free'}
-                            </Text>
+                      {Array.isArray(outfitData.outfit_elements_data) &&
+                        outfitData.outfit_elements_data.map((element, index) => (
+                          <View key={index} className="relative border-2 border-gray-700/50 rounded-xl overflow-hidden">
+                            <Image
+                              source={{ uri: element?.imageUrl }}
+                              className="w-24 h-32 rounded-xl"
+                              resizeMode="cover"
+                            />
+                            <Pressable
+                              onPress={() => removeImage(index)}
+                              className="absolute top-2 right-2 bg-gradient-to-r from-purple-600 to-pink-600 p-1 rounded-full border-2 border-black"
+                            >
+                              <Trash2 size={12} color="white" />
+                            </Pressable>
+                            <View className="absolute bottom-0 left-0 right-0 bg-black/50 px-2 py-1">
+                              <Text className="text-white text-xs">{element?.type}</Text>
+                              <Text className="text-gray-400 text-xs">
+                                {element?.price !== null ? `$${element?.price.toFixed(2)}` : 'Free'}
+                              </Text>
+                            </View>
                           </View>
-                        </View>
-                      ))}
+                        ))}
                     </View>
                   </ScrollView>
                   <View className="flex-row items-center justify-between self-end">
-                    <Text className='text-gray-400'>Total price: ${outfitData.outfitElements.reduce((total, element) => total + (element.price || 0), 0).toFixed(2)}</Text>
+                    <Text className='text-gray-400'>
+                      Total price: ${calculateTotalPrice(outfitData.outfit_elements_data as any ?? []).toFixed(2)}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -258,8 +297,8 @@ export const OutfitCreate = ({
               <View className="mb-6">
                 <Text className="text-gray-300 font-medium text-base mb-3">Name</Text>
                 <TextInput
-                  value={outfitData.outfitName}
-                  onChangeText={(text) => setOutfitData(prev => ({ ...prev, outfitName: text }))}
+                  value={outfitData.outfit_name ?? ''}
+                  onChangeText={(text) => setOutfitData((prev) => ({ ...prev, outfit_name: text }))}
                   placeholder="Enter outfit name"
                   placeholderTextColor="#6B7280"
                   className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
@@ -271,8 +310,8 @@ export const OutfitCreate = ({
               <View className="mb-6">
                 <Text className="text-gray-300 font-medium text-base mb-3">Description</Text>
                 <TextInput
-                  value={outfitData.description}
-                  onChangeText={(text) => setOutfitData(prev => ({ ...prev, description: text }))}
+                  value={outfitData.description ?? ''}
+                  onChangeText={(text) => setOutfitData((prev) => ({ ...prev, description: text }))}
                   placeholder="Describe your outfit..."
                   placeholderTextColor="#6B7280"
                   className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
@@ -291,7 +330,8 @@ export const OutfitCreate = ({
                     <Pressable
                       key={style.name}
                       onPress={() => toggleTag(style.name)}
-                      className={`px-3 py-2 rounded-full mr-2 mb-2 border ${outfitData.outfitTags.includes(style.name)
+                      className={`px-3 py-2 rounded-full mr-2 mb-2 border ${Array.isArray(outfitData.outfit_tags) &&
+                        outfitData.outfit_tags.includes(style.name)
                         ? 'bg-gradient-to-r from-purple-600 to-pink-600 border-purple-500/50'
                         : 'bg-gray-800/30 border-gray-700/30'
                         }`}
@@ -301,29 +341,6 @@ export const OutfitCreate = ({
                   ))}
                 </View>
               </View>
-
-              {/* Colors */}
-              {/* <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">Dominant Colors</Text>
-                <View className="flex-row flex-wrap">
-                  {OutfitColors.map((color) => (
-                    <Pressable
-                      key={color.name}
-                      onPress={() => toggleColor(color.name)}
-                      className={`flex-row items-center px-3 py-2 rounded-full mr-2 mb-2 border ${outfitData.colors.includes(color.name)
-                        ? 'bg-gray-700/50 border-gray-600/50'
-                        : 'bg-gray-800/30 border-gray-700/30'
-                        }`}
-                    >
-                      <View
-                        style={{ backgroundColor: color.hex }}
-                        className="w-4 h-4 rounded-full mr-2 border border-gray-600/30"
-                      />
-                      <Text className="text-gray-200 text-sm">{color.name}</Text>
-                    </Pressable>
-                  ))}
-                </View>
-              </View> */}
             </View>
           </ScrollView>
         </SafeAreaView>

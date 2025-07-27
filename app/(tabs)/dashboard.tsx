@@ -1,66 +1,16 @@
 import { EmptyState } from '@/components/dashboard/EmptyState';
 import { OutfitCard, type OutfitData } from '@/components/dashboard/OutfitCard';
-import { OutfitCreate, type NewOutfitData } from '@/components/dashboard/OutfitCreate';
+import { OutfitCreate } from '@/components/dashboard/OutfitCreate';
 import { OutfitDetail } from '@/components/dashboard/OutfitDetail';
 import { ProfileEdit, type ProfileData } from '@/components/dashboard/ProfileEdit';
 import { UserProfile } from '@/components/dashboard/UserProfile';
 import { Button } from '@/components/ui/button';
+import { useFetchCreatedOutfits } from '@/fetchers/fetchCreatedOutfits';
+import { useUserContext } from '@/providers/userContext';
 import { Bookmark, Grid, Plus, User } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-// Mock data - to be replaced with Supabase data
-const mockOutfits: OutfitData[] = [
-  {
-    id: 1,
-    title: "Summer Casual Look",
-    image: "https://via.placeholder.com/300x400/FF6B6B/FFFFFF?text=Outfit+1",
-    likes: 142,
-    comments: 23,
-    isLiked: false,
-    isSaved: true,
-    creator: "You",
-    createdAt: "2 hours ago",
-    tags: ["Casual", "Summer", "Comfortable"]
-  },
-  {
-    id: 2,
-    title: "Business Professional",
-    image: "https://via.placeholder.com/300x400/4ECDC4/FFFFFF?text=Outfit+2",
-    likes: 89,
-    comments: 12,
-    isLiked: true,
-    isSaved: false,
-    creator: "cycki_69",
-    createdAt: "1 day ago",
-    tags: ["Formal", "Business", "Professional"]
-  },
-  {
-    id: 3,
-    title: "Street Style Vibes",
-    image: "https://via.placeholder.com/300x400/45B7D1/FFFFFF?text=Outfit+3",
-    likes: 267,
-    comments: 45,
-    isLiked: true,
-    isSaved: true,
-    creator: "dupajasiukaruzela",
-    createdAt: "3 days ago",
-    tags: ["Streetwear", "Urban", "Cool"]
-  },
-  {
-    id: 4,
-    title: "Elegant Smoking Style",
-    image: "https://via.placeholder.com/300x400/F7DC6F/FFFFFF?text=Outfit+4",
-    likes: 420,
-    comments: 1488,
-    isLiked: false,
-    isSaved: true,
-    creator: "david_duck",
-    createdAt: "5 days ago",
-    tags: ["Elegant", "Evening", "Formal"]
-  }
-];
 
 const mockUserStats = {
   createdOutfits: 15,
@@ -75,50 +25,64 @@ type TabType = 'feed' | 'saved' | 'created' | 'profile';
 export default function DashboardScreen() {
   const [activeTab, setActiveTab] = useState<TabType>('feed');
   const [refreshing, setRefreshing] = useState(false);
-  const [outfits, setOutfits] = useState(mockOutfits);
   const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
   const [showOutfitDetail, setShowOutfitDetail] = useState(false);
   const [showProfileEdit, setShowProfileEdit] = useState(false);
   const [showOutfitCreate, setShowOutfitCreate] = useState(false);
+  const { userId } = useUserContext();
+  const { data: fetchedOutfits, error, isLoading } = useFetchCreatedOutfits(userId || '');
   const [profileData, setProfileData] = useState<ProfileData>({
     name: "Your Profile",
-    bio: "Passionate about fashion and style. "
+    bio: "Passionate about fashion and style."
   });
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+  // Helper function to format the fetched outfits
+  const outfits = fetchedOutfits?.map(outfit => ({
+    ...outfit,
+    likes: 0,
+    comments: 0,
+    isLiked: false,
+    isSaved: false,
+    created_by: outfit.created_by || 'Anonymous',
+    created_at: formatDate(outfit.created_at),
+    outfit_name: outfit.outfit_name || 'Untitled Outfit',
+    outfit_tags: Array.isArray(outfit.outfit_tags) ?
+      outfit.outfit_tags :
+      typeof outfit.outfit_tags === 'string' ?
+        [outfit.outfit_tags] :
+        [],
+    outfit_elements_data: outfit.outfit_elements_data || []
+  })) || [];
 
-  const toggleLike = (outfitId: number) => {
-    setOutfits(prev => prev.map(outfit => 
-      outfit.id === outfitId 
-        ? { 
-            ...outfit, 
-            isLiked: !outfit.isLiked,
-            likes: outfit.isLiked ? outfit.likes - 1 : outfit.likes + 1
-          }
-        : outfit
-    ));
+  // Helper function to format date
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (diffInSeconds < 60) return 'just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)} days ago`;
+    return date.toLocaleDateString();
+  }
+
+  const toggleLike = (outfitId: string) => {
+    // TODO: Implement actual like toggle with API call
+    console.log('Toggle like for outfit:', outfitId);
   };
 
-  const toggleSave = (outfitId: number) => {
-    setOutfits(prev => prev.map(outfit => 
-      outfit.id === outfitId 
-        ? { ...outfit, isSaved: !outfit.isSaved }
-        : outfit
-    ));
+  const toggleSave = (outfitId: string) => {
+    // TODO: Implement actual save toggle with API call
+    console.log('Toggle save for outfit:', outfitId);
   };
 
-  const handleComment = (outfitId: number) => {
+  const handleComment = (outfitId: string) => {
     // TODO: Implement comment functionality
     console.log('Comment on outfit:', outfitId);
   };
 
-  const handleShare = (outfitId: number) => {
+  const handleShare = (outfitId: string) => {
     // TODO: Implement share functionality
     console.log('Share outfit:', outfitId);
   };
@@ -127,21 +91,10 @@ export default function DashboardScreen() {
     setShowOutfitCreate(true);
   };
 
-  const handleSaveOutfit = (data: NewOutfitData) => {
-    const newOutfit: OutfitData = {
-      id: Date.now(),
-      title: data.title,
-      image: data.images[0] || "https://via.placeholder.com/300x400/4ECDC4/FFFFFF?text=New+Outfit",
-      likes: 0,
-      comments: 0,
-      isLiked: false,
-      isSaved: false,
-      creator: "You",
-      createdAt: "now",
-      tags: [...data.tags, ...data.colors, ...data.elements].slice(0, 3)
-    };
-    setOutfits(prev => [newOutfit, ...prev]);
-    console.log('Outfit created:', data);
+  const handleSaveOutfit = (newOutfitData: any) => {
+    // TODO: Implement actual outfit creation with API call
+
+    console.log('Outfit created:');
   };
 
   const handleCloseOutfitCreate = () => {
@@ -175,24 +128,34 @@ export default function DashboardScreen() {
     switch (activeTab) {
       case 'feed':
         return (
-          <ScrollView 
+          <ScrollView
             className="flex-1 px-4"
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl refreshing={refreshing} />
             }
           >
             <View className="pt-6 pb-20">
-              {outfits.map(outfit => (
-                <OutfitCard
-                  key={outfit.id}
-                  outfit={outfit}
-                  onToggleLike={toggleLike}
-                  onToggleSave={toggleSave}
-                  onComment={handleComment}
-                  onShare={handleShare}
-                  onPress={handleOutfitPress}
+              {outfits.length > 0 ? (
+                outfits.map(outfit => (
+                  <OutfitCard
+                    key={outfit.outfit_id}
+                    outfit={outfit}
+                    onToggleLike={toggleLike}
+                    onToggleSave={toggleSave}
+                    onComment={handleComment}
+                    onShare={handleShare}
+                    onPress={handleOutfitPress}
+                  />
+                ))
+              ) : (
+                <EmptyState
+                  icon={Grid}
+                  title="No outfits yet"
+                  description="Create your first outfit or follow others to see their creations"
+                  actionText="Create Outfit"
+                  onAction={handleCreateOutfit}
                 />
-              ))}
+              )}
             </View>
           </ScrollView>
         );
@@ -200,10 +163,10 @@ export default function DashboardScreen() {
       case 'saved':
         const savedOutfits = outfits.filter(outfit => outfit.isSaved);
         return (
-          <ScrollView 
+          <ScrollView
             className="flex-1 px-4"
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl refreshing={refreshing} />
             }
           >
             <View className="pt-6 pb-20">
@@ -211,7 +174,7 @@ export default function DashboardScreen() {
               {savedOutfits.length > 0 ? (
                 savedOutfits.map(outfit => (
                   <OutfitCard
-                    key={outfit.id}
+                    key={outfit.outfit_id}
                     outfit={outfit}
                     onToggleLike={toggleLike}
                     onToggleSave={toggleSave}
@@ -232,18 +195,18 @@ export default function DashboardScreen() {
         );
 
       case 'created':
-        const createdOutfits = outfits.filter(outfit => outfit.creator === "You");
+        const createdOutfits = outfits.filter(outfit => outfit.created_by === userId);
         return (
-          <ScrollView 
+          <ScrollView
             className="flex-1 px-4"
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl refreshing={refreshing} />
             }
           >
             <View className="pt-6 pb-20">
               <View className="flex-row items-center justify-between mb-6">
                 <Text className="text-white text-xl font-semibold">Your Creations</Text>
-                <Button 
+                <Button
                   onPress={handleCreateOutfit}
                   className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl px-4 py-2"
                 >
@@ -256,7 +219,7 @@ export default function DashboardScreen() {
               {createdOutfits.length > 0 ? (
                 createdOutfits.map(outfit => (
                   <OutfitCard
-                    key={outfit.id}
+                    key={outfit.outfit_id}
                     outfit={outfit}
                     onToggleLike={toggleLike}
                     onToggleSave={toggleSave}
@@ -295,7 +258,6 @@ export default function DashboardScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-gradient-to-b from-black to-gray-900">
-      {/* Minimal Header - just status bar space */}
       <View className="h-2" />
 
       {/* Tab Navigation */}
@@ -309,18 +271,16 @@ export default function DashboardScreen() {
           <Pressable
             key={key}
             onPress={() => setActiveTab(key as TabType)}
-            className={`flex-1 items-center py-3 rounded-full ${
-              activeTab === key ? 'bg-gradient-to-r from-purple-500 to-pink-500' : ''
-            }`}
-          >
-            <Icon 
-              size={18} 
-              color={activeTab === key ? "#FFFFFF" : "#9CA3AF"} 
-            />
-            <Text 
-              className={`text-xs mt-1 font-medium ${
-                activeTab === key ? 'text-white' : 'text-gray-400'
+            className={`flex-1 items-center py-3 rounded-full ${activeTab === key ? 'bg-gradient-to-r from-purple-500 to-pink-500' : ''
               }`}
+          >
+            <Icon
+              size={18}
+              color={activeTab === key ? "#FFFFFF" : "#9CA3AF"}
+            />
+            <Text
+              className={`text-xs mt-1 font-medium ${activeTab === key ? 'text-white' : 'text-gray-400'
+                }`}
             >
               {label}
             </Text>
@@ -337,8 +297,8 @@ export default function DashboardScreen() {
           outfit={selectedOutfit}
           isVisible={showOutfitDetail}
           onClose={handleCloseOutfitDetail}
-          onToggleLike={toggleLike}
-          onToggleSave={toggleSave}
+          onToggleLike={() => { }}
+          onToggleSave={() => { }}
         />
       )}
 
@@ -354,7 +314,6 @@ export default function DashboardScreen() {
       <OutfitCreate
         isVisible={showOutfitCreate}
         onClose={handleCloseOutfitCreate}
-        onCreate={handleSaveOutfit}
       />
     </SafeAreaView>
   );

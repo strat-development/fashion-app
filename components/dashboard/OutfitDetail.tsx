@@ -99,7 +99,7 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
               <User size={16} color="white" />
             </View>
             <View>
-              <Text className="text-white font-semibold">{outfit.creator}</Text>
+              <Text className="text-white font-semibold">{outfit.createdBy}</Text>
               <Text className="text-white/60 text-sm">{outfit.createdAt}</Text>
             </View>
           </View>
