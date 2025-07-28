@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface SaveOutfitMutationProps {
     userId: string;
@@ -8,6 +8,8 @@ interface SaveOutfitMutationProps {
 }
 
 export const useSaveOutfitMutation = () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async ({ userId, outfitId, savedAt }: SaveOutfitMutationProps) => {
             if (!supabase) {
@@ -25,6 +27,11 @@ export const useSaveOutfitMutation = () => {
             }
 
             return data;
+        },
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({
+                queryKey: ['saved-outfits', data]
+            })
         }
     })
 }

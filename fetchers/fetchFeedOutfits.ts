@@ -12,6 +12,7 @@ export const useFetchFeedOutfits = () => {
             const { data, error } = await supabase
                 .from('created-outfits')
                 .select('*')
+                .order('created_at', { ascending: false });
 
             if (error) {
                 throw error;

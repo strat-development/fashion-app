@@ -10,17 +10,17 @@ import {
 } from '@/components/ui/select';
 import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
 import { supabase } from '@/lib/supabase';
+import { useCreateOutfitMutation } from '@/mutations/CreateOutfitMutation';
 import { useUserContext } from '@/providers/userContext';
-import { OutfitCreateProps, OutfitElementData } from '@/types/createOutfitTypes';
+import { ModalProps, OutfitElementData } from '@/types/createOutfitTypes';
 
-import { useMutation } from '@tanstack/react-query';
 import { Plus, Trash2, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-interface OutfitState {
+export interface OutfitState {
   outfit_name: string;
   description: string | null;
   outfit_tags: string[];
@@ -34,7 +34,7 @@ export const OutfitCreateModal = ({
   isVisible,
   onClose,
   isAnimated
-}: OutfitCreateProps) => {
+}: ModalProps) => {
   const { userId } = useUserContext();
   const [elementData, setElementData] = useState<OutfitElementData>({
     type: '',
@@ -55,55 +55,41 @@ export const OutfitCreateModal = ({
 
   const [elementModalVisible, setElementModalVisible] = useState(false);
 
-  const createOutfitMutation = useMutation({
-    mutationFn: async () => {
-      if (!supabase) {
-        throw new Error('Supabase client is not initialized.');
-      }
 
-      const { data, error } = await supabase.from('created-outfits').insert({
-        outfit_name: outfitData.outfit_name || null,
-        description: outfitData.description || null,
-        outfit_tags: outfitData.outfit_name,
-        outfit_elements_data: outfitData.outfit_elements_data,
-        created_at: new Date().toISOString(),
-        created_by: userId,
-      });
 
-      if (error) {
-        throw error;
-      }
-    },
-    onSuccess: () => {
+  const { mutate: createOutfit } = useCreateOutfitMutation(
+    () => {
       setOutfitData({
         outfit_name: '',
         description: '',
         outfit_tags: [],
         outfit_elements_data: [],
         created_at: new Date().toISOString(),
-        created_by: '',
+        created_by: userId || null,
         outfit_id: ""
       });
-
-      if (onClose) {
-        onClose();
-      }
-
+      onClose?.();
       Alert.alert('Success', 'Outfit saved successfully!');
     },
-  });
+    (error) => {
+      Alert.alert('Error', error.message);
+    }
+  );
 
   const handleSave = () => {
     if (!outfitData.outfit_name?.trim()) {
       Alert.alert('Error', 'Outfit name is required');
       return;
     }
-    if (!outfitData.outfit_elements_data) {
+    if (!outfitData.outfit_elements_data || outfitData.outfit_elements_data.length === 0) {
       Alert.alert('Error', 'At least one outfit element is required');
       return;
     }
 
-    createOutfitMutation.mutate();
+    createOutfit({
+      ...outfitData,
+      created_by: userId || null
+    });
   };
 
   const handleImagePicker = () => {

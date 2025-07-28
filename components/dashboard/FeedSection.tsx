@@ -76,7 +76,7 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                     isVisible={showOutfitDetail}
                     onClose={handleCloseOutfitDetail}
                     onToggleLike={() => { }}
-                    onToggleSave={() => { }}
+                    onToggleSave={() => handleToggleSave(selectedOutfit.outfit_id)}
                 />
             )}
         </>

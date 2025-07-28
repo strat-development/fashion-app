@@ -19,7 +19,8 @@ export const useFetchSavedOutfits = (userId: string) => {
       const { data: outfits, error: outfitsError } = await supabase
         .from('created-outfits')
         .select('*')
-        .in('outfit_id', outfitIds);
+        .in('outfit_id', outfitIds)
+        .order('created_at', { ascending: false });
 
       if (outfitsError) throw outfitsError;
       return outfits;

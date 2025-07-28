@@ -1,4 +1,5 @@
-import { useFetchUser } from '@/fetchers/fetchUserByCreatedBy';
+import { useFetchUser } from '@/fetchers/fetchUser';
+import { formatDate } from '@/helpers/helpers';
 import { Bookmark, Heart, MessageCircle, Send, Share, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
@@ -102,7 +103,7 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
             </View>
             <View>
               <Text className="text-white font-semibold">{userData?.full_name || 'Anonymous'}</Text>
-              <Text className="text-white/60 text-sm">{outfit.created_at}</Text>
+              <Text className="text-white/60 text-sm">{formatDate(outfit.created_at)}</Text>
             </View>
           </View>
           <Pressable onPress={onClose} className="p-2">
@@ -114,7 +115,7 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
           {/* Image */}
           <View className="relative">
             <Image
-              source={{ uri: outfit.outfit_elements_data || "" }}
+              source={{ uri: outfit?.outfit_elements_data?.toString() || "" }}
               className="w-full h-96"
               resizeMode="cover"
             />
@@ -138,7 +139,7 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
                 {Array.isArray(outfit.outfit_tags) &&
                   outfit.outfit_tags.map((tag, index) => (
                     <View key={index} className="mr-2">
-                      <Text className="text-white font-medium text-sm">{tag}</Text>
+                      <Text className="text-white font-medium text-sm">{tag?.toString()}</Text>
                     </View>
                   ))}
               </View>
@@ -148,7 +149,7 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
             <View className="flex-row items-center justify-between mb-6 pb-4 border-b border-white/10">
               <View className="flex-row items-center space-x-6">
                 <Pressable
-                  onPress={() => onToggleLike(outfit.id)}
+                  onPress={() => onToggleLike(outfit.likes)}
                   className="flex-row items-center"
                 >
                   <Heart

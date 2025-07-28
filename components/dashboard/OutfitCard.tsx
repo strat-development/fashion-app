@@ -1,6 +1,7 @@
-import { useFetchUser } from "@/fetchers/fetchUserByCreatedBy";
+import { useFetchUser } from "@/fetchers/fetchUser";
+import { formatDate } from "@/helpers/helpers";
 import { Database } from "@/types/supabase";
-import { Bookmark, Heart, MessageCircle, Share, User } from 'lucide-react-native';
+import { Bookmark, Delete, Heart, MessageCircle, Share, User } from 'lucide-react-native';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 
 export type OutfitData = Database['public']['Tables']['created-outfits']['Row'] & {
@@ -18,6 +19,8 @@ interface OutfitCardProps {
   onComment?: (id: string) => void;
   onShare?: (id: string) => void;
   onPress?: (outfit: OutfitData) => void;
+  onDelete?: (outfit: OutfitData) => void;
+  isDeleteVisible?: boolean;
 }
 
 export const OutfitCard = ({
@@ -26,7 +29,9 @@ export const OutfitCard = ({
   onToggleSave,
   onComment,
   onShare,
-  onPress
+  onPress,
+  onDelete,
+  isDeleteVisible
 }: OutfitCardProps) => {
   const { data: userData } = useFetchUser(outfit.created_by || '');
   const imageUrls = Array.isArray(outfit.outfit_elements_data) ? outfit.outfit_elements_data as string[] : [];
@@ -36,18 +41,6 @@ export const OutfitCard = ({
     : typeof outfit.outfit_tags === 'string'
       ? [outfit.outfit_tags]
       : [];
-
-  function formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (diffInSeconds < 60) return 'just now';
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
-    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)} ${Math.floor(diffInSeconds / 86400) === 1 ? 'day' : 'days'} ago`;
-    return date.toLocaleDateString();
-  }
 
 
   return (
@@ -93,6 +86,17 @@ export const OutfitCard = ({
             ))}
           </View>
         </ScrollView>
+
+
+        {isDeleteVisible && (
+          <Pressable
+            className="absolute top-4 right-4 flex-row items-center justify-center gap-2"
+            onPress={() => onDelete?.(outfit)}
+          >
+            <Text className="text-gray-300">Delete Outfit</Text>
+            <Delete size={18} color="#9CA3AF" />
+          </Pressable>
+        )}
 
         {/* Actions */}
         <View className="flex-row items-center justify-between pt-2">

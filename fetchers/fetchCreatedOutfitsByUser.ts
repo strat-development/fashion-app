@@ -13,6 +13,7 @@ export const useFetchCreatedOutfitsByUser = (userId: string) => {
                 .from('created-outfits')
                 .select('*')
                 .eq('created_by', userId)
+                .order('created_at', { ascending: false });
 
             if (error) {
                 throw error;

@@ -21,37 +21,11 @@ type TabType = 'feed' | 'saved' | 'created' | 'profile';
 export default function DashboardScreen() {
   const [activeTab, setActiveTab] = useState<TabType>('feed');
   const [refreshing, setRefreshing] = useState(false);
-  const [showOutfitDetail, setShowOutfitDetail] = useState(false);
   const [showProfileEdit, setShowProfileEdit] = useState(false);
-  const [showOutfitCreate, setShowOutfitCreate] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData>({
     name: "Your Profile",
     bio: "Passionate about fashion and style."
   });
-
-  // Helper function to format date
-
-  const toggleLike = (outfitId: string) => {
-    // TODO: Implement actual like toggle with API call
-    console.log('Toggle like for outfit:', outfitId);
-  };
-
-  const toggleSave = (outfitId: string) => {
-    // TODO: Implement actual save toggle with API call
-    console.log('Toggle save for outfit:', outfitId);
-  };
-
-  const handleComment = (outfitId: string) => {
-    // TODO: Implement comment functionality
-    console.log('Comment on outfit:', outfitId);
-  };
-
-  const handleShare = (outfitId: string) => {
-    // TODO: Implement share functionality
-    console.log('Share outfit:', outfitId);
-  };
-
-  
 
   const handleEditProfile = () => {
     setShowProfileEdit(true);
@@ -133,9 +107,6 @@ export default function DashboardScreen() {
       {/* Content */}
       {renderTabContent()}
 
-      {/* Outfit Detail Modal */}
-      
-
       {/* Profile Edit Modal */}
       <ProfileEdit
         isVisible={showProfileEdit}
@@ -144,8 +115,6 @@ export default function DashboardScreen() {
         initialData={profileData}
       />
 
-      {/* Outfit Create Modal */}
-      
     </SafeAreaView>
   );
 }

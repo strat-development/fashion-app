@@ -1,8 +1,9 @@
 import { Database } from "@/types/supabase";
 
-export interface OutfitCreateProps {
-  isVisible?: boolean;
-  onClose?: () => void;
+export interface ModalProps {
+  isVisible: boolean;
+  onClose: () => void;
+  onDelete?: () => void;
   isAnimated?: boolean;
 }
 
