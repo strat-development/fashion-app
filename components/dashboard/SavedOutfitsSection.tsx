@@ -1,18 +1,32 @@
-import { RefreshControl, Text, View } from "react-native"
-import { ScrollView } from "react-native"
-import { EmptyState } from "./EmptyState"
-import { Bookmark } from "lucide-react-native"
-import { OutfitCard } from "./OutfitCard"
+
 import { useFetchSavedOutfits } from "@/fetchers/fetchSavedOutfits"
 import { useUserContext } from "@/providers/userContext"
+import { Bookmark } from "lucide-react-native"
+import { useState } from "react"
+import { RefreshControl, ScrollView, View } from "react-native"
+import { EmptyState } from "./EmptyState"
+import { OutfitDetail } from "./modals/OutfitDetailModal"
+import { OutfitCard, OutfitData } from "./OutfitCard"
 
 interface SavedOutfitsSectionProps {
     refreshing: boolean
+    onPress?: (outfit: OutfitData) => void;
 }
 
 export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) => {
     const { userId } = useUserContext();
-    const { data: savedOutfits = [], isLoading} = useFetchSavedOutfits(userId || '');
+    const { data: savedOutfits = [], isLoading } = useFetchSavedOutfits(userId || '');
+    const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
+    const [showOutfitDetail, setShowOutfitDetail] = useState(false);
+    const handleOutfitPress = (outfit: OutfitData) => {
+        setSelectedOutfit(outfit);
+        setShowOutfitDetail(true);
+    };
+
+    const handleCloseOutfitDetail = () => {
+        setShowOutfitDetail(false);
+        setSelectedOutfit(null);
+    };
 
     return (
         <>
@@ -26,14 +40,16 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
                     {/* <Text className="text-white text-xl font-semibold mb-6">Saved Outfits</Text> */}
                     {savedOutfits.length > 0 ? (
                         savedOutfits.map(outfit => (
-                            <OutfitCard 
+                            <OutfitCard
                                 key={outfit}
                                 outfit={outfit}
+                                onPress={() =>
+                                    handleOutfitPress(outfit)
+                                }
                             // onToggleLike={toggleLike}
                             // onToggleSave={toggleSave}
                             // onComment={handleComment}
                             // onShare={handleShare}
-                            // onPress={handleOutfitPress}
                             />
                         ))
                     ) : (
@@ -45,6 +61,16 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
                     )}
                 </View>
             </ScrollView>
+
+            {selectedOutfit && (
+                <OutfitDetail
+                    outfit={selectedOutfit}
+                    isVisible={showOutfitDetail}
+                    onClose={handleCloseOutfitDetail}
+                    onToggleLike={() => { }}
+                    onToggleSave={() => { }}
+                />
+            )}
         </>
     )
 }

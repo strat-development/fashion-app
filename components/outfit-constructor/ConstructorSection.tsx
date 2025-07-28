@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View } from "react-native";
-import { OutfitCreate } from "../dashboard/OutfitCreate";
+import { OutfitCreate } from "../dashboard/modals/OutfitCreateModal";
 import { ChatSwitch } from "./ChatSwitch";
 
 export const ConstuctorSection = () => {

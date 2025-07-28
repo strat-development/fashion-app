@@ -30,7 +30,7 @@ interface OutfitState {
   outfit_id: string;
 }
 
-export const OutfitCreate = ({
+export const OutfitCreateModal = ({
   isVisible,
   onClose,
   isAnimated

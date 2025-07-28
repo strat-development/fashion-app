@@ -1,12 +1,8 @@
 import { CreatedOutfitsSection } from '@/components/dashboard/CreatedOutfitsSection';
 import { FeedSection } from '@/components/dashboard/FeedSection';
-import { type OutfitData } from '@/components/dashboard/OutfitCard';
-import { OutfitCreate } from '@/components/dashboard/OutfitCreate';
-import { OutfitDetail } from '@/components/dashboard/OutfitDetail';
-import { ProfileEdit, type ProfileData } from '@/components/dashboard/ProfileEdit';
+import { ProfileEdit, type ProfileData } from '@/components/dashboard/modals/ProfileEditModal';
 import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection';
 import { UserProfile } from '@/components/dashboard/UserProfile';
-import { useUserContext } from '@/providers/userContext';
 import { Bookmark, Grid, Plus, User } from 'lucide-react-native';
 import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
@@ -25,7 +21,6 @@ type TabType = 'feed' | 'saved' | 'created' | 'profile';
 export default function DashboardScreen() {
   const [activeTab, setActiveTab] = useState<TabType>('feed');
   const [refreshing, setRefreshing] = useState(false);
-  const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
   const [showOutfitDetail, setShowOutfitDetail] = useState(false);
   const [showProfileEdit, setShowProfileEdit] = useState(false);
   const [showOutfitCreate, setShowOutfitCreate] = useState(false);
@@ -34,35 +29,7 @@ export default function DashboardScreen() {
     bio: "Passionate about fashion and style."
   });
 
-  // Helper function to format the fetched outfits
-  // const outfits = fetchedOutfits?.map(outfit => ({
-  //   ...outfit,
-  //   likes: 0,
-  //   comments: 0,
-  //   isLiked: false,
-  //   isSaved: false,
-  //   created_at: formatDate(outfit.created_at),
-  //   outfit_name: outfit.outfit_name || 'Untitled Outfit',
-  //   outfit_tags: Array.isArray(outfit.outfit_tags) ?
-  //     outfit.outfit_tags :
-  //     typeof outfit.outfit_tags === 'string' ?
-  //       [outfit.outfit_tags] :
-  //       [],
-  //   outfit_elements_data: outfit.outfit_elements_data || []
-  // })) || [];
-
   // Helper function to format date
-  function formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (diffInSeconds < 60) return 'just now';
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
-    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)} days ago`;
-    return date.toLocaleDateString();
-  }
 
   const toggleLike = (outfitId: string) => {
     // TODO: Implement actual like toggle with API call
@@ -84,19 +51,7 @@ export default function DashboardScreen() {
     console.log('Share outfit:', outfitId);
   };
 
-  const handleCreateOutfit = () => {
-    setShowOutfitCreate(true);
-  };
-
-  const handleSaveOutfit = (newOutfitData: any) => {
-    // TODO: Implement actual outfit creation with API call
-
-    console.log('Outfit created:');
-  };
-
-  const handleCloseOutfitCreate = () => {
-    setShowOutfitCreate(false);
-  };
+  
 
   const handleEditProfile = () => {
     setShowProfileEdit(true);
@@ -109,16 +64,6 @@ export default function DashboardScreen() {
 
   const handleCloseProfileEdit = () => {
     setShowProfileEdit(false);
-  };
-
-  const handleOutfitPress = (outfit: OutfitData) => {
-    setSelectedOutfit(outfit);
-    setShowOutfitDetail(true);
-  };
-
-  const handleCloseOutfitDetail = () => {
-    setShowOutfitDetail(false);
-    setSelectedOutfit(null);
   };
 
   const renderTabContent = () => {
@@ -189,15 +134,7 @@ export default function DashboardScreen() {
       {renderTabContent()}
 
       {/* Outfit Detail Modal */}
-      {selectedOutfit && (
-        <OutfitDetail
-          outfit={selectedOutfit}
-          isVisible={showOutfitDetail}
-          onClose={handleCloseOutfitDetail}
-          onToggleLike={() => { }}
-          onToggleSave={() => { }}
-        />
-      )}
+      
 
       {/* Profile Edit Modal */}
       <ProfileEdit
@@ -208,10 +145,7 @@ export default function DashboardScreen() {
       />
 
       {/* Outfit Create Modal */}
-      <OutfitCreate
-        isVisible={showOutfitCreate}
-        onClose={handleCloseOutfitCreate}
-      />
+      
     </SafeAreaView>
   );
 }

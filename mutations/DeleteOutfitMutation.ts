@@ -1,18 +1,21 @@
 import { supabase } from "@/lib/supabase";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
-export const useFetchCreatedOutfits = (userId: string) => {
-    return useQuery({
-        queryKey: ['created-outfits', userId],
-        queryFn: async () => {
+interface DeleteOutfitMutationProps {
+    createdBy: string;
+}
+
+export const useDeleteOutfitMutation = () => {
+    return useMutation({
+        mutationFn: async ({ createdBy }: DeleteOutfitMutationProps) => {
             if (!supabase) {
                 throw new Error('Supabase client is not initialized.');
             }
 
             const { data, error } = await supabase
                 .from('created-outfits')
-                .select('*')
-                .eq('created_by', userId)
+                .delete()
+                .eq('created_by', createdBy)
 
             if (error) {
                 throw error;
@@ -20,5 +23,5 @@ export const useFetchCreatedOutfits = (userId: string) => {
 
             return data;
         }
-    });
-};
+    })
+}

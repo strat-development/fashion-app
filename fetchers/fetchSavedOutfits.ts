@@ -8,14 +8,14 @@ export const useFetchSavedOutfits = (userId: string) => {
       if (!supabase) throw new Error('Supabase client not initialized');
 
       const { data: likedOutfits, error: likedError } = await supabase
-        .from('liked-outfits')
+        .from('saved-outfits')
         .select('outfit_id')
-        .eq('user_id', userId);
+        .eq('saved_by', userId);
 
       if (likedError) throw likedError;
       if (!likedOutfits?.length) return [];
 
-      const outfitIds = likedOutfits.map(lo => lo.outfit_id).filter(Boolean);
+      const outfitIds = likedOutfits.map((outfit) => outfit.outfit_id);
       const { data: outfits, error: outfitsError } = await supabase
         .from('created-outfits')
         .select('*')

@@ -3,7 +3,7 @@ import { Bookmark, Heart, MessageCircle, Send, Share, User, X } from 'lucide-rea
 import React, { useState } from 'react';
 import { Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { OutfitData } from './OutfitCard';
+import { OutfitData } from '../OutfitCard';
 
 interface Comment {
   id: number;

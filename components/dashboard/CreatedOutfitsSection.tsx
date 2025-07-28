@@ -1,18 +1,56 @@
-import { useFetchCreatedOutfits } from "@/fetchers/fetchCreatedOutfits";
+import { useFetchCreatedOutfitsByUser } from "@/fetchers/fetchCreatedOutfitsByUser";
+import { useSaveOutfitMutation } from "@/mutations/SaveOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Plus } from "lucide-react-native";
+import { useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { Button } from "../ui/button";
 import { EmptyState } from "./EmptyState";
-import { OutfitCard } from "./OutfitCard";
+import { OutfitCard, OutfitData } from "./OutfitCard";
+import { OutfitCreateModal } from "./modals/OutfitCreateModal";
+import { OutfitDetail } from "./modals/OutfitDetailModal";
 
 interface CreatedOutfitsSectionProps {
     refreshing: boolean;
+    onPress?: (outfit: OutfitData) => void;
 }
 
-export const CreatedOutfitsSection = ({ refreshing }: CreatedOutfitsSectionProps) => {
+export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProps) => {
     const { userId } = useUserContext();
-    const { data: fetchedOutfits = [], isLoading } = useFetchCreatedOutfits(userId || '');
+    const { data: fetchedOutfits = [], isLoading } = useFetchCreatedOutfitsByUser(userId || '');
+    const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
+    const [showOutfitDetail, setShowOutfitDetail] = useState(false);
+    const [showOutfitCreate, setShowOutfitCreate] = useState(false);
+    const { mutate: saveOutfit } = useSaveOutfitMutation();
+
+    const handleCreateOutfit = () => {
+        setShowOutfitCreate(true);
+    };
+
+    const handleCloseOutfitCreate = () => {
+        setShowOutfitCreate(false);
+    };
+
+    const handleOutfitPress = (outfit: OutfitData) => {
+        setSelectedOutfit(outfit);
+        setShowOutfitDetail(true);
+    };
+
+    const handleCloseOutfitDetail = () => {
+        setShowOutfitDetail(false);
+        setSelectedOutfit(null);
+    };
+
+
+    const handleToggleSave = (outfitId: string) => {
+        if (!userId) return;
+
+        saveOutfit({
+            userId,
+            outfitId,
+            savedAt: new Date().toISOString()
+        });
+    };
 
     return (
         <>
@@ -26,7 +64,7 @@ export const CreatedOutfitsSection = ({ refreshing }: CreatedOutfitsSectionProps
                     <View className="flex-row items-center justify-between mb-6">
                         <Text className="text-white text-xl font-semibold">Your Creations</Text>
                         <Button
-                            // onPress={handleCreateOutfit}
+                            onPress={handleCreateOutfit}
                             className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl px-4 py-2"
                         >
                             <View className="flex-row items-center">
@@ -40,6 +78,10 @@ export const CreatedOutfitsSection = ({ refreshing }: CreatedOutfitsSectionProps
                             <OutfitCard
                                 key={outfit.outfit_id}
                                 outfit={outfit}
+                                onToggleSave={() => handleToggleSave(outfit.outfit_id)}
+                                onPress={() => {
+                                    handleOutfitPress(outfit);
+                                }}
                             />
                         ))
                     ) : (
@@ -48,11 +90,25 @@ export const CreatedOutfitsSection = ({ refreshing }: CreatedOutfitsSectionProps
                             title="No outfits created yet"
                             description="Start creating your first outfit!"
                             actionText="Create Outfit"
-                            // onAction={handleCreateOutfit}
                         />
                     )}
                 </View>
             </ScrollView>
+
+            <OutfitCreateModal
+                isVisible={showOutfitCreate}
+                onClose={handleCloseOutfitCreate}
+            />
+
+            {selectedOutfit && (
+                <OutfitDetail
+                    outfit={selectedOutfit}
+                    isVisible={showOutfitDetail}
+                    onClose={handleCloseOutfitDetail}
+                    onToggleLike={() => { }}
+                    onToggleSave={() => { }}
+                />
+            )}
         </>
     );
 };
