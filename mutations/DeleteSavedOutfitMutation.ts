@@ -27,7 +27,7 @@ export const useDeleteSavedOutfitMutation = () => {
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries({
-                queryKey: ['saved-outfits']
+                queryKey: ['saved-outfits', data]
             })
         }
     })

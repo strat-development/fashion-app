@@ -8,7 +8,7 @@ export type OutfitData = Database['public']['Tables']['created-outfits']['Row'] 
   likes: number;
   comments: number;
   isLiked?: boolean;
-  isSaved?: boolean;
+  isSaved?:  boolean;
 };
 
 interface OutfitCardProps {
@@ -19,7 +19,8 @@ interface OutfitCardProps {
   onComment?: (id: string) => void;
   onShare?: (id: string) => void;
   onPress?: (outfit: OutfitData) => void;
-  onDelete?: (outfit: OutfitData) => void;
+  onDelete?: (outfitId: string) => void;
+  onUnsave?: (outfitId: string) => void;
   isDeleteVisible?: boolean;
 }
 
@@ -31,7 +32,8 @@ export const OutfitCard = ({
   onShare,
   onPress,
   onDelete,
-  isDeleteVisible
+  isDeleteVisible,
+  onUnsave
 }: OutfitCardProps) => {
   const { data: userData } = useFetchUser(outfit.created_by || '');
   const imageUrls = Array.isArray(outfit.outfit_elements_data) ? outfit.outfit_elements_data as string[] : [];
@@ -91,7 +93,7 @@ export const OutfitCard = ({
         {isDeleteVisible && (
           <Pressable
             className="absolute top-4 right-4 flex-row items-center justify-center gap-2"
-            onPress={() => onDelete?.(outfit)}
+            onPress={() => onDelete?.(outfit.outfit_id)}
           >
             <Text className="text-gray-300">Delete Outfit</Text>
             <Delete size={18} color="#9CA3AF" />
@@ -124,7 +126,13 @@ export const OutfitCard = ({
 
           <View className="flex-row items-center space-x-3">
             <Pressable
-              onPress={() => onToggleSave?.(outfit.outfit_id)}
+              onPress={() => {
+                if (outfit.isSaved) {
+                  onUnsave?.(outfit.outfit_id);
+                } else {
+                  onToggleSave?.(outfit.outfit_id);
+                }
+              }}
               className="flex-row items-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 px-3 py-1 rounded-full border border-gray-600/30"
             >
               <Bookmark

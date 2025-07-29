@@ -1,4 +1,6 @@
 import { useFetchFeedOutfits } from "@/fetchers/fetchFeedOutfits"
+import { useFetchSavedOutfits } from "@/fetchers/fetchSavedOutfits"
+import { useDeleteSavedOutfitMutation } from "@/mutations/DeleteSavedOutfitMutation"
 import { useSaveOutfitMutation } from "@/mutations/SaveOutfitMutation"
 import { useUserContext } from "@/providers/userContext"
 import { Grid } from "lucide-react-native"
@@ -17,8 +19,31 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
     const { data: fetchedOutfits = [], isLoading } = useFetchFeedOutfits();
     const { userId } = useUserContext();
     const { mutate: saveOutfit } = useSaveOutfitMutation();
+    const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
+    const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
+
+    const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
+
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
+
+    const handleUnsavePress = (outfit: OutfitData) => {
+        unsaveOutfit({ outfitId: outfit.outfit_id || "" });
+    };
+
+
+    const handleToggleSave = (outfitId: string) => {
+        if (!userId) return;
+
+        const isCurrentlySaved = savedOutfitIds.has(outfitId);
+
+        saveOutfit({
+            userId,
+            outfitId,
+            savedAt: new Date().toISOString()
+        });
+    };
+
     const handleOutfitPress = (outfit: OutfitData) => {
         setSelectedOutfit(outfit);
         setShowOutfitDetail(true);
@@ -27,17 +52,6 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
     const handleCloseOutfitDetail = () => {
         setShowOutfitDetail(false);
         setSelectedOutfit(null);
-    };
-
-
-    const handleToggleSave = (outfitId: string) => {
-        if (!userId) return;
-
-        saveOutfit({
-            userId,
-            outfitId,
-            savedAt: new Date().toISOString()
-        });
     };
 
     return (
@@ -52,11 +66,16 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                     {fetchedOutfits?.length > 0 ? (
                         fetchedOutfits.map(outfit => (
                             <OutfitCard
-                                outfit={outfit}
+                                outfit={{
+                                    ...outfit,
+                                    isSaved: savedOutfitIds.has(outfit.outfit_id)
+                                }}
                                 onToggleSave={() => handleToggleSave(outfit.outfit_id)}
                                 onPress={() => {
                                     handleOutfitPress(outfit);
                                 }}
+                                onUnsave={() => handleUnsavePress(outfit)}
+                                key={outfit.outfit_id}
                             />
                         ))
                     ) : (
@@ -72,11 +91,12 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
 
             {selectedOutfit && (
                 <OutfitDetail
-                    outfit={selectedOutfit}
+                    outfit={{
+                        ...selectedOutfit,
+                        isSaved: savedOutfitIds.has(selectedOutfit.outfit_id)
+                    }}
                     isVisible={showOutfitDetail}
                     onClose={handleCloseOutfitDetail}
-                    onToggleLike={() => { }}
-                    onToggleSave={() => handleToggleSave(selectedOutfit.outfit_id)}
                 />
             )}
         </>

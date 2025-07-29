@@ -6,7 +6,6 @@ import { Bookmark } from "lucide-react-native"
 import { useState } from "react"
 import { RefreshControl, ScrollView, View } from "react-native"
 import { EmptyState } from "./EmptyState"
-import { DeleteSavedModalOutfit } from "./modals/DeleteSavedOutfitModal"
 import { OutfitDetail } from "./modals/OutfitDetailModal"
 import { OutfitCard, OutfitData } from "./OutfitCard"
 
@@ -18,23 +17,15 @@ interface SavedOutfitsSectionProps {
 export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) => {
     const { userId } = useUserContext();
     const { data: savedOutfits = [], isLoading } = useFetchSavedOutfits(userId || '');
+    const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
+    
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
-    const [outfitToDelete, setOutfitToDelete] = useState<OutfitData | null>(null);
-    const [showDeleteOutfit, setShowDeleteOutfit] = useState(false);
-    const { mutate: deleteOutfit } = useDeleteSavedOutfitMutation();
+    
+    const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
 
-    const handleDeletePress = (outfit: OutfitData) => {
-        setOutfitToDelete(outfit);
-        setShowDeleteOutfit(true);
-    };
-
-    const handleConfirmDelete = () => {
-        if (outfitToDelete) {
-            deleteOutfit({ outfitId: outfitToDelete.outfit_id || "" });
-            setShowDeleteOutfit(false);
-            setOutfitToDelete(null);
-        }
+    const handleUnsavePress = (outfit: OutfitData) => {
+        unsaveOutfit({ outfitId: outfit.outfit_id || "" });
     };
 
     const handleOutfitPress = (outfit: OutfitData) => {
@@ -60,12 +51,16 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
                         savedOutfits.map(outfit => (
                             <OutfitCard
                                 key={outfit}
-                                outfit={outfit}
+                                outfit={{
+                                    ...outfit,
+                                    isSaved: savedOutfitIds.has(outfit.outfit_id)
+                                }}
                                 onPress={() =>
                                     handleOutfitPress(outfit)
                                 }
-                                isDeleteVisible={true}
-                                onDelete={() => handleDeletePress(outfit)}
+                                onUnsave={() =>
+                                    handleUnsavePress(outfit)
+                                }
                             />
                         ))
                     ) : (
@@ -78,20 +73,14 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
                 </View>
             </ScrollView>
 
-            <DeleteSavedModalOutfit
-                isVisible={showDeleteOutfit}
-                onClose={() => setShowDeleteOutfit(false)}
-                onDelete={handleConfirmDelete}
-                isAnimated={true}
-            />
-
             {selectedOutfit && (
                 <OutfitDetail
-                    outfit={selectedOutfit}
+                    outfit={{
+                        ...selectedOutfit,
+                        isSaved: savedOutfitIds.has(selectedOutfit.outfit_id)
+                    }}
                     isVisible={showOutfitDetail}
                     onClose={handleCloseOutfitDetail}
-                    onToggleLike={() => { }}
-                    onToggleSave={() => { }}
                 />
             )}
         </>

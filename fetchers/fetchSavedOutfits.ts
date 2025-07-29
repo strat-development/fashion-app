@@ -24,6 +24,7 @@ export const useFetchSavedOutfits = (userId: string) => {
 
       if (outfitsError) throw outfitsError;
       return outfits;
-    }
+    },
+    enabled: !!userId
   });
 };

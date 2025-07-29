@@ -20,6 +20,7 @@ export const useFetchCreatedOutfitsByUser = (userId: string) => {
             }
 
             return data;
-        }
+        },
+        enabled: !!userId 
     });
 };

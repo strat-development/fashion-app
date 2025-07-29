@@ -20,6 +20,7 @@ export const useFetchUser = (userId: string) => {
             }
 
             return data;
-        }
+        },
+        enabled: !!userId 
     });
 };

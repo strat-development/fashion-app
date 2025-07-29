@@ -31,7 +31,7 @@ export const useCreateOutfitMutation = (
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ['created-outfits']
+        queryKey: ['created-outfits', data]
       });
     },
     onError: (error: Error) => {

@@ -1,5 +1,6 @@
 import { useFetchCreatedOutfitsByUser } from "@/fetchers/fetchCreatedOutfitsByUser";
-import { useDeleteOutfitMutation } from "@/mutations/DeleteOutfitMutation";
+import { useFetchSavedOutfits } from "@/fetchers/fetchSavedOutfits";
+import { useDeleteSavedOutfitMutation } from "@/mutations/DeleteSavedOutfitMutation";
 import { useSaveOutfitMutation } from "@/mutations/SaveOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Plus } from "lucide-react-native";
@@ -20,13 +21,22 @@ interface CreatedOutfitsSectionProps {
 export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProps) => {
     const { userId } = useUserContext();
     const { data: fetchedOutfits = [], isLoading } = useFetchCreatedOutfitsByUser(userId || '');
+    const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
+    const { mutate: saveOutfit } = useSaveOutfitMutation();
+    const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
+
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
+    const [outfitToDelete, setOutfitToDelete] = useState<OutfitData | null>(null);
+
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
     const [showOutfitCreate, setShowOutfitCreate] = useState(false);
-    const [outfitToDelete, setOutfitToDelete] = useState<OutfitData | null>(null);
     const [showDeleteOutfit, setShowDeleteOutfit] = useState(false);
-    const { mutate: saveOutfit } = useSaveOutfitMutation();
-    const { mutate: deleteOutfit } = useDeleteOutfitMutation();
+
+    const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
+
+    const handleUnsavePress = (outfit: OutfitData) => {
+        unsaveOutfit({ outfitId: outfit.outfit_id || "" });
+    };
 
     const handleCreateOutfit = () => {
         setShowOutfitCreate(true);
@@ -37,12 +47,8 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
         setShowDeleteOutfit(true);
     };
 
-    const handleConfirmDelete = () => {
-        if (outfitToDelete) {
-            deleteOutfit({ outfitId: outfitToDelete.outfit_id || "" });
-            setShowDeleteOutfit(false);
-            setOutfitToDelete(null);
-        }
+    const handleDeleteSuccess = () => {
+        setOutfitToDelete(null);
     };
 
     const handleCloseOutfitCreate = () => {
@@ -59,9 +65,10 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
         setSelectedOutfit(null);
     };
 
-
     const handleToggleSave = (outfitId: string) => {
         if (!userId) return;
+
+        const isCurrentlySaved = savedOutfitIds.has(outfitId);
 
         saveOutfit({
             userId,
@@ -95,10 +102,14 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
                         fetchedOutfits.map(outfit => (
                             <OutfitCard
                                 key={outfit.outfit_id}
-                                outfit={outfit}
+                                outfit={{
+                                    ...outfit,
+                                    isSaved: savedOutfitIds.has(outfit.outfit_id)
+                                }}
                                 onToggleSave={() => handleToggleSave(outfit.outfit_id)}
                                 onPress={() => handleOutfitPress(outfit)}
-                                onDelete={handleDeletePress}
+                                onDelete={() => handleDeletePress(outfit)}
+                                onUnsave={() => handleUnsavePress(outfit)}
                                 isDeleteVisible={true}
                             />
                         ))
@@ -118,20 +129,24 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
                 onClose={handleCloseOutfitCreate}
             />
 
-            <DeleteModalOutfit
-                isVisible={showDeleteOutfit}
-                onClose={() => setShowDeleteOutfit(false)}
-                onDelete={handleConfirmDelete}
-                isAnimated={true}
-            />
+            {outfitToDelete && (
+                <DeleteModalOutfit
+                    isVisible={showDeleteOutfit}
+                    onClose={() => setShowDeleteOutfit(false)}
+                    isAnimated={true}
+                    outfitId={outfitToDelete.outfit_id}
+                    onSuccess={handleDeleteSuccess}
+                />
+            )}
 
             {selectedOutfit && (
                 <OutfitDetail
-                    outfit={selectedOutfit}
+                    outfit={{
+                        ...selectedOutfit,
+                        isSaved: savedOutfitIds.has(selectedOutfit.outfit_id)
+                    }}
                     isVisible={showOutfitDetail}
                     onClose={handleCloseOutfitDetail}
-                    onToggleLike={() => { }}
-                    onToggleSave={() => handleToggleSave(selectedOutfit.outfit_id)}
                 />
             )}
         </>

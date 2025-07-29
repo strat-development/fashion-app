@@ -1,5 +1,9 @@
+import { useFetchSavedOutfits } from '@/fetchers/fetchSavedOutfits';
 import { useFetchUser } from '@/fetchers/fetchUser';
 import { formatDate } from '@/helpers/helpers';
+import { useDeleteSavedOutfitMutation } from '@/mutations/DeleteSavedOutfitMutation';
+import { useSaveOutfitMutation } from '@/mutations/SaveOutfitMutation';
+import { useUserContext } from '@/providers/userContext';
 import { Bookmark, Heart, MessageCircle, Send, Share, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
@@ -19,8 +23,7 @@ interface OutfitDetailProps {
   outfit: OutfitData;
   isVisible: boolean;
   onClose: () => void;
-  onToggleLike: (id: number) => void;
-  onToggleSave: (id: number) => void;
+  isSaved?: boolean;
 }
 
 const mockComments: Comment[] = [
@@ -50,16 +53,21 @@ const mockComments: Comment[] = [
   }
 ];
 
-export const OutfitDetail: React.FC<OutfitDetailProps> = ({
+export const OutfitDetail = ({
   outfit,
   isVisible,
-  onClose,
-  onToggleLike,
-  onToggleSave
-}) => {
+  onClose
+}: OutfitDetailProps) => {
+  const { userId } = useUserContext();
   const { data: userData } = useFetchUser(outfit.created_by || '');
+  const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
+  const { mutate: saveOutfit } = useSaveOutfitMutation();
+  const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
+
   const [comments, setComments] = useState<Comment[]>(mockComments);
   const [newComment, setNewComment] = useState('');
+
+  const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
 
   const handleAddComment = () => {
     if (newComment.trim()) {
@@ -120,11 +128,24 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
               resizeMode="cover"
             />
             <View className="absolute top-3 right-3 bg-black/50 backdrop-blur-md rounded-full p-2">
-              <Pressable onPress={() => onToggleSave(outfit.comments)}>
+              <Pressable
+                onPress={() => {
+                  if (outfit.isSaved) {
+                    unsaveOutfit({ outfitId: outfit.outfit_id || "" });
+                  } else {
+                    saveOutfit({
+                      savedAt: new Date().toISOString(),
+                      outfitId: outfit.outfit_id || "",
+                      userId: userId || ""
+                    });
+                  }
+                }}
+                className="flex-row items-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 px-3 py-1 rounded-full border border-gray-600/30"
+              >
                 <Bookmark
-                  size={20}
-                  color={outfit.isSaved ? "#FFD700" : "white"}
-                  fill={outfit.isSaved ? "#FFD700" : "transparent"}
+                  size={14}
+                  color={outfit.isSaved ? "#EC4899" : "#9CA3AF"}
+                  fill={outfit.isSaved ? "#EC4899" : "transparent"}
                 />
               </Pressable>
             </View>
@@ -149,7 +170,7 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
             <View className="flex-row items-center justify-between mb-6 pb-4 border-b border-white/10">
               <View className="flex-row items-center space-x-6">
                 <Pressable
-                  onPress={() => onToggleLike(outfit.likes)}
+                  onPress={() => { }}
                   className="flex-row items-center"
                 >
                   <Heart
@@ -223,6 +244,6 @@ export const OutfitDetail: React.FC<OutfitDetailProps> = ({
           </View>
         </ScrollView>
       </SafeAreaView>
-    </Modal>
+    </Modal >
   );
 };
