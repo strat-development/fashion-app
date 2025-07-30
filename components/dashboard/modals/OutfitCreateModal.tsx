@@ -1,4 +1,3 @@
-import { Button, ButtonText } from '@/components/ui/button';
 import {
   Select,
   SelectBackdrop,
@@ -9,14 +8,15 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
-import { supabase } from '@/lib/supabase';
 import { useCreateOutfitMutation } from '@/mutations/CreateOutfitMutation';
 import { useUserContext } from '@/providers/userContext';
 import { ModalProps, OutfitElementData } from '@/types/createOutfitTypes';
 
+import { DevTool } from '@hookform/devtools';
 import { Plus, Trash2, X } from 'lucide-react-native';
-import React, { useState } from 'react';
-import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Alert, Image, Modal, PermissionsAndroid, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -30,44 +30,69 @@ export interface OutfitState {
   outfit_id: string;
 }
 
+interface PendingImage {
+  uri: string;
+  type?: string;
+  fileName?: string;
+}
+
 export const OutfitCreateModal = ({
   isVisible,
   onClose,
   isAnimated
 }: ModalProps) => {
-  const { userId } = useUserContext();
-  const [elementData, setElementData] = useState<OutfitElementData>({
-    type: '',
-    price: null,
-    imageUrl: '',
-    siteUrl: ''
-  });
-
-  const [outfitData, setOutfitData] = useState<OutfitState>({
-    outfit_name: '',
-    description: null,
-    outfit_tags: [],
-    outfit_elements_data: [],
-    created_at: new Date().toISOString(),
-    created_by: userId || null,
-    outfit_id: ""
-  });
-
   const [elementModalVisible, setElementModalVisible] = useState(false);
+  const [selectedImageName, setSelectedImageName] = useState<string | null>(null);
 
+  const pendingImagesRef = useRef<Record<string, PendingImage>>({});
+  const { userId } = useUserContext();
+  const URL_PATTERN = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?(\?[^\s]*)?$/;
 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+    watch,
+    setValue,
+    getValues
+  } = useForm<OutfitState>({
+    defaultValues: {
+      outfit_name: '',
+      description: '',
+      outfit_tags: [],
+      outfit_elements_data: [],
+      created_at: new Date().toISOString(),
+      created_by: userId || null,
+      outfit_id: ""
+    },
+    mode: 'onChange'
+  });
+
+  const {
+    control: elementControl,
+    handleSubmit: handleElementSubmit,
+    formState: { errors: elementErrors, isValid: isElementValid },
+    reset: resetElementForm,
+    watch: watchElement,
+    trigger,
+    setValue: setElementValue
+  } = useForm<OutfitElementData>({
+    defaultValues: {
+      type: '',
+      price: null,
+      imageUrl: '',
+      siteUrl: ''
+    },
+    mode: 'onChange'
+  });
 
   const { mutate: createOutfit } = useCreateOutfitMutation(
     () => {
-      setOutfitData({
-        outfit_name: '',
-        description: '',
-        outfit_tags: [],
-        outfit_elements_data: [],
-        created_at: new Date().toISOString(),
-        created_by: userId || null,
-        outfit_id: ""
-      });
+      reset();
+      resetElementForm();
+      setSelectedImageName(null);
+      pendingImagesRef.current = {};
       onClose?.();
       Alert.alert('Success', 'Outfit saved successfully!');
     },
@@ -76,140 +101,144 @@ export const OutfitCreateModal = ({
     }
   );
 
-  const handleSave = () => {
-    if (!outfitData.outfit_name?.trim()) {
-      Alert.alert('Error', 'Outfit name is required');
-      return;
-    }
-    if (!outfitData.outfit_elements_data || outfitData.outfit_elements_data.length === 0) {
+  const onSubmit = async (data: OutfitState) => {
+    if (data.outfit_elements_data.length === 0) {
       Alert.alert('Error', 'At least one outfit element is required');
       return;
     }
 
-    createOutfit({
-      ...outfitData,
-      created_by: userId || null
-    });
+    try {
+      createOutfit({
+        ...data,
+        created_by: userId || null
+      });
+    } catch (error) {
+      Alert.alert('Error', error.message || 'Failed to create outfit');
+    }
   };
 
-  const handleImagePicker = () => {
-    setElementModalVisible(true);
-  };
-
-  const handleElementSave = () => {
-    if (!elementData.type) {
-      Alert.alert('Error', 'Element type is required');
-      return;
-    }
-    if (!elementData.imageUrl) {
-      Alert.alert('Error', 'Image is required');
-      return;
-    }
-    if (elementData.price !== null && (isNaN(elementData.price) || elementData.price < 0)) {
-      Alert.alert('Error', 'Price must be a valid number');
-      return;
-    }
-    if (!elementData.siteUrl.trim()) {
-      Alert.alert('Error', 'Site URL is required');
-      return;
-    }
-
-    setOutfitData((prev) => ({
-      ...prev,
-      outfit_elements_data: [
-        ...(Array.isArray(prev.outfit_elements_data) ? prev.outfit_elements_data : []),
-        elementData
-      ],
-    }));
-
-    setElementData({
-      type: '',
-      price: null,
-      imageUrl: '',
-      siteUrl: '',
+  const onElementSubmit = (data: OutfitElementData) => {
+    const currentElements = getValues('outfit_elements_data') || [];
+    setValue('outfit_elements_data', [...currentElements, data], {
+      shouldValidate: true
     });
-
+    resetElementForm();
+    setSelectedImageName(null);
     setElementModalVisible(false);
   };
 
-  const handleSelectImage = async () => {
-    launchImageLibrary({ mediaType: 'photo', quality: 1 }, async (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorCode) {
-        Alert.alert('Error', `Failed to pick image: ${response.errorMessage}`);
-      } else if (response.assets && response.assets[0].uri) {
-        const uri = response.assets[0].uri;
-        const fileName = `outfit-element-${Date.now()}.jpg`;
-
-        try {
-          const response = await fetch(uri);
-          const blob = await response.blob();
-
-          if (!supabase) {
-            Alert.alert('Supabase client is not initialized.');
-            return;
-          }
-          const { data, error } = await supabase.storage
-            .from('outfit-images')
-            .upload(fileName, blob, {
-              contentType: 'image/jpeg',
-            });
-
-          if (error) {
-            Alert.alert('Error', `Failed to upload image: ${error.message}`);
-            return;
-          }
-
-          const { data: publicUrlData } = supabase.storage
-            .from('outfit-images')
-            .getPublicUrl(fileName);
-
-          setElementData((prev) => ({
-            ...prev,
-            imageUrl: publicUrlData.publicUrl,
-          }));
-        } catch (error) {
-          Alert.alert('Error', `Failed to upload image:` + (error instanceof Error ? `: ${error.message}` : ''));
-        }
-      }
-    });
-  };
-
   const removeImage = (index: number) => {
-    setOutfitData((prev) => {
-      const elementsData = Array.isArray(prev.outfit_elements_data)
-        ? prev.outfit_elements_data
-        : [];
+    const currentElements = getValues('outfit_elements_data') || [];
+    const elementToRemove = currentElements[index];
 
-      return {
-        ...prev,
-        outfit_elements_data: elementsData.filter((_, i) => i !== index),
-      };
+    if (elementToRemove.imageUrl.startsWith('temp://')) {
+      delete pendingImagesRef.current[elementToRemove.imageUrl];
+    }
+
+    setValue('outfit_elements_data', currentElements.filter((_, i) => i !== index), {
+      shouldValidate: true
     });
   };
 
   const toggleTag = (tag: string) => {
-    setOutfitData((prev) => {
-      const currentTags = Array.isArray(prev.outfit_tags) ? prev.outfit_tags : [];
-      return {
-        ...prev,
-        outfit_tags: currentTags.includes(tag)
-          ? currentTags.filter((t) => t !== tag)
-          : [...currentTags, tag],
-      };
+    const currentTags = getValues('outfit_tags') || [];
+    const newTags = currentTags.includes(tag)
+      ? currentTags.filter((t) => t !== tag)
+      : [...currentTags, tag];
+    setValue('outfit_tags', newTags, {
+      shouldValidate: true
     });
   };
 
-  const calculateTotalPrice = (elements: JSON | null): number => {
+  const calculateTotalPrice = (elements: OutfitElementData[]): number => {
     if (!Array.isArray(elements)) return 0;
     return elements.reduce((total, element) => {
-      if (typeof element === 'object' && element !== null && 'price' in element) {
-        return total + (element.price || 0);
-      }
-      return total;
+      return total + (element.price || 0);
     }, 0);
-  }
+  };
+
+  const requestPermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+          {
+            title: 'Storage Permission',
+            message: 'This app needs access to your storage to select images.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.warn('Permission error:', err);
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleImageSelect = async () => {
+    const hasPermission = await requestPermission();
+    if (!hasPermission) {
+      Alert.alert('Permission Denied', 'Storage permission is required to select images.');
+      return;
+    }
+
+    try {
+      launchImageLibrary(
+        {
+          mediaType: 'photo',
+          maxWidth: 1024,
+          maxHeight: 1024,
+          quality: 1,
+          includeBase64: false,
+        },
+        (response) => {
+          console.log('Image picker response:', response);
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.errorCode) {
+            console.error('Image picker error:', response.errorMessage);
+            Alert.alert('Error', `Image picker error: ${response.errorMessage}`);
+          } else if (response.assets && response.assets[0]) {
+            const { uri, fileName, type } = response.assets[0];
+            console.log('Selected image:', { uri, fileName, type });
+            if (uri) {
+              const tempUrl = `temp://${Date.now()}`;
+              pendingImagesRef.current[tempUrl] = { uri, fileName: fileName || 'image.jpg', type };
+              setElementValue('imageUrl', tempUrl, { shouldValidate: true });
+              setSelectedImageName(fileName || 'image.jpg');
+              trigger('imageUrl');
+              console.log('Image set in form state:', tempUrl);
+            } else {
+              console.error('No URI in image picker response');
+              Alert.alert('Error', 'Failed to select image');
+            }
+          } else {
+            console.error('No assets in image picker response');
+            Alert.alert('Error', 'No image selected');
+          }
+        }
+      );
+    } catch (error) {
+      console.error('Image picker error:', error);
+      Alert.alert('Error', 'Failed to open image picker');
+    }
+  };
+
+  const outfitElements = watch('outfit_elements_data') || [];
+  const outfitName = watch('outfit_name');
+  const description = watch('description');
+  const outfitTags = watch('outfit_tags') || [];
+  const elementImageUrl = watchElement('imageUrl');
+
+  console.log('Element form state:', {
+    imageUrl: elementImageUrl,
+    isElementValid,
+    elementErrors,
+  });
 
   return (
     <>
@@ -225,8 +254,9 @@ export const OutfitCreateModal = ({
             </Pressable>
             <Text className="text-white font-semibold text-lg">Create Outfit</Text>
             <Pressable
-              onPress={handleSave}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
+              onPress={handleSubmit(onSubmit)}
+              disabled={!isValid || outfitElements.length === 0}
+              className={`px-4 py-2 rounded-full ${isValid && outfitElements.length > 0 ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-gray-600'}`}
             >
               <Text className="text-white font-medium text-sm">Save</Text>
             </Pressable>
@@ -241,39 +271,41 @@ export const OutfitCreateModal = ({
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     <View className="flex-row gap-4">
                       <Pressable
-                        onPress={handleImagePicker}
+                        onPress={() => setElementModalVisible(true)}
                         className="w-24 h-32 bg-gray-800/50 border-2 border-dashed border-gray-700/50 rounded-xl items-center justify-center"
                       >
                         <Plus size={24} color="#9CA3AF" />
                         <Text className="text-gray-400 text-xs mt-1">Add Element</Text>
                       </Pressable>
-                      {Array.isArray(outfitData.outfit_elements_data) &&
-                        outfitData.outfit_elements_data.map((element, index) => (
-                          <View key={index} className="relative border-2 border-gray-700/50 rounded-xl overflow-hidden">
-                            <Image
-                              source={{ uri: element?.imageUrl }}
-                              className="w-24 h-32 rounded-xl"
-                              resizeMode="cover"
-                            />
-                            <Pressable
-                              onPress={() => removeImage(index)}
-                              className="absolute top-2 right-2 bg-gradient-to-r from-purple-600 to-pink-600 p-1 rounded-full border-2 border-black"
-                            >
-                              <Trash2 size={12} color="white" />
-                            </Pressable>
-                            <View className="absolute bottom-0 left-0 right-0 bg-black/50 px-2 py-1">
-                              <Text className="text-white text-xs">{element?.type}</Text>
-                              <Text className="text-gray-400 text-xs">
-                                {element?.price !== null ? `$${element?.price.toFixed(2)}` : 'Free'}
-                              </Text>
-                            </View>
+                      {outfitElements.map((element, index) => (
+                        <View key={index} className="relative border-2 border-gray-700/50 rounded-xl overflow-hidden">
+                          <Image
+                            source={{ uri: element?.imageUrl.startsWith('temp://') ? pendingImagesRef.current[element.imageUrl]?.uri : element.imageUrl }}
+                            className="w-24 h-32 rounded-xl"
+                            resizeMode="cover"
+                          />
+                          <Pressable
+                            onPress={() => removeImage(index)}
+                            className="absolute top-2 right-2 bg-gradient-to-r from-purple-600 to-pink-600 p-1 rounded-full border-2 border-black"
+                          >
+                            <Trash2 size={12} color="white" />
+                          </Pressable>
+                          <View className="absolute bottom-0 left-0 right-0 bg-black/50 px-2 py-1">
+                            <Text className="text-white text-xs">{element?.type}</Text>
+                            <Text className="text-gray-400 text-xs">
+                              {element?.price !== null ? `$${element?.price.toFixed(2)}` : 'Free'}
+                            </Text>
                           </View>
-                        ))}
+                        </View>
+                      ))}
                     </View>
                   </ScrollView>
-                  <View className="flex-row items-center justify-between self-end">
-                    <Text className='text-gray-400'>
-                      Total price: ${calculateTotalPrice(outfitData.outfit_elements_data as any ?? []).toFixed(2)}
+                  <View className="flex-row items-center justify-between self-end w-full">
+                    <Text className={`text-sm ${outfitElements.length === 0 ? 'text-pink-600' : 'text-gray-400'}`}>
+                      {outfitElements.length === 0 ? 'Add at least 1 element' : `${outfitElements.length} elements added`}
+                    </Text>
+                    <Text className={`text-gray-400 text-sm ${outfitElements.length === 0 ? 'hidden' : ''}`}>
+                      Total price: ${calculateTotalPrice(outfitElements).toFixed(2)}
                     </Text>
                   </View>
                 </View>
@@ -282,30 +314,64 @@ export const OutfitCreateModal = ({
               {/* Title Field */}
               <View className="mb-6">
                 <Text className="text-gray-300 font-medium text-base mb-3">Name</Text>
-                <TextInput
-                  value={outfitData.outfit_name ?? ''}
-                  onChangeText={(text) => setOutfitData((prev) => ({ ...prev, outfit_name: text }))}
-                  placeholder="Enter outfit name"
-                  placeholderTextColor="#6B7280"
-                  className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
-                  maxLength={50}
+                <Controller
+                  control={control}
+                  name="outfit_name"
+                  rules={{ required: 'Outfit name is required' }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      value={value}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      placeholder="Enter outfit name"
+                      placeholderTextColor="#6B7280"
+                      className={`bg-gray-800/50 border ${errors.outfit_name ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
+                      maxLength={50}
+                    />
+                  )}
                 />
+                <View className="flex-row items-center justify-between mt-1">
+                  {errors.outfit_name ? (
+                    <Text className="text-pink-600 text-xs">{errors.outfit_name.message}</Text>
+                  ) : (
+                    <Text className="text-gray-400 text-xs">
+                      {outfitName?.length || 0} / 50
+                    </Text>
+                  )}
+                </View>
               </View>
 
               {/* Description Field */}
               <View className="mb-6">
                 <Text className="text-gray-300 font-medium text-base mb-3">Description</Text>
-                <TextInput
-                  value={outfitData.description ?? ''}
-                  onChangeText={(text) => setOutfitData((prev) => ({ ...prev, description: text }))}
-                  placeholder="Describe your outfit..."
-                  placeholderTextColor="#6B7280"
-                  className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
-                  multiline
-                  numberOfLines={3}
-                  textAlignVertical="top"
-                  maxLength={200}
+                <Controller
+                  control={control}
+                  name="description"
+                  rules={{ required: 'Description is required' }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      value={value || ''}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      placeholder="Describe your outfit..."
+                      placeholderTextColor="#6B7280"
+                      className={`bg-gray-800/50 border ${errors.description ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
+                      multiline
+                      numberOfLines={3}
+                      textAlignVertical="top"
+                      maxLength={200}
+                    />
+                  )}
                 />
+                <View className="flex-row items-center justify-between mt-1">
+                  {errors.description ? (
+                    <Text className="text-pink-600 text-xs">{errors.description.message}</Text>
+                  ) : (
+                    <Text className="text-gray-400 text-xs">
+                      {description?.length || 0} / 200
+                    </Text>
+                  )}
+                </View>
               </View>
 
               {/* Style Tags */}
@@ -316,8 +382,7 @@ export const OutfitCreateModal = ({
                     <Pressable
                       key={style.name}
                       onPress={() => toggleTag(style.name)}
-                      className={`px-3 py-2 rounded-full mr-2 mb-2 border ${Array.isArray(outfitData.outfit_tags) &&
-                        outfitData.outfit_tags.includes(style.name)
+                      className={`px-3 py-2 rounded-full mr-2 mb-2 border ${outfitTags.includes(style.name)
                         ? 'bg-gradient-to-r from-purple-600 to-pink-600 border-purple-500/50'
                         : 'bg-gray-800/30 border-gray-700/30'
                         }`}
@@ -325,13 +390,20 @@ export const OutfitCreateModal = ({
                       <Text className="text-gray-200 text-sm">{style.name}</Text>
                     </Pressable>
                   ))}
+                  {errors.outfit_tags && (
+                    <Text className="text-pink-600 text-xs w-full">
+                      Please select at least one style tag
+                    </Text>
+                  )}
                 </View>
               </View>
             </View>
           </ScrollView>
         </SafeAreaView>
+        <DevTool control={control} />
       </Modal>
 
+      {/* Element Modal */}
       <Modal
         visible={elementModalVisible}
         animationType="fade"
@@ -340,13 +412,19 @@ export const OutfitCreateModal = ({
         <View className="flex-1 bg-black/50 backdrop-blur-sm justify-center items-center px-4">
           <View className="bg-gradient-to-b from-black to-gray-900 rounded-2xl p-4 w-full border border-gray-800/50">
             <View className="flex-row items-center justify-between mb-4">
-              <Pressable onPress={() => setElementModalVisible(false)} className="p-2">
+              <Pressable onPress={() => {
+                setElementModalVisible(false);
+                setSelectedImageName(null);
+                setElementValue('imageUrl', '');
+                trigger('imageUrl');
+              }} className="p-2">
                 <X size={24} color="#9CA3AF" />
               </Pressable>
               <Text className="text-white font-semibold text-lg">Add Outfit Element</Text>
               <Pressable
-                onPress={handleElementSave}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
+                onPress={handleElementSubmit(onElementSubmit)}
+                disabled={!isElementValid}
+                className={`px-4 py-2 rounded-full ${isElementValid ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-gray-600'}`}
               >
                 <Text className="text-white font-medium text-sm">Save</Text>
               </Pressable>
@@ -355,83 +433,176 @@ export const OutfitCreateModal = ({
             <ScrollView>
               <View className="mb-6">
                 <Text className="text-gray-300 font-medium text-base mb-3">Element Type</Text>
-                <Select
-                  onValueChange={(value) => setElementData(prev => ({ ...prev, type: value }))}
-                >
-                  <SelectTrigger className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg">
-                    <SelectInput
-                      placeholder="Select element type"
-                      placeholderTextColor="#6B7280"
-                    />
-                  </SelectTrigger>
-                  <SelectPortal>
-                    <SelectBackdrop className="bg-black/50 backdrop-blur-sm" />
-                    <SelectContent className="bg-gray-800/50 border border-gray-700/50 rounded-lg">
-                      {OutfitElements.map((element, index) => (
-                        <SelectItem
-                          key={index}
-                          label={element.name}
-                          value={element.name}
-                          className="px-4 py-3 text-white hover:bg-gradient-to-r hover:from-purple-600/50 hover:to-pink-600/50 active:bg-gradient-to-r active:from-purple-600 active:to-pink-600 border-b border-gray-700/30 last:border-b-0"
+                <Controller
+                  control={elementControl}
+                  name="type"
+                  rules={{ required: 'Element type is required' }}
+                  render={({ field: { onChange, value } }) => (
+                    <Select
+                      selectedValue={value}
+                      onValueChange={(val) => {
+                        onChange(val);
+                        trigger('type');
+                      }}
+                    >
+                      <SelectTrigger className={`bg-gray-800/50 border ${elementErrors.type ? 'border-pink-600' : 'border-gray-700/50'} rounded-lg`}>
+                        <SelectInput
+                          placeholder="Select element type"
+                          placeholderTextColor="#6B7280"
+                          value={value}
                         />
-                      ))}
-                    </SelectContent>
-                  </SelectPortal>
-                </Select>
+                      </SelectTrigger>
+                      <SelectPortal>
+                        <SelectBackdrop className="bg-black/50 backdrop-blur-sm" />
+                        <SelectContent className="bg-gray-800/50 border border-gray-700/50 rounded-lg">
+                          {OutfitElements.map((element, index) => (
+                            <SelectItem
+                              key={index}
+                              label={element.name}
+                              value={element.name}
+                              className="px-4 py-3 text-white hover:bg-gradient-to-r hover:from-purple-600/50 hover:to-pink-600/50 active:bg-gradient-to-r active:from-purple-600 active:to-pink-600 border-b border-gray-700/30 last:border-b-0"
+                            />
+                          ))}
+                        </SelectContent>
+                      </SelectPortal>
+                    </Select>
+                  )}
+                />
+                {elementErrors.type && (
+                  <Text className="text-pink-600 text-xs mt-1">
+                    {elementErrors.type.message}
+                  </Text>
+                )}
               </View>
 
               <View className="mb-6">
                 <Text className="text-gray-300 font-medium text-base mb-3">Price</Text>
-                <TextInput
-                  placeholder="Enter price"
-                  placeholderTextColor="#6B7280"
-                  value={elementData.price !== null ? elementData.price.toString() : ''}
-                  onChangeText={(text) => {
-                    const value = text ? parseFloat(text) : null;
-                    setElementData(prev => ({ ...prev, price: value }));
+                <Controller
+                  control={elementControl}
+                  name="price"
+                  rules={{
+                    validate: (value) => {
+                      if (value === null) return true;
+                      if (isNaN(value)) return 'Price must be a number';
+                      if (value < 0) return 'Price cannot be negative';
+                      return true;
+                    }
                   }}
-                  keyboardType="numeric"
-                  className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      placeholder="Enter price (optional)"
+                      placeholderTextColor="#6B7280"
+                      value={value !== null ? value.toString() : ''}
+                      onChangeText={(text) => {
+                        const num = text ? parseFloat(text) : null;
+                        onChange(num);
+                        trigger('price');
+                      }}
+                      keyboardType="numeric"
+                      className={`bg-gray-800/50 border ${elementErrors.price ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
+                    />
+                  )}
                 />
-              </View>
-
-              <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">Image</Text>
-                <View className="flex-row items-center space-x-2">
-                  <TextInput
-                    value={elementData.imageUrl}
-                    onChangeText={(text) => setElementData(prev => ({ ...prev, imageUrl: text }))}
-                    placeholder="Enter image URL"
-                    placeholderTextColor="#6B7280"
-                    className="flex-1 bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
-                  />
-                  <Text className="text-gray-300 font-medium text-base">OR</Text>
-                  <Button
-                    onPress={handleSelectImage}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
-                  >
-                    <ButtonText className="text-white font-medium text-sm">Pick Image</ButtonText>
-                  </Button>
-                </View>
+                {elementErrors.price && (
+                  <Text className="text-pink-600 text-xs mt-1">
+                    {elementErrors.price.message}
+                  </Text>
+                )}
               </View>
 
               <View className="mb-6">
                 <Text className="text-gray-300 font-medium text-base mb-3">Site URL</Text>
-                <TextInput
-                  value={elementData.siteUrl}
-                  onChangeText={(text) => setElementData(prev => ({ ...prev, siteUrl: text }))}
-                  placeholder="Enter site URL"
-                  placeholderTextColor="#6B7280"
-                  className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
+                <Controller
+                  control={elementControl}
+                  name="siteUrl"
+                  rules={{
+                    required: 'Site URL is required',
+                    pattern: {
+                      value: URL_PATTERN,
+                      message: 'Please enter a valid URL'
+                    }
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      value={value}
+                      onChangeText={(text) => {
+                        onChange(text);
+                        trigger('siteUrl');
+                      }}
+                      onBlur={onBlur}
+                      placeholder="Enter site URL"
+                      placeholderTextColor="#6B7280"
+                      className={`bg-gray-800/50 border ${elementErrors.siteUrl ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
+                    />
+                  )}
                 />
+                {elementErrors.siteUrl && (
+                  <Text className="text-pink-600 text-xs mt-1">
+                    {elementErrors.siteUrl.message}
+                  </Text>
+                )}
               </View>
 
-              <Button
-                onPress={handleElementSave}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 py-4 rounded-lg"
-              >
-                <ButtonText className="text-white font-semibold text-base text-center">Add Element</ButtonText>
-              </Button>
+              <View className="mb-6">
+                <Text className="text-gray-300 font-medium text-base mb-3">Image</Text>
+                <Controller
+                  control={elementControl}
+                  name="imageUrl"
+                  rules={{
+                    required: 'Image is required'
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <>
+                      {value && selectedImageName ? (
+                        <View className="mb-4">
+                          <View className="relative bg-gray-800/50 border border-gray-700/50 rounded-lg p-4">
+                            <Text className="text-white text-sm font-medium truncate">
+                              {selectedImageName}
+                            </Text>
+                            <Pressable
+                              onPress={() => {
+                                if (value.startsWith('temp://')) {
+                                  delete pendingImagesRef.current[value];
+                                }
+                                onChange('');
+                                setSelectedImageName(null);
+                                trigger('imageUrl');
+                              }}
+                              className="absolute top-2 right-2 bg-red-500 p-2 rounded-full"
+                            >
+                              <Trash2 size={16} color="white" />
+                            </Pressable>
+                          </View>
+                          <View className="mt-2 flex-row items-center justify-center bg-green-500/10 py-1 px-2 rounded-full">
+                            <View className="w-2 h-2 bg-green-500 rounded-full mr-2" />
+                            <Text className="text-green-500 text-xs">
+                              Image selected successfully
+                            </Text>
+                          </View>
+                        </View>
+                      ) : (
+                        <View className="flex-col items-center">
+                          <Pressable
+                            onPress={handleImageSelect}
+                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 items-center justify-center"
+                          >
+                            <View className="items-center justify-center mb-2">
+                              <Plus size={24} color="#9CA3AF" />
+                            </View>
+                            <Text className="text-gray-300 text-sm font-medium">Select Image</Text>
+                            <Text className="text-gray-500 text-xs mt-1">JPG, PNG (max 5MB)</Text>
+                          </Pressable>
+                          {elementErrors.imageUrl && (
+                            <Text className="text-pink-600 text-xs mt-2 text-center">
+                              {elementErrors.imageUrl.message}
+                            </Text>
+                          )}
+                        </View>
+                      )}
+                    </>
+                  )}
+                />
+              </View>
             </ScrollView>
           </View>
         </View>
