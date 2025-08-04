@@ -27,7 +27,7 @@ export default function TabLayout() {
         }),
       }}>
       <Tabs.Screen
-        name="index"
+        name="explore"
         options={{
           title: 'Create',
           tabBarIcon: ({ color }) => <Bot size={28} color={color} />,
@@ -38,13 +38,6 @@ export default function TabLayout() {
         options={{
           title: 'Dashboard',
           tabBarIcon: ({ color }) => <LayoutDashboard size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <Compass size={28} color={color} />,
         }}
       />
       <Tabs.Screen
