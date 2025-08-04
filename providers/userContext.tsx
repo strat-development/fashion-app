@@ -6,6 +6,16 @@ import { createContext, useContext, useEffect, useState } from "react";
 type UserContextType = {
     userName: string;
     setUserName: (userName: string) => void;
+    userBio: string;
+    setUserBio: (userBio: string) => void;
+    userImage: string;
+    setUserImage: (userImage: string) => void;
+    userEmail: string;
+    setUserEmail: (userEmail: string) => void;
+    userSocials: string[];
+    setUserSocials: (userSocials: string[]) => void;
+    userJoinedAt: string;
+    setUserJoinedAt: (userJoinedAt: string) => void;
     userId: string | null;
     loading: boolean;
 };
@@ -14,9 +24,16 @@ export const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export default function UserContextProvider({ children }: { children: React.ReactNode }) {
     const [userName, setUserName] = useState<string>("");
+    const [userBio, setUserBio] = useState<string>("");
+    const [userImage, setUserImage] = useState<string>("");
+    const [userEmail, setUserEmail] = useState<string>("");
+    const [userSocials, setUserSocials] = useState<string[]>([]);
+    const [userJoinedAt, setUserJoinedAt] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
     const { supabaseClient: supabase, session } = useSessionContext();
     const userId = session?.user?.id || "";
+
+    console.log(userImage)
 
     useEffect(() => {
         if (session?.user) {
@@ -24,8 +41,8 @@ export default function UserContextProvider({ children }: { children: React.Reac
             const getUserRole = async () => {
                 const { data: userData, error } = await supabase
                     .from("users")
-                    .select("full_name, id")
-                    .eq("id", session.user.id)
+                    .select("*")
+                    .eq("user_id", session.user.id)
                     .single();
 
                 if (error) {
@@ -34,6 +51,11 @@ export default function UserContextProvider({ children }: { children: React.Reac
 
                 if (userData) {
                     setUserName(userData.full_name);
+                    setUserBio(userData.bio);
+                    setUserImage(userData.user_avatar);
+                    setUserEmail(userData.email);
+                    setUserSocials(userData.socials);
+                    setUserJoinedAt(userData.created_at);
                 }
 
                 setLoading(false);
@@ -47,6 +69,16 @@ export default function UserContextProvider({ children }: { children: React.Reac
         <UserContext.Provider value={{
             userName,
             setUserName,
+            userBio,
+            setUserBio,
+            userImage,
+            setUserImage,
+            userEmail,
+            setUserEmail,
+            userSocials,
+            setUserSocials,
+            userJoinedAt,
+            setUserJoinedAt,
             userId,
             loading
         }}>

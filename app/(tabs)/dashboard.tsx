@@ -1,6 +1,6 @@
 import { CreatedOutfitsSection } from '@/components/dashboard/CreatedOutfitsSection';
 import { FeedSection } from '@/components/dashboard/FeedSection';
-import { ProfileEdit, type ProfileData } from '@/components/dashboard/modals/ProfileEditModal';
+import { ProfileEdit, } from '@/components/dashboard/modals/ProfileEditModal';
 import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection';
 import { UserProfile } from '@/components/dashboard/UserProfile';
 import { Bookmark, Grid, Plus, User } from 'lucide-react-native';
@@ -22,19 +22,14 @@ export default function DashboardScreen() {
   const [activeTab, setActiveTab] = useState<TabType>('feed');
   const [refreshing, setRefreshing] = useState(false);
   const [showProfileEdit, setShowProfileEdit] = useState(false);
-  const [profileData, setProfileData] = useState<ProfileData>({
-    name: "Your Profile",
-    bio: "Passionate about fashion and style."
-  });
 
   const handleEditProfile = () => {
     setShowProfileEdit(true);
   };
 
-  const handleSaveProfile = (data: ProfileData) => {
-    setProfileData(data);
-    console.log('Profile saved:', data);
-  };
+  // const handleSaveProfile = (data: ProfileData) => {
+  //   setProfileData(data);
+  // };
 
   const handleCloseProfileEdit = () => {
     setShowProfileEdit(false);
@@ -60,9 +55,6 @@ export default function DashboardScreen() {
       case 'profile':
         return (
           <UserProfile
-            userName={profileData.name}
-            userBio={profileData.bio}
-            stats={mockUserStats}
             onEditProfile={handleEditProfile}
           />
         );
@@ -111,8 +103,6 @@ export default function DashboardScreen() {
       <ProfileEdit
         isVisible={showProfileEdit}
         onClose={handleCloseProfileEdit}
-        onSave={handleSaveProfile}
-        initialData={profileData}
       />
 
     </SafeAreaView>

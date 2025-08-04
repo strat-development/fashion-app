@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { useDeleteOutfitMutation } from '@/mutations/DeleteOutfitMutation';
+import { useDeleteOutfitMutation } from '@/mutations/dashboard/DeleteOutfitMutation';
 import { ModalProps } from '@/types/createOutfitTypes';
 import { X } from "lucide-react-native";
 import { Modal, Pressable, SafeAreaView, Text, View } from "react-native";

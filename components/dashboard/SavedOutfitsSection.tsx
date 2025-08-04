@@ -1,6 +1,6 @@
 
-import { useFetchSavedOutfits } from "@/fetchers/fetchSavedOutfits"
-import { useDeleteSavedOutfitMutation } from "@/mutations/DeleteSavedOutfitMutation"
+import { useFetchSavedOutfits } from "@/fetchers/dashboard/fetchSavedOutfits"
+import { useDeleteSavedOutfitMutation } from "@/mutations/dashboard/DeleteSavedOutfitMutation"
 import { useUserContext } from "@/providers/userContext"
 import { Bookmark } from "lucide-react-native"
 import { useState } from "react"

@@ -14,7 +14,8 @@ export const useCreateOutfitMutation = (
         throw new Error('Supabase client is not initialized.');
       }
 
-      const { data, error } = await supabase.from('created-outfits').insert({
+      const { data, error } = await supabase
+      .from('created-outfits').insert({
         outfit_name: outfitData.outfit_name || null,
         description: outfitData.description || null,
         outfit_tags: outfitData.outfit_tags,

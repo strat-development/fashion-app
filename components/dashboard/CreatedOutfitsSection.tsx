@@ -1,7 +1,7 @@
-import { useFetchCreatedOutfitsByUser } from "@/fetchers/fetchCreatedOutfitsByUser";
-import { useFetchSavedOutfits } from "@/fetchers/fetchSavedOutfits";
-import { useDeleteSavedOutfitMutation } from "@/mutations/DeleteSavedOutfitMutation";
-import { useSaveOutfitMutation } from "@/mutations/SaveOutfitMutation";
+import { useFetchCreatedOutfitsByUser } from "@/fetchers/dashboard/fetchCreatedOutfitsByUser";
+import { useFetchSavedOutfits } from "@/fetchers/dashboard/fetchSavedOutfits";
+import { useDeleteSavedOutfitMutation } from "@/mutations/dashboard/DeleteSavedOutfitMutation";
+import { useSaveOutfitMutation } from "@/mutations/dashboard/SaveOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Plus } from "lucide-react-native";
 import { useState } from "react";

@@ -1,8 +1,8 @@
-import { useFetchSavedOutfits } from '@/fetchers/fetchSavedOutfits';
+import { useFetchSavedOutfits } from '@/fetchers/dashboard/fetchSavedOutfits';
 import { useFetchUser } from '@/fetchers/fetchUser';
 import { formatDate } from '@/helpers/helpers';
-import { useDeleteSavedOutfitMutation } from '@/mutations/DeleteSavedOutfitMutation';
-import { useSaveOutfitMutation } from '@/mutations/SaveOutfitMutation';
+import { useDeleteSavedOutfitMutation } from '@/mutations/dashboard/DeleteSavedOutfitMutation';
+import { useSaveOutfitMutation } from '@/mutations/dashboard/SaveOutfitMutation';
 import { useUserContext } from '@/providers/userContext';
 import { Bookmark, Heart, MessageCircle, Send, Share, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';

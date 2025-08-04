@@ -23,6 +23,7 @@ export const useFetchSavedOutfits = (userId: string) => {
         .order('created_at', { ascending: false });
 
       if (outfitsError) throw outfitsError;
+      
       return outfits;
     },
     enabled: !!userId

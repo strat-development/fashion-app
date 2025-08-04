@@ -8,7 +8,7 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
-import { useCreateOutfitMutation } from '@/mutations/CreateOutfitMutation';
+import { useCreateOutfitMutation } from '@/mutations/dashboard/CreateOutfitMutation';
 import { useUserContext } from '@/providers/userContext';
 import { ModalProps, OutfitElementData } from '@/types/createOutfitTypes';
 
@@ -232,13 +232,6 @@ export const OutfitCreateModal = ({
   const outfitName = watch('outfit_name');
   const description = watch('description');
   const outfitTags = watch('outfit_tags') || [];
-  const elementImageUrl = watchElement('imageUrl');
-
-  console.log('Element form state:', {
-    imageUrl: elementImageUrl,
-    isElementValid,
-    elementErrors,
-  });
 
   return (
     <>
