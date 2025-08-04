@@ -293,7 +293,9 @@ export const ChatSection = () => {
                     <SelectDragIndicatorWrapper>
                       <SelectDragIndicator className="bg-white/20" />
                     </SelectDragIndicatorWrapper>
+
                     {Currencies.map((currencyItem: any) => (
+
                       <SelectItem
                         key={currencyItem.name}
                         value={currencyItem.name}
