@@ -4,9 +4,9 @@ import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/consts/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Bot, Compass, LayoutDashboard } from 'lucide-react-native';
+import { Bot, Compass, LayoutDashboard, LogOut } from 'lucide-react-native';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -29,14 +29,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="explore"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <Compass size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Chat',
+          title: 'Create',
           tabBarIcon: ({ color }) => <Bot size={28} color={color} />,
         }}
       />
@@ -45,6 +38,13 @@ export default function TabLayout() {
         options={{
           title: 'Dashboard',
           tabBarIcon: ({ color }) => <LayoutDashboard size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="logout"
+        options={{
+          title: 'Logout',
+          tabBarIcon: ({ color }) => <LogOut size={28} color={color} />,
         }}
       />
     </Tabs>

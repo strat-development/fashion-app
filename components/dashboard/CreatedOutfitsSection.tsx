@@ -1,0 +1,154 @@
+import { useFetchCreatedOutfitsByUser } from "@/fetchers/fetchCreatedOutfitsByUser";
+import { useFetchSavedOutfits } from "@/fetchers/fetchSavedOutfits";
+import { useDeleteSavedOutfitMutation } from "@/mutations/DeleteSavedOutfitMutation";
+import { useSaveOutfitMutation } from "@/mutations/SaveOutfitMutation";
+import { useUserContext } from "@/providers/userContext";
+import { Plus } from "lucide-react-native";
+import { useState } from "react";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
+import { Button } from "../ui/button";
+import { EmptyState } from "./EmptyState";
+import { OutfitCard, OutfitData } from "./OutfitCard";
+import { DeleteModalOutfit } from "./modals/DeleteOutfitModal";
+import { OutfitCreateModal } from "./modals/OutfitCreateModal";
+import { OutfitDetail } from "./modals/OutfitDetailModal";
+
+interface CreatedOutfitsSectionProps {
+    refreshing: boolean;
+    onPress?: (outfit: OutfitData) => void;
+}
+
+export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProps) => {
+    const { userId } = useUserContext();
+    const { data: fetchedOutfits = [], isLoading } = useFetchCreatedOutfitsByUser(userId || '');
+    const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
+    const { mutate: saveOutfit } = useSaveOutfitMutation();
+    const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
+
+    const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
+    const [outfitToDelete, setOutfitToDelete] = useState<OutfitData | null>(null);
+
+    const [showOutfitDetail, setShowOutfitDetail] = useState(false);
+    const [showOutfitCreate, setShowOutfitCreate] = useState(false);
+    const [showDeleteOutfit, setShowDeleteOutfit] = useState(false);
+
+    const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
+
+    const handleUnsavePress = (outfit: OutfitData) => {
+        unsaveOutfit({ outfitId: outfit.outfit_id || "" });
+    };
+
+    const handleCreateOutfit = () => {
+        setShowOutfitCreate(true);
+    };
+
+    const handleDeletePress = (outfit: OutfitData) => {
+        setOutfitToDelete(outfit);
+        setShowDeleteOutfit(true);
+    };
+
+    const handleDeleteSuccess = () => {
+        setOutfitToDelete(null);
+    };
+
+    const handleCloseOutfitCreate = () => {
+        setShowOutfitCreate(false);
+    };
+
+    const handleOutfitPress = (outfit: OutfitData) => {
+        setSelectedOutfit(outfit);
+        setShowOutfitDetail(true);
+    };
+
+    const handleCloseOutfitDetail = () => {
+        setShowOutfitDetail(false);
+        setSelectedOutfit(null);
+    };
+
+    const handleToggleSave = (outfitId: string) => {
+        if (!userId) return;
+
+        const isCurrentlySaved = savedOutfitIds.has(outfitId);
+
+        saveOutfit({
+            userId,
+            outfitId,
+            savedAt: new Date().toISOString()
+        });
+    };
+
+    return (
+        <>
+            <ScrollView
+                className="flex-1 px-4"
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} />
+                }
+            >
+                <View className="pt-6 pb-20">
+                    <View className="flex-row items-center justify-between mb-6">
+                        <Text className="text-white text-xl font-semibold">Your Creations</Text>
+                        <Button
+                            onPress={handleCreateOutfit}
+                            className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl px-4 py-2"
+                        >
+                            <View className="flex-row items-center">
+                                <Plus size={16} color="#FFFFFF" />
+                                <Text className="text-white ml-2 font-medium text-sm">Create</Text>
+                            </View>
+                        </Button>
+                    </View>
+                    {fetchedOutfits?.length > 0 ? (
+                        fetchedOutfits.map(outfit => (
+                            <OutfitCard
+                                key={outfit.outfit_id}
+                                outfit={{
+                                    ...outfit,
+                                    isSaved: savedOutfitIds.has(outfit.outfit_id)
+                                }}
+                                onToggleSave={() => handleToggleSave(outfit.outfit_id)}
+                                onPress={() => handleOutfitPress(outfit)}
+                                onDelete={() => handleDeletePress(outfit)}
+                                onUnsave={() => handleUnsavePress(outfit)}
+                                isDeleteVisible={true}
+                            />
+                        ))
+                    ) : (
+                        <EmptyState
+                            icon={Plus}
+                            title="No outfits created yet"
+                            description="Start creating your first outfit!"
+                            actionText="Create Outfit"
+                        />
+                    )}
+                </View>
+            </ScrollView>
+
+            <OutfitCreateModal
+                isVisible={showOutfitCreate}
+                onClose={handleCloseOutfitCreate}
+            />
+
+            {outfitToDelete && (
+                <DeleteModalOutfit
+                    isVisible={showDeleteOutfit}
+                    onClose={() => setShowDeleteOutfit(false)}
+                    isAnimated={true}
+                    outfitId={outfitToDelete.outfit_id}
+                    onSuccess={handleDeleteSuccess}
+                />
+            )}
+
+            {selectedOutfit && (
+                <OutfitDetail
+                    outfit={{
+                        ...selectedOutfit,
+                        isSaved: savedOutfitIds.has(selectedOutfit.outfit_id)
+                    }}
+                    isVisible={showOutfitDetail}
+                    onClose={handleCloseOutfitDetail}
+                />
+            )}
+        </>
+    );
+};
