@@ -104,7 +104,6 @@ export const OutfitCard = ({
         <View className="flex-row items-center justify-between pt-2">
           <View className="flex-row items-center space-x-4">
             <Pressable
-              // onPress={() => onToggleLike(outfit.outfit_id)}
               className="flex-row items-center"
             >
               <Heart

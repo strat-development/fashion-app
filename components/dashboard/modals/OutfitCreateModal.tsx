@@ -8,6 +8,7 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
+import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { useCreateOutfitMutation } from '@/mutations/dashboard/CreateOutfitMutation';
 import { useUserContext } from '@/providers/userContext';
 import { ModalProps, OutfitElementData } from '@/types/createOutfitTypes';
@@ -16,7 +17,7 @@ import { DevTool } from '@hookform/devtools';
 import { Plus, Trash2, X } from 'lucide-react-native';
 import React, { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Image, Modal, PermissionsAndroid, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -157,30 +158,8 @@ export const OutfitCreateModal = ({
     }, 0);
   };
 
-  const requestPermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
-          {
-            title: 'Storage Permission',
-            message: 'This app needs access to your storage to select images.',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          }
-        );
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } catch (err) {
-        console.warn('Permission error:', err);
-        return false;
-      }
-    }
-    return true;
-  };
-
   const handleImageSelect = async () => {
-    const hasPermission = await requestPermission();
+    const hasPermission = await useRequestPermission();
     if (!hasPermission) {
       Alert.alert('Permission Denied', 'Storage permission is required to select images.');
       return;

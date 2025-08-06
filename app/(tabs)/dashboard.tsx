@@ -3,12 +3,9 @@ import { FeedSection } from '@/components/dashboard/FeedSection';
 import { ProfileEdit, } from '@/components/dashboard/modals/ProfileEditModal';
 import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection';
 import { UserProfile } from '@/components/dashboard/UserProfile';
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import { supabase } from "@/lib/supabase";
-import { Bookmark, Grid, Plus, User } from 'lucide-react-native';
-import { Button } from "@rneui/themed";
 import { router } from "expo-router";
+import { Bookmark, Grid, Plus, User } from 'lucide-react-native';
 import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -21,7 +18,7 @@ const mockUserStats = {
   following: 123
 };
 
-type TabType = 'feed' | 'saved' | 'created' | 'profile' | 'logout';
+type TabType = 'feed' | 'saved' | 'created' | 'profile';
 
 export default function DashboardScreen() {
   const [activeTab, setActiveTab] = useState<TabType>('feed');
@@ -31,10 +28,6 @@ export default function DashboardScreen() {
   const handleEditProfile = () => {
     setShowProfileEdit(true);
   };
-
-  // const handleSaveProfile = (data: ProfileData) => {
-  //   setProfileData(data);
-  // };
 
   const handleCloseProfileEdit = () => {
     setShowProfileEdit(false);
@@ -63,14 +56,6 @@ export default function DashboardScreen() {
             onEditProfile={handleEditProfile}
           />
         );
-      case 'logout':
-        return (
-          <ThemedView className="flex-1 items-center justify-center p-4">
-            <ThemedText type="title">Logout</ThemedText>
-            <ThemedText>Are you sure you want to log out?</ThemedText>
-            <Button title="Logout" onPress={handleLogout} />
-          </ThemedView>
-        );
       default:
         return null;
     }
@@ -87,7 +72,6 @@ export default function DashboardScreen() {
           { key: 'saved', label: 'Saved', icon: Bookmark },
           { key: 'created', label: 'Created', icon: Plus },
           { key: 'profile', label: 'Profile', icon: User },
-          { key: 'logout', label: 'Logout', icon: User }
         ].map(({ key, label, icon: Icon }) => (
           <Pressable
             key={key}
