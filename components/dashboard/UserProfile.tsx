@@ -32,8 +32,8 @@ export const UserProfile = ({
             {userImage && (
               <Image source={{ uri: userImage }} className="w-full h-full rounded-full" />
             ) || (
-                <View className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center mr-3">
-                  <User size={16} color="#FFFFFF" />
+                <View className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center mr-3">
+                  <User size={24} color="#FFFFFF" />
                 </View>
               )}
           </View>
