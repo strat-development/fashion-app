@@ -2,9 +2,10 @@ import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { supabaseAdmin } from '@/lib/admin';
 import { useEditProfileMutation } from '@/mutations/dashboard/EditProfileMutation';
 import { useUserContext } from '@/providers/userContext';
+import { DevTool } from '@hookform/devtools';
 import { Camera, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -224,32 +225,64 @@ export const ProfileEdit = ({
             {/* Name Field */}
             <View className="mb-6">
               <Text className="text-gray-300 font-medium text-base mb-3">Display Name</Text>
-              <TextInput
-                value={profileData.name}
-                onChangeText={(text) => setProfileData(prev => ({ ...prev, name: text }))}
-                placeholder="Enter your name"
-                placeholderTextColor="#6B7280"
-                className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
-                maxLength={50}
+              <Controller
+                control={control}
+                name="name"
+                rules={{ required: "Name is required" }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    placeholder="Enter your name"
+                    placeholderTextColor="#6B7280"
+                    className={`bg-gray-800/50 border ${errors.name ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
+                    maxLength={50}
+                  />
+                )}
               />
-              <Text className="text-gray-500 text-sm mt-1">{profileData.name.length}/50</Text>
+              <View className="flex-row items-center justify-between mt-1">
+                {errors.name ? (
+                  <Text className="text-pink-600 text-xs">{errors.name.message}</Text>
+                ) : (
+                  <Text className="text-gray-500 text-sm mt-1">{profileData.name.length || 0}/50</Text>
+                )}
+              </View>
             </View>
 
             {/* Bio Field */}
             <View className="mb-6">
               <Text className="text-gray-300 font-medium text-base mb-3">Bio</Text>
-              <TextInput
-                value={profileData.bio}
-                onChangeText={(text) => setProfileData(prev => ({ ...prev, bio: text }))}
-                placeholder="Tell us about your style..."
-                placeholderTextColor="#6B7280"
-                className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-                maxLength={200}
+              <Controller
+                control={control}
+                name="bio"
+                rules={{
+                  maxLength: 200,
+                  validate: (value) => value.length <= 200 || 'Bio should not exceed 200 characters',
+                  required: "Bio is required"
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    placeholder="Tell us about your style..."
+                    placeholderTextColor="#6B7280"
+                    className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
+                    multiline
+                    numberOfLines={4}
+                    textAlignVertical="top"
+                    maxLength={200}
+                  />
+                )}
               />
-              <Text className="text-gray-500 text-sm mt-1">{profileData.bio.length}/200</Text>
+              <View className="flex-row items-center justify-between mt-1">
+                {errors.bio ? (
+                  <Text className="text-pink-600 text-xs">{errors.bio.message}</Text>
+                ) : (
+                  <Text className="text-gray-500 text-sm mt-1">{profileData.bio.length || 0}/200</Text>
+                )}
+              </View>
             </View>
 
             {/* Style Preferences */}
@@ -290,6 +323,7 @@ export const ProfileEdit = ({
           </View>
         </ScrollView>
       </SafeAreaView>
+      <DevTool control={control} />
     </Modal>
   );
 };

@@ -3,8 +3,6 @@ import { FeedSection } from '@/components/dashboard/FeedSection';
 import { ProfileEdit, } from '@/components/dashboard/modals/ProfileEditModal';
 import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection';
 import { UserProfile } from '@/components/dashboard/UserProfile';
-import { supabase } from "@/lib/supabase";
-import { router } from "expo-router";
 import { Bookmark, Grid, Plus, User } from 'lucide-react-native';
 import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
@@ -32,16 +30,7 @@ export default function DashboardScreen() {
   const handleCloseProfileEdit = () => {
     setShowProfileEdit(false);
   };
-
-  const handleLogout = async () => {
-    try {
-      await supabase?.auth.signOut();
-      router.replace('/');
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
-
+  
   const renderTabContent = () => {
     switch (activeTab) {
       case 'feed':

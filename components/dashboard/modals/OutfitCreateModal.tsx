@@ -113,8 +113,12 @@ export const OutfitCreateModal = ({
         ...data,
         created_by: userId || null
       });
-    } catch (error) {
-      Alert.alert('Error', error.message || 'Failed to create outfit');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        Alert.alert('Error', error.message || 'Failed to create outfit');
+      } else {
+        Alert.alert('Error', 'An unknown error occurred');
+      }
     }
   };
 
@@ -240,7 +244,8 @@ export const OutfitCreateModal = ({
               <View className="mb-6">
                 <Text className="text-gray-300 font-medium text-base mb-3">Outfit Elements</Text>
                 <View className='flex flex-col gap-4'>
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <ScrollView horizontal 
+                  showsHorizontalScrollIndicator={false}>
                     <View className="flex-row gap-4">
                       <Pressable
                         onPress={() => setElementModalVisible(true)}

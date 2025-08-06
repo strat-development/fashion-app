@@ -33,8 +33,6 @@ export default function UserContextProvider({ children }: { children: React.Reac
     const { supabaseClient: supabase, session } = useSessionContext();
     const userId = session?.user?.id || "";
 
-    console.log(userImage)
-
     useEffect(() => {
         if (session?.user) {
             setLoading(true);

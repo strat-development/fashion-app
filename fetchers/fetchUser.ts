@@ -11,7 +11,7 @@ export const useFetchUser = (userId: string) => {
 
             const { data, error } = await supabase
                 .from('users')
-                .select('full_name')
+                .select('*')
                 .eq('user_id', userId)
                 .single();
 

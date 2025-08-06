@@ -28,11 +28,13 @@ export const UserProfile = ({
       <View className="pt-8 pb-20">
         {/* Profile Header */}
         <View className="items-center mb-10">
-          <View className="w-20 h-20 bg-gray-700 rounded-full items-center justify-center mb-4">
+          <View className="w-24 h-24 bg-gray-700 rounded-full items-center justify-center mb-4">
             {userImage && (
               <Image source={{ uri: userImage }} className="w-full h-full rounded-full" />
             ) || (
-                <User size={40} color="#9CA3AF" />
+                <View className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center mr-3">
+                  <User size={16} color="#FFFFFF" />
+                </View>
               )}
           </View>
           <Text className="text-white text-xl font-medium">{userName}</Text>
