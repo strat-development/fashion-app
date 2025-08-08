@@ -9,6 +9,7 @@ import { RefreshControl, ScrollView, View } from "react-native"
 import { EmptyState } from "./EmptyState"
 import { OutfitCard, OutfitData } from "./OutfitCard"
 import { OutfitDetail } from "./modals/OutfitDetailModal"
+import { enrichOutfit } from './utils/enrichOutfit'
 
 interface FeedSectionProps {
     refreshing: boolean
@@ -65,21 +66,14 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                 <View className="pt-6 pb-20">
                     {fetchedOutfits?.length > 0 ? (
                         fetchedOutfits.map(raw => {
-                            const enriched: OutfitData = {
-                                ...(raw as any),
-                                likes: (raw as any).likes ?? 0,
-                                comments: (raw as any).comments ?? 0,
-                                isSaved: savedOutfitIds.has(raw.outfit_id)
-                            };
+                            const outfit = enrichOutfit(raw, savedOutfitIds);
                             return (
                                 <OutfitCard
-                                    outfit={enriched}
-                                    onToggleSave={() => handleToggleSave(raw.outfit_id)}
-                                    onPress={() => {
-                                        handleOutfitPress(enriched);
-                                    }}
-                                    onUnsave={() => handleUnsavePress(enriched)}
-                                    key={raw.outfit_id}
+                                    key={outfit.outfit_id}
+                                    outfit={outfit}
+                                    onToggleSave={() => handleToggleSave(outfit.outfit_id)}
+                                    onPress={() => handleOutfitPress(outfit)}
+                                    onUnsave={() => handleUnsavePress(outfit)}
                                 />
                             );
                         })

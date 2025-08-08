@@ -8,10 +8,11 @@ import { useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { Button } from "../ui/button";
 import { EmptyState } from "./EmptyState";
-import { OutfitCard, OutfitData } from "./OutfitCard";
 import { DeleteModalOutfit } from "./modals/DeleteOutfitModal";
 import { OutfitCreateModal } from "./modals/OutfitCreateModal";
 import { OutfitDetail } from "./modals/OutfitDetailModal";
+import { OutfitCard, OutfitData } from "./OutfitCard";
+import { enrichOutfit } from './utils/enrichOutfit';
 
 interface CreatedOutfitsSectionProps {
     refreshing: boolean;
@@ -100,20 +101,15 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
                     </View>
                     {fetchedOutfits?.length > 0 ? (
                         fetchedOutfits.map(raw => {
-                            const enriched: OutfitData = {
-                                ...(raw as any),
-                                likes: (raw as any).likes ?? 0,
-                                comments: (raw as any).comments ?? 0,
-                                isSaved: savedOutfitIds.has(raw.outfit_id)
-                            };
+                            const outfit = enrichOutfit(raw, savedOutfitIds);
                             return (
                                 <OutfitCard
-                                    key={raw.outfit_id}
-                                    outfit={enriched}
-                                    onToggleSave={() => handleToggleSave(raw.outfit_id)}
-                                    onPress={() => handleOutfitPress(enriched)}
-                                    onDelete={() => handleDeletePress(enriched)}
-                                    onUnsave={() => handleUnsavePress(enriched)}
+                                    key={outfit.outfit_id}
+                                    outfit={outfit}
+                                    onToggleSave={() => handleToggleSave(outfit.outfit_id)}
+                                    onPress={() => handleOutfitPress(outfit)}
+                                    onDelete={() => handleDeletePress(outfit)}
+                                    onUnsave={() => handleUnsavePress(outfit)}
                                     isDeleteVisible={true}
                                 />
                             );
