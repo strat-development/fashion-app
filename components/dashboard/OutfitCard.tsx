@@ -49,7 +49,11 @@ export const OutfitCard = ({
     userId: userId || ""
   });
 
-  const imageUrls = Array.isArray(outfit.outfit_elements_data) ? outfit.outfit_elements_data as string[] : [];
+  const imageUrls = Array.isArray(outfit.outfit_elements_data)
+    ? (outfit.outfit_elements_data as any[])
+        .map(el => (typeof el === 'string' ? el : el?.imageUrl))
+        .filter((u): u is string => typeof u === 'string' && !!u)
+    : [];
   const tags = Array.isArray(outfit.outfit_tags)
     ? outfit.outfit_tags
     : typeof outfit.outfit_tags === 'string'

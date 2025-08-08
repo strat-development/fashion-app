@@ -99,20 +99,25 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
                         </Button>
                     </View>
                     {fetchedOutfits?.length > 0 ? (
-                        fetchedOutfits.map(outfit => (
-                            <OutfitCard
-                                key={outfit.outfit_id}
-                                outfit={{
-                                    ...outfit,
-                                    isSaved: savedOutfitIds.has(outfit.outfit_id)
-                                }}
-                                onToggleSave={() => handleToggleSave(outfit.outfit_id)}
-                                onPress={() => handleOutfitPress(outfit)}
-                                onDelete={() => handleDeletePress(outfit)}
-                                onUnsave={() => handleUnsavePress(outfit)}
-                                isDeleteVisible={true}
-                            />
-                        ))
+                        fetchedOutfits.map(raw => {
+                            const enriched: OutfitData = {
+                                ...(raw as any),
+                                likes: (raw as any).likes ?? 0,
+                                comments: (raw as any).comments ?? 0,
+                                isSaved: savedOutfitIds.has(raw.outfit_id)
+                            };
+                            return (
+                                <OutfitCard
+                                    key={raw.outfit_id}
+                                    outfit={enriched}
+                                    onToggleSave={() => handleToggleSave(raw.outfit_id)}
+                                    onPress={() => handleOutfitPress(enriched)}
+                                    onDelete={() => handleDeletePress(enriched)}
+                                    onUnsave={() => handleUnsavePress(enriched)}
+                                    isDeleteVisible={true}
+                                />
+                            );
+                        })
                     ) : (
                         <EmptyState
                             icon={Plus}

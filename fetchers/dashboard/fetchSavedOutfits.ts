@@ -15,7 +15,10 @@ export const useFetchSavedOutfits = (userId: string) => {
       if (likedError) throw likedError;
       if (!likedOutfits?.length) return [];
 
-      const outfitIds = likedOutfits.map((outfit) => outfit.outfit_id);
+      const outfitIds = likedOutfits
+        .map(o => o.outfit_id)
+        .filter((id): id is string => typeof id === 'string');
+      if (!outfitIds.length) return [];
       const { data: outfits, error: outfitsError } = await supabase
         .from('created-outfits')
         .select('*')

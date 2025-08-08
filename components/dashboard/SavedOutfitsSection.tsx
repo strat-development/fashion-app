@@ -48,21 +48,26 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
             >
                 <View className="pt-6 pb-20">
                     {savedOutfits.length > 0 ? (
-                        savedOutfits.map(outfit => (
-                            <OutfitCard
-                                key={outfit}
-                                outfit={{
-                                    ...outfit,
-                                    isSaved: savedOutfitIds.has(outfit.outfit_id)
-                                }}
-                                onPress={() =>
-                                    handleOutfitPress(outfit)
-                                }
-                                onUnsave={() =>
-                                    handleUnsavePress(outfit)
-                                }
-                            />
-                        ))
+                        savedOutfits.map(raw => {
+                            const enriched: OutfitData = {
+                                ...(raw as any),
+                                likes: (raw as any).likes ?? 0,
+                                comments: (raw as any).comments ?? 0,
+                                isSaved: savedOutfitIds.has(raw.outfit_id)
+                            };
+                            return (
+                                <OutfitCard
+                                    key={raw.outfit_id}
+                                    outfit={enriched}
+                                    onPress={() =>
+                                        handleOutfitPress(enriched)
+                                    }
+                                    onUnsave={() =>
+                                        handleUnsavePress(enriched)
+                                    }
+                                />
+                            );
+                        })
                     ) : (
                         <EmptyState
                             icon={Bookmark}

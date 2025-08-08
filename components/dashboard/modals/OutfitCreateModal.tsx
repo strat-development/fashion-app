@@ -109,8 +109,20 @@ export const OutfitCreateModal = ({
     }
 
     try {
+      // Wzbogacamy dane elementów o realne lokalne URI potrzebne do uploadu
+      const enrichedElements = data.outfit_elements_data.map(el => {
+        if (el.imageUrl.startsWith('temp://')) {
+          const pending = pendingImagesRef.current[el.imageUrl];
+          if (pending?.uri) {
+            return { ...el, _localUri: pending.uri, _fileName: pending.fileName, _type: pending.type } as any;
+          }
+        }
+        return el as any;
+      });
+
       createOutfit({
         ...data,
+        outfit_elements_data: enrichedElements as any,
         created_by: userId || null
       });
     } catch (error: unknown) {
