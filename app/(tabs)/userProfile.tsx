@@ -1,13 +1,13 @@
+import { CreatedOutfitsSection } from '@/components/dashboard/CreatedOutfitsSection';
+import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection';
+import { UserStatistics } from '@/components/dashboard/UserStatistics';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/lib/supabase';
 import { useUserContext } from '@/providers/userContext';
 import { Image } from 'expo-image';
 import { BookOpen, Edit3, Heart, Plus, Trophy, User, User2 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
-import { CreatedOutfitsSection } from './CreatedOutfitsSection';
-import { SavedOutfitsSection } from './SavedOutfitsSection';
-import { UserStatistics } from './UserStatistics';
-import { Button } from '../ui/button';
-import { supabase } from '@/lib/supabase';
 
 type TabType = 'user-info' | 'created-outfits' | 'saved-outfits';
 
@@ -16,10 +16,10 @@ interface UserProfileProps {
   onEditProfile?: () => void;
 }
 
-export const UserProfile = ({
+export default function UserProfile({
   isOwnProfile = true,
   onEditProfile
-}: UserProfileProps) => {
+}: UserProfileProps) {
   const [activeTab, setActiveTab] = useState<TabType>('user-info');
   const [refreshing, setRefreshing] = useState(false);
 
@@ -27,9 +27,6 @@ export const UserProfile = ({
     userName,
     userBio,
     userImage,
-    userJoinedAt,
-    userSocials,
-    userEmail
   } = useUserContext();
 
   const handleLogout = async () => {

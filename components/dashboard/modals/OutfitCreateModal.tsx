@@ -109,7 +109,6 @@ export const OutfitCreateModal = ({
     }
 
     try {
-      // Wzbogacamy dane elementów o realne lokalne URI potrzebne do uploadu
       const enrichedElements = data.outfit_elements_data.map(el => {
         if (el.imageUrl.startsWith('temp://')) {
           const pending = pendingImagesRef.current[el.imageUrl];

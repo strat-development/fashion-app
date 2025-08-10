@@ -1,12 +1,10 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs } from 'expo-router';
+import { Bot, Compass, User2 } from 'lucide-react-native';
 import React from 'react';
-import { Platform } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
-import { HapticTab } from '@/components/HapticTab';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/consts/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Bot, Compass, LayoutDashboard, LogOut } from 'lucide-react-native';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -14,44 +12,113 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        tabBarStyle: {
+          position: 'absolute',
+          marginHorizontal: 24,
+          marginBottom: 16,
+          borderRadius: 999,
+          borderWidth: 1,
+          borderColor: 'rgba(75, 85, 99, 0.5)',
+          backgroundColor: 'transparent',
+          padding: 4,
+          height: 60,
+        },
+        tabBarBackground: () => (
+          <LinearGradient
+            colors={['rgba(17, 24, 39, 0.9)', 'rgba(17, 24, 39, 0.9)']}
+            style={{
+              flex: 1,
+              borderRadius: 999,
+            }}
+          />
+        ),
+        tabBarButton: ({ children, onPress, accessibilityLabel }) => (
+          <Pressable
+            onPress={onPress}
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 999,
+            }}
+            accessibilityLabel={accessibilityLabel}
+          >
+            {children}
+          </Pressable>
+        ),
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Create',
-          tabBarIcon: ({ color }) => <Bot size={28} color={color} />,
+          title: '',
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: 'center' }}>
+              <Compass
+                size={18}
+                color={focused ? '#FFFFFF' : '#9CA3AF'}
+              />
+              <Text
+                style={{
+                  fontSize: 12,
+                  marginTop: 4,
+                  fontWeight: '500',
+                  color: focused ? '#FFFFFF' : '#9CA3AF',
+                }}
+              >
+                Feed
+              </Text>
+            </View>
+          ),
         }}
       />
       <Tabs.Screen
-        name="dashboard"
+        name="chat"
         options={{
-          title: 'Dashboard',
-          tabBarIcon: ({ color }) => <LayoutDashboard size={28} color={color} />,
+          title: '',
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: 'center' }}>
+              <Bot
+                size={18}
+                color={focused ? '#FFFFFF' : '#9CA3AF'}
+              />
+              <Text
+                style={{
+                  fontSize: 12,
+                  marginTop: 4,
+                  fontWeight: '500',
+                  color: focused ? '#FFFFFF' : '#9CA3AF',
+                }}
+              >
+                Create
+              </Text>
+            </View>
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="userProfile"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <Compass size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="logout"
-        options={{
-          title: 'Logout',
-          tabBarIcon: ({ color }) => <LogOut size={28} color={color} />,
+          title: '',
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: 'center' }}>
+              <User2
+                size={18}
+                color={focused ? '#FFFFFF' : '#9CA3AF'}
+              />
+              <Text
+                style={{
+                  fontSize: 12,
+                  marginTop: 4,
+                  fontWeight: '500',
+                  color: focused ? '#FFFFFF' : '#9CA3AF',
+                }}
+              >
+                Profile
+              </Text>
+            </View>
+          ),
         }}
       />
     </Tabs>
