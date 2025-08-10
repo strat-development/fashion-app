@@ -81,7 +81,7 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
     return (
         <>
             <ScrollView
-                className="flex-1 px-4"
+                className="flex-1"
                 refreshControl={
                     <RefreshControl refreshing={refreshing} />
                 }

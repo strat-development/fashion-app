@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react'
 import { ActivityIndicator, Alert, Animated, AppState, Easing, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-// Reusable animated input
 interface FocusInputProps {
   icon: React.ReactNode;
   label: string;
@@ -17,8 +16,8 @@ interface FocusInputProps {
   keyboardType?: 'default' | 'email-address';
 }
 
-const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboardType='default' }: FocusInputProps) => {
-  const focusAnim = useRef(new Animated.Value(0)).current; // 0 blur, 1 focus
+const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboardType = 'default' }: FocusInputProps) => {
+  const focusAnim = useRef(new Animated.Value(0)).current;
   const [focused, setFocused] = useState(false);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
 
   const borderColor = focusAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#374151', '#d946ef'] // gray-700 -> pink-500
+    outputRange: ['#374151', '#d946ef']
   });
 
   const glowOpacity = focusAnim.interpolate({
@@ -55,7 +54,7 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
         marginBottom: 8,
         textTransform: 'uppercase',
         transform: [{ translateY }],
-        opacity: focusAnim.interpolate({ inputRange: [0,1], outputRange:[0.65,1] })
+        opacity: focusAnim.interpolate({ inputRange: [0, 1], outputRange: [0.65, 1] })
       }}>{label}</Animated.Text>
       <Animated.View style={{
         borderWidth: 1,

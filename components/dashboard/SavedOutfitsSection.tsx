@@ -19,10 +19,10 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
     const { userId } = useUserContext();
     const { data: savedOutfits = [], isLoading } = useFetchSavedOutfits(userId || '');
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
-    
+
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
-    
+
     const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
 
     const handleUnsavePress = (outfit: OutfitData) => {
@@ -42,11 +42,10 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
     return (
         <>
             <ScrollView
-                className="flex-1 px-4"
+                className="flex-1"
                 refreshControl={
                     <RefreshControl refreshing={refreshing} />
-                }
-            >
+                }>
                 <View className="pt-6 pb-20">
                     {savedOutfits.length > 0 ? (
                         savedOutfits.map(raw => {
@@ -56,16 +55,14 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
                                     key={outfit.outfit_id}
                                     outfit={outfit}
                                     onPress={() => handleOutfitPress(outfit)}
-                                    onUnsave={() => handleUnsavePress(outfit)}
-                                />
+                                    onUnsave={() => handleUnsavePress(outfit)} />
                             );
                         })
                     ) : (
                         <EmptyState
                             icon={Bookmark}
                             title="No saved outfits yet"
-                            description="Start saving outfits you love!"
-                        />
+                            description="Start saving outfits you love!" />
                     )}
                 </View>
             </ScrollView>

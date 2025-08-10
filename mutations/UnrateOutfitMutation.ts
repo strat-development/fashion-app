@@ -1,12 +1,12 @@
 import { supabase } from "@/lib/supabase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-interface UnlikeOutfitMutationProps {
+interface UnrateOutfitMutationProps {
     outfitId: string;
     userId: string;
 }
 
-export const useUnlikeOutfitMutation = ({ userId, outfitId }: UnlikeOutfitMutationProps) => {
+export const useUnrateOutfitMutation = ({ userId, outfitId }: UnrateOutfitMutationProps) => {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -16,19 +16,19 @@ export const useUnlikeOutfitMutation = ({ userId, outfitId }: UnlikeOutfitMutati
             }
 
             const { error } = await supabase
-                .from('liked-outfits')
+                .from('outfits-rating')
                 .delete()
                 .eq('outfit_id', outfitId)
-                .eq('user_id', userId);
+                .eq('rated_by', userId);
 
             if (error) {
                 throw error;
             }
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['liked-outfits', outfitId] });
-            queryClient.invalidateQueries({ queryKey: ['liked-outfits', userId] });
-            queryClient.invalidateQueries({ queryKey: ['liked-outfits'] });
+            queryClient.invalidateQueries({ queryKey: ['outfits-rating', outfitId] });
+            queryClient.invalidateQueries({ queryKey: ['outfits-rating', userId] });
+            queryClient.invalidateQueries({ queryKey: ['outfits-rating'] });
         },
         onError: (error) => {
             console.error('Error unliking outfit:', error);
