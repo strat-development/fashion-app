@@ -10,7 +10,7 @@ export default function HomeScreen() {
   return (
     <>
       {view === 'none' && (
-        <View className='flex flex-col items-center justify-center h-full bg-gray-900 gap-8'>
+        <View className='flex flex-col items-center justify-center h-full bg-gradient-to-b from-black to-gray-900 gap-8'>
           <Text className='text-2xl font-bold text-white text-center'>Welcome, how would like to create an outfit?</Text>
           <View className='flex flex-col gap-4 items-center justify-center'>
             <Button className='bg-blue-200' onPress={() => setView('outfitAIConstructor')}>

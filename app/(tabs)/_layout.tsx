@@ -20,7 +20,7 @@ export default function TabLayout() {
           borderRadius: 999,
           borderWidth: 1,
           borderColor: 'rgba(75, 85, 99, 0.5)',
-          backgroundColor: 'transparent',
+          backgroundColor: 'rgba(17, 24, 39, 0.9)',
           padding: 4,
           height: 60,
         },

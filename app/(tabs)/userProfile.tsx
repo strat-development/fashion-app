@@ -86,7 +86,7 @@ export default function UserProfile({
   };
 
   return (
-    <ScrollView className="flex-1 px-6">
+    <ScrollView className="flex-1 px-6 bg-gradient-to-b from-black to-gray-900">
       <View className="pt-8 pb-20">
         {/* Profile Header */}
         <View className="items-center mb-10">

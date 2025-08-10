@@ -59,11 +59,10 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     return (
         <>
             <ScrollView
-                className="flex-1 px-4"
+                className="flex-1 px-4 bg-gradient-to-b from-black to-gray-900"
                 refreshControl={
                     <RefreshControl refreshing={refreshing} />
-                }
-            >
+                }>
                 <View className="pt-6 pb-20">
                     {fetchedOutfits?.length > 0 ? (
                         fetchedOutfits.map(raw => {
