@@ -138,16 +138,16 @@ export const OutfitCard = ({
       )}
 
       {/* Actions */}
-      <View className="flex-row items-center justify-between pt-2">
-        <View className="flex-row items-center space-x-4">
-          <View className="flex-row items-center gap-2">
+      <View className="flex-row items-center justify-between pt-2 gap-3">
+        <View className="flex-row items-center flex-shrink min-w-0">
+          <View className="flex-row items-center gap-1">
             <Pressable
               onPress={handlePositiveRate}
               className={`flex-row items-center px-2 py-1 rounded-full border ${isPositiveRated ? "bg-green-500/20 border-green-500/50" : "bg-gray-800/50 border-gray-600/30"
                 }`}
             >
               <ThumbsUp
-                size={20}
+                size={18}
                 color={isPositiveRated ? "#22C55E" : "#9CA3AF"}
                 fill={isPositiveRated ? "#22C55E" : "transparent"}
               />
@@ -157,7 +157,7 @@ export const OutfitCard = ({
               className={`flex-row items-center px-2 py-1 rounded-full border ${isNegativeRated ? "bg-red-500/20 border-red-500/50" : "bg-gray-800/50 border-gray-600/30"
                 }`}>
               <ThumbsDown
-                size={20}
+                size={18}
                 color={isNegativeRated ? "#EF4444" : "#9CA3AF"}
                 fill={isNegativeRated ? "#EF4444" : "transparent"}
               />
@@ -166,14 +166,14 @@ export const OutfitCard = ({
           </View>
           <Pressable
             onPress={() => onComment?.(outfit.outfit_id)}
-            className="flex-row items-center"
+            className="flex-row items-center ml-3"
           >
-            <MessageCircle size={20} color="#9CA3AF" />
+            <MessageCircle size={18} color="#9CA3AF" />
             <Text className="text-gray-300 ml-1 text-sm">{outfit.comments}</Text>
           </Pressable>
         </View>
 
-        <View className="flex-row items-center space-x-3">
+        <View className="flex-row items-center gap-2 flex-shrink-0">
           <Pressable
             onPress={() => {
               if (outfit.isSaved) {
@@ -182,22 +182,20 @@ export const OutfitCard = ({
                 onToggleSave?.(outfit.outfit_id);
               }
             }}
-            className="flex-row items-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 px-3 py-1 rounded-full border border-gray-600/30"
+            className="flex-row items-center justify-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 p-2 rounded-full border border-gray-600/30"
           >
             <Bookmark
-              size={14}
+              size={16}
               color={outfit.isSaved ? "#EC4899" : "#9CA3AF"}
               fill={outfit.isSaved ? "#EC4899" : "transparent"}
             />
-            <Text className="text-gray-300 ml-1 text-xs">{outfit.isSaved ? "Saved" : "Save"}</Text>
           </Pressable>
 
           <Pressable
             onPress={() => onShare?.(outfit.outfit_id)}
-            className="flex-row items-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 px-3 py-1 rounded-full border border-gray-600/30"
+            className="flex-row items-center justify-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 p-2 rounded-full border border-gray-600/30"
           >
-            <Share size={14} color="#9CA3AF" />
-            <Text className="text-gray-300 ml-1 text-xs">Share</Text>
+            <Share size={16} color="#9CA3AF" />
           </Pressable>
         </View>
       </View>
