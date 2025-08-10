@@ -86,7 +86,7 @@ export const OutfitCard = ({
     <View className="bg-gradient-to-br from-gray-900/70 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 mb-4 border border-gray-700/30">
       {/* Header */}
       <View className="flex-row items-center justify-between mb-3">
-        <View className="flex-row items-center">
+        <View className="flex-row items-center flex-1">
           {userData?.user_avatar ? (
             <View className="w-8 h-8 bg-gray-700 rounded-full items-center justify-center mr-3">
               <Image source={{ uri: userData.user_avatar }} className="w-full h-full rounded-full" />
@@ -96,16 +96,28 @@ export const OutfitCard = ({
               <User size={16} color="#FFFFFF" />
             </View>
           )}
-          <View>
+          <View className="flex-1">
             <Text className="text-white font-medium text-sm">{userData?.full_name || "Anonymous"}</Text>
             <Text className="text-gray-400 text-xs">{formatDate(outfit.created_at || "")}</Text>
           </View>
         </View>
-        {outfit.created_by === userId && (
-          <View className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 px-3 py-1 rounded-full border border-purple-500/30">
-            <Text className="text-purple-300 text-xs font-medium">Your creation</Text>
-          </View>
-        )}
+        
+        <View className="flex-row items-center gap-2">
+          {outfit.created_by === userId && (
+            <View className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 px-3 py-1 rounded-full border border-purple-500/30">
+              <Text className="text-purple-300 text-xs font-medium">Your creation</Text>
+            </View>
+          )}
+          
+          {isDeleteVisible && (
+            <Pressable
+              className="bg-red-600/20 border border-red-600/30 p-2 rounded-full"
+              onPress={() => onDelete?.(outfit.outfit_id)}
+            >
+              <Delete size={16} color="#EF4444" />
+            </Pressable>
+          )}
+        </View>
       </View>
 
       {/* Image */}
@@ -126,16 +138,6 @@ export const OutfitCard = ({
           ))}
         </View>
       </ScrollView>
-
-      {isDeleteVisible && (
-        <Pressable
-          className="absolute top-4 right-4 flex-row items-center justify-center gap-2"
-          onPress={() => onDelete?.(outfit.outfit_id)}
-        >
-          <Text className="text-gray-300">Delete Outfit</Text>
-          <Delete size={18} color="#9CA3AF" />
-        </Pressable>
-      )}
 
       {/* Actions */}
       <View className="flex-row items-center justify-between pt-2 gap-3">
