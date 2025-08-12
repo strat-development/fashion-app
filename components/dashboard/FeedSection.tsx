@@ -6,6 +6,7 @@ import { useUserContext } from "@/providers/userContext"
 import { Grid } from "lucide-react-native"
 import { useState } from "react"
 import { RefreshControl, ScrollView, View } from "react-native"
+import CommentSection from "./CommentSection"
 import { EmptyState } from "./EmptyState"
 import { OutfitCard, OutfitData } from "./OutfitCard"
 import { OutfitDetail } from "./modals/OutfitDetailModal"
@@ -27,6 +28,9 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
+    const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
+    const [commentOutfitId, setCommentOutfitId] = useState<string | null>(null);
+    const [showCommentSection, setShowCommentSection] = useState(false);
 
     const handleUnsavePress = (outfit: OutfitData) => {
         unsaveOutfit({ outfitId: outfit.outfit_id || "" });
@@ -48,6 +52,18 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
     const handleOutfitPress = (outfit: OutfitData) => {
         setSelectedOutfit(outfit);
         setShowOutfitDetail(true);
+    };
+
+    const handleCommentPress = (outfitId: string) => {
+        setCommentOutfitId(outfitId);
+        const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
+        if (raw) {
+            const enriched = enrichOutfit(raw, savedOutfitIds);
+            setSelectedOutfitForComments(enriched);
+        } else {
+            setSelectedOutfitForComments(null);
+        }
+        setShowCommentSection(true);
     };
 
     const handleCloseOutfitDetail = () => {
@@ -72,6 +88,7 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                                     key={outfit.outfit_id}
                                     outfit={outfit}
                                     onToggleSave={() => handleToggleSave(outfit.outfit_id)}
+                                    onComment={handleCommentPress}
                                     onPress={() => handleOutfitPress(outfit)}
                                     onUnsave={() => handleUnsavePress(outfit)}
                                 />
@@ -98,6 +115,13 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                     onClose={handleCloseOutfitDetail}
                 />
             )}
+
+            <CommentSection
+                isVisible={showCommentSection}
+                onClose={() => setShowCommentSection(false)}
+                outfitId={commentOutfitId || ''}
+                outfitTitle={selectedOutfitForComments?.outfit_name || ''}
+            />
         </>
     )
 }

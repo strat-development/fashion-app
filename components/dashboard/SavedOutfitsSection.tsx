@@ -5,6 +5,7 @@ import { useUserContext } from "@/providers/userContext"
 import { Bookmark } from "lucide-react-native"
 import { useState } from "react"
 import { RefreshControl, ScrollView, View } from "react-native"
+import CommentSection from "./CommentSection"
 import { EmptyState } from "./EmptyState"
 import { OutfitDetail } from "./modals/OutfitDetailModal"
 import { OutfitCard, OutfitData } from "./OutfitCard"
@@ -22,6 +23,8 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
+    const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
+    const [showCommentSection, setShowCommentSection] = useState(false);
 
     const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
 
@@ -32,6 +35,14 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
     const handleOutfitPress = (outfit: OutfitData) => {
         setSelectedOutfit(outfit);
         setShowOutfitDetail(true);
+    };
+
+    const handleCommentPress = (outfitId: string) => {
+        const raw = savedOutfits.find(o => o.outfit_id === outfitId);
+        if (!raw) return;
+        const enriched = enrichOutfit(raw, savedOutfitIds);
+        setSelectedOutfitForComments(enriched);
+        setShowCommentSection(true);
     };
 
     const handleCloseOutfitDetail = () => {
@@ -54,6 +65,7 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
                                 <OutfitCard
                                     key={outfit.outfit_id}
                                     outfit={outfit}
+                                    onComment={handleCommentPress}
                                     onPress={() => handleOutfitPress(outfit)}
                                     onUnsave={() => handleUnsavePress(outfit)} />
                             );
@@ -77,6 +89,13 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
                     onClose={handleCloseOutfitDetail}
                 />
             )}
+
+            <CommentSection
+                isVisible={showCommentSection}
+                onClose={() => setShowCommentSection(false)}
+                outfitId={selectedOutfitForComments?.outfit_id || ''}
+                outfitTitle={selectedOutfitForComments?.outfit_name || ''}
+            />
         </>
     )
 }

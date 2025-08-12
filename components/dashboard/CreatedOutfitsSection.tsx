@@ -7,6 +7,7 @@ import { Plus } from "lucide-react-native";
 import { useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { Button } from "../ui/button";
+import CommentSection from "./CommentSection";
 import { EmptyState } from "./EmptyState";
 import { DeleteModalOutfit } from "./modals/DeleteOutfitModal";
 import { OutfitCreateModal } from "./modals/OutfitCreateModal";
@@ -27,9 +28,11 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
+    const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [outfitToDelete, setOutfitToDelete] = useState<OutfitData | null>(null);
 
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
+    const [showCommentSection, setShowCommentSection] = useState(false);
     const [showOutfitCreate, setShowOutfitCreate] = useState(false);
     const [showDeleteOutfit, setShowDeleteOutfit] = useState(false);
 
@@ -59,6 +62,14 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
     const handleOutfitPress = (outfit: OutfitData) => {
         setSelectedOutfit(outfit);
         setShowOutfitDetail(true);
+    };
+
+    const handleCommentPress = (outfitId: string) => {
+        const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
+        if (!raw) return;
+        const enriched = enrichOutfit(raw, savedOutfitIds);
+        setSelectedOutfitForComments(enriched);
+        setShowCommentSection(true);
     };
 
     const handleCloseOutfitDetail = () => {
@@ -107,6 +118,7 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
                                     key={outfit.outfit_id}
                                     outfit={outfit}
                                     onToggleSave={() => handleToggleSave(outfit.outfit_id)}
+                                    onComment={handleCommentPress}
                                     onPress={() => handleOutfitPress(outfit)}
                                     onDelete={() => handleDeletePress(outfit)}
                                     onUnsave={() => handleUnsavePress(outfit)}
@@ -150,6 +162,13 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
                     onClose={handleCloseOutfitDetail}
                 />
             )}
+
+            <CommentSection
+                isVisible={showCommentSection}
+                onClose={() => setShowCommentSection(false)}
+                outfitId={selectedOutfitForComments?.outfit_id || ''}
+                outfitTitle={selectedOutfitForComments?.outfit_name || ''}
+            />
         </>
     );
 };
