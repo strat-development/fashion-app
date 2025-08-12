@@ -1,14 +1,11 @@
-import { Image } from 'expo-image';
+import { useCreateCommentMutation } from '@/mutations/CreateCommentMutation';
 import { Send, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CommentData, useFetchComments } from '../../fetchers/fetchComments';
-import { formatDate } from '../../helpers/helpers';
 import { useUserContext } from '../../providers/userContext';
-
-// We'll wire mutation via a local fetcher to avoid path alias issues during creation
-import { useCreateCommentMutation } from '../../mutations/CreateCommentMutation';
+import { CommentItem } from './CommentItem';
 
 interface CommentSectionProps {
   isVisible: boolean;
@@ -17,35 +14,11 @@ interface CommentSectionProps {
   outfitTitle?: string;
 }
 
-const CommentItem = ({ comment }: { comment: CommentData }) => {
-  const avatar = comment.user_info?.user_avatar;
-  const name = comment.user_info?.full_name || 'Anonymous';
-  return (
-    <View className="flex-row mb-4 px-4">
-      <View className="mr-3">
-        {avatar ? (
-          <Image source={{ uri: avatar }} className="w-8 h-8 rounded-full" />
-        ) : (
-          <View className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full" />
-        )}
-      </View>
-      <View className="flex-1">
-        <View className="flex-row items-center justify-between">
-          <Text className="text-white font-medium text-sm">{name}</Text>
-          <Text className="text-gray-400 text-2xs">{formatDate(comment.created_at || '')}</Text>
-        </View>
-        <Text className="text-gray-200 mt-1 text-sm">{comment.comment_content}</Text>
-      </View>
-    </View>
-  );
-};
-
-export const CommentSection = ({ isVisible, onClose, outfitId, outfitTitle }: CommentSectionProps) => {
-  console.log('CommentSection: isVisible =', isVisible, 'outfitId =', outfitId);
+export default function CommentSection({ isVisible, onClose, outfitId, outfitTitle }: CommentSectionProps) {
   const { userId } = useUserContext();
   const { data: comments = [], isLoading } = useFetchComments(outfitId);
   const [text, setText] = useState('');
-  const { mutateAsync: createComment, isPending } = useCreateCommentMutation();
+  const { mutateAsync: createComment, isPending } = useCreateCommentMutation({ outfitId, userId: userId ?? '', content: text });
 
   const handleSend = async () => {
     if (!userId) {
@@ -54,7 +27,7 @@ export const CommentSection = ({ isVisible, onClose, outfitId, outfitTitle }: Co
     }
     if (!text.trim()) return;
     try {
-      await createComment({ outfitId, userId, content: text.trim() });
+      await createComment();
       setText('');
     } catch (e: any) {
       Alert.alert('Error', e?.message || 'Failed to add comment');
@@ -63,7 +36,7 @@ export const CommentSection = ({ isVisible, onClose, outfitId, outfitTitle }: Co
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent onRequestClose={onClose}>
-      <View className="flex-1 bg-black/70">
+      <View className="flex-1 bg-black/70 backdrop-blur-lg">
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} className="flex-1">
           <SafeAreaView className="flex-1">
             {/* Header */}
@@ -110,5 +83,3 @@ export const CommentSection = ({ isVisible, onClose, outfitId, outfitTitle }: Co
     </Modal>
   );
 };
-
-export default CommentSection;

@@ -1,4 +1,4 @@
-import { OutfitState } from "@/components/dashboard/modals/OutfitCreateModal";
+import { OutfitState } from "@/components/modals/OutfitCreateModal";
 import { uploadImagesAndGetPublicUrls } from "@/lib/imageUpload";
 import { supabase } from "@/lib/supabase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

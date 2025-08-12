@@ -1,7 +1,7 @@
 import { CreatedOutfitsSection } from '@/components/dashboard/CreatedOutfitsSection';
 import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection';
 import { UserStatistics } from '@/components/dashboard/UserStatistics';
-import { ProfileEdit } from '@/components/dashboard/modals/ProfileEditModal';
+import { ProfileEdit } from '@/components/modals/ProfileEditModal';
 import { supabase } from '@/lib/supabase';
 import { useUserContext } from '@/providers/userContext';
 import { Image } from 'expo-image';

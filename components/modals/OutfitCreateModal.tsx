@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/select';
 import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
 import { useRequestPermission } from '@/hooks/useRequestPermission';
-import { useCreateOutfitMutation } from '@/mutations/dashboard/CreateOutfitMutation';
+import { useCreateOutfitMutation } from '@/mutations/outfits/CreateOutfitMutation';
 import { useUserContext } from '@/providers/userContext';
 import { ModalProps, OutfitElementData } from '@/types/createOutfitTypes';
 

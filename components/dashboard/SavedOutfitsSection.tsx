@@ -1,15 +1,15 @@
 
 import { useFetchSavedOutfits } from "@/fetchers/dashboard/fetchSavedOutfits"
-import { useDeleteSavedOutfitMutation } from "@/mutations/dashboard/DeleteSavedOutfitMutation"
+import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation"
 import { useUserContext } from "@/providers/userContext"
 import { Bookmark } from "lucide-react-native"
 import { useState } from "react"
 import { RefreshControl, ScrollView, View } from "react-native"
-import CommentSection from "./CommentSection"
+import { enrichOutfit } from '../../utils/enrichOutfit'
+import { OutfitDetail } from "../modals/OutfitDetailModal"
+import CommentSection from "../outfits/CommentSection"
+import { OutfitCard, OutfitData } from "../outfits/OutfitCard"
 import { EmptyState } from "./EmptyState"
-import { OutfitDetail } from "./modals/OutfitDetailModal"
-import { OutfitCard, OutfitData } from "./OutfitCard"
-import { enrichOutfit } from './utils/enrichOutfit'
 
 interface SavedOutfitsSectionProps {
     refreshing: boolean
