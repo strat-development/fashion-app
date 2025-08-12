@@ -167,7 +167,10 @@ export const OutfitCard = ({
             <Text className="text-gray-300 text-sm">{ratingStats?.positivePercentage || 0}%</Text>
           </View>
           <Pressable
-            onPress={() => onComment?.(outfit.outfit_id)}
+            onPress={() => {
+              console.log('OutfitCard: Comment button pressed for outfit:', outfit.outfit_id);
+              onComment?.(outfit.outfit_id);
+            }}
             className="flex-row items-center ml-3"
           >
             <MessageCircle size={18} color="#9CA3AF" />

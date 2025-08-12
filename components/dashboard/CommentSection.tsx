@@ -41,6 +41,7 @@ const CommentItem = ({ comment }: { comment: CommentData }) => {
 };
 
 export const CommentSection = ({ isVisible, onClose, outfitId, outfitTitle }: CommentSectionProps) => {
+  console.log('CommentSection: isVisible =', isVisible, 'outfitId =', outfitId);
   const { userId } = useUserContext();
   const { data: comments = [], isLoading } = useFetchComments(outfitId);
   const [text, setText] = useState('');

@@ -2,6 +2,7 @@ import { EmptyState } from "@/components/dashboard/EmptyState"
 import { OutfitDetail } from "@/components/dashboard/modals/OutfitDetailModal"
 import { OutfitCard } from "@/components/dashboard/OutfitCard"
 import { enrichOutfit } from "@/components/dashboard/utils/enrichOutfit"
+import CommentSection from "@/components/dashboard/CommentSection"
 import { useFetchFeedOutfits } from "@/fetchers/dashboard/fetchFeedOutfits"
 import { useFetchSavedOutfits } from "@/fetchers/dashboard/fetchSavedOutfits"
 import { useDeleteSavedOutfitMutation } from "@/mutations/dashboard/DeleteSavedOutfitMutation"
@@ -28,6 +29,9 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
+    const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
+    const [commentOutfitId, setCommentOutfitId] = useState<string | null>(null);
+    const [showCommentSection, setShowCommentSection] = useState(false);
 
     const handleUnsavePress = (outfit: OutfitData) => {
         unsaveOutfit({ outfitId: outfit.outfit_id || "" });
@@ -51,6 +55,20 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
         setShowOutfitDetail(true);
     };
 
+    const handleCommentPress = (outfitId: string) => {
+        console.log('Index Tab: handleCommentPress called with outfitId:', outfitId);
+        setCommentOutfitId(outfitId);
+        const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
+        if (raw) {
+            const enriched = enrichOutfit(raw, savedOutfitIds);
+            setSelectedOutfitForComments(enriched);
+        } else {
+            setSelectedOutfitForComments(null);
+        }
+        console.log('Index Tab: setting showCommentSection to true');
+        setShowCommentSection(true);
+    };
+
     const handleCloseOutfitDetail = () => {
         setShowOutfitDetail(false);
         setSelectedOutfit(null);
@@ -72,6 +90,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                                     key={outfit.outfit_id}
                                     outfit={outfit}
                                     onToggleSave={() => handleToggleSave(outfit.outfit_id)}
+                                    onComment={handleCommentPress}
                                     onPress={() => handleOutfitPress(outfit)}
                                     onUnsave={() => handleUnsavePress(outfit)}
                                 />
@@ -100,6 +119,13 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                     onClose={handleCloseOutfitDetail}
                 />
             )}
+
+            <CommentSection
+                isVisible={showCommentSection}
+                onClose={() => setShowCommentSection(false)}
+                outfitId={commentOutfitId || ''}
+                outfitTitle={selectedOutfitForComments?.outfit_name || ''}
+            />
         </>
     )
 }
