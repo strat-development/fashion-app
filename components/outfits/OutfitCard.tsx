@@ -168,7 +168,6 @@ export const OutfitCard = ({
           </View>
           <Pressable
             onPress={() => {
-              console.log('OutfitCard: Comment button pressed for outfit:', outfit.outfit_id);
               onComment?.(outfit.outfit_id);
             }}
             className="flex-row items-center ml-3"

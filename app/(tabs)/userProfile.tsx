@@ -31,12 +31,10 @@ export default function UserProfile({
   } = useUserContext();
 
   const handleEditProfile = () => {
-    console.log('Edit profile pressed - opening modal');
     setShowEditModal(true);
   };
 
   const handleLogout = () => {
-    console.log('Logout button pressed');
     Alert.alert(
       'Logout',
       'Are you sure you want to log out?',
@@ -50,18 +48,14 @@ export default function UserProfile({
           text: 'Logout',
           style: 'destructive',
           onPress: async () => {
-            console.log('User confirmed logout');
             try {
-              console.log('Starting logout process...');
               const { error } = await supabase.auth.signOut();
-              
+
               if (error) {
                 console.error('Supabase logout error:', error);
                 Alert.alert('Error', 'Failed to logout. Please try again.');
                 return;
               }
-              
-              console.log('Logout successful');
             } catch (error) {
               console.error('Error signing out:', error);
               Alert.alert('Error', 'An unexpected error occurred during logout.');
@@ -140,7 +134,7 @@ export default function UserProfile({
   };
 
   return (
-    <ScrollView 
+    <ScrollView
       className="flex-1 bg-gradient-to-b from-black to-gray-900"
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -151,8 +145,8 @@ export default function UserProfile({
         <View className="items-center mb-8">
           <View className="relative mb-4">
             {userImage ? (
-              <Image 
-                source={{ uri: userImage }} 
+              <Image
+                source={{ uri: userImage }}
                 className="w-28 h-28 rounded-full border-2 border-gray-700"
               />
             ) : (
@@ -163,7 +157,7 @@ export default function UserProfile({
             {/* Online indicator */}
             <View className="absolute bottom-1 right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-900" />
           </View>
-          
+
           <Text className="text-white text-2xl font-bold mb-1">{userName || "Anonymous User"}</Text>
           <Text className="text-gray-400 text-sm mb-4">Fashion Enthusiast</Text>
 
@@ -189,20 +183,18 @@ export default function UserProfile({
               <Pressable
                 key={key}
                 onPress={() => setActiveTab(key as TabType)}
-                className={`flex-1 items-center py-3 rounded-xl ${
-                  activeTab === key 
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600' 
+                className={`flex-1 items-center py-3 rounded-xl ${activeTab === key
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600'
                     : 'bg-transparent'
-                }`}
+                  }`}
               >
                 <Icon
                   size={20}
                   color={activeTab === key ? "#FFFFFF" : "#9CA3AF"}
                 />
                 <Text
-                  className={`text-xs mt-2 font-medium ${
-                    activeTab === key ? 'text-white' : 'text-gray-400'
-                  }`}
+                  className={`text-xs mt-2 font-medium ${activeTab === key ? 'text-white' : 'text-gray-400'
+                    }`}
                 >
                   {label}
                 </Text>

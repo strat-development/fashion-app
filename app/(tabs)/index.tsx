@@ -56,7 +56,6 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     };
 
     const handleCommentPress = (outfitId: string) => {
-        console.log('Index Tab: handleCommentPress called with outfitId:', outfitId);
         setCommentOutfitId(outfitId);
         const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
         if (raw) {
@@ -65,7 +64,6 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
         } else {
             setSelectedOutfitForComments(null);
         }
-        console.log('Index Tab: setting showCommentSection to true');
         setShowCommentSection(true);
     };
 

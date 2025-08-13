@@ -90,7 +90,6 @@ export const ProfileEdit = ({
             if (uri) {
               setSelectedImage({ uri, fileName: fileName || 'image.jpg', type });
               setProfileData(prev => ({ ...prev, avatar: uri }));
-              console.log('Selected image:', { uri, fileName, type });
             } else {
               console.error('No URI in image picker response');
               Alert.alert('Error', 'Failed to select image');

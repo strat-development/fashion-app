@@ -190,7 +190,6 @@ export const OutfitCreateModal = ({
           includeBase64: false,
         },
         (response) => {
-          console.log('Image picker response:', response);
           if (response.didCancel) {
             console.log('User cancelled image picker');
           } else if (response.errorCode) {
@@ -198,14 +197,13 @@ export const OutfitCreateModal = ({
             Alert.alert('Error', `Image picker error: ${response.errorMessage}`);
           } else if (response.assets && response.assets[0]) {
             const { uri, fileName, type } = response.assets[0];
-            console.log('Selected image:', { uri, fileName, type });
+
             if (uri) {
               const tempUrl = `temp://${Date.now()}`;
               pendingImagesRef.current[tempUrl] = { uri, fileName: fileName || 'image.jpg', type };
               setElementValue('imageUrl', tempUrl, { shouldValidate: true });
               setSelectedImageName(fileName || 'image.jpg');
               trigger('imageUrl');
-              console.log('Image set in form state:', tempUrl);
             } else {
               console.error('No URI in image picker response');
               Alert.alert('Error', 'Failed to select image');

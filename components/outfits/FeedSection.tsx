@@ -55,7 +55,6 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
     };
 
     const handleCommentPress = (outfitId: string) => {
-        console.log('FeedSection: handleCommentPress called with outfitId:', outfitId);
         setCommentOutfitId(outfitId);
         const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
         if (raw) {
@@ -64,7 +63,7 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
         } else {
             setSelectedOutfitForComments(null);
         }
-        console.log('FeedSection: setting showCommentSection to true');
+
         setShowCommentSection(true);
     };
 

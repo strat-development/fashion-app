@@ -65,12 +65,11 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
     };
 
     const handleCommentPress = (outfitId: string) => {
-        console.log('CreatedOutfitsSection: handleCommentPress called with outfitId:', outfitId);
         const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
         if (!raw) return;
         const enriched = enrichOutfit(raw, savedOutfitIds);
         setSelectedOutfitForComments(enriched);
-        console.log('CreatedOutfitsSection: setting showCommentSection to true');
+        
         setShowCommentSection(true);
     };
 
