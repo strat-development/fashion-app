@@ -16,13 +16,14 @@ export const useFetchComments = (outfitId: string) => {
       const { data, error } = await supabase
         .from('comments')
         .select(`
-      *,
-      user_info:users!user_id (
-        full_name,
-        user_avatar
-      )
-    `)
+          *,
+          user_info:users!user_id (
+            full_name,
+            user_avatar
+          )
+        `)
         .eq('outfit_id', outfitId)
+        .is('parent_comment', null)
         .order('created_at', { ascending: false });
       if (error) throw error;
       return data as CommentData[];
