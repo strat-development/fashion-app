@@ -39,21 +39,23 @@ interface FormData {
 export const ProfileEdit = ({
   isVisible,
   onClose,
-  currentUserData
+  currentUserData,
 }: ProfileEditProps) => {
   const { userId, setUserName, setUserBio, setUserImage, setUserEmail, setUserSocials } = useUserContext();
   const { mutate: editProfile, isPending } = useEditProfileMutation(userId || '');
   const [selectedImage, setSelectedImage] = useState<PendingImage | null>(null);
 
-  const { control, handleSubmit, formState: { errors, isValid }, watch, setValue } = useForm<FormData>({
+
+  const { control, handleSubmit, formState: { errors, isValid }, setValue } = useForm<FormData>({
+
     defaultValues: {
       name: currentUserData?.name || '',
       bio: currentUserData?.bio || '',
       avatar: currentUserData?.avatar,
       email: currentUserData?.email,
-      socials: currentUserData?.socials || []
+      socials: currentUserData?.socials || [],
     },
-    mode: 'onChange'
+    mode: 'onChange',
   });
 
   const watchedData = watch();
@@ -84,6 +86,8 @@ export const ProfileEdit = ({
             const { uri, fileName, type } = response.assets[0];
             if (uri) {
               setSelectedImage({ uri, fileName: fileName || 'image.jpg', type });
+
+
               setValue('avatar', uri);
             } else {
               console.error('No URI in image picker response');
@@ -101,7 +105,9 @@ export const ProfileEdit = ({
     }
   };
 
-  const handleSave = handleSubmit(async (data) => {
+
+  const onSubmit = async (data: FormData) => {
+
     if (!data.name.trim()) {
       Alert.alert('Error', 'Name is required');
       return;
@@ -148,29 +154,28 @@ export const ProfileEdit = ({
       }
     }
 
-    editProfile({
-      userName: data.name,
-      userBio: data.bio,
-      userImage: avatarUrl || '',
-      userEmail: data.email || '',
-      userSocials: data.socials
-    }, {
-      onSuccess: () => {
-        setUserName(data.name);
-        setUserBio(data.bio);
-        setUserImage(avatarUrl || '');
-        setUserEmail(data.email || '');
-        setUserSocials(data.socials);
-        
-        Alert.alert('Success', 'Profile updated successfully');
-        setSelectedImage(null);
-        onClose();
+    editProfile(
+      {
+        userName: data.name,
+        userBio: data.bio,
+        userImage: avatarUrl || '',
+        userEmail: data.email || '',
+        userSocials: data.socials,
+
       },
-      onError: (error) => {
-        Alert.alert('Error', error.message || 'Failed to update profile');
+      {
+        onSuccess: () => {
+          Alert.alert('Success', 'Profile updated successfully');
+          setSelectedImage(null);
+          onClose();
+        },
+        onError: (error) => {
+          Alert.alert('Error', error.message || 'Failed to update profile');
+        },
       }
-    });
-  });
+    );
+  };
+
 
   return (
     <Modal
@@ -186,9 +191,9 @@ export const ProfileEdit = ({
           </Pressable>
           <Text className="text-white font-semibold text-lg">Edit Profile</Text>
           <Pressable
-            onPress={handleSave}
+            onPress={handleSubmit(onSubmit)}
             className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
-            disabled={isPending}
+            disabled={isPending || !isValid}
           >
             <Text className="text-white font-medium text-sm">
               {isPending ? 'Saving...' : 'Save'}
@@ -202,9 +207,10 @@ export const ProfileEdit = ({
             <View className="items-center mb-8">
               <View className="relative">
                 <View className="w-24 h-24 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-gray-700/50 rounded-full items-center justify-center">
-                  {watchedData.avatar ? (
+                  {selectedImage?.uri || currentUserData?.avatar ? (
                     <Image
-                      source={{ uri: watchedData.avatar }}
+                      source={{ uri: selectedImage?.uri || currentUserData?.avatar }}
+
                       className="w-24 h-24 rounded-full"
                       resizeMode="cover"
                     />
@@ -228,7 +234,7 @@ export const ProfileEdit = ({
               <Controller
                 control={control}
                 name="name"
-                rules={{ required: "Name is required" }}
+                rules={{ required: 'Name is required' }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     value={value}
@@ -236,7 +242,9 @@ export const ProfileEdit = ({
                     onBlur={onBlur}
                     placeholder="Enter your name"
                     placeholderTextColor="#6B7280"
-                    className={`bg-gray-800/50 border ${errors.name ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
+                    className={`bg-gray-800/50 border ${
+                      errors.name ? 'border-pink-600' : 'border-gray-700/50'
+                    } text-white px-4 py-3 rounded-lg text-base`}
                     maxLength={50}
                   />
                 )}
@@ -245,7 +253,10 @@ export const ProfileEdit = ({
                 {errors.name ? (
                   <Text className="text-pink-600 text-xs">{errors.name.message}</Text>
                 ) : (
-                  <Text className="text-gray-500 text-sm mt-1">{watchedData.name.length || 0}/50</Text>
+                  <Text className="text-gray-500 text-sm mt-1">
+                    {control._formValues.name?.length || 0}/50
+                  </Text>
+
                 )}
               </View>
             </View>
@@ -257,9 +268,7 @@ export const ProfileEdit = ({
                 control={control}
                 name="bio"
                 rules={{
-                  maxLength: 200,
-                  validate: (value) => value.length <= 200 || 'Bio should not exceed 200 characters',
-                  required: "Bio is required"
+                  maxLength: { value: 200, message: 'Bio should not exceed 200 characters' },
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
@@ -268,7 +277,9 @@ export const ProfileEdit = ({
                     onBlur={onBlur}
                     placeholder="Tell us about your style..."
                     placeholderTextColor="#6B7280"
-                    className="bg-gray-800/50 border border-gray-700/50 text-white px-4 py-3 rounded-lg text-base"
+                    className={`bg-gray-800/50 border ${
+                      errors.bio ? 'border-pink-600' : 'border-gray-700/50'
+                    } text-white px-4 py-3 rounded-lg text-base`}
                     multiline
                     numberOfLines={4}
                     textAlignVertical="top"
@@ -280,7 +291,10 @@ export const ProfileEdit = ({
                 {errors.bio ? (
                   <Text className="text-pink-600 text-xs">{errors.bio.message}</Text>
                 ) : (
-                  <Text className="text-gray-500 text-sm mt-1">{watchedData.bio.length || 0}/200</Text>
+                  <Text className="text-gray-500 text-sm mt-1">
+                    {control._formValues.bio?.length || 0}/200
+                  </Text>
+
                 )}
               </View>
             </View>
@@ -310,6 +324,16 @@ export const ProfileEdit = ({
                 </Text>
               </View>
             </View>
+            
+            <Pressable
+              onPress={handleSubmit(onSubmit)} 
+              className="bg-gradient-to-r from-purple-600 to-pink-600 py-4 rounded-lg"
+              disabled={isPending || !isValid}
+            >
+              <Text className="text-white font-semibold text-base text-center">
+                {isPending ? 'Saving...' : 'Save Changes'}
+              </Text>
+            </Pressable>
           </View>
         </ScrollView>
       </SafeAreaView>
