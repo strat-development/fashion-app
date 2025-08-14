@@ -33,6 +33,7 @@ export const useEditProfileMutation = (userId: string) => {
                     socials: userSocials
                 })
                 .eq('user_id', userId)
+                .select()
 
             if (error) {
                 throw error;
@@ -41,9 +42,13 @@ export const useEditProfileMutation = (userId: string) => {
             return data;
         },
         onSuccess: (data) => {
+            // Invalidate user-related queries to refresh the UI
             queryClient.invalidateQueries({
-                queryKey: ['users', data]
-            })
+                queryKey: ['users']
+            });
+            queryClient.invalidateQueries({
+                queryKey: ['user', userId]
+            });
         }
     })
 }

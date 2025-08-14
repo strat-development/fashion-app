@@ -41,18 +41,11 @@ export const ProfileEdit = ({
   onClose,
   currentUserData
 }: ProfileEditProps) => {
-  const { userId } = useUserContext();
+  const { userId, setUserName, setUserBio, setUserImage, setUserEmail, setUserSocials } = useUserContext();
   const { mutate: editProfile, isPending } = useEditProfileMutation(userId || '');
   const [selectedImage, setSelectedImage] = useState<PendingImage | null>(null);
-  const [profileData, setProfileData] = useState<FormData>({
-    name: currentUserData?.name || '',
-    bio: currentUserData?.bio || '',
-    avatar: currentUserData?.avatar,
-    email: currentUserData?.email,
-    socials: currentUserData?.socials || []
-  });
 
-  const { control, handleSubmit, formState: { errors, isValid } } = useForm<FormData>({
+  const { control, handleSubmit, formState: { errors, isValid }, watch, setValue } = useForm<FormData>({
     defaultValues: {
       name: currentUserData?.name || '',
       bio: currentUserData?.bio || '',
@@ -62,6 +55,8 @@ export const ProfileEdit = ({
     },
     mode: 'onChange'
   });
+
+  const watchedData = watch();
 
   const handleImageSelect = async () => {
     const hasPermission = await useRequestPermission();
@@ -89,7 +84,7 @@ export const ProfileEdit = ({
             const { uri, fileName, type } = response.assets[0];
             if (uri) {
               setSelectedImage({ uri, fileName: fileName || 'image.jpg', type });
-              setProfileData(prev => ({ ...prev, avatar: uri }));
+              setValue('avatar', uri);
             } else {
               console.error('No URI in image picker response');
               Alert.alert('Error', 'Failed to select image');
@@ -106,13 +101,13 @@ export const ProfileEdit = ({
     }
   };
 
-  const handleSave = async () => {
-    if (!profileData.name.trim()) {
+  const handleSave = handleSubmit(async (data) => {
+    if (!data.name.trim()) {
       Alert.alert('Error', 'Name is required');
       return;
     }
 
-    let avatarUrl = profileData.avatar;
+    let avatarUrl = data.avatar;
 
     if (selectedImage && selectedImage.uri) {
       try {
@@ -154,13 +149,19 @@ export const ProfileEdit = ({
     }
 
     editProfile({
-      userName: profileData.name,
-      userBio: profileData.bio,
+      userName: data.name,
+      userBio: data.bio,
       userImage: avatarUrl || '',
-      userEmail: profileData.email || '',
-      userSocials: profileData.socials
+      userEmail: data.email || '',
+      userSocials: data.socials
     }, {
       onSuccess: () => {
+        setUserName(data.name);
+        setUserBio(data.bio);
+        setUserImage(avatarUrl || '');
+        setUserEmail(data.email || '');
+        setUserSocials(data.socials);
+        
         Alert.alert('Success', 'Profile updated successfully');
         setSelectedImage(null);
         onClose();
@@ -169,7 +170,7 @@ export const ProfileEdit = ({
         Alert.alert('Error', error.message || 'Failed to update profile');
       }
     });
-  };
+  });
 
   return (
     <Modal
@@ -201,9 +202,9 @@ export const ProfileEdit = ({
             <View className="items-center mb-8">
               <View className="relative">
                 <View className="w-24 h-24 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-gray-700/50 rounded-full items-center justify-center">
-                  {profileData.avatar ? (
+                  {watchedData.avatar ? (
                     <Image
-                      source={{ uri: profileData.avatar }}
+                      source={{ uri: watchedData.avatar }}
                       className="w-24 h-24 rounded-full"
                       resizeMode="cover"
                     />
@@ -231,7 +232,7 @@ export const ProfileEdit = ({
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     value={value}
-                    onChange={onChange}
+                    onChangeText={onChange}
                     onBlur={onBlur}
                     placeholder="Enter your name"
                     placeholderTextColor="#6B7280"
@@ -244,7 +245,7 @@ export const ProfileEdit = ({
                 {errors.name ? (
                   <Text className="text-pink-600 text-xs">{errors.name.message}</Text>
                 ) : (
-                  <Text className="text-gray-500 text-sm mt-1">{profileData.name.length || 0}/50</Text>
+                  <Text className="text-gray-500 text-sm mt-1">{watchedData.name.length || 0}/50</Text>
                 )}
               </View>
             </View>
@@ -263,7 +264,7 @@ export const ProfileEdit = ({
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     value={value}
-                    onChange={onChange}
+                    onChangeText={onChange}
                     onBlur={onBlur}
                     placeholder="Tell us about your style..."
                     placeholderTextColor="#6B7280"
@@ -279,7 +280,7 @@ export const ProfileEdit = ({
                 {errors.bio ? (
                   <Text className="text-pink-600 text-xs">{errors.bio.message}</Text>
                 ) : (
-                  <Text className="text-gray-500 text-sm mt-1">{profileData.bio.length || 0}/200</Text>
+                  <Text className="text-gray-500 text-sm mt-1">{watchedData.bio.length || 0}/200</Text>
                 )}
               </View>
             </View>
@@ -309,16 +310,6 @@ export const ProfileEdit = ({
                 </Text>
               </View>
             </View>
-
-            <Pressable
-              onPress={handleSave}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 py-4 rounded-lg"
-              disabled={isPending}
-            >
-              <Text className="text-white font-semibold text-base text-center">
-                {isPending ? 'Saving...' : 'Save Changes'}
-              </Text>
-            </Pressable>
           </View>
         </ScrollView>
       </SafeAreaView>
