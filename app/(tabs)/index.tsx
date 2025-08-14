@@ -41,8 +41,6 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     const handleToggleSave = (outfitId: string) => {
         if (!userId) return;
 
-        const isCurrentlySaved = savedOutfitIds.has(outfitId);
-
         saveOutfit({
             userId,
             outfitId,

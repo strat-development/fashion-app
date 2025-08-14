@@ -7,7 +7,7 @@ import { useUserContext } from '@/providers/userContext';
 import { Image } from 'expo-image';
 import { BookOpen, Edit3, Heart, LogOut, Plus, Trophy, User, User2 } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { Alert, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
+import { Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
 
 type TabType = 'user-info' | 'created-outfits' | 'saved-outfits';
 
@@ -34,38 +34,14 @@ export default function UserProfile({
     setShowEditModal(true);
   };
 
-  const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to log out?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-          onPress: () => console.log('Logout cancelled'),
-        },
-        {
-          text: 'Logout',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const { error } = await supabase.auth.signOut();
-
-              if (error) {
-                console.error('Supabase logout error:', error);
-                Alert.alert('Error', 'Failed to logout. Please try again.');
-                return;
-              }
-            } catch (error) {
-              console.error('Error signing out:', error);
-              Alert.alert('Error', 'An unexpected error occurred during logout.');
-            }
-          },
-        },
-      ]
-    );
+  const handleLogout = async () => {
+    try {
+      await supabase?.auth.signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
-
+  
   const onRefresh = () => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 1000);
@@ -184,8 +160,8 @@ export default function UserProfile({
                 key={key}
                 onPress={() => setActiveTab(key as TabType)}
                 className={`flex-1 items-center py-3 rounded-xl ${activeTab === key
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600'
-                    : 'bg-transparent'
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600'
+                  : 'bg-transparent'
                   }`}
               >
                 <Icon
