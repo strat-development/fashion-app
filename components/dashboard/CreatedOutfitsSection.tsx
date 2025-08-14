@@ -1,19 +1,19 @@
 import { useFetchCreatedOutfitsByUser } from "@/fetchers/dashboard/fetchCreatedOutfitsByUser";
 import { useFetchSavedOutfits } from "@/fetchers/dashboard/fetchSavedOutfits";
-import { useDeleteSavedOutfitMutation } from "@/mutations/dashboard/DeleteSavedOutfitMutation";
-import { useSaveOutfitMutation } from "@/mutations/dashboard/SaveOutfitMutation";
+import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation";
+import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Plus } from "lucide-react-native";
 import { useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
+import { enrichOutfit } from '../../utils/enrichOutfit';
+import { DeleteModalOutfit } from "../modals/DeleteOutfitModal";
+import { OutfitCreateModal } from "../modals/OutfitCreateModal";
+import { OutfitDetail } from "../modals/OutfitDetailModal";
+import CommentSection from "../outfits/CommentSection";
+import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
 import { Button } from "../ui/button";
-import CommentSection from "./CommentSection";
 import { EmptyState } from "./EmptyState";
-import { DeleteModalOutfit } from "./modals/DeleteOutfitModal";
-import { OutfitCreateModal } from "./modals/OutfitCreateModal";
-import { OutfitDetail } from "./modals/OutfitDetailModal";
-import { OutfitCard, OutfitData } from "./OutfitCard";
-import { enrichOutfit } from './utils/enrichOutfit';
 
 interface CreatedOutfitsSectionProps {
     refreshing: boolean;
@@ -65,12 +65,11 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
     };
 
     const handleCommentPress = (outfitId: string) => {
-        console.log('CreatedOutfitsSection: handleCommentPress called with outfitId:', outfitId);
         const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
         if (!raw) return;
         const enriched = enrichOutfit(raw, savedOutfitIds);
         setSelectedOutfitForComments(enriched);
-        console.log('CreatedOutfitsSection: setting showCommentSection to true');
+        
         setShowCommentSection(true);
     };
 

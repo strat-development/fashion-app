@@ -1,4 +1,4 @@
-import { OutfitData } from '../OutfitCard';
+import { OutfitData } from '../components/outfits/OutfitCard';
 
 export const enrichOutfit = (raw: any, savedIds: Set<string>): OutfitData => ({
   ...(raw as any),

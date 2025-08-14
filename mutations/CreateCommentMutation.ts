@@ -7,19 +7,22 @@ export type CreateCommentData = {
   content: string;
 };
 
-export const useCreateCommentMutation = () => {
+export const useCreateCommentMutation = ({ outfitId, userId, content }: CreateCommentData) => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: async ({ outfitId, userId, content }: CreateCommentData) => {
+    mutationFn: async () => {
       const { error } = await supabase.from('comments').insert({
         outfit_id: outfitId,
         user_id: userId,
         comment_content: content,
       });
+
       if (error) throw error;
     },
-    onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['comments', variables.outfitId] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments', outfitId] });
+      queryClient.refetchQueries({ queryKey: ['comments', outfitId] });
     },
   });
 };

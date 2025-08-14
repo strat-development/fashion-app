@@ -1,8 +1,8 @@
 import { useFetchRatingStats } from "@/fetchers/fetchRatedOutfits";
 import { useFetchUser } from "@/fetchers/fetchUser";
 import { formatDate } from "@/helpers/helpers";
-import { useRateOutfitMutation } from "@/mutations/RateOutfitMutation";
-import { useUnrateOutfitMutation } from "@/mutations/UnrateOutfitMutation";
+import { useRateOutfitMutation } from "@/mutations/outfits/RateOutfitMutation";
+import { useUnrateOutfitMutation } from "@/mutations/outfits/UnrateOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
 import { Bookmark, Delete, MessageCircle, Share, ThumbsDown, ThumbsUp, User } from "lucide-react-native";
@@ -168,7 +168,6 @@ export const OutfitCard = ({
           </View>
           <Pressable
             onPress={() => {
-              console.log('OutfitCard: Comment button pressed for outfit:', outfit.outfit_id);
               onComment?.(outfit.outfit_id);
             }}
             className="flex-row items-center ml-3"

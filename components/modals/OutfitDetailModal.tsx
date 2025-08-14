@@ -1,14 +1,14 @@
 import { useFetchSavedOutfits } from '@/fetchers/dashboard/fetchSavedOutfits';
 import { useFetchUser } from '@/fetchers/fetchUser';
 import { formatDate } from '@/helpers/helpers';
-import { useDeleteSavedOutfitMutation } from '@/mutations/dashboard/DeleteSavedOutfitMutation';
-import { useSaveOutfitMutation } from '@/mutations/dashboard/SaveOutfitMutation';
+import { useDeleteSavedOutfitMutation } from '@/mutations/outfits/DeleteSavedOutfitMutation';
+import { useSaveOutfitMutation } from '@/mutations/outfits/SaveOutfitMutation';
 import { useUserContext } from '@/providers/userContext';
 import { Bookmark, Heart, MessageCircle, Send, Share, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { OutfitData } from '../OutfitCard';
+import { OutfitData } from '../outfits/OutfitCard';
 
 interface Comment {
   id: number;

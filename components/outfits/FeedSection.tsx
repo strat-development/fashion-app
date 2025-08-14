@@ -1,16 +1,16 @@
 import { useFetchFeedOutfits } from "@/fetchers/dashboard/fetchFeedOutfits"
 import { useFetchSavedOutfits } from "@/fetchers/dashboard/fetchSavedOutfits"
-import { useDeleteSavedOutfitMutation } from "@/mutations/dashboard/DeleteSavedOutfitMutation"
-import { useSaveOutfitMutation } from "@/mutations/dashboard/SaveOutfitMutation"
+import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation"
+import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation"
 import { useUserContext } from "@/providers/userContext"
 import { Grid } from "lucide-react-native"
 import { useState } from "react"
 import { RefreshControl, ScrollView, View } from "react-native"
+import { enrichOutfit } from '../../utils/enrichOutfit'
+import { EmptyState } from "../dashboard/EmptyState"
+import { OutfitDetail } from "../modals/OutfitDetailModal"
 import CommentSection from "./CommentSection"
-import { EmptyState } from "./EmptyState"
 import { OutfitCard, OutfitData } from "./OutfitCard"
-import { OutfitDetail } from "./modals/OutfitDetailModal"
-import { enrichOutfit } from './utils/enrichOutfit'
 
 interface FeedSectionProps {
     refreshing: boolean
@@ -55,7 +55,6 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
     };
 
     const handleCommentPress = (outfitId: string) => {
-        console.log('FeedSection: handleCommentPress called with outfitId:', outfitId);
         setCommentOutfitId(outfitId);
         const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
         if (raw) {
@@ -64,7 +63,7 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
         } else {
             setSelectedOutfitForComments(null);
         }
-        console.log('FeedSection: setting showCommentSection to true');
+
         setShowCommentSection(true);
     };
 

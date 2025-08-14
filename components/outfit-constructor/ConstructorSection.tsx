@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { View } from "react-native";
+import { OutfitCreateModal } from "../modals/OutfitCreateModal";
 import { ChatSwitch } from "./ChatSwitch";
-import { OutfitCreateModal } from "../dashboard/modals/OutfitCreateModal";
 
 export const ConstuctorSection = () => {
     const [isVisible, setIsVisible] = useState(true);

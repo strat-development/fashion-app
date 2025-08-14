@@ -1,14 +1,14 @@
 import { EmptyState } from "@/components/dashboard/EmptyState"
-import { OutfitDetail } from "@/components/dashboard/modals/OutfitDetailModal"
-import { OutfitCard } from "@/components/dashboard/OutfitCard"
-import { enrichOutfit } from "@/components/dashboard/utils/enrichOutfit"
-import CommentSection from "@/components/dashboard/CommentSection"
+import { OutfitDetail } from "@/components/modals/OutfitDetailModal"
+import CommentSection from "@/components/outfits/CommentSection"
+import { OutfitCard } from "@/components/outfits/OutfitCard"
 import { useFetchFeedOutfits } from "@/fetchers/dashboard/fetchFeedOutfits"
 import { useFetchSavedOutfits } from "@/fetchers/dashboard/fetchSavedOutfits"
-import { useDeleteSavedOutfitMutation } from "@/mutations/dashboard/DeleteSavedOutfitMutation"
-import { useSaveOutfitMutation } from "@/mutations/dashboard/SaveOutfitMutation"
+import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation"
+import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation"
 import { useUserContext } from "@/providers/userContext"
 import { OutfitData } from "@/types/createOutfitTypes"
+import { enrichOutfit } from "@/utils/enrichOutfit"
 import { Grid } from "lucide-react-native"
 import { useState } from "react"
 import { RefreshControl, ScrollView, View } from "react-native"
@@ -56,7 +56,6 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     };
 
     const handleCommentPress = (outfitId: string) => {
-        console.log('Index Tab: handleCommentPress called with outfitId:', outfitId);
         setCommentOutfitId(outfitId);
         const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
         if (raw) {
@@ -65,7 +64,6 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
         } else {
             setSelectedOutfitForComments(null);
         }
-        console.log('Index Tab: setting showCommentSection to true');
         setShowCommentSection(true);
     };
 
