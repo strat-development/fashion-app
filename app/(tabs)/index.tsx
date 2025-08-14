@@ -1,31 +1,50 @@
-import { EmptyState } from "@/components/dashboard/EmptyState"
-import { OutfitDetail } from "@/components/modals/OutfitDetailModal"
-import CommentSection from "@/components/outfits/CommentSection"
-import { OutfitCard } from "@/components/outfits/OutfitCard"
-import { useFetchFeedOutfits } from "@/fetchers/dashboard/fetchFeedOutfits"
-import { useFetchSavedOutfits } from "@/fetchers/dashboard/fetchSavedOutfits"
-import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation"
-import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation"
-import { useUserContext } from "@/providers/userContext"
-import { OutfitData } from "@/types/createOutfitTypes"
-import { enrichOutfit } from "@/utils/enrichOutfit"
-import { Grid } from "lucide-react-native"
-import { useState } from "react"
-import { RefreshControl, ScrollView, View } from "react-native"
+import { EmptyState } from "@/components/dashboard/EmptyState";
+import { OutfitDetail } from "@/components/modals/OutfitDetailModal";
+import CommentSection from "@/components/outfits/CommentSection";
+import { OutfitCard } from "@/components/outfits/OutfitCard";
+import { useFetchFeedOutfits } from "@/fetchers/outfits/fetchFeedOutfits";
+import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
+import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation";
+import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
+import { useUserContext } from "@/providers/userContext";
+import { OutfitData } from "@/types/createOutfitTypes";
+import { enrichOutfit } from "@/utils/enrichOutfit";
+import { Grid } from "lucide-react-native";
+import { useCallback, useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
 
 interface FeedSectionProps {
-    refreshing: boolean
+    refreshing: boolean;
     onPress?: (outfit: OutfitData) => void;
 }
 
 export default function FeedSection({ refreshing }: FeedSectionProps) {
-    const { data: fetchedOutfits = [], isLoading } = useFetchFeedOutfits();
     const { userId } = useUserContext();
     const { mutate: saveOutfit } = useSaveOutfitMutation();
     const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
 
     const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
+    const [page, setPage] = useState(1);
+    const [allOutfits, setAllOutfits] = useState<OutfitData[]>([]);
+    const [hasMore, setHasMore] = useState(true);
+    const pageSize = 25;
+
+    const { data: fetchedOutfits = [], isLoading } = useFetchFeedOutfits(page, pageSize);
+
+    useEffect(() => {
+        if (fetchedOutfits.length > 0 && hasMore) {
+            setAllOutfits(prev => {
+                const existingIds = new Set(prev.map(o => o.outfit_id));
+                const newOutfits = fetchedOutfits.filter(o => !existingIds.has(o.outfit_id));
+                return [...prev, ...newOutfits];
+            });
+
+            if (fetchedOutfits.length < pageSize) {
+                setHasMore(false);
+            }
+        }
+    }, [fetchedOutfits]);
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
@@ -37,14 +56,13 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
         unsaveOutfit({ outfitId: outfit.outfit_id || "" });
     };
 
-
     const handleToggleSave = (outfitId: string) => {
         if (!userId) return;
 
         saveOutfit({
             userId,
             outfitId,
-            savedAt: new Date().toISOString()
+            savedAt: new Date().toISOString(),
         });
     };
 
@@ -55,7 +73,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
 
     const handleCommentPress = (outfitId: string) => {
         setCommentOutfitId(outfitId);
-        const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
+        const raw = allOutfits.find(o => o.outfit_id === outfitId);
         if (raw) {
             const enriched = enrichOutfit(raw, savedOutfitIds);
             setSelectedOutfitForComments(enriched);
@@ -70,38 +88,49 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
         setSelectedOutfit(null);
     };
 
+    const handleEndReached = useCallback(() => {
+        if (!isLoading && hasMore) {
+            setPage(prev => prev + 1);
+        }
+    }, [isLoading, hasMore]);
+
     return (
         <>
-            <ScrollView
-                className="flex-1 px-4 bg-gradient-to-b from-black to-gray-900"
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} />
-                }>
-                <View className="pt-6 pb-20">
-                    {fetchedOutfits?.length > 0 ? (
-                        fetchedOutfits.map(raw => {
-                            const outfit = enrichOutfit(raw, savedOutfitIds);
-                            return (
-                                <OutfitCard
-                                    key={outfit.outfit_id}
-                                    outfit={outfit}
-                                    onToggleSave={() => handleToggleSave(outfit.outfit_id)}
-                                    onComment={handleCommentPress}
-                                    onPress={() => handleOutfitPress(outfit)}
-                                    onUnsave={() => handleUnsavePress(outfit)}
-                                />
-                            );
-                        })
-                    ) : (
-                        <EmptyState
-                            icon={Grid}
-                            title="No outfits yet"
-                            description="Create your first outfit or follow others to see their creations"
-                            actionText="Create Outfit"
+            <FlatList
+                data={allOutfits}
+                keyExtractor={item => item.outfit_id}
+                renderItem={({ item: raw }) => {
+                    const outfit = enrichOutfit(raw, savedOutfitIds);
+                    return (
+                        <OutfitCard
+                            outfit={outfit}
+                            onToggleSave={() => handleToggleSave(outfit.outfit_id)}
+                            onComment={handleCommentPress}
+                            onPress={() => handleOutfitPress(outfit)}
+                            onUnsave={() => handleUnsavePress(outfit)}
                         />
-                    )}
-                </View>
-            </ScrollView>
+                    );
+                }}
+                ListEmptyComponent={
+                    <EmptyState
+                        icon={Grid}
+                        title="No outfits yet"
+                        description="Create your first outfit or follow others to see their creations"
+                        actionText="Create Outfit"
+                    />
+                }
+                refreshControl={<RefreshControl refreshing={refreshing} />}
+                onEndReached={handleEndReached}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={
+                    isLoading && hasMore ? (
+                        <View className="py-4">
+                            <ActivityIndicator size="large" color="#ffffff" />
+                        </View>
+                    ) : null
+                }
+                contentContainerStyle={{ paddingTop: 24, paddingBottom: 80, paddingHorizontal: 16 }}
+            />
 
             {selectedOutfit && (
                 <OutfitDetail
@@ -109,7 +138,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                         ...selectedOutfit,
                         isSaved: savedOutfitIds.has(selectedOutfit.outfit_id),
                         likes: 0,
-                        comments: 0
+                        comments: 0,
                     }}
                     isVisible={showOutfitDetail}
                     onClose={handleCloseOutfitDetail}
@@ -123,5 +152,5 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                 outfitTitle={selectedOutfitForComments?.outfit_name || ''}
             />
         </>
-    )
+    );
 }

@@ -1,4 +1,4 @@
-import { useFetchRatingStats } from "@/fetchers/fetchRatedOutfits";
+import { useFetchRatingStats } from "@/fetchers/outfits/fetchRatedOutfits";
 import { useFetchUser } from "@/fetchers/fetchUser";
 import { formatDate } from "@/helpers/helpers";
 import { useRateOutfitMutation } from "@/mutations/outfits/RateOutfitMutation";

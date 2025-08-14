@@ -1,5 +1,5 @@
-import { useFetchFeedOutfits } from "@/fetchers/dashboard/fetchFeedOutfits"
-import { useFetchSavedOutfits } from "@/fetchers/dashboard/fetchSavedOutfits"
+import { useFetchFeedOutfits } from "@/fetchers/outfits/fetchFeedOutfits"
+import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits"
 import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation"
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation"
 import { useUserContext } from "@/providers/userContext"

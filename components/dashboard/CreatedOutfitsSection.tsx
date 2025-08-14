@@ -1,11 +1,11 @@
-import { useFetchCreatedOutfitsByUser } from "@/fetchers/dashboard/fetchCreatedOutfitsByUser";
-import { useFetchSavedOutfits } from "@/fetchers/dashboard/fetchSavedOutfits";
+import { useFetchCreatedOutfitsByUser } from "@/fetchers/outfits/fetchCreatedOutfitsByUser";
+import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation";
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Plus } from "lucide-react-native";
-import { useState } from "react";
-import { RefreshControl, ScrollView, Text, View } from "react-native";
+import { useState, useCallback, useEffect } from "react";
+import { RefreshControl, ScrollView, Text, View, ActivityIndicator, FlatList } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { DeleteModalOutfit } from "../modals/DeleteOutfitModal";
 import { OutfitCreateModal } from "../modals/OutfitCreateModal";
@@ -20,12 +20,33 @@ interface CreatedOutfitsSectionProps {
     onPress?: (outfit: OutfitData) => void;
 }
 
-export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProps) => {
+export const CreatedOutfitsSection = ({ refreshing }: CreatedOutfitsSectionProps) => {
     const { userId } = useUserContext();
-    const { data: fetchedOutfits = [], isLoading } = useFetchCreatedOutfitsByUser(userId || '');
-    const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
     const { mutate: saveOutfit } = useSaveOutfitMutation();
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
+
+    const [page, setPage] = useState(1);
+    const [allOutfits, setAllOutfits] = useState<OutfitData[]>([]);
+    const [hasMore, setHasMore] = useState(true);
+    const pageSize = 10;
+
+    const { data: fetchedOutfits = [], isLoading } = useFetchCreatedOutfitsByUser(userId || '', page, pageSize);
+    const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
+
+    const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
+
+    useEffect(() => {
+        if (fetchedOutfits.length > 0 && hasMore) {
+            setAllOutfits(prev => {
+                const existingIds = new Set(prev.map(o => o.outfit_id));
+                const newOutfits = fetchedOutfits.filter(o => !existingIds.has(o.outfit_id));
+                return [...prev, ...newOutfits];
+            });
+            if (fetchedOutfits.length < pageSize) {
+                setHasMore(false);
+            }
+        }
+    }, [fetchedOutfits]);
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
@@ -35,8 +56,6 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
     const [showCommentSection, setShowCommentSection] = useState(false);
     const [showOutfitCreate, setShowOutfitCreate] = useState(false);
     const [showDeleteOutfit, setShowDeleteOutfit] = useState(false);
-
-    const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
 
     const handleUnsavePress = (outfit: OutfitData) => {
         unsaveOutfit({ outfitId: outfit.outfit_id || "" });
@@ -65,11 +84,10 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
     };
 
     const handleCommentPress = (outfitId: string) => {
-        const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
+        const raw = allOutfits.find(o => o.outfit_id === outfitId);
         if (!raw) return;
         const enriched = enrichOutfit(raw, savedOutfitIds);
         setSelectedOutfitForComments(enriched);
-        
         setShowCommentSection(true);
     };
 
@@ -80,25 +98,54 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
 
     const handleToggleSave = (outfitId: string) => {
         if (!userId) return;
-
-        const isCurrentlySaved = savedOutfitIds.has(outfitId);
-
         saveOutfit({
             userId,
             outfitId,
-            savedAt: new Date().toISOString()
+            savedAt: new Date().toISOString(),
         });
     };
 
+    const handleEndReached = useCallback(() => {
+        if (!isLoading && hasMore) {
+            setPage(prev => prev + 1);
+        }
+    }, [isLoading, hasMore]);
+
+    const onRefresh = useCallback(() => {
+        setPage(1);
+        setAllOutfits([]);
+        setHasMore(true);
+    }, []);
+
     return (
         <>
-            <ScrollView
-                className="flex-1"
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} />
+            <FlatList
+                data={allOutfits}
+                keyExtractor={item => item.outfit_id}
+                renderItem={({ item: raw }) => {
+                    const outfit = enrichOutfit(raw, savedOutfitIds);
+                    return (
+                        <OutfitCard
+                            key={outfit.outfit_id}
+                            outfit={outfit}
+                            onToggleSave={() => handleToggleSave(outfit.outfit_id)}
+                            onComment={handleCommentPress}
+                            onPress={() => handleOutfitPress(outfit)}
+                            onDelete={() => handleDeletePress(outfit)}
+                            onUnsave={() => handleUnsavePress(outfit)}
+                            isDeleteVisible={true}
+                        />
+                    );
+                }}
+                ListEmptyComponent={
+                    <EmptyState
+                        icon={Plus}
+                        title="No outfits created yet"
+                        description="Start creating your first outfit!"
+                        actionText="Create Outfit"
+                    />
                 }
-            >
-                <View className="pt-6 pb-20">
+                ListHeaderComponent={
                     <View className="flex-row items-center justify-between mb-6">
                         <Text className="text-white text-xl font-semibold">Your Creations</Text>
                         <Button
@@ -111,32 +158,19 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
                             </View>
                         </Button>
                     </View>
-                    {fetchedOutfits?.length > 0 ? (
-                        fetchedOutfits.map(raw => {
-                            const outfit = enrichOutfit(raw, savedOutfitIds);
-                            return (
-                                <OutfitCard
-                                    key={outfit.outfit_id}
-                                    outfit={outfit}
-                                    onToggleSave={() => handleToggleSave(outfit.outfit_id)}
-                                    onComment={handleCommentPress}
-                                    onPress={() => handleOutfitPress(outfit)}
-                                    onDelete={() => handleDeletePress(outfit)}
-                                    onUnsave={() => handleUnsavePress(outfit)}
-                                    isDeleteVisible={true}
-                                />
-                            );
-                        })
-                    ) : (
-                        <EmptyState
-                            icon={Plus}
-                            title="No outfits created yet"
-                            description="Start creating your first outfit!"
-                            actionText="Create Outfit"
-                        />
-                    )}
-                </View>
-            </ScrollView>
+                }
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                onEndReached={handleEndReached}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={
+                    isLoading && hasMore ? (
+                        <View className="py-4">
+                            <ActivityIndicator size="large" color="#ffffff" />
+                        </View>
+                    ) : null
+                }
+                contentContainerStyle={{ paddingTop: 24, paddingBottom: 80 }}
+            />
 
             <OutfitCreateModal
                 isVisible={showOutfitCreate}
@@ -157,7 +191,7 @@ export const CreatedOutfitsSection = ({ refreshing, }: CreatedOutfitsSectionProp
                 <OutfitDetail
                     outfit={{
                         ...selectedOutfit,
-                        isSaved: savedOutfitIds.has(selectedOutfit.outfit_id)
+                        isSaved: savedOutfitIds.has(selectedOutfit.outfit_id),
                     }}
                     isVisible={showOutfitDetail}
                     onClose={handleCloseOutfitDetail}

@@ -1,5 +1,5 @@
-import { useFetchSavedOutfits } from '@/fetchers/dashboard/fetchSavedOutfits';
 import { useFetchUser } from '@/fetchers/fetchUser';
+import { useFetchSavedOutfits } from '@/fetchers/outfits/fetchSavedOutfits';
 import { formatDate } from '@/helpers/helpers';
 import { useDeleteSavedOutfitMutation } from '@/mutations/outfits/DeleteSavedOutfitMutation';
 import { useSaveOutfitMutation } from '@/mutations/outfits/SaveOutfitMutation';
