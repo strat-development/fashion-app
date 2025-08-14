@@ -170,8 +170,7 @@ export default function UserProfile({
                 />
                 <Text
                   className={`text-xs mt-2 font-medium ${activeTab === key ? 'text-white' : 'text-gray-400'
-                    }`}
-                >
+                    }`}>
                   {label}
                 </Text>
               </Pressable>
