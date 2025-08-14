@@ -20,8 +20,8 @@ export const useDeleteCommentMutation = ({ commentId, userId }: DeleteCommentDat
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['comments', commentId] });
-      queryClient.refetchQueries({ queryKey: ['comments', commentId] });
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+      queryClient.refetchQueries({ queryKey: ['comments'] });
     },
   });
 };

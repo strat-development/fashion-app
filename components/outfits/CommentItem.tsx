@@ -5,11 +5,16 @@ import { useCreateReplyMutation } from "@/mutations/CreateReplyMutation";
 import { useDeleteCommentMutation } from "@/mutations/DeleteCommentMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Image } from "expo-image";
-import { Send, Trash, X } from "lucide-react-native";
+import { Send, Trash } from "lucide-react-native";
 import { useState } from "react";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
 
-export const CommentItem = ({ comment, isReply = false }: { comment: CommentData; isReply?: boolean }) => {
+export const CommentItem = ({ comment, isReply = false, depth = 0, parentCommentId }: { 
+    comment: CommentData; 
+    isReply?: boolean; 
+    depth?: number; 
+    parentCommentId?: string;
+}) => {
     const [isSetToReply, setIsSetToReply] = useState(false);
     const [repliesVisible, setRepliesVisible] = useState(isReply);
     const [text, setText] = useState('');
@@ -25,10 +30,12 @@ export const CommentItem = ({ comment, isReply = false }: { comment: CommentData
         commentId: comment.id,
     });
 
+    const targetParentId = isReply ? (parentCommentId || comment.parent_comment) : comment.id;
+
     const { mutateAsync: createReply, isPending } = useCreateReplyMutation({
         outfitId: comment.outfit_id || '',
-        userId: comment.user_id || '',
-        parentCommentId: comment.id,
+        userId: userId || '',
+        parentCommentId: targetParentId || comment.id,
         content: "@"+name + " " + text,
     });
 
@@ -47,7 +54,7 @@ export const CommentItem = ({ comment, isReply = false }: { comment: CommentData
     };
 
     return (
-        <View className={`flex-row mb-4 ${isReply ? 'ml-[-60px] px-4' : 'px-4'}`}>
+        <View className={`flex-row mb-3 ${depth > 0 ? 'ml-4 pl-2 border-l border-gray-700/50' : 'px-4'}`}>
             <View className="mr-3">
                 {avatar ? (
                     <Image source={{ uri: avatar }} className="w-8 h-8 rounded-full" />
@@ -56,65 +63,69 @@ export const CommentItem = ({ comment, isReply = false }: { comment: CommentData
                 )}
             </View>
             <View className="flex-1">
-                <View className="flex-row items-center justify-between">
-                    <View className="flex-row items-center gap-4">
-                        <Text className="text-white font-medium text-sm">{name}</Text>
-                        <Text className="text-gray-400 text-2xs">{formatDate(comment.created_at || '')}</Text>
-                    </View>
-                    {userId === comment.user_id && (
+                <View className="bg-gray-800/50 rounded-lg p-3 relative">
+                    <View className="flex-row items-center justify-between mb-2">
                         <View className="flex-row items-center gap-2">
-                            <Pressable onPress={() => deleteComment()} className="flex-row items-center gap-2">
-                                <Trash size={16} className="text-red-500" />
-                            </Pressable>
+                            <Text className="text-white font-medium text-sm">{name}</Text>
+                            <Text className="text-gray-400 text-2xs">{formatDate(comment.created_at || '')}</Text>
                         </View>
-                    )}
+                        {userId === comment.user_id && (
+                            <Pressable onPress={() => deleteComment()} className="p-1">
+                                <Trash size={16} color="#EF4444" />
+                            </Pressable>
+                        )}
+                    </View>
+                    <Text className="text-gray-200 text-sm">{comment.comment_content}</Text>
                 </View>
 
-                <Text className="text-gray-200 mt-1 text-sm">{comment.comment_content}</Text>
-
-                <Pressable onPress={() => setIsSetToReply(!isSetToReply)} className="flex-row items-center gap-2 mt-2">
-                    <Text className="text-gray-400 text-2xs">Reply</Text>
-                </Pressable>
+                <View className="flex-row items-center mt-2">
+                    <Pressable onPress={() => setIsSetToReply(!isSetToReply)} className="mr-4">
+                        <Text className="text-gray-400 text-xs">Reply</Text>
+                    </Pressable>
+                </View>
 
                 {!isReply && replies && replies.length > 0 && !repliesVisible && (
-                    <Pressable onPress={() => setRepliesVisible(true)} className="flex-row items-center gap-2 mt-2">
-                        <Text className="text-gray-400 text-2xs">
+                    <Pressable onPress={() => setRepliesVisible(true)} className="mt-2">
+                        <Text className="text-blue-400 text-xs">
                             View {replies.length} {replies.length === 1 ? 'reply' : 'replies'}
                         </Text>
                     </Pressable>
                 )}
 
-                {repliesVisible && replies && replies.length > 0 && (
-                    <View className="flex flex-col gap-4 w-[80vw] mt-2">
-                        {!isReply && (
-                            <Pressable onPress={() => setRepliesVisible(false)} className="flex-row items-center gap-2">
-                                <Text className="text-gray-400 text-2xs mb-2">Hide replies</Text>
-                            </Pressable>
-                        )}
+                {!isReply && repliesVisible && replies && replies.length > 0 && (
+                    <View className="mt-3">
+                        <Pressable onPress={() => setRepliesVisible(false)} className="mb-2">
+                            <Text className="text-blue-400 text-xs">Hide replies</Text>
+                        </Pressable>
                         {replies.map((reply) => (
-                            <CommentItem key={reply.id} comment={reply} isReply={true} />
+                            <CommentItem 
+                                key={reply.id} 
+                                comment={reply} 
+                                isReply={true} 
+                                depth={1} 
+                                parentCommentId={comment.id}
+                            />
                         ))}
                     </View>
                 )}
 
                 {isSetToReply && (
-                    <View className="px-4 py-3 border-gray-700/40">
-                        <View className="flex-row items-center border border-gray-700/50 rounded-full px-3">
+                    <View className="mt-2 p-2 bg-gray-800/30 rounded-lg border border-gray-700/30">
+                        <View className="flex-row items-center bg-gray-700/50 border border-gray-600/50 rounded-full px-3">
                             <TextInput
                                 value={text}
                                 onChangeText={setText}
                                 placeholder={`Reply to ${name}`}
                                 placeholderTextColor="#9CA3AF"
-                                className="flex-1 text-white py-2"
+                                className="flex-1 text-white py-2 text-sm"
                                 multiline
                             />
-                            <Pressable onPress={handleSend} disabled={isPending || !text.trim()} className="ml-2 p-2">
-                                <X size={0} color="transparent" />
-                                <Send size={18} color={text.trim() ? '#A78BFA' : '#6B7280'} />
+                            <Pressable onPress={handleSend} disabled={isPending || !text.trim()} className="ml-2 p-1">
+                                <Send size={14} color={text.trim() ? '#A78BFA' : '#6B7280'} />
                             </Pressable>
                         </View>
-                        <Pressable onPress={() => setIsSetToReply(false)} className="flex-row items-center gap-2 mt-2 self-end">
-                            <Text className="text-gray-400 text-2xs">Cancel</Text>
+                        <Pressable onPress={() => setIsSetToReply(false)} className="mt-1 self-end">
+                            <Text className="text-gray-400 text-xs">Cancel</Text>
                         </Pressable>
                     </View>
                 )}
