@@ -57,7 +57,14 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
               {!isLoading && comments.length === 0 && (
                 <Text className="text-gray-400 text-center mt-4">No comments yet. Be the first!</Text>
               )}
-              {!isLoading && comments.map((c: CommentData) => <CommentItem key={c.id} comment={c} />)}
+              {!isLoading && comments.map((c: CommentData) => (
+                <CommentItem 
+                  key={c.id} 
+                  comment={c} 
+                  depth={0} 
+                  parentCommentId={undefined}
+                />
+              ))}
             </ScrollView>
 
             {/* Input */}

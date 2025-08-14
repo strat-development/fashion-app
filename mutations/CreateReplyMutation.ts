@@ -25,7 +25,9 @@ export const useCreateReplyMutation = ({ outfitId, userId, content, parentCommen
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['comments', outfitId] });
+            queryClient.invalidateQueries({ queryKey: ['comments', parentCommentId] });
             queryClient.refetchQueries({ queryKey: ['comments', outfitId] });
+            queryClient.refetchQueries({ queryKey: ['comments', parentCommentId] });
         },
     });
 };

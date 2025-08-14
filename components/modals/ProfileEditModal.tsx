@@ -41,11 +41,13 @@ export const ProfileEdit = ({
   onClose,
   currentUserData,
 }: ProfileEditProps) => {
-  const { userId } = useUserContext();
+  const { userId, setUserName, setUserBio, setUserImage, setUserEmail, setUserSocials } = useUserContext();
   const { mutate: editProfile, isPending } = useEditProfileMutation(userId || '');
   const [selectedImage, setSelectedImage] = useState<PendingImage | null>(null);
 
+
   const { control, handleSubmit, formState: { errors, isValid }, setValue } = useForm<FormData>({
+
     defaultValues: {
       name: currentUserData?.name || '',
       bio: currentUserData?.bio || '',
@@ -55,6 +57,8 @@ export const ProfileEdit = ({
     },
     mode: 'onChange',
   });
+
+  const watchedData = watch();
 
   const handleImageSelect = async () => {
     const hasPermission = await useRequestPermission();
@@ -82,8 +86,9 @@ export const ProfileEdit = ({
             const { uri, fileName, type } = response.assets[0];
             if (uri) {
               setSelectedImage({ uri, fileName: fileName || 'image.jpg', type });
-              setValue('avatar', uri); 
-              console.log('Selected image:', { uri, fileName, type });
+
+
+              setValue('avatar', uri);
             } else {
               console.error('No URI in image picker response');
               Alert.alert('Error', 'Failed to select image');
@@ -100,7 +105,9 @@ export const ProfileEdit = ({
     }
   };
 
+
   const onSubmit = async (data: FormData) => {
+
     if (!data.name.trim()) {
       Alert.alert('Error', 'Name is required');
       return;
@@ -154,6 +161,7 @@ export const ProfileEdit = ({
         userImage: avatarUrl || '',
         userEmail: data.email || '',
         userSocials: data.socials,
+
       },
       {
         onSuccess: () => {
@@ -167,6 +175,7 @@ export const ProfileEdit = ({
       }
     );
   };
+
 
   return (
     <Modal
@@ -201,6 +210,7 @@ export const ProfileEdit = ({
                   {selectedImage?.uri || currentUserData?.avatar ? (
                     <Image
                       source={{ uri: selectedImage?.uri || currentUserData?.avatar }}
+
                       className="w-24 h-24 rounded-full"
                       resizeMode="cover"
                     />
@@ -246,6 +256,7 @@ export const ProfileEdit = ({
                   <Text className="text-gray-500 text-sm mt-1">
                     {control._formValues.name?.length || 0}/50
                   </Text>
+
                 )}
               </View>
             </View>
@@ -283,6 +294,7 @@ export const ProfileEdit = ({
                   <Text className="text-gray-500 text-sm mt-1">
                     {control._formValues.bio?.length || 0}/200
                   </Text>
+
                 )}
               </View>
             </View>
@@ -312,7 +324,7 @@ export const ProfileEdit = ({
                 </Text>
               </View>
             </View>
-
+            
             <Pressable
               onPress={handleSubmit(onSubmit)} 
               className="bg-gradient-to-r from-purple-600 to-pink-600 py-4 rounded-lg"
