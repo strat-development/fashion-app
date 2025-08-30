@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Modal, SafeAreaView, ScrollView, Text, TextInput, Pressable, View, Image, Alert } from "react-native";
-import { supabase } from "@/lib/supabase";
-import { Camera, User } from "lucide-react-native";
-import { launchImageLibrary } from "react-native-image-picker";
-import { BlurView } from "expo-blur";
 import { useRequestPermission } from "@/hooks/useRequestPermission";
+import { supabase } from "@/lib/supabase";
+import { BlurView } from "expo-blur";
+import { Camera, User } from "lucide-react-native";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { Alert, Image, Modal, Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from "react-native";
+import { launchImageLibrary } from "react-native-image-picker";
 
 interface RegistrationData {
     username: string;
@@ -149,7 +149,6 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                         bio: data.bio,
                         user_avatar: avatarUrl,
                         created_at: new Date().toISOString(),
-                        updated_at: new Date().toISOString(),
                     });
 
                 if (error) {
