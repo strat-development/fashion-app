@@ -41,8 +41,7 @@ export const useEditProfileMutation = (userId: string) => {
 
             return data;
         },
-        onSuccess: (data) => {
-            // Invalidate user-related queries to refresh the UI
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ['users']
             });

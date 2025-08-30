@@ -11,7 +11,9 @@ import { OutfitData } from "@/types/createOutfitTypes";
 import { enrichOutfit } from "@/utils/enrichOutfit";
 import { Grid } from "lucide-react-native";
 import { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, RefreshControl, Text, View } from "react-native";
+import RegistrationModal from "@/components/modals/RegistrationModal";
+import { supabase } from "@/lib/supabase";
 
 interface FeedSectionProps {
     refreshing: boolean;
@@ -28,6 +30,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     const [page, setPage] = useState(1);
     const [allOutfits, setAllOutfits] = useState<OutfitData[]>([]);
     const [hasMore, setHasMore] = useState(true);
+    
     const pageSize = 25;
 
     const { data: fetchedOutfits = [], isLoading } = useFetchFeedOutfits(page, pageSize);
@@ -45,6 +48,8 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
             }
         }
     }, [fetchedOutfits]);
+
+   
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
@@ -94,8 +99,18 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
         }
     }, [isLoading, hasMore]);
 
+    if (!userId) {
+        return (
+            <Text className="text-white">
+                Please sign in to view your feed
+            </Text>
+        );
+    }
+
     return (
         <>
+            
+
             <FlatList
                 data={allOutfits}
                 keyExtractor={item => item.outfit_id}

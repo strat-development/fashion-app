@@ -5,7 +5,7 @@ import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Plus } from "lucide-react-native";
 import { useState, useCallback, useEffect } from "react";
-import { RefreshControl, ScrollView, Text, View, ActivityIndicator, FlatList } from "react-native";
+import { RefreshControl, Text, View, ActivityIndicator, FlatList } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { DeleteModalOutfit } from "../modals/DeleteOutfitModal";
 import { OutfitCreateModal } from "../modals/OutfitCreateModal";
