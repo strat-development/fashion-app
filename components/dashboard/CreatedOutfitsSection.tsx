@@ -171,6 +171,16 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                                 onAction={handleCreateOutfit}
                             />
                         )}
+
+                        {!profileId && (
+                            <EmptyState
+                                icon={Plus}
+                                title="No outfits created yet"
+                                description="Start creating your first outfit!"
+                                actionText="Create Outfit"
+                                onAction={handleCreateOutfit}
+                            />
+                        )}
                     </>
                 }
                 ListHeaderComponent={

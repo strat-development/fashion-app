@@ -11,9 +11,7 @@ import { OutfitData } from "@/types/createOutfitTypes";
 import { enrichOutfit } from "@/utils/enrichOutfit";
 import { Grid } from "lucide-react-native";
 import { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, Alert, FlatList, RefreshControl, Text, View } from "react-native";
-import RegistrationModal from "@/components/modals/RegistrationModal";
-import { supabase } from "@/lib/supabase";
+import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
 
 interface FeedSectionProps {
     refreshing: boolean;
@@ -30,7 +28,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     const [page, setPage] = useState(1);
     const [allOutfits, setAllOutfits] = useState<OutfitData[]>([]);
     const [hasMore, setHasMore] = useState(true);
-    
+
     const pageSize = 25;
 
     const { data: fetchedOutfits = [], isLoading } = useFetchFeedOutfits(page, pageSize);
@@ -49,7 +47,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
         }
     }, [fetchedOutfits]);
 
-   
+
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
@@ -58,7 +56,10 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     const [showCommentSection, setShowCommentSection] = useState(false);
 
     const handleUnsavePress = (outfit: OutfitData) => {
-        unsaveOutfit({ outfitId: outfit.outfit_id || "" });
+        unsaveOutfit({
+            outfitId: outfit.outfit_id || "",
+            userId: userId || ""
+        });
     };
 
     const handleToggleSave = (outfitId: string) => {
@@ -109,9 +110,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
 
     return (
         <>
-            
-
-            <FlatList
+            <FlatList className="bg-gradient-to-t from-gray-900 to-gray-0"
                 data={allOutfits}
                 keyExtractor={item => item.outfit_id}
                 renderItem={({ item: raw }) => {

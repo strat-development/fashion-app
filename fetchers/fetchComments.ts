@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export type CommentData = Database["public"]["Tables"]["comments"]["Row"] & {
   user_info?: {
-    full_name: string | null;
+    nickname: string | null;
     user_avatar: string | null;
   };
 };
@@ -18,7 +18,7 @@ export const useFetchComments = (outfitId: string) => {
         .select(`
           *,
           user_info:users!user_id (
-            full_name,
+            nickname,
             user_avatar
           )
         `)

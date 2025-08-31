@@ -5,14 +5,15 @@ import { useCreateReplyMutation } from "@/mutations/CreateReplyMutation";
 import { useDeleteCommentMutation } from "@/mutations/DeleteCommentMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Image } from "expo-image";
+import { Link } from "expo-router";
 import { Send, Trash } from "lucide-react-native";
 import { useState } from "react";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
 
-export const CommentItem = ({ comment, isReply = false, depth = 0, parentCommentId }: { 
-    comment: CommentData; 
-    isReply?: boolean; 
-    depth?: number; 
+export const CommentItem = ({ comment, isReply = false, depth = 0, parentCommentId }: {
+    comment: CommentData;
+    isReply?: boolean;
+    depth?: number;
     parentCommentId?: string;
 }) => {
     const [isSetToReply, setIsSetToReply] = useState(false);
@@ -21,7 +22,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
 
     const { userId } = useUserContext();
     const avatar = comment.user_info?.user_avatar;
-    const name = comment.user_info?.full_name || 'Anonymous';
+    const name = comment.user_info?.nickname || 'Anonymous';
 
     const { data: replies } = useFetchCommentsReplies(comment.id);
 
@@ -47,6 +48,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
         try {
             await createReply();
             setText('');
+            setIsSetToReply(false);
         } catch (e: any) {
             Alert.alert('Error', e?.message || 'Failed to add comment');
         }
@@ -66,7 +68,11 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                     <View className="flex-row items-start justify-between">
                         <View className="flex-1 pr-2">
                             <View className="flex-row flex-wrap items-center gap-x-2 gap-y-1">
-                                <Text className="text-white font-medium text-[13px] leading-tight">{name}</Text>
+                                <Link href={{
+                                    pathname: "/userProfile/[id]",
+                                    params: { id: comment.user_id },
+                                }}
+                                    className="text-white font-medium text-[13px] leading-tight">{name}</Link>
                                 <Text className="text-gray-500 text-[10px]">{formatDate(comment.created_at || '')}</Text>
                             </View>
                             <Text className="text-gray-200 text-[13px] leading-relaxed mt-1">
