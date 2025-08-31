@@ -1,11 +1,11 @@
-import { useRequestPermission } from "@/hooks/useRequestPermission";
-import { supabase } from "@/lib/supabase";
-import { BlurView } from "expo-blur";
-import { Camera, User } from "lucide-react-native";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Alert, Image, Modal, Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from "react-native";
+import { Modal, SafeAreaView, ScrollView, Text, TextInput, Pressable, View, Image, Alert } from "react-native";
+import { supabase } from "@/lib/supabase";
+import { Camera, User } from "lucide-react-native";
 import { launchImageLibrary } from "react-native-image-picker";
+import { BlurView } from "expo-blur";
+import { useRequestPermission } from "@/hooks/useRequestPermission";
+import { Controller, useForm } from "react-hook-form";
 
 interface RegistrationData {
     username: string;
@@ -94,6 +94,8 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
         if (registrationStep === 1) {
             setRegistrationStep(2);
         } else if (registrationStep === 2) {
+            setRegistrationStep(3);
+        } else if (registrationStep === 3) {
             setIsPending(true);
             let avatarUrl = data.profilePicture;
 
@@ -148,7 +150,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                         full_name: data.fullName,
                         bio: data.bio,
                         user_avatar: avatarUrl,
-                        created_at: new Date().toISOString(),
+                        created_at: new Date().toISOString()
                     });
 
                 if (error) {
@@ -169,7 +171,22 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
     };
 
     const handlePreviousStep = () => {
-        setRegistrationStep(1);
+        setRegistrationStep(registrationStep - 1);
+    };
+
+    const handleLogout = async () => {
+        try {
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                console.error('Logout error:', error);
+                Alert.alert('Error', 'Failed to log out. Please try again.');
+                return;
+            }
+            onClose();
+        } catch (error) {
+            console.error('Logout error:', error);
+            Alert.alert('Error', 'Failed to log out. Please try again.');
+        }
     };
 
     return (
@@ -186,6 +203,36 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                     <ScrollView className="flex-1 px-4">
                         <View className="pt-8 pb-20">
                             {registrationStep === 1 && (
+                                <View>
+                                    <View className="items-center mb-8">
+                                        <Text className="text-white text-lg font-semibold text-center">
+                                            Welcome to the App!
+                                        </Text>
+                                        <Text className="text-gray-300 text-base text-center mt-4">
+                                            To use the app, you need to complete the registration process.
+                                        </Text>
+                                        <Text className="text-gray-400 text-sm text-center mt-2">
+                                            Please provide your profile details in the next steps.
+                                        </Text>
+                                    </View>
+                                    <View className="flex-row items-center justify-between mt-6">
+                                        <Pressable
+                                            onPress={handleLogout}
+                                            className="bg-gradient-to-r from-red-600 to-red-800 px-4 py-2 rounded-full"
+                                        >
+                                            <Text className="text-white font-medium text-sm">Logout</Text>
+                                        </Pressable>
+                                        <Pressable
+                                            onPress={handleSubmit(handleNextStep)}
+                                            className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
+                                        >
+                                            <Text className="text-white font-medium text-sm">Proceed</Text>
+                                        </Pressable>
+                                    </View>
+                                </View>
+                            )}
+
+                            {registrationStep === 2 && (
                                 <View>
                                     {/* Avatar Section */}
                                     <View className="items-center mb-8">
@@ -208,7 +255,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                                 <Camera size={14} color="white" />
                                             </Pressable>
                                         </View>
-                                        <Text className="text-gray-400 text-sm mt-2">Tap to change photo</Text>
+                                        <Text className="text-gray-400 text-sm mt-2">Tap to set photo (optional)</Text>
                                         {errors.profilePicture && (
                                             <Text className="text-pink-600 text-xs mt-1">{errors.profilePicture.message}</Text>
                                         )}
@@ -300,7 +347,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                                     value={value}
                                                     onChangeText={onChange}
                                                     onBlur={onBlur}
-                                                    placeholder="Tell us about your style..."
+                                                    placeholder="Tell us about your style... (optional)"
                                                     placeholderTextColor="#6B7280"
                                                     className={`bg-gray-800/50 border ${
                                                         errors.bio ? 'border-pink-600' : 'border-gray-700/50'
@@ -325,7 +372,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                 </View>
                             )}
 
-                            {registrationStep === 2 && (
+                            {registrationStep === 3 && (
                                 <View className="mb-6">
                                     <Text className="text-gray-300 font-medium text-base mb-3">Review Your Information</Text>
                                     <View className="bg-gray-800/30 border border-gray-700/30 rounded-lg p-4">
@@ -341,7 +388,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                         )}
                                         <Text className="text-gray-300 mb-2">Username: {control._formValues.username}</Text>
                                         <Text className="text-gray-300 mb-2">Full Name: {control._formValues.fullName}</Text>
-                                        <Text className="text-gray-300">Bio: {control._formValues.bio}</Text>
+                                        <Text className="text-gray-300">Bio: {control._formValues.bio || 'Not provided'}</Text>
                                     </View>
                                 </View>
                             )}
@@ -355,15 +402,28 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                         <Text className="text-white font-medium text-sm">Previous</Text>
                                     </Pressable>
                                 )}
-                                <Pressable
-                                    onPress={handleSubmit(handleNextStep)}
-                                    className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
-                                    disabled={isPending || (registrationStep === 1 && !isValid)}
-                                >
-                                    <Text className="text-white font-medium text-sm">
-                                        {isPending ? 'Saving...' : registrationStep === 2 ? 'Complete' : 'Next'}
-                                    </Text>
-                                </Pressable>
+                                {registrationStep === 2 && isValid && (
+                                    <Pressable
+                                        onPress={handleSubmit(handleNextStep)}
+                                        className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
+                                        disabled={isPending}
+                                    >
+                                        <Text className="text-white font-medium text-sm">
+                                            {isPending ? 'Saving...' : 'Next'}
+                                        </Text>
+                                    </Pressable>
+                                )}
+                                {registrationStep === 3 && (
+                                    <Pressable
+                                        onPress={handleSubmit(handleNextStep)}
+                                        className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
+                                        disabled={isPending}
+                                    >
+                                        <Text className="text-white font-medium text-sm">
+                                            {isPending ? 'Saving...' : 'Complete'}
+                                        </Text>
+                                    </Pressable>
+                                )}
                             </View>
                         </View>
                     </ScrollView>

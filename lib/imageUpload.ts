@@ -4,13 +4,12 @@ import { Platform } from 'react-native';
 import { supabase } from './supabase';
 
 export interface LocalImageDescriptor {
-  tempKey: string; // klucz tymczasowy w formularzu (temp://...)
-  uri: string; // lokalny URI
-  fileName?: string; // nazwa pliku
-  type?: string; // mime type
+  tempKey: string; 
+  uri: string;
+  fileName?: string; 
+  type?: string; 
 }
 
-// Nazwa bucketa zgodna z panelem Supabase (screenshot: outfit-elements)
 const BUCKET = process.env.EXPO_PUBLIC_SUPABASE_OUTFIT_BUCKET || 'outfit-elements';
 
 function guessExtension(mime?: string, fileName?: string) {
@@ -50,7 +49,6 @@ export async function uploadImagesAndGetPublicUrls(images: LocalImageDescriptor[
         }
       } else {
         const base64 = await FileSystem.readAsStringAsync(img.uri.replace('file://', ''), { encoding: FileSystem.EncodingType.Base64 }).catch(async () => {
-          // fallback bez usuwania file:// jeśli powyższe zadziałało źle
           return await FileSystem.readAsStringAsync(img.uri, { encoding: FileSystem.EncodingType.Base64 });
         });
         const bytes = Buffer.from(base64, 'base64');

@@ -27,17 +27,26 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
     const { data: savedOutfits = [], isLoading } = useFetchSavedOutfits(userId || '', page, pageSize);
 
     useEffect(() => {
-        if (savedOutfits.length > 0 && hasMore) {
+        if (isLoading) return;
+
+        if (savedOutfits.length === 0 && page === 1) {
+            setAllOutfits([]);
+            setHasMore(false);
+            return;
+        }
+
+        if (savedOutfits.length > 0) {
             setAllOutfits(prev => {
                 const existingIds = new Set(prev.map(o => o.outfit_id));
                 const newOutfits = savedOutfits.filter(o => !existingIds.has(o.outfit_id));
                 return [...prev, ...newOutfits];
             });
-            if (savedOutfits.length < pageSize) {
-                setHasMore(false);
-            }
         }
-    }, [savedOutfits]);
+
+        if (savedOutfits.length < pageSize) {
+            setHasMore(false);
+        }
+    }, [savedOutfits, isLoading, page]);
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
@@ -47,7 +56,11 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
     const savedOutfitIds = new Set(allOutfits.map(outfit => outfit.outfit_id));
 
     const handleUnsavePress = (outfit: OutfitData) => {
-        unsaveOutfit({ outfitId: outfit.outfit_id || "" });
+        unsaveOutfit({ outfitId: outfit.outfit_id || "" }, {
+            onSuccess: () => {
+                setAllOutfits(prev => prev.filter(o => o.outfit_id !== outfit.outfit_id));
+            }
+        });
     };
 
     const handleOutfitPress = (outfit: OutfitData) => {

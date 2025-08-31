@@ -36,17 +36,26 @@ export const CreatedOutfitsSection = ({ refreshing }: CreatedOutfitsSectionProps
     const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
 
     useEffect(() => {
-        if (fetchedOutfits.length > 0 && hasMore) {
+        if (isLoading) return;
+
+        if (fetchedOutfits.length === 0 && page === 1) {
+            setAllOutfits([]);
+            setHasMore(false);
+            return;
+        }
+
+        if (fetchedOutfits.length > 0) {
             setAllOutfits(prev => {
                 const existingIds = new Set(prev.map(o => o.outfit_id));
                 const newOutfits = fetchedOutfits.filter(o => !existingIds.has(o.outfit_id));
                 return [...prev, ...newOutfits];
             });
-            if (fetchedOutfits.length < pageSize) {
-                setHasMore(false);
-            }
         }
-    }, [fetchedOutfits]);
+
+        if (fetchedOutfits.length < pageSize) {
+            setHasMore(false);
+        }
+    }, [fetchedOutfits, isLoading, page]);
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
@@ -58,7 +67,11 @@ export const CreatedOutfitsSection = ({ refreshing }: CreatedOutfitsSectionProps
     const [showDeleteOutfit, setShowDeleteOutfit] = useState(false);
 
     const handleUnsavePress = (outfit: OutfitData) => {
-        unsaveOutfit({ outfitId: outfit.outfit_id || "" });
+        unsaveOutfit({ outfitId: outfit.outfit_id || "" }, {
+            onSuccess: () => {
+                savedOutfitIds.delete(outfit.outfit_id);
+            }
+        });
     };
 
     const handleCreateOutfit = () => {
@@ -71,7 +84,9 @@ export const CreatedOutfitsSection = ({ refreshing }: CreatedOutfitsSectionProps
     };
 
     const handleDeleteSuccess = () => {
+        setAllOutfits(prev => prev.filter(o => o.outfit_id !== outfitToDelete?.outfit_id));
         setOutfitToDelete(null);
+        setShowDeleteOutfit(false);
     };
 
     const handleCloseOutfitCreate = () => {
@@ -102,6 +117,10 @@ export const CreatedOutfitsSection = ({ refreshing }: CreatedOutfitsSectionProps
             userId,
             outfitId,
             savedAt: new Date().toISOString(),
+        }, {
+            onSuccess: () => {
+                savedOutfitIds.add(outfitId);
+            }
         });
     };
 
@@ -143,6 +162,7 @@ export const CreatedOutfitsSection = ({ refreshing }: CreatedOutfitsSectionProps
                         title="No outfits created yet"
                         description="Start creating your first outfit!"
                         actionText="Create Outfit"
+                        onAction={handleCreateOutfit}
                     />
                 }
                 ListHeaderComponent={
