@@ -4,6 +4,7 @@ import { formatDate } from '@/helpers/helpers';
 import { useDeleteSavedOutfitMutation } from '@/mutations/outfits/DeleteSavedOutfitMutation';
 import { useSaveOutfitMutation } from '@/mutations/outfits/SaveOutfitMutation';
 import { useUserContext } from '@/providers/userContext';
+import { Link } from 'expo-router';
 import { Bookmark, Heart, MessageCircle, Send, Share, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
@@ -110,7 +111,12 @@ export const OutfitDetail = ({
               <User size={16} color="white" />
             </View>
             <View>
-              <Text className="text-white font-semibold">{userData?.full_name || 'Anonymous'}</Text>
+              <Link href={{
+                pathname: "/userProfile/[id]",
+                params: { id: outfit.created_by },
+              }} className="text-white font-semibold">
+                {userData?.nickname || 'Anonymous'}
+              </Link>
               <Text className="text-white/60 text-sm">{formatDate(outfit.created_at)}</Text>
             </View>
           </View>
@@ -131,7 +137,10 @@ export const OutfitDetail = ({
               <Pressable
                 onPress={() => {
                   if (outfit.isSaved) {
-                    unsaveOutfit({ outfitId: outfit.outfit_id || "" });
+                    unsaveOutfit({
+                      outfitId: outfit.outfit_id || "",
+                      userId: userId || ""
+                    });
                   } else {
                     saveOutfit({
                       savedAt: new Date().toISOString(),

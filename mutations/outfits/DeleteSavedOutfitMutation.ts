@@ -3,13 +3,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface DeleteSavedOutfitMutationProps {
     outfitId: string;
+    userId: string;
 }
 
 export const useDeleteSavedOutfitMutation = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ outfitId }: DeleteSavedOutfitMutationProps) => {
+        mutationFn: async ({ outfitId, userId }: DeleteSavedOutfitMutationProps) => {
             if (!supabase) {
                 throw new Error('Supabase client is not initialized.');
             }
@@ -18,6 +19,7 @@ export const useDeleteSavedOutfitMutation = () => {
                 .from('saved-outfits')
                 .delete()
                 .eq('outfit_id', outfitId)
+                .eq('saved_by', userId);
 
             if (error) {
                 throw error;

@@ -6,16 +6,17 @@ import { useState, useCallback, useEffect } from "react";
 import { RefreshControl, View, ActivityIndicator, FlatList } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { OutfitDetail } from "../modals/OutfitDetailModal";
-import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
 import { EmptyState } from "./EmptyState";
+import CommentSection from "../outfits/CommentSection";
 
 interface SavedOutfitsSectionProps {
     refreshing: boolean;
+    profileId: string;
     onPress?: (outfit: OutfitData) => void;
 }
 
-export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) => {
+export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSectionProps) => {
     const { userId } = useUserContext();
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
 
@@ -24,7 +25,7 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
     const [hasMore, setHasMore] = useState(true);
     const pageSize = 10;
 
-    const { data: savedOutfits = [], isLoading } = useFetchSavedOutfits(userId || '', page, pageSize);
+    const { data: savedOutfits = [], isLoading } = useFetchSavedOutfits(profileId, page, pageSize);
 
     useEffect(() => {
         if (isLoading) return;
@@ -53,10 +54,14 @@ export const SavedOutfitsSection = ({ refreshing }: SavedOutfitsSectionProps) =>
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [showCommentSection, setShowCommentSection] = useState(false);
 
-    const savedOutfitIds = new Set(allOutfits.map(outfit => outfit.outfit_id));
+    const savedOutfitIds = new Set(savedOutfits.map(outfit => outfit.outfit_id));
 
     const handleUnsavePress = (outfit: OutfitData) => {
-        unsaveOutfit({ outfitId: outfit.outfit_id || "" }, {
+        if (!userId) return;
+        unsaveOutfit({
+            outfitId: outfit.outfit_id || "",
+            userId: userId
+        }, {
             onSuccess: () => {
                 setAllOutfits(prev => prev.filter(o => o.outfit_id !== outfit.outfit_id));
             }

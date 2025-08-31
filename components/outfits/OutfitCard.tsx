@@ -1,10 +1,11 @@
-import { useFetchRatingStats } from "@/fetchers/outfits/fetchRatedOutfits";
 import { useFetchUser } from "@/fetchers/fetchUser";
+import { useFetchRatingStats } from "@/fetchers/outfits/fetchRatedOutfits";
 import { formatDate } from "@/helpers/helpers";
 import { useRateOutfitMutation } from "@/mutations/outfits/RateOutfitMutation";
 import { useUnrateOutfitMutation } from "@/mutations/outfits/UnrateOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
+import { Link } from "expo-router";
 import { Bookmark, Delete, MessageCircle, Share, ThumbsDown, ThumbsUp, User } from "lucide-react-native";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 
@@ -97,18 +98,26 @@ export const OutfitCard = ({
             </View>
           )}
           <View className="flex-1">
-            <Text className="text-white font-medium text-sm">{userData?.full_name || "Anonymous"}</Text>
+            <Link
+              href={{
+                pathname: "/userProfile/[id]",
+                params: { id: outfit.created_by },
+              }}
+              className="text-white font-semibold"
+            >
+              {userData?.nickname || 'Anonymous'}
+            </Link>
             <Text className="text-gray-400 text-xs">{formatDate(outfit.created_at || "")}</Text>
           </View>
         </View>
-        
+
         <View className="flex-row items-center gap-2">
           {outfit.created_by === userId && (
             <View className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 px-3 py-1 rounded-full border border-purple-500/30">
               <Text className="text-purple-300 text-xs font-medium">Your creation</Text>
             </View>
           )}
-          
+
           {isDeleteVisible && (
             <Pressable
               className="bg-red-600/20 border border-red-600/30 p-2 rounded-full"
