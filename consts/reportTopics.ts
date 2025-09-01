@@ -1,0 +1,1 @@
+export const reportTopics = ['sexual', 'racism', 'hate', 'violence', 'harassment', 'bullying', 'other'];

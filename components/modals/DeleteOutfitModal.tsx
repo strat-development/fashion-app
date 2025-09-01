@@ -6,6 +6,7 @@ import { Modal, Pressable, SafeAreaView, Text, View } from "react-native";
 
 interface DeleteOutfitModalProps {
     outfitId: string;
+    userId?: string;
     onSuccess?: () => void;
 }
 
@@ -14,12 +15,16 @@ export const DeleteModalOutfit = ({
     onClose,
     isAnimated,
     outfitId,
-    onSuccess
+    onSuccess,
+    userId
 }: ModalProps & DeleteOutfitModalProps) => {
     const { mutate: deleteOutfit } = useDeleteOutfitMutation();
 
     const handleDelete = () => {
-        deleteOutfit({ outfitId }, {
+        deleteOutfit({
+            outfitId,
+            userId: userId || ""
+        }, {
             onSuccess: () => {
                 onClose();
                 onSuccess?.();
@@ -46,8 +51,8 @@ export const DeleteModalOutfit = ({
                     </Text>
 
                     <View className="flex-row items-center justify-center mt-4">
-                        <Button 
-                            className="bg-gray-800 px-4 py-2 rounded-lg mr-2" 
+                        <Button
+                            className="bg-gray-800 px-4 py-2 rounded-lg mr-2"
                             onPress={onClose}
                         >
                             <Text className="text-gray-300 font-medium text-sm">Cancel</Text>

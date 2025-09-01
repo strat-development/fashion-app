@@ -1,8 +1,8 @@
 import { CreatedOutfitsSection } from '@/components/dashboard/CreatedOutfitsSection';
 import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection';
 import { UserStatistics } from '@/components/dashboard/UserStatistics';
+import { ReportModal } from '@/components/modals/ReportModal';
 import { useFetchUser } from '@/fetchers/fetchUser';
-import { supabase } from '@/lib/supabase';
 import { useUserContext } from '@/providers/userContext';
 import { BlurView } from 'expo-blur';
 import { Image } from 'expo-image';
@@ -52,17 +52,12 @@ export default function ProfileScreen() {
           <ArrowLeft size={24} color="#FFFFFF" />
         </Pressable>
       ),
+      headerRight: () => (
+        <ReportModal userId={profileId || ''} />
+      ),
       headerBackTitleVisible: false,
     });
   }, [navigation, router]);
-
-  const handleLogout = async () => {
-    try {
-      await supabase?.auth.signOut();
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -89,7 +84,7 @@ export default function ProfileScreen() {
     switch (activeTab) {
       case 'user-info':
         return (
-          <View className="mt-6 space-y-5">
+          <View className="space-y-4">
             {/* Bio Section */}
             <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 border border-gray-800/50">
               <Text className="text-white text-base font-medium mb-3">Bio</Text>
@@ -138,7 +133,7 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView
-      className="flex-1 bg-gradient-to-b from-black to-gray-900"
+      className="flex-1 bg-gradient-to-b from-black to-gray-900 mt-8"
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
