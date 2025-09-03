@@ -5,7 +5,6 @@ import { Bookmark } from "lucide-react-native";
 import { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
-import { OutfitDetail } from "../modals/OutfitDetailModal";
 import { ShareModal } from "../modals/ShareModal";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
@@ -146,17 +145,6 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
                 }
                 contentContainerStyle={{ paddingTop: 24, paddingBottom: 80 }}
             />
-
-            {selectedOutfit && (
-                <OutfitDetail
-                    outfit={{
-                        ...selectedOutfit,
-                        isSaved: savedOutfitIds.has(selectedOutfit.outfit_id),
-                    }}
-                    isVisible={showOutfitDetail}
-                    onClose={handleCloseOutfitDetail}
-                />
-            )}
 
             <CommentSection
                 isVisible={showCommentSection}

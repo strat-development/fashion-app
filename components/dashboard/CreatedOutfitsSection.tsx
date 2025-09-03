@@ -9,7 +9,6 @@ import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-n
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { DeleteModalOutfit } from "../modals/DeleteOutfitModal";
 import { OutfitCreateModal } from "../modals/OutfitCreateModal";
-import { OutfitDetail } from "../modals/OutfitDetailModal";
 import { ShareModal } from "../modals/ShareModal";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
@@ -242,17 +241,6 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                     outfitId={outfitToDelete.outfit_id}
                     userId={userId || undefined}
                     onSuccess={handleDeleteSuccess}
-                />
-            )}
-
-            {selectedOutfit && (
-                <OutfitDetail
-                    outfit={{
-                        ...selectedOutfit,
-                        isSaved: savedOutfitIds.has(selectedOutfit.outfit_id),
-                    }}
-                    isVisible={showOutfitDetail}
-                    onClose={handleCloseOutfitDetail}
                 />
             )}
 

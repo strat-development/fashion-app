@@ -1,5 +1,4 @@
 import { EmptyState } from "@/components/dashboard/EmptyState";
-import { OutfitDetail } from "@/components/modals/OutfitDetailModal";
 import { ShareModal } from "@/components/modals/ShareModal";
 import CommentSection from "@/components/outfits/CommentSection";
 import { OutfitCard } from "@/components/outfits/OutfitCard";
@@ -62,8 +61,6 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
 
 
 
-    const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
-    const [showOutfitDetail, setShowOutfitDetail] = useState(false);
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [commentOutfitId, setCommentOutfitId] = useState<string | null>(null);
     const [showCommentSection, setShowCommentSection] = useState(false);
@@ -121,11 +118,6 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
         }
     };
 
-    const handleOutfitPress = (outfit: OutfitData) => {
-        setSelectedOutfit(outfit);
-        setShowOutfitDetail(true);
-    };
-
     const handleCommentPress = (outfitId: string) => {
         setCommentOutfitId(outfitId);
         const raw = allOutfits.find(o => o.outfit_id === outfitId);
@@ -136,11 +128,6 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
             setSelectedOutfitForComments(null);
         }
         setShowCommentSection(true);
-    };
-
-    const handleCloseOutfitDetail = () => {
-        setShowOutfitDetail(false);
-        setSelectedOutfit(null);
     };
 
     const handleSharePress = (outfitId: string) => {
@@ -183,7 +170,6 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                             outfit={outfit}
                             onToggleSave={() => handleToggleSave(outfit.outfit_id)}
                             onComment={handleCommentPress}
-                            onPress={() => handleOutfitPress(outfit)}
                             onUnsave={() => handleUnsavePress(outfit)}
                             onShare={() => handleSharePress(outfit.outfit_id)}
                         />
@@ -216,19 +202,6 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                 }
                 contentContainerStyle={{ paddingTop: 24, paddingBottom: 80, paddingHorizontal: 16 }}
             />
-
-            {selectedOutfit && (
-                <OutfitDetail
-                    outfit={{
-                        ...selectedOutfit,
-                        isSaved: savedOutfitIds.has(selectedOutfit.outfit_id),
-                        likes: 0,
-                        comments: 0,
-                    }}
-                    isVisible={showOutfitDetail}
-                    onClose={handleCloseOutfitDetail}
-                />
-            )}
 
             <CommentSection
                 isVisible={showCommentSection}
