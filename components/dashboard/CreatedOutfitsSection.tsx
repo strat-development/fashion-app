@@ -10,6 +10,7 @@ import { enrichOutfit } from '../../utils/enrichOutfit';
 import { DeleteModalOutfit } from "../modals/DeleteOutfitModal";
 import { OutfitCreateModal } from "../modals/OutfitCreateModal";
 import { OutfitDetail } from "../modals/OutfitDetailModal";
+import { ShareModal } from "../modals/ShareModal";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
 import { Button } from "../ui/button";
@@ -60,10 +61,12 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
+    const [selectedOutfitForShare, setSelectedOutfitForShare] = useState<OutfitData | null>(null);
     const [outfitToDelete, setOutfitToDelete] = useState<OutfitData | null>(null);
 
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
     const [showCommentSection, setShowCommentSection] = useState(false);
+    const [showShareModal, setShowShareModal] = useState(false);
     const [showOutfitCreate, setShowOutfitCreate] = useState(false);
     const [showDeleteOutfit, setShowDeleteOutfit] = useState(false);
 
@@ -113,6 +116,14 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
         setShowCommentSection(true);
     };
 
+    const handleSharePress = (outfitId: string) => {
+        const raw = allOutfits.find(o => o.outfit_id === outfitId);
+        if (!raw) return;
+        const enriched = enrichOutfit(raw, savedOutfitIds);
+        setSelectedOutfitForShare(enriched);
+        setShowShareModal(true);
+    };
+
     const handleCloseOutfitDetail = () => {
         setShowOutfitDetail(false);
         setSelectedOutfit(null);
@@ -159,6 +170,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                             onPress={() => handleOutfitPress(outfit)}
                             onDelete={() => handleDeletePress(outfit.outfit_id)}
                             onUnsave={() => handleUnsavePress(outfit)}
+                            onShare={() => handleSharePress(outfit.outfit_id)}
                             isDeleteVisible={profileId === userId}
                         />
                     );
@@ -249,6 +261,13 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                 onClose={() => setShowCommentSection(false)}
                 outfitId={selectedOutfitForComments?.outfit_id || ''}
                 outfitTitle={selectedOutfitForComments?.outfit_name || ''}
+            />
+
+            <ShareModal
+                isVisible={showShareModal}
+                onClose={() => setShowShareModal(false)}
+                outfit={selectedOutfitForShare}
+                isAnimated={true}
             />
         </>
     );

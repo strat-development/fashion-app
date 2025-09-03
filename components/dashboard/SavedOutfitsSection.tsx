@@ -2,13 +2,14 @@ import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Bookmark } from "lucide-react-native";
-import { useState, useCallback, useEffect } from "react";
-import { RefreshControl, View, ActivityIndicator, FlatList } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { OutfitDetail } from "../modals/OutfitDetailModal";
+import { ShareModal } from "../modals/ShareModal";
+import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
 import { EmptyState } from "./EmptyState";
-import CommentSection from "../outfits/CommentSection";
 
 interface SavedOutfitsSectionProps {
     refreshing: boolean;
@@ -52,7 +53,9 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
+    const [selectedOutfitForShare, setSelectedOutfitForShare] = useState<OutfitData | null>(null);
     const [showCommentSection, setShowCommentSection] = useState(false);
+    const [showShareModal, setShowShareModal] = useState(false);
 
     const savedOutfitIds = new Set(savedOutfits.map(outfit => outfit.outfit_id));
 
@@ -79,6 +82,14 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
         const enriched = enrichOutfit(raw, savedOutfitIds);
         setSelectedOutfitForComments(enriched);
         setShowCommentSection(true);
+    };
+
+    const handleSharePress = (outfitId: string) => {
+        const raw = allOutfits.find(o => o.outfit_id === outfitId);
+        if (!raw) return;
+        const enriched = enrichOutfit(raw, savedOutfitIds);
+        setSelectedOutfitForShare(enriched);
+        setShowShareModal(true);
     };
 
     const handleCloseOutfitDetail = () => {
@@ -112,6 +123,7 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
                             onComment={handleCommentPress}
                             onPress={() => handleOutfitPress(outfit)}
                             onUnsave={() => handleUnsavePress(outfit)}
+                            onShare={() => handleSharePress(outfit.outfit_id)}
                         />
                     );
                 }}
@@ -151,6 +163,13 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
                 onClose={() => setShowCommentSection(false)}
                 outfitId={selectedOutfitForComments?.outfit_id || ''}
                 outfitTitle={selectedOutfitForComments?.outfit_name || ''}
+            />
+
+            <ShareModal
+                isVisible={showShareModal}
+                onClose={() => setShowShareModal(false)}
+                outfit={selectedOutfitForShare}
+                isAnimated={true}
             />
         </>
     );

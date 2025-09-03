@@ -1,5 +1,6 @@
 import { EmptyState } from "@/components/dashboard/EmptyState";
 import { OutfitDetail } from "@/components/modals/OutfitDetailModal";
+import { ShareModal } from "@/components/modals/ShareModal";
 import CommentSection from "@/components/outfits/CommentSection";
 import { OutfitCard } from "@/components/outfits/OutfitCard";
 import { useFetchFeedOutfits } from "@/fetchers/outfits/fetchFeedOutfits";
@@ -66,6 +67,8 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [commentOutfitId, setCommentOutfitId] = useState<string | null>(null);
     const [showCommentSection, setShowCommentSection] = useState(false);
+    const [selectedOutfitForShare, setSelectedOutfitForShare] = useState<OutfitData | null>(null);
+    const [showShareModal, setShowShareModal] = useState(false);
 
     const handleUnsavePress = (outfit: OutfitData) => {
         handleToggleSave(outfit.outfit_id);
@@ -140,6 +143,20 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
         setSelectedOutfit(null);
     };
 
+    const handleSharePress = (outfitId: string) => {
+        const raw = allOutfits.find(o => o.outfit_id === outfitId);
+        if (raw) {
+            const enriched = enrichOutfit(raw, savedOutfitIds);
+            setSelectedOutfitForShare(enriched);
+            setShowShareModal(true);
+        }
+    };
+
+    const handleCloseShareModal = () => {
+        setShowShareModal(false);
+        setSelectedOutfitForShare(null);
+    };
+
     const handleEndReached = useCallback(() => {
         if (!isLoading && hasMore) {
             setPage(prev => prev + 1);
@@ -168,6 +185,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                             onComment={handleCommentPress}
                             onPress={() => handleOutfitPress(outfit)}
                             onUnsave={() => handleUnsavePress(outfit)}
+                            onShare={() => handleSharePress(outfit.outfit_id)}
                         />
                     );
                 }}
@@ -210,6 +228,13 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                 onClose={() => setShowCommentSection(false)}
                 outfitId={commentOutfitId || ''}
                 outfitTitle={selectedOutfitForComments?.outfit_name || ''}
+            />
+
+            <ShareModal
+                isVisible={showShareModal}
+                onClose={handleCloseShareModal}
+                outfit={selectedOutfitForShare}
+                isAnimated={true}
             />
         </>
     );

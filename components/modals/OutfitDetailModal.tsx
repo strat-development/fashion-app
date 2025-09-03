@@ -12,7 +12,7 @@ import { useUserContext } from '@/providers/userContext';
 import { Link } from 'expo-router';
 import { Bookmark, Heart, MessageCircle, Send, Share, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { Alert, Image, Modal, Pressable, ScrollView, Share as RNShare, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { OutfitData } from '../outfits/OutfitCard';
 import { CommentItem } from '../outfits/CommentItem';
@@ -43,7 +43,10 @@ export const OutfitDetail = ({
     outfitId: outfit.outfit_id || "",
     userId: userId || "",
   });
-  const { mutateAsync: createComment, isPending: isCommentPending } = useCreateCommentMutation();
+  const { mutateAsync: createComment, isPending: isCommentPending } = useCreateCommentMutation({
+    outfitId: outfit.outfit_id,
+    userId: userId ?? ''
+  });
 
   const [newComment, setNewComment] = useState('');
 
@@ -81,6 +84,21 @@ export const OutfitDetail = ({
     }
   };
 
+  const handleShare = async () => {
+    try {
+      const shareUrl = `https://fashion-app.com/outfit/${outfit.outfit_id}`;
+      const shareText = `Check out this amazing outfit: "${outfit.outfit_name}" on Fashion App!`;
+      
+      const result = await RNShare.share({
+        message: `${shareText}\n\n${shareUrl}`,
+        url: shareUrl,
+        title: outfit.outfit_name || 'Fashion Outfit',
+      });
+    } catch (error) {
+      Alert.alert('Error', 'Unable to share this outfit');
+    }
+  };
+
   const handleToggleSave = () => {
     if (!userId) return;
     if (isSaved) {
@@ -101,7 +119,7 @@ export const OutfitDetail = ({
     }
     if (!newComment.trim()) return;
     try {
-      await createComment({ outfitId: outfit.outfit_id, userId, content: newComment });
+      await createComment(newComment);
       setNewComment('');
     } catch (e: any) {
       Alert.alert('Error', e?.message || 'Failed to add comment');
@@ -130,7 +148,7 @@ export const OutfitDetail = ({
             <View>
               <Link href={{
                 pathname: "/userProfile/[id]",
-                params: { id: outfit.created_by },
+                params: { id: outfit.created_by ?? '' },
               }} className="text-white font-semibold">
                 {userData?.nickname || 'Anonymous'}
               </Link>
@@ -223,7 +241,7 @@ export const OutfitDetail = ({
                   />
                 </Pressable>
                 <Pressable
-                  onPress={() => { /* Implement share logic */ }}
+                  onPress={handleShare}
                   className="flex-row items-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 px-3 py-1 rounded-full border border-gray-600/30"
                 >
                   <Share size={20} color="white" />
