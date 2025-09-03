@@ -8,7 +8,6 @@ import { useState } from "react"
 import { ActivityIndicator, RefreshControl, ScrollView, View } from "react-native"
 import { enrichOutfit } from '../../utils/enrichOutfit'
 import { EmptyState } from "../dashboard/EmptyState"
-import { OutfitDetail } from "../modals/OutfitDetailModal"
 import CommentSection from "./CommentSection"
 import { OutfitCard, OutfitData } from "./OutfitCard"
 
@@ -108,17 +107,6 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                         )}
                 </View>
             </ScrollView>
-
-            {selectedOutfit && (
-                <OutfitDetail
-                    outfit={{
-                        ...selectedOutfit,
-                        isSaved: savedOutfitIds.has(selectedOutfit.outfit_id)
-                    }}
-                    isVisible={showOutfitDetail}
-                    onClose={handleCloseOutfitDetail}
-                />
-            )}
 
             <CommentSection
                 isVisible={showCommentSection}

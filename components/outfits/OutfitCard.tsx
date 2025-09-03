@@ -60,6 +60,19 @@ export const OutfitCard = ({
   const isNegativeRated = userRating?.top_rated === false;
   const isRated = !!userRating && (isPositiveRated || isNegativeRated);
 
+  const [optimisticLiked, setOptimisticLiked] = useState(isPositiveRated);
+  const [optimisticDisliked, setOptimisticDisliked] = useState(isNegativeRated);
+  const [optimisticSaved, setOptimisticSaved] = useState(outfit.isSaved);
+
+  React.useEffect(() => {
+    setOptimisticLiked(isPositiveRated);
+    setOptimisticDisliked(isNegativeRated);
+  }, [isPositiveRated, isNegativeRated]);
+
+  React.useEffect(() => {
+    setOptimisticSaved(outfit.isSaved);
+  }, [outfit.isSaved]);
+
   const [likeSparkle, setLikeSparkle] = useState(false);
   const [dislikeSparkle, setDislikeSparkle] = useState(false);
   const [saveSparkle, setSaveSparkle] = useState(false);
@@ -87,22 +100,32 @@ export const OutfitCard = ({
   const pop = (sv: any) => (sv.value = withSequence(withSpring(1.08, { damping: 14, stiffness: 220 }), withSpring(1, { damping: 14, stiffness: 220 })));
 
   const handlePositiveRate = () => {
-    if (isPositiveRated) {
-      unrateOutfit();
-    } else {
-      rateOutfit({ topRated: true });
+    const newLiked = !optimisticLiked;
+    setOptimisticLiked(newLiked);
+    if (newLiked) {
+      setOptimisticDisliked(false); 
       trigger(setLikeSparkle);
-  pop(likeScale);
+      pop(likeScale);
+    }
+    if (newLiked) {
+      rateOutfit({ topRated: true });
+    } else {
+      unrateOutfit();
     }
   };
 
   const handleNegativeRate = () => {
-    if (isNegativeRated) {
-      unrateOutfit();
-    } else {
-      rateOutfit({ topRated: false });
+    const newDisliked = !optimisticDisliked;
+    setOptimisticDisliked(newDisliked);
+    if (newDisliked) {
+      setOptimisticLiked(false); 
       trigger(setDislikeSparkle);
-  pop(dislikeScale);
+      pop(dislikeScale);
+    }
+    if (newDisliked) {
+      rateOutfit({ topRated: false });
+    } else {
+      unrateOutfit();
     }
   };
 
@@ -191,7 +214,7 @@ export const OutfitCard = ({
               onPress={handlePositiveRate}
               onPressIn={() => springDown(likeScale, 0.9)}
               onPressOut={() => springUp(likeScale)}
-              className={`relative flex-row items-center px-2 py-1 rounded-full border ${isPositiveRated ? "bg-green-500/20 border-green-500/50" : "bg-gray-800/50 border-gray-600/30"}`}
+              className={`relative flex-row items-center px-2 py-1 rounded-full border ${optimisticLiked ? "bg-green-500/20 border-green-500/50" : "bg-gray-800/50 border-gray-600/30"}`}
             >
               <Animated.View
                 style={likeStyle}
@@ -199,8 +222,8 @@ export const OutfitCard = ({
               >
                 <ThumbsUp
                   size={18}
-                  color={isPositiveRated ? "#22C55E" : "#9CA3AF"}
-                  fill={isPositiveRated ? "#22C55E" : "transparent"}
+                  color={optimisticLiked ? "#22C55E" : "#9CA3AF"}
+                  fill={optimisticLiked ? "#22C55E" : "transparent"}
                 />
                 <SparkleBurst show={likeSparkle} color="#22C55E" />
               </Animated.View>
@@ -209,7 +232,7 @@ export const OutfitCard = ({
               onPress={handleNegativeRate}
               onPressIn={() => springDown(dislikeScale, 0.9)}
               onPressOut={() => springUp(dislikeScale)}
-              className={`relative flex-row items-center px-2 py-1 rounded-full border ${isNegativeRated ? "bg-red-500/20 border-red-500/50" : "bg-gray-800/50 border-gray-600/30"}`}
+              className={`relative flex-row items-center px-2 py-1 rounded-full border ${optimisticDisliked ? "bg-red-500/20 border-red-500/50" : "bg-gray-800/50 border-gray-600/30"}`}
             >
               <Animated.View
                 style={dislikeStyle}
@@ -217,8 +240,8 @@ export const OutfitCard = ({
               >
                 <ThumbsDown
                   size={18}
-                  color={isNegativeRated ? "#EF4444" : "#9CA3AF"}
-                  fill={isNegativeRated ? "#EF4444" : "transparent"}
+                  color={optimisticDisliked ? "#EF4444" : "#9CA3AF"}
+                  fill={optimisticDisliked ? "#EF4444" : "transparent"}
                 />
                 <SparkleBurst show={dislikeSparkle} color="#EF4444" />
               </Animated.View>
@@ -244,19 +267,21 @@ export const OutfitCard = ({
         </View>
 
         <View className="flex-row items-center gap-2 flex-shrink-0">
-      <Pressable
+          <Pressable
             onPress={() => {
-              if (outfit.isSaved) {
-                onUnsave?.(outfit.outfit_id);
-              } else {
+              const newSaved = !optimisticSaved;
+              setOptimisticSaved(newSaved);
+              if (newSaved) {
                 onToggleSave?.(outfit.outfit_id);
                 setSaveSparkle(true);
                 setTimeout(() => setSaveSparkle(false), 550);
-        pop(saveScale);
+                pop(saveScale);
+              } else {
+                onUnsave?.(outfit.outfit_id);
               }
             }}
-      onPressIn={() => springDown(saveScale, 0.9)}
-      onPressOut={() => springUp(saveScale)}
+            onPressIn={() => springDown(saveScale, 0.9)}
+            onPressOut={() => springUp(saveScale)}
             className="relative flex-row items-center justify-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 p-2 rounded-full border border-gray-600/30"
           >
             <Animated.View
@@ -265,8 +290,8 @@ export const OutfitCard = ({
             >
               <Bookmark
                 size={16}
-                color={outfit.isSaved ? "#EC4899" : "#9CA3AF"}
-                fill={outfit.isSaved ? "#EC4899" : "transparent"}
+                color={optimisticSaved ? "#EC4899" : "#9CA3AF"}
+                fill={optimisticSaved ? "#EC4899" : "transparent"}
               />
               <SparkleBurst show={saveSparkle} color="#EC4899" />
             </Animated.View>
