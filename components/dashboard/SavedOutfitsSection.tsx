@@ -2,7 +2,7 @@ import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Bookmark } from "lucide-react-native";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { ShareModal } from "../modals/ShareModal";
@@ -27,6 +27,11 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
 
     const { data: savedOutfits = [], isLoading } = useFetchSavedOutfits(profileId, page, pageSize);
 
+    const savedOutfitIds = useMemo(() => 
+        new Set(savedOutfits.map(outfit => outfit.outfit_id)), 
+        [savedOutfits.map(outfit => outfit.outfit_id).join(',')]
+    );
+
     useEffect(() => {
         if (isLoading) return;
 
@@ -40,14 +45,15 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
             setAllOutfits(prev => {
                 const existingIds = new Set(prev.map(o => o.outfit_id));
                 const newOutfits = savedOutfits.filter(o => !existingIds.has(o.outfit_id));
-                return [...prev, ...newOutfits];
+                const enrichedNewOutfits = newOutfits.map(outfit => enrichOutfit(outfit, savedOutfitIds));
+                return [...prev, ...enrichedNewOutfits];
             });
         }
 
         if (savedOutfits.length < pageSize) {
             setHasMore(false);
         }
-    }, [savedOutfits, isLoading, page]);
+    }, [savedOutfits, isLoading, page, savedOutfitIds]);
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
@@ -56,7 +62,9 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
     const [showCommentSection, setShowCommentSection] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
 
-    const savedOutfitIds = new Set(savedOutfits.map(outfit => outfit.outfit_id));
+    const enrichedAllOutfits = useMemo(() => {
+        return allOutfits.map(raw => enrichOutfit(raw, savedOutfitIds));
+    }, [allOutfits, savedOutfitIds]);
 
     const handleUnsavePress = (outfit: OutfitData) => {
         if (!userId) return;
@@ -76,17 +84,15 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
     };
 
     const handleCommentPress = (outfitId: string) => {
-        const raw = allOutfits.find(o => o.outfit_id === outfitId);
-        if (!raw) return;
-        const enriched = enrichOutfit(raw, savedOutfitIds);
+        const enriched = enrichedAllOutfits.find(o => o.outfit_id === outfitId);
+        if (!enriched) return;
         setSelectedOutfitForComments(enriched);
         setShowCommentSection(true);
     };
 
     const handleSharePress = (outfitId: string) => {
-        const raw = allOutfits.find(o => o.outfit_id === outfitId);
-        if (!raw) return;
-        const enriched = enrichOutfit(raw, savedOutfitIds);
+        const enriched = enrichedAllOutfits.find(o => o.outfit_id === outfitId);
+        if (!enriched) return;
         setSelectedOutfitForShare(enriched);
         setShowShareModal(true);
     };
@@ -109,23 +115,20 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
     }, []);
 
     return (
-        <>
+        <View style={{ flex: 1 }}>
             <FlatList
-                data={allOutfits}
+                data={enrichedAllOutfits}
                 keyExtractor={item => item.outfit_id}
-                renderItem={({ item: raw }) => {
-                    const outfit = enrichOutfit(raw, savedOutfitIds);
-                    return (
-                        <OutfitCard
-                            key={outfit.outfit_id}
-                            outfit={outfit}
-                            onComment={handleCommentPress}
-                            onPress={() => handleOutfitPress(outfit)}
-                            onUnsave={() => handleUnsavePress(outfit)}
-                            onShare={() => handleSharePress(outfit.outfit_id)}
-                        />
-                    );
-                }}
+                renderItem={({ item: outfit }) => (
+                    <OutfitCard
+                        key={outfit.outfit_id}
+                        outfit={outfit}
+                        onComment={handleCommentPress}
+                        onPress={() => handleOutfitPress(outfit)}
+                        onUnsave={() => handleUnsavePress(outfit)}
+                        onShare={() => handleSharePress(outfit.outfit_id)}
+                    />
+                )}
                 ListEmptyComponent={
                     isLoading ? (
                         <View className="py-16 items-center">
@@ -166,6 +169,6 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
                 outfit={selectedOutfitForShare}
                 isAnimated={true}
             />
-        </>
+        </View>
     );
 };

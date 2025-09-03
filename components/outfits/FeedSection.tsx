@@ -4,8 +4,8 @@ import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOut
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation"
 import { useUserContext } from "@/providers/userContext"
 import { Grid } from "lucide-react-native"
-import { useState } from "react"
-import { ActivityIndicator, RefreshControl, ScrollView, View } from "react-native"
+import { useMemo, useState } from "react"
+import { RefreshControl, ScrollView, View } from "react-native"
 import { enrichOutfit } from '../../utils/enrichOutfit'
 import { EmptyState } from "../dashboard/EmptyState"
 import CommentSection from "./CommentSection"
@@ -23,7 +23,14 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
     const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
 
-    const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
+    const savedOutfitIds = useMemo(() => 
+        new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []), 
+        [savedOutfits?.map(outfit => outfit.outfit_id).join(',')]
+    );
+
+    const enrichedOutfits = useMemo(() => {
+        return fetchedOutfits?.map(raw => enrichOutfit(raw, savedOutfitIds)) || [];
+    }, [fetchedOutfits, savedOutfitIds]);
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
@@ -58,14 +65,8 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
 
     const handleCommentPress = (outfitId: string) => {
         setCommentOutfitId(outfitId);
-        const raw = fetchedOutfits.find(o => o.outfit_id === outfitId);
-        if (raw) {
-            const enriched = enrichOutfit(raw, savedOutfitIds);
-            setSelectedOutfitForComments(enriched);
-        } else {
-            setSelectedOutfitForComments(null);
-        }
-
+        const enrichedOutfit = enrichedOutfits.find(o => o.outfit_id === outfitId);
+        setSelectedOutfitForComments(enrichedOutfit || null);
         setShowCommentSection(true);
     };
 
@@ -75,7 +76,7 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
     };
 
     return (
-        <>
+        <View style={{ flex: 1 }}>
             <ScrollView
                 className="flex-1 px-4"
                 refreshControl={
@@ -83,20 +84,17 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                 }
             >
                 <View className="pt-6 pb-20">
-                    {fetchedOutfits?.length > 0 ? (
-                        fetchedOutfits.map(raw => {
-                            const outfit = enrichOutfit(raw, savedOutfitIds);
-                            return (
-                                <OutfitCard
-                                    key={outfit.outfit_id}
-                                    outfit={outfit}
-                                    onToggleSave={() => handleToggleSave(outfit.outfit_id)}
-                                    onComment={handleCommentPress}
-                                    onPress={() => handleOutfitPress(outfit)}
-                                    onUnsave={() => handleUnsavePress(outfit)}
-                                />
-                            );
-                        })
+                    {enrichedOutfits?.length > 0 ? (
+                        enrichedOutfits.map(outfit => (
+                            <OutfitCard
+                                key={outfit.outfit_id}
+                                outfit={outfit}
+                                onToggleSave={() => handleToggleSave(outfit.outfit_id)}
+                                onComment={handleCommentPress}
+                                onPress={() => handleOutfitPress(outfit)}
+                                onUnsave={() => handleUnsavePress(outfit)}
+                            />
+                        ))
                     ) : (
                             <EmptyState
                                 icon={Grid}
@@ -114,6 +112,6 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                 outfitId={commentOutfitId || ''}
                 outfitTitle={selectedOutfitForComments?.outfit_name || ''}
             />
-        </>
+        </View>
     )
 }

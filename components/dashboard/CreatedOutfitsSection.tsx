@@ -4,7 +4,7 @@ import { useDeleteOutfitMutation } from "@/mutations/outfits/DeleteOutfitMutatio
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { Plus } from "lucide-react-native";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { DeleteModalOutfit } from "../modals/DeleteOutfitModal";
@@ -34,7 +34,14 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
     const { data: fetchedOutfits = [], isLoading } = useFetchCreatedOutfitsByUser(profileId, page, pageSize);
     const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
 
-    const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
+    const savedOutfitIds = useMemo(() => 
+        new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []), 
+        [savedOutfits?.map(outfit => outfit.outfit_id).join(',')]
+    );
+
+    const enrichedAllOutfits = useMemo(() => {
+        return allOutfits.map(raw => enrichOutfit(raw, savedOutfitIds));
+    }, [allOutfits, savedOutfitIds]);
 
     useEffect(() => {
         if (isLoading) return;
@@ -49,14 +56,15 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
             setAllOutfits(prev => {
                 const existingIds = new Set(prev.map(o => o.outfit_id));
                 const newOutfits = fetchedOutfits.filter(o => !existingIds.has(o.outfit_id));
-                return [...prev, ...newOutfits];
+                const enrichedNewOutfits = newOutfits.map(outfit => enrichOutfit(outfit, savedOutfitIds));
+                return [...prev, ...enrichedNewOutfits];
             });
         }
 
         if (fetchedOutfits.length < pageSize) {
             setHasMore(false);
         }
-    }, [fetchedOutfits, isLoading, page]);
+    }, [fetchedOutfits, isLoading, page, savedOutfitIds]);
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
@@ -108,17 +116,15 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
     };
 
     const handleCommentPress = (outfitId: string) => {
-        const raw = allOutfits.find(o => o.outfit_id === outfitId);
-        if (!raw) return;
-        const enriched = enrichOutfit(raw, savedOutfitIds);
+        const enriched = enrichedAllOutfits.find(o => o.outfit_id === outfitId);
+        if (!enriched) return;
         setSelectedOutfitForComments(enriched);
         setShowCommentSection(true);
     };
 
     const handleSharePress = (outfitId: string) => {
-        const raw = allOutfits.find(o => o.outfit_id === outfitId);
-        if (!raw) return;
-        const enriched = enrichOutfit(raw, savedOutfitIds);
+        const enriched = enrichedAllOutfits.find(o => o.outfit_id === outfitId);
+        if (!enriched) return;
         setSelectedOutfitForShare(enriched);
         setShowShareModal(true);
     };
@@ -154,26 +160,23 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
     }, []);
 
     return (
-        <>
+        <View style={{ flex: 1 }}>
             <FlatList
-                data={allOutfits}
+                data={enrichedAllOutfits}
                 keyExtractor={item => item.outfit_id}
-                renderItem={({ item: raw }) => {
-                    const outfit = enrichOutfit(raw, savedOutfitIds);
-                    return (
-                        <OutfitCard
-                            key={outfit.outfit_id}
-                            outfit={outfit}
-                            onToggleSave={() => handleToggleSave(outfit.outfit_id)}
-                            onComment={handleCommentPress}
-                            onPress={() => handleOutfitPress(outfit)}
-                            onDelete={() => handleDeletePress(outfit.outfit_id)}
-                            onUnsave={() => handleUnsavePress(outfit)}
-                            onShare={() => handleSharePress(outfit.outfit_id)}
-                            isDeleteVisible={profileId === userId}
-                        />
-                    );
-                }}
+                renderItem={({ item: outfit }) => (
+                    <OutfitCard
+                        key={outfit.outfit_id}
+                        outfit={outfit}
+                        onToggleSave={() => handleToggleSave(outfit.outfit_id)}
+                        onComment={handleCommentPress}
+                        onPress={() => handleOutfitPress(outfit)}
+                        onDelete={() => handleDeletePress(outfit.outfit_id)}
+                        onUnsave={() => handleUnsavePress(outfit)}
+                        onShare={() => handleSharePress(outfit.outfit_id)}
+                        isDeleteVisible={profileId === userId}
+                    />
+                )}
                 ListEmptyComponent={
                     isLoading ? (
                         <View className="py-16 items-center">
@@ -264,6 +267,6 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                 outfit={selectedOutfitForShare}
                 isAnimated={true}
             />
-        </>
+        </View>
     );
 };

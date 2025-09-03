@@ -3,51 +3,72 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useFetchSavedOutfits = (userId: string, page: number = 1, pageSize: number = 10) => {
   return useQuery({
-    queryKey: ['saved-outfits', userId, page],
+    queryKey: ['saved-outfits', userId, page, pageSize],
     queryFn: async () => {
-      if (!supabase) throw new Error('Supabase client not initialized');
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
+      if (!userId) {
+        return [];
+      }
 
       const from = (page - 1) * pageSize;
       const to = from + pageSize - 1;
 
-      const { data: likedOutfits, error: likedError } = await supabase
+      // First get saved outfit IDs
+      const { data: savedOutfits, error: savedError } = await supabase
         .from('saved-outfits')
-        .select('outfit_id')
+        .select('outfit_id, saved_at')
         .eq('saved_by', userId)
-        .order('saved_at', { ascending: false }) 
-        .range(from, to); 
+        .order('saved_at', { ascending: false })
+        .range(from, to);
         
-      if (likedError) throw likedError;
-      if (!likedOutfits?.length) return [];
+      if (savedError) {
+        console.error('Error fetching saved outfits:', savedError);
+        throw new Error(`Failed to fetch saved outfits: ${savedError.message}`);
+      }
 
-      const outfitIds = likedOutfits
+      if (!savedOutfits?.length) {
+        return [];
+      }
+
+      const outfitIds = savedOutfits
         .map(o => o.outfit_id)
         .filter((id): id is string => typeof id === 'string');
-      if (!outfitIds.length) return [];
+      
+      if (!outfitIds.length) {
+        return [];
+      }
 
       const { data: outfits, error: outfitsError } = await supabase
         .from('created-outfits')
-        .select('*')
+        .select(`
+          *,
+          comments:comments(count)
+        `)
         .in('outfit_id', outfitIds)
         .order('created_at', { ascending: false });
 
-      if (outfitsError) throw outfitsError;
+      if (outfitsError) {
+        console.error('Error fetching outfit details:', outfitsError);
+        throw new Error(`Failed to fetch outfit details: ${outfitsError.message}`);
+      }
 
-      const { data: commentsRows, error: commentsError } = await supabase
-        .from('comments')
-        .select('outfit_id')
-        .in('outfit_id', outfitIds);
+      if (!outfits) {
+        return [];
+      }
 
-      if (commentsError) return outfits.map(o => ({ ...o, comments: 0 } as any));
-
-      const counts = new Map<string, number>();
-      (commentsRows || []).forEach(r => {
-        const key = (r as any).outfit_id as string;
-        counts.set(key, (counts.get(key) || 0) + 1);
-      });
-
-      return outfits.map(o => ({ ...o, comments: counts.get(o.outfit_id) || 0 } as any));
+      return outfits.map(outfit => ({
+        ...outfit,
+        comments: Array.isArray(outfit.comments) ? outfit.comments.length : 0
+      }));
     },
     enabled: !!userId,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: 3,
+    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 };

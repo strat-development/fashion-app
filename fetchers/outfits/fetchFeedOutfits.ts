@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useFetchFeedOutfits = (page: number = 1, pageSize: number = 10) => {
   return useQuery({
-    queryKey: ['created-outfits', page],
+    queryKey: ['created-outfits', page, pageSize],
     queryFn: async () => {
       if (!supabase) {
         throw new Error('Supabase client is not initialized.');
@@ -14,34 +14,31 @@ export const useFetchFeedOutfits = (page: number = 1, pageSize: number = 10) => 
 
       const { data, error } = await supabase
         .from('created-outfits')
-        .select('*')
+        .select(`
+          *,
+          comments:comments(count)
+        `)
         .order('created_at', { ascending: false })
-        .range(from, to); 
+        .range(from, to);
         
       if (error) {
-        throw error;
+        console.error('Error fetching feed outfits:', error);
+        throw new Error(`Failed to fetch outfits: ${error.message}`);
       }
 
-      const outfits = data || [];
-      const ids = outfits.map(o => o.outfit_id).filter(Boolean) as string[];
-      if (ids.length === 0) return outfits;
-
-      const { data: commentsRows, error: commentsError } = await supabase
-        .from('comments')
-        .select('outfit_id')
-        .in('outfit_id', ids);
-
-      if (commentsError) {
-        return outfits.map(o => ({ ...o, comments: 0 } as any));
+      if (!data) {
+        return [];
       }
 
-      const counts = new Map<string, number>();
-      (commentsRows || []).forEach(r => {
-        const key = (r as any).outfit_id as string;
-        counts.set(key, (counts.get(key) || 0) + 1);
-      });
-
-      return outfits.map(o => ({ ...o, comments: counts.get(o.outfit_id) || 0 } as any));
+      return data.map(outfit => ({
+        ...outfit,
+        comments: Array.isArray(outfit.comments) ? outfit.comments.length : 0
+      }));
     },
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: 3,
+    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 };

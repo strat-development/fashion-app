@@ -8,56 +8,65 @@ export interface UserStatistics {
 
 export const fetchUserStatistics = async (userId: string): Promise<UserStatistics> => {
   try {
-    // Count created outfits
-    const { count: createdCount, error: createdError } = await supabase
-      .from('created-outfits')
-      .select('*', { count: 'exact', head: true })
-      .eq('created_by', userId);
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+
+    const [createdResult, savedResult, userOutfitsResult] = await Promise.all([
+      // Count created outfits
+      supabase
+        .from('created-outfits')
+        .select('*', { count: 'exact', head: true })
+        .eq('created_by', userId),
+      
+      supabase
+        .from('saved-outfits')
+        .select('*', { count: 'exact', head: true })
+        .eq('saved_by', userId),
+      
+      supabase
+        .from('created-outfits')
+        .select('outfit_id')
+        .eq('created_by', userId)
+    ]);
+
+    const { count: createdCount, error: createdError } = createdResult;
+    const { count: savedCount, error: savedError } = savedResult;
+    const { data: userOutfits, error: userOutfitsError } = userOutfitsResult;
 
     if (createdError) {
       console.error('Error fetching created outfits count:', createdError);
-      throw createdError;
+      throw new Error(`Failed to fetch created outfits: ${createdError.message || 'Unknown error'}`);
     }
-
-    // Count saved outfits
-    const { count: savedCount, error: savedError } = await supabase
-      .from('saved-outfits')
-      .select('*', { count: 'exact', head: true })
-      .eq('saved_by', userId);
 
     if (savedError) {
       console.error('Error fetching saved outfits count:', savedError);
-      throw savedError;
+      throw new Error(`Failed to fetch saved outfits: ${savedError.message || 'Unknown error'}`);
     }
-
-    // Count likes received on user's outfits
-    // First get all outfit IDs created by the user, then count positive ratings on those outfits
-    const { data: userOutfits, error: userOutfitsError } = await supabase
-      .from('created-outfits')
-      .select('outfit_id')
-      .eq('created_by', userId);
 
     if (userOutfitsError) {
       console.error('Error fetching user outfits for likes count:', userOutfitsError);
-      throw userOutfitsError;
+      throw new Error(`Failed to fetch user outfits: ${userOutfitsError.message || 'Unknown error'}`);
     }
 
     let likesReceivedCount = 0;
     if (userOutfits && userOutfits.length > 0) {
-      const outfitIds = userOutfits.map(outfit => outfit.outfit_id);
+      const outfitIds = userOutfits.map(outfit => outfit.outfit_id).filter(Boolean);
       
-      const { count: likesCount, error: likesError } = await supabase
-        .from('outfits-rating')
-        .select('*', { count: 'exact', head: true })
-        .in('outfit_id', outfitIds)
-        .eq('top_rated', true);
+      if (outfitIds.length > 0) {
+        const { count: likesCount, error: likesError } = await supabase
+          .from('outfits-rating')
+          .select('*', { count: 'exact', head: true })
+          .in('outfit_id', outfitIds)
+          .eq('top_rated', true);
 
-      if (likesError) {
-        console.error('Error fetching likes count:', likesError);
-        throw likesError;
+        if (likesError) {
+          console.error('Error fetching likes count:', likesError);
+          likesReceivedCount = 0;
+        } else {
+          likesReceivedCount = likesCount || 0;
+        }
       }
-
-      likesReceivedCount = likesCount || 0;
     }
 
     return {
