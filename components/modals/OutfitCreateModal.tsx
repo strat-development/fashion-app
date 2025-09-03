@@ -1,11 +1,11 @@
 import {
-  Select,
-  SelectBackdrop,
-  SelectContent,
-  SelectInput,
-  SelectItem,
-  SelectPortal,
-  SelectTrigger,
+    Select,
+    SelectBackdrop,
+    SelectContent,
+    SelectInput,
+    SelectItem,
+    SelectPortal,
+    SelectTrigger,
 } from '@/components/ui/select';
 import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
 import { useRequestPermission } from '@/hooks/useRequestPermission';
@@ -88,7 +88,7 @@ export const OutfitCreateModal = ({
     mode: 'onChange'
   });
 
-  const { mutate: createOutfit } = useCreateOutfitMutation(
+  const { mutate: createOutfit, isPending } = useCreateOutfitMutation(
     () => {
       reset();
       resetElementForm();
@@ -240,10 +240,10 @@ export const OutfitCreateModal = ({
             <Text className="text-white font-semibold text-lg">Create Outfit</Text>
             <Pressable
               onPress={handleSubmit(onSubmit)}
-              disabled={!isValid || outfitElements.length === 0}
-              className={`px-4 py-2 rounded-full ${isValid && outfitElements.length > 0 ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-gray-600'}`}
+              disabled={!isValid || outfitElements.length === 0 || isPending}
+              className={`px-4 py-2 rounded-full ${isValid && outfitElements.length > 0 && !isPending ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-gray-600'}`}
             >
-              <Text className="text-white font-medium text-sm">Save</Text>
+              <Text className="text-white font-medium text-sm">{isPending ? 'Saving...' : 'Save'}</Text>
             </Pressable>
           </View>
 

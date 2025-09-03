@@ -48,8 +48,11 @@ export const useCreateOutfitMutation = (
 
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({
+        queryKey: ['created-outfits']
+      });
+      queryClient.refetchQueries({
         queryKey: ['created-outfits']
       });
       onSuccess?.();
