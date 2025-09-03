@@ -190,18 +190,25 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                     );
                 }}
                 ListEmptyComponent={
-                    <EmptyState
-                        icon={Grid}
-                        title="No outfits yet"
-                        description="Create your first outfit or follow others to see their creations"
-                        actionText="Create Outfit"
-                    />
+                    isLoading ? (
+                        <View className="py-16 items-center">
+                            <ActivityIndicator size="large" color="#ffffff" />
+                            <Text className="text-gray-300 text-base mt-4">Loading outfits...</Text>
+                        </View>
+                    ) : (
+                        <EmptyState
+                            icon={Grid}
+                            title="No outfits yet"
+                            description="Create your first outfit or follow others to see their creations"
+                            actionText="Create Outfit"
+                        />
+                    )
                 }
                 refreshControl={<RefreshControl refreshing={refreshing} />}
                 onEndReached={handleEndReached}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={
-                    isLoading && hasMore ? (
+                    isLoading && hasMore && allOutfits.length > 0 ? (
                         <View className="py-4">
                             <ActivityIndicator size="large" color="#ffffff" />
                         </View>
