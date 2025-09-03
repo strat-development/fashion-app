@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, Text, View, useWindowDimensions, ScrollView } from "react-native";
+import { Image, Text, View, useWindowDimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 
@@ -16,7 +16,7 @@ export default function OutfitDetailImages({ imageUrls }: OutfitDetailImagesProp
   const { width, height } = useWindowDimensions();
   const singleH = Math.min(520, Math.max(280, Math.floor(height * 0.55)));
   const multiH = Math.min(450, Math.max(300, Math.floor(height * 0.45)));
-  const cardW = width - 32; // Account for px-4 padding (16px each side)
+  const cardW = width - 32;
 
   const renderCarouselItem = ({ item }: { item: string }) => (
     <View style={{ width: cardW, alignItems: 'center' }}>
