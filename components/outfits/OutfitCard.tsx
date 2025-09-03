@@ -1,3 +1,4 @@
+import SparkleBurst from "@/components/ui/SparkleBurst";
 import { useFetchUser } from "@/fetchers/fetchUser";
 import { useFetchRatingStats } from "@/fetchers/outfits/fetchRatedOutfits";
 import { formatDate } from "@/helpers/helpers";
@@ -7,7 +8,9 @@ import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
 import { Link } from "expo-router";
 import { Bookmark, Delete, MessageCircle, Share, ThumbsDown, ThumbsUp, User } from "lucide-react-native";
+import React, { useState } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
+import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring } from "react-native-reanimated";
 
 export type OutfitData = Database["public"]["Tables"]["created-outfits"]["Row"] & {
   likes: number;
@@ -57,11 +60,39 @@ export const OutfitCard = ({
   const isNegativeRated = userRating?.top_rated === false;
   const isRated = !!userRating && (isPositiveRated || isNegativeRated);
 
+  const [likeSparkle, setLikeSparkle] = useState(false);
+  const [dislikeSparkle, setDislikeSparkle] = useState(false);
+  const [saveSparkle, setSaveSparkle] = useState(false);
+  const likeScale = useSharedValue(1);
+  const dislikeScale = useSharedValue(1);
+  const saveScale = useSharedValue(1);
+  const commentScale = useSharedValue(1);
+  const shareScale = useSharedValue(1);
+
+  const scaleStyle = (sv: any) => useAnimatedStyle(() => ({ transform: [{ scale: sv.value }] }));
+  const likeStyle = scaleStyle(likeScale);
+  const dislikeStyle = scaleStyle(dislikeScale);
+  const saveStyle = scaleStyle(saveScale);
+  const commentStyle = scaleStyle(commentScale);
+  const shareStyle = scaleStyle(shareScale);
+
+  const trigger = (fn: React.Dispatch<React.SetStateAction<boolean>>) => {
+    fn(true);
+    setTimeout(() => fn(false), 550);
+  };
+
+  // Helpers for button press feedback
+  const springDown = (sv: any, to = 0.9) => (sv.value = withSpring(to, { damping: 14, stiffness: 220 }));
+  const springUp = (sv: any) => (sv.value = withSpring(1, { damping: 14, stiffness: 220 }));
+  const pop = (sv: any) => (sv.value = withSequence(withSpring(1.08, { damping: 14, stiffness: 220 }), withSpring(1, { damping: 14, stiffness: 220 })));
+
   const handlePositiveRate = () => {
     if (isPositiveRated) {
       unrateOutfit();
     } else {
       rateOutfit({ topRated: true });
+      trigger(setLikeSparkle);
+  pop(likeScale);
     }
   };
 
@@ -70,6 +101,8 @@ export const OutfitCard = ({
       unrateOutfit();
     } else {
       rateOutfit({ topRated: false });
+      trigger(setDislikeSparkle);
+  pop(dislikeScale);
     }
   };
 
@@ -156,24 +189,39 @@ export const OutfitCard = ({
           <View className="flex-row items-center gap-1">
             <Pressable
               onPress={handlePositiveRate}
-              className={`flex-row items-center px-2 py-1 rounded-full border ${isPositiveRated ? "bg-green-500/20 border-green-500/50" : "bg-gray-800/50 border-gray-600/30"
-                }`}
+              onPressIn={() => springDown(likeScale, 0.9)}
+              onPressOut={() => springUp(likeScale)}
+              className={`relative flex-row items-center px-2 py-1 rounded-full border ${isPositiveRated ? "bg-green-500/20 border-green-500/50" : "bg-gray-800/50 border-gray-600/30"}`}
             >
-              <ThumbsUp
-                size={18}
-                color={isPositiveRated ? "#22C55E" : "#9CA3AF"}
-                fill={isPositiveRated ? "#22C55E" : "transparent"}
-              />
+              <Animated.View
+                style={likeStyle}
+                className="relative"
+              >
+                <ThumbsUp
+                  size={18}
+                  color={isPositiveRated ? "#22C55E" : "#9CA3AF"}
+                  fill={isPositiveRated ? "#22C55E" : "transparent"}
+                />
+                <SparkleBurst show={likeSparkle} color="#22C55E" />
+              </Animated.View>
             </Pressable>
             <Pressable
               onPress={handleNegativeRate}
-              className={`flex-row items-center px-2 py-1 rounded-full border ${isNegativeRated ? "bg-red-500/20 border-red-500/50" : "bg-gray-800/50 border-gray-600/30"
-                }`}>
-              <ThumbsDown
-                size={18}
-                color={isNegativeRated ? "#EF4444" : "#9CA3AF"}
-                fill={isNegativeRated ? "#EF4444" : "transparent"}
-              />
+              onPressIn={() => springDown(dislikeScale, 0.9)}
+              onPressOut={() => springUp(dislikeScale)}
+              className={`relative flex-row items-center px-2 py-1 rounded-full border ${isNegativeRated ? "bg-red-500/20 border-red-500/50" : "bg-gray-800/50 border-gray-600/30"}`}
+            >
+              <Animated.View
+                style={dislikeStyle}
+                className="relative"
+              >
+                <ThumbsDown
+                  size={18}
+                  color={isNegativeRated ? "#EF4444" : "#9CA3AF"}
+                  fill={isNegativeRated ? "#EF4444" : "transparent"}
+                />
+                <SparkleBurst show={dislikeSparkle} color="#EF4444" />
+              </Animated.View>
             </Pressable>
             <Text className="text-gray-300 text-sm">{ratingStats?.positivePercentage || 0}%</Text>
           </View>
@@ -181,45 +229,63 @@ export const OutfitCard = ({
             onPress={() => {
               onComment?.(outfit.outfit_id);
             }}
+            onPressIn={() => springDown(commentScale, 0.94)}
+            onPressOut={() => springUp(commentScale)}
             className="flex-row items-center ml-3"
           >
-            <MessageCircle size={18} color="#9CA3AF" />
-            <Text className="text-gray-300 ml-1 text-sm">{outfit.comments}</Text>
+            <Animated.View
+              style={commentStyle}
+              className="flex-row items-center"
+            >
+              <MessageCircle size={18} color="#9CA3AF" />
+              <Text className="text-gray-300 ml-1 text-sm">{outfit.comments}</Text>
+            </Animated.View>
           </Pressable>
         </View>
 
         <View className="flex-row items-center gap-2 flex-shrink-0">
-          <Pressable
+      <Pressable
             onPress={() => {
               if (outfit.isSaved) {
                 onUnsave?.(outfit.outfit_id);
               } else {
                 onToggleSave?.(outfit.outfit_id);
+                setSaveSparkle(true);
+                setTimeout(() => setSaveSparkle(false), 550);
+        pop(saveScale);
               }
             }}
-            className="flex-row items-center justify-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 p-2 rounded-full border border-gray-600/30"
+      onPressIn={() => springDown(saveScale, 0.9)}
+      onPressOut={() => springUp(saveScale)}
+            className="relative flex-row items-center justify-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 p-2 rounded-full border border-gray-600/30"
           >
-            <Bookmark
-              size={16}
-              color={outfit.isSaved ? "#EC4899" : "#9CA3AF"}
-              fill={outfit.isSaved ? "#EC4899" : "transparent"}
-            />
+            <Animated.View
+              style={saveStyle}
+              className="relative"
+            >
+              <Bookmark
+                size={16}
+                color={outfit.isSaved ? "#EC4899" : "#9CA3AF"}
+                fill={outfit.isSaved ? "#EC4899" : "transparent"}
+              />
+              <SparkleBurst show={saveSparkle} color="#EC4899" />
+            </Animated.View>
           </Pressable>
 
           <Pressable
             onPress={() => onShare?.(outfit.outfit_id)}
+            onPressIn={() => springDown(shareScale, 0.94)}
+            onPressOut={() => springUp(shareScale)}
             className="flex-row items-center justify-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 p-2 rounded-full border border-gray-600/30"
           >
-            <Share size={16} color="#9CA3AF" />
+            <Animated.View
+              style={shareStyle}
+            >
+              <Share size={16} color="#9CA3AF" />
+            </Animated.View>
           </Pressable>
         </View>
       </View>
-
-      {isRated && (
-        <Text className="text-gray-400 text-xs mt-2">
-          You have {isPositiveRated ? "liked" : "disliked"} this outfit.
-        </Text>
-      )}
     </View>
   );
 };
