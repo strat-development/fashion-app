@@ -1,17 +1,22 @@
 import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 
-export const useFetchSavedOutfits = (userId: string) => {
+export const useFetchSavedOutfits = (userId: string, page: number = 1, pageSize: number = 10) => {
   return useQuery({
-    queryKey: ['saved-outfits', userId],
+    queryKey: ['saved-outfits', userId, page],
     queryFn: async () => {
       if (!supabase) throw new Error('Supabase client not initialized');
+
+      const from = (page - 1) * pageSize;
+      const to = from + pageSize - 1;
 
       const { data: likedOutfits, error: likedError } = await supabase
         .from('saved-outfits')
         .select('outfit_id')
-        .eq('saved_by', userId);
-
+        .eq('saved_by', userId)
+        .order('saved_at', { ascending: false }) 
+        .range(from, to); 
+        
       if (likedError) throw likedError;
       if (!likedOutfits?.length) return [];
 
@@ -19,6 +24,7 @@ export const useFetchSavedOutfits = (userId: string) => {
         .map(o => o.outfit_id)
         .filter((id): id is string => typeof id === 'string');
       if (!outfitIds.length) return [];
+
       const { data: outfits, error: outfitsError } = await supabase
         .from('created-outfits')
         .select('*')
@@ -27,7 +33,6 @@ export const useFetchSavedOutfits = (userId: string) => {
 
       if (outfitsError) throw outfitsError;
 
-      // fetch comment counts for these outfits
       const { data: commentsRows, error: commentsError } = await supabase
         .from('comments')
         .select('outfit_id')
@@ -43,6 +48,6 @@ export const useFetchSavedOutfits = (userId: string) => {
 
       return outfits.map(o => ({ ...o, comments: counts.get(o.outfit_id) || 0 } as any));
     },
-    enabled: !!userId
+    enabled: !!userId,
   });
 };

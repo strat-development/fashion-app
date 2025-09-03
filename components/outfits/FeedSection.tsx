@@ -1,11 +1,11 @@
-import { useFetchFeedOutfits } from "@/fetchers/dashboard/fetchFeedOutfits"
-import { useFetchSavedOutfits } from "@/fetchers/dashboard/fetchSavedOutfits"
+import { useFetchFeedOutfits } from "@/fetchers/outfits/fetchFeedOutfits"
+import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits"
 import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation"
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation"
 import { useUserContext } from "@/providers/userContext"
 import { Grid } from "lucide-react-native"
 import { useState } from "react"
-import { RefreshControl, ScrollView, View } from "react-native"
+import { ActivityIndicator, RefreshControl, ScrollView, View } from "react-native"
 import { enrichOutfit } from '../../utils/enrichOutfit'
 import { EmptyState } from "../dashboard/EmptyState"
 import { OutfitDetail } from "../modals/OutfitDetailModal"
@@ -33,7 +33,10 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
     const [showCommentSection, setShowCommentSection] = useState(false);
 
     const handleUnsavePress = (outfit: OutfitData) => {
-        unsaveOutfit({ outfitId: outfit.outfit_id || "" });
+        unsaveOutfit({
+            outfitId: outfit.outfit_id || "",
+            userId: userId || ""
+        });
     };
 
 
@@ -96,13 +99,13 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                             );
                         })
                     ) : (
-                        <EmptyState
-                            icon={Grid}
-                            title="No outfits yet"
-                            description="Create your first outfit or follow others to see their creations"
-                            actionText="Create Outfit"
-                        />
-                    )}
+                            <EmptyState
+                                icon={Grid}
+                                title="No outfits yet"
+                                description="Create your first outfit or follow others to see their creations"
+                                actionText="Create Outfit"
+                            />
+                        )}
                 </View>
             </ScrollView>
 

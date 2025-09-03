@@ -14,13 +14,11 @@ export const useCreateOutfitMutation = (
       if (!supabase) {
         throw new Error('Supabase client is not initialized.');
       }
-      // Wyszukaj elementy z tymczasowymi obrazami (temp://)
+      
       const tempImages = outfitData.outfit_elements_data
         .filter(el => el.imageUrl.startsWith('temp://'))
         .map(el => ({ tempKey: el.imageUrl, uri: (el as any)._localUri || (el as any).uri || el.imageUrl, fileName: 'image.jpg' }));
 
-      // Map tempKey -> localUri (musimy mieć localUri z formularza, więc zakładamy że w OutfItCreateModal ref trzyma pendingImagesRef i podmieni _localUri przed wywołaniem mutacji – jeśli nie, to fallback poniżej nie zadziała w pełni)
-      // Upload obrazów jeżeli istnieją
       let replacements: Record<string, string> = {};
       if (tempImages.length) {
         replacements = await uploadImagesAndGetPublicUrls(tempImages, { userId: outfitData.created_by || undefined });

@@ -58,8 +58,6 @@ export const ProfileEdit = ({
     mode: 'onChange',
   });
 
-  const watchedData = watch();
-
   const handleImageSelect = async () => {
     const hasPermission = await useRequestPermission();
     if (!hasPermission) {

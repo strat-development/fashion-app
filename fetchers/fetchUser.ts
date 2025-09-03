@@ -2,7 +2,6 @@ import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 
 async function ensureUserProfile(userId: string) {
-    // Próbuje znaleźć, a jeśli nie ma – tworzy pusty profil
     const { data, error, status } = await supabase
         .from('users')
         .select('*')
