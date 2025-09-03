@@ -24,7 +24,11 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
 
-    const savedOutfitIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
+    const [localSavedOutfitIds, setLocalSavedOutfitIds] = useState<Set<string>>(new Set());
+    const savedOutfitIds = new Set([
+        ...savedOutfits?.map(outfit => outfit.outfit_id) || [],
+        ...localSavedOutfitIds
+    ]);
     const [page, setPage] = useState(1);
     const [allOutfits, setAllOutfits] = useState<OutfitData[]>([]);
     const [hasMore, setHasMore] = useState(true);
@@ -32,6 +36,14 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     const pageSize = 25;
 
     const { data: fetchedOutfits = [], isLoading } = useFetchFeedOutfits(page, pageSize);
+
+    useEffect(() => {
+        const serverSavedIds = new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []);
+        setLocalSavedOutfitIds(prev => {
+            const filtered = new Set([...prev].filter(id => !serverSavedIds.has(id)));
+            return filtered;
+        });
+    }, [savedOutfits]);
 
     useEffect(() => {
         if (fetchedOutfits.length > 0 && hasMore) {
@@ -56,20 +68,54 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     const [showCommentSection, setShowCommentSection] = useState(false);
 
     const handleUnsavePress = (outfit: OutfitData) => {
-        unsaveOutfit({
-            outfitId: outfit.outfit_id || "",
-            userId: userId || ""
-        });
+        handleToggleSave(outfit.outfit_id);
     };
 
     const handleToggleSave = (outfitId: string) => {
         if (!userId) return;
 
-        saveOutfit({
-            userId,
-            outfitId,
-            savedAt: new Date().toISOString(),
-        });
+        const isCurrentlySaved = savedOutfitIds.has(outfitId);
+        
+        if (isCurrentlySaved) {
+            setLocalSavedOutfitIds(prev => {
+                const newSet = new Set(prev);
+                newSet.delete(outfitId);
+                return newSet;
+            });
+
+            unsaveOutfit({
+                outfitId,
+                userId
+            }, {
+                onError: () => {
+                    setLocalSavedOutfitIds(prev => {
+                        const newSet = new Set(prev);
+                        newSet.add(outfitId);
+                        return newSet;
+                    });
+                }
+            });
+        } else {
+            setLocalSavedOutfitIds(prev => {
+                const newSet = new Set(prev);
+                newSet.add(outfitId);
+                return newSet;
+            });
+
+            saveOutfit({
+                userId,
+                outfitId,
+                savedAt: new Date().toISOString(),
+            }, {
+                onError: () => {
+                    setLocalSavedOutfitIds(prev => {
+                        const newSet = new Set(prev);
+                        newSet.delete(outfitId);
+                        return newSet;
+                    });
+                }
+            });
+        }
     };
 
     const handleOutfitPress = (outfit: OutfitData) => {

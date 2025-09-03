@@ -28,10 +28,10 @@ export const useSaveOutfitMutation = () => {
 
             return data;
         },
-        onSuccess: (data) => {
+        onSuccess: (data, variables) => {
             queryClient.invalidateQueries({
-                queryKey: ['saved-outfits', data]
-            })
+                queryKey: ['saved-outfits', variables.userId]
+            });
         }
     })
 }
