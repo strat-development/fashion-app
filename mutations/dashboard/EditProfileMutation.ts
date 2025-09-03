@@ -7,6 +7,7 @@ interface EditProfileMutationProps {
     userImage: string;
     userEmail: string;
     userSocials: string[];
+    isPublic: boolean;
 }
 
 export const useEditProfileMutation = (userId: string) => {
@@ -18,11 +19,21 @@ export const useEditProfileMutation = (userId: string) => {
             userBio,
             userImage,
             userEmail,
-            userSocials
+            userSocials,
+            isPublic
         }: EditProfileMutationProps) => {
             if (!supabase) {
                 throw new Error('Supabase client is not initialized.');
             }
+
+            console.log('Updating profile with data:', {
+                full_name: userName,
+                bio: userBio,
+                user_avatar: userImage,
+                email: userEmail,
+                socials: userSocials,
+                is_public: isPublic
+            });
 
             const { data, error } = await supabase.from('users')
                 .update({
@@ -30,16 +41,20 @@ export const useEditProfileMutation = (userId: string) => {
                     bio: userBio,
                     user_avatar: userImage,
                     email: userEmail,
-                    socials: userSocials
+                    socials: userSocials,
+                    is_public: isPublic
                 })
                 .eq('user_id', userId)
                 .select()
 
             if (error) {
+                console.error('Profile update error:', error);
                 throw error;
             }
 
+            console.log('Profile updated successfully:', data);
             return data;
+
         },
         onSuccess: () => {
             queryClient.invalidateQueries({

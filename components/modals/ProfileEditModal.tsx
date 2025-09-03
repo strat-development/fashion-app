@@ -19,6 +19,7 @@ interface ProfileEditProps {
     avatar?: string;
     email?: string;
     socials?: string[];
+    isPublic?: boolean;
   };
 }
 
@@ -34,6 +35,7 @@ interface FormData {
   avatar?: string;
   email?: string;
   socials: string[];
+  isPublic: boolean;
 }
 
 export const ProfileEdit = ({
@@ -41,12 +43,12 @@ export const ProfileEdit = ({
   onClose,
   currentUserData,
 }: ProfileEditProps) => {
-  const { userId, setUserName, setUserBio, setUserImage, setUserEmail, setUserSocials } = useUserContext();
+  const { userId, setUserName, setUserBio, setUserImage, setUserEmail, setUserSocials, isPublic: currentIsPublic, setIsPublic } = useUserContext();
   const { mutate: editProfile, isPending } = useEditProfileMutation(userId || '');
   const [selectedImage, setSelectedImage] = useState<PendingImage | null>(null);
 
 
-  const { control, handleSubmit, formState: { errors, isValid }, setValue } = useForm<FormData>({
+  const { control, handleSubmit, formState: { errors, isValid }, setValue, watch } = useForm<FormData>({
 
     defaultValues: {
       name: currentUserData?.name || '',
@@ -54,9 +56,12 @@ export const ProfileEdit = ({
       avatar: currentUserData?.avatar,
       email: currentUserData?.email,
       socials: currentUserData?.socials || [],
+      isPublic: currentUserData?.isPublic ?? currentIsPublic ?? true,
     },
     mode: 'onChange',
   });
+
+  const watchIsPublic = watch('isPublic');
 
   const handleImageSelect = async () => {
     const hasPermission = await useRequestPermission();
@@ -152,6 +157,8 @@ export const ProfileEdit = ({
       }
     }
 
+    console.log('Submitting profile data:', data);
+
     editProfile(
       {
         userName: data.name,
@@ -159,21 +166,24 @@ export const ProfileEdit = ({
         userImage: avatarUrl || '',
         userEmail: data.email || '',
         userSocials: data.socials,
-
+        isPublic: data.isPublic,
       },
       {
-        onSuccess: () => {
+        onSuccess: (result) => {
+          console.log('Profile update successful:', result);
           setUserName(data.name);
           setUserBio(data.bio);
           setUserImage(avatarUrl || '');
           setUserEmail(data.email || '');
           setUserSocials(data.socials);
+          setIsPublic(data.isPublic);
           
           Alert.alert('Success', 'Profile updated successfully');
           setSelectedImage(null);
           onClose();
         },
         onError: (error) => {
+          console.error('Profile update failed:', error);
           Alert.alert('Error', error.message || 'Failed to update profile');
         },
       }
@@ -317,15 +327,49 @@ export const ProfileEdit = ({
             <View className="mb-8">
               <Text className="text-gray-300 font-medium text-base mb-3">Privacy</Text>
               <View className="bg-gray-800/30 border border-gray-700/30 rounded-lg p-4">
-                <View className="flex-row items-center justify-between mb-3">
-                  <Text className="text-gray-300">Public Profile</Text>
-                  <View className="bg-gradient-to-r from-purple-600 to-pink-600 w-12 h-6 rounded-full justify-center">
-                    <View className="bg-white w-5 h-5 rounded-full self-end mr-0.5" />
+                <Controller
+                  control={control}
+                  name="isPublic"
+                  render={({ field: { onChange, value } }) => (
+                    <Pressable
+                      onPress={() => onChange(!value)}
+                      className="flex-row items-center justify-between mb-3"
+                    >
+                      <View className="flex-1">
+                        <Text className="text-gray-300 font-medium">Public Profile</Text>
+                        <Text className="text-gray-500 text-sm mt-1">
+                          {value 
+                            ? "Others can see your profile and created outfits" 
+                            : "Only your nickname and avatar will be visible"
+                          }
+                        </Text>
+                      </View>
+                      <View className="ml-4">
+                        <View 
+                          className={`w-12 h-6 rounded-full justify-center ${
+                            value 
+                              ? 'bg-gradient-to-r from-purple-600 to-pink-600' 
+                              : 'bg-gray-600'
+                          }`}
+                        >
+                          <View 
+                            className={`bg-white w-5 h-5 rounded-full transition-all duration-200 ${
+                              value ? 'self-end mr-0.5' : 'self-start ml-0.5'
+                            }`} 
+                          />
+                        </View>
+                      </View>
+                    </Pressable>
+                  )}
+                />
+                {!watchIsPublic && (
+                  <View className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 mt-3">
+                    <Text className="text-amber-400 text-sm font-medium">Private Account</Text>
+                    <Text className="text-amber-300/80 text-xs mt-1">
+                      When private, only your username and profile picture will be visible to others. Your bio and outfits will be hidden.
+                    </Text>
                   </View>
-                </View>
-                <Text className="text-gray-500 text-sm">
-                  Others can see your profile and created outfits
-                </Text>
+                )}
               </View>
             </View>
             

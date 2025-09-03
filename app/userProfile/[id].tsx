@@ -80,6 +80,37 @@ export default function ProfileScreen() {
     );
   }
 
+  const isPrivateProfile = userData?.is_public === false && !isOwnProfile;
+
+  if (isPrivateProfile) {
+    return (
+      <View className="flex-1 bg-gradient-to-b from-black to-gray-900">
+        <View className="flex-col items-center justify-center pt-32 px-6">
+          <Image
+            source={{ uri: userData.user_avatar || 'https://via.placeholder.com/120' }}
+            className="w-32 h-32 rounded-full border-2 border-gray-600 mb-6"
+            style={{ width: 128, height: 128, borderRadius: 64 }}
+          />
+          <Text className="text-white text-2xl font-bold mb-2">
+            {userData.nickname || userData.full_name || 'User'}
+          </Text>
+          <Text className="text-gray-400 text-lg mb-8">
+            @{userData.nickname || userData.full_name || 'username'}
+          </Text>
+          <View className="bg-gray-800/80 backdrop-blur-xl rounded-xl p-6 mx-4 border border-gray-700/50">
+            <View className="flex-row items-center justify-center mb-3">
+              <User className="w-6 h-6 text-gray-400 mr-2" />
+              <Text className="text-gray-300 text-lg font-semibold">Private Account</Text>
+            </View>
+            <Text className="text-gray-500 text-center text-base">
+              This account is private. Only approved followers can see their content.
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'user-info':

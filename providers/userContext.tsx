@@ -18,6 +18,8 @@ type UserContextType = {
     setUserJoinedAt: (userJoinedAt: string) => void;
     userId: string | null;
     loading: boolean;
+    isPublic: boolean;
+    setIsPublic: (isPublic: boolean) => void;
 };
 
 export const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -29,6 +31,7 @@ export default function UserContextProvider({ children }: { children: React.Reac
     const [userEmail, setUserEmail] = useState<string>("");
     const [userSocials, setUserSocials] = useState<string[]>([]);
     const [userJoinedAt, setUserJoinedAt] = useState<string>("");
+    const [isPublic, setIsPublic] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(true);
     const { supabaseClient: supabase, session } = useSessionContext();
     const userId = session?.user?.id || "";
@@ -54,6 +57,7 @@ export default function UserContextProvider({ children }: { children: React.Reac
                     setUserEmail(userData.email);
                     setUserSocials(userData.socials);
                     setUserJoinedAt(userData.created_at);
+                    setIsPublic(userData.is_public ?? true);
                 }
 
                 setLoading(false);
@@ -78,7 +82,9 @@ export default function UserContextProvider({ children }: { children: React.Reac
             userJoinedAt,
             setUserJoinedAt,
             userId,
-            loading
+            loading,
+            isPublic,
+            setIsPublic
         }}>
             {children}
         </UserContext.Provider>
