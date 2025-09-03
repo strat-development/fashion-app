@@ -28,12 +28,12 @@ export const useDeleteOutfitMutation = () => {
                 throw error;
             }
         },
-        onSuccess: (data) => {
+        onSuccess: (data, variables) => {
             queryClient.invalidateQueries({
-                queryKey: ['created-outfits', data]
+                queryKey: ['created-outfits', variables.userId]
             });
             queryClient.invalidateQueries({
-                queryKey: ['saved-outfits', data]
+                queryKey: ['saved-outfits', variables.userId]
             });
         }
     });

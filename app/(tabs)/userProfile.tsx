@@ -28,6 +28,7 @@ export default function UserProfile({
     userImage,
     userEmail,
     userSocials,
+    userId,
   } = useUserContext();
 
   const handleEditProfile = () => {
@@ -101,9 +102,9 @@ export default function UserProfile({
           </View>
         );
       case 'created-outfits':
-        return <CreatedOutfitsSection refreshing={refreshing} />;
+        return <CreatedOutfitsSection refreshing={refreshing} profileId={userId || ''} />;
       case 'saved-outfits':
-        return <SavedOutfitsSection refreshing={refreshing} />;
+        return <SavedOutfitsSection refreshing={refreshing} profileId={userId || ''} />;
       default:
         return null;
     }

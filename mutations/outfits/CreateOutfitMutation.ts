@@ -50,10 +50,10 @@ export const useCreateOutfitMutation = (
     },
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['created-outfits']
+        queryKey: ['created-outfits', variables.created_by]
       });
       queryClient.refetchQueries({
-        queryKey: ['created-outfits']
+        queryKey: ['created-outfits', variables.created_by]
       });
       onSuccess?.();
     },
