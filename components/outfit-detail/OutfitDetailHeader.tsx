@@ -8,9 +8,9 @@ export default function OutfitDetailHeader() {
   const insets = useSafeAreaInsets();
 
   return (
-    <View 
-      className="flex-row items-center justify-between px-4 py-2"
-      style={{ paddingTop: insets.top + 10 }}
+    <View
+      className="flex-row items-center justify-between px-4"
+      style={{ paddingTop: insets.top + 8, paddingBottom: 8 }}
     >
       <Pressable
         onPress={() => router.back()}

@@ -1,6 +1,6 @@
 import React from "react";
 import { MessageCircle, Share, ThumbsDown, ThumbsUp } from "lucide-react-native";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, useWindowDimensions } from "react-native";
 import Animated, { SharedValue, useAnimatedStyle, withSequence, withSpring } from "react-native-reanimated";
 
 interface OutfitInteractionButtonsProps {
@@ -34,6 +34,10 @@ export default function OutfitInteractionButtons({
   commentScale,
   shareScale,
 }: OutfitInteractionButtonsProps) {
+  const { width } = useWindowDimensions();
+  const padY = width < 360 ? 12 : 18;
+  const radius = width < 360 ? 14 : 20;
+  const labelSize = width < 360 ? 12 : 13;
   
   const likeStyle = useAnimatedStyle(() => ({
     transform: [{ scale: likeScale.value }],
@@ -55,7 +59,7 @@ export default function OutfitInteractionButtons({
   const springUp = (sv: SharedValue<number>) => (sv.value = withSpring(1, { damping: 14, stiffness: 220 }));
 
   return (
-    <View className="flex-row items-center justify-around py-6 bg-gray-800/30 rounded-2xl mb-6">
+    <View className="flex-row items-center justify-around bg-gray-800/30 mb-6" style={{ paddingVertical: padY, borderRadius: radius }}>
       {/* Like Button */}
       <Pressable
         onPress={onPositiveRate}
@@ -71,7 +75,7 @@ export default function OutfitInteractionButtons({
             color={isLiked ? "#10B981" : "#9CA3AF"} 
             fill={isLiked ? "#10B981" : "transparent"}
           />
-          <Text className="text-gray-300 mt-1 text-sm">
+          <Text className="text-gray-300 mt-1" style={{ fontSize: labelSize }}>
             {positiveRatings}
           </Text>
         </Animated.View>
@@ -92,7 +96,7 @@ export default function OutfitInteractionButtons({
             color={isDisliked ? "#EF4444" : "#9CA3AF"} 
             fill={isDisliked ? "#EF4444" : "transparent"}
           />
-          <Text className="text-gray-300 mt-1 text-sm">
+          <Text className="text-gray-300 mt-1" style={{ fontSize: labelSize }}>
             {negativeRatings}
           </Text>
         </Animated.View>
@@ -109,7 +113,7 @@ export default function OutfitInteractionButtons({
           className="items-center"
         >
           <MessageCircle size={24} color="#9CA3AF" />
-          <Text className="text-gray-300 mt-1 text-sm">
+          <Text className="text-gray-300 mt-1" style={{ fontSize: labelSize }}>
             {commentsCount}
           </Text>
         </Animated.View>
@@ -126,7 +130,7 @@ export default function OutfitInteractionButtons({
           className="items-center"
         >
           <Share size={24} color="#9CA3AF" />
-          <Text className="text-gray-300 mt-1 text-sm">Share</Text>
+          <Text className="text-gray-300 mt-1" style={{ fontSize: labelSize }}>Share</Text>
         </Animated.View>
       </Pressable>
     </View>

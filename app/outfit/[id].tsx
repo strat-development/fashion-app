@@ -1,4 +1,5 @@
 import CommentSection from "@/components/outfits/CommentSection";
+import { ShareModal } from "@/components/modals/ShareModal";
 import OutfitDetailHeader from "@/components/outfit-detail/OutfitDetailHeader";
 import OutfitDetailImages from "@/components/outfit-detail/OutfitDetailImages";
 import OutfitDetailInfo from "@/components/outfit-detail/OutfitDetailInfo";
@@ -46,6 +47,7 @@ function OutfitDetailContent() {
   const [outfit, setOutfit] = useState<OutfitDetailData | null>(null);
   const [loading, setLoading] = useState(true);
   const [showComments, setShowComments] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   
   const { data: userData } = useFetchUser(outfit?.created_by || "");
   const { data: ratingStats } = useFetchRatingStats(id || "");
@@ -136,7 +138,7 @@ function OutfitDetailContent() {
       withSpring(1.2, { damping: 14, stiffness: 220 }),
       withSpring(1, { damping: 14, stiffness: 220 })
     );
-    // Add share functionality here
+  setShowShareModal(true);
   };
 
   const handleComments = () => {
@@ -236,6 +238,13 @@ function OutfitDetailContent() {
         onClose={() => setShowComments(false)}
         outfitId={id || ''}
         outfitTitle={outfit.outfit_name || 'Outfit'}
+      />
+
+      <ShareModal
+        isVisible={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        outfit={outfit as any}
+        isAnimated={true}
       />
     </>
   );
