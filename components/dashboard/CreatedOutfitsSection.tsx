@@ -82,9 +82,12 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
         setShowOutfitCreate(true);
     };
 
-    const handleDeletePress = (outfit: OutfitData) => {
-        setOutfitToDelete(outfit);
-        setShowDeleteOutfit(true);
+    const handleDeletePress = (outfitId: string) => {
+        const outfit = allOutfits.find(o => o.outfit_id === outfitId);
+        if (outfit) {
+            setOutfitToDelete(outfit);
+            setShowDeleteOutfit(true);
+        }
     };
 
     const handleDeleteSuccess = () => {
@@ -154,7 +157,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                             onToggleSave={() => handleToggleSave(outfit.outfit_id)}
                             onComment={handleCommentPress}
                             onPress={() => handleOutfitPress(outfit)}
-                            onDelete={() => handleDeletePress(outfit)}
+                            onDelete={() => handleDeletePress(outfit.outfit_id)}
                             onUnsave={() => handleUnsavePress(outfit)}
                             isDeleteVisible={profileId === userId}
                         />
@@ -225,6 +228,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                     onClose={() => setShowDeleteOutfit(false)}
                     isAnimated={true}
                     outfitId={outfitToDelete.outfit_id}
+                    userId={userId || undefined}
                     onSuccess={handleDeleteSuccess}
                 />
             )}
