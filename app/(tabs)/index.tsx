@@ -9,6 +9,7 @@ import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
 import { OutfitData } from "@/types/createOutfitTypes";
 import { enrichOutfit } from "@/utils/enrichOutfit";
+import { router } from "expo-router";
 import { Grid } from "lucide-react-native";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
@@ -173,6 +174,10 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                         onComment={handleCommentPress}
                         onUnsave={() => handleUnsavePress(outfit)}
                         onShare={() => handleSharePress(outfit.outfit_id)}
+                        onPress={(outfit) => router.push({
+                            pathname: "/outfit/[id]",
+                            params: { id: outfit.outfit_id }
+                        })}
                     />
                 )}
                 ListEmptyComponent={

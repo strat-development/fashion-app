@@ -3,6 +3,7 @@ import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { useDeleteOutfitMutation } from "@/mutations/outfits/DeleteOutfitMutation";
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useUserContext } from "@/providers/userContext";
+import { router } from "expo-router";
 import { Plus } from "lucide-react-native";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
@@ -111,8 +112,10 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
     };
 
     const handleOutfitPress = (outfit: OutfitData) => {
-        setSelectedOutfit(outfit);
-        setShowOutfitDetail(true);
+        router.push({
+            pathname: "/outfit/[id]",
+            params: { id: outfit.outfit_id }
+        });
     };
 
     const handleCommentPress = (outfitId: string) => {
