@@ -8,11 +8,11 @@ export type CreateReplyData = {
     parentCommentId: string
 };
 
-export const useCreateReplyMutation = ({ outfitId, userId, content, parentCommentId }: CreateReplyData) => {
+export const useCreateReplyMutation = ({ outfitId, userId, parentCommentId }: Omit<CreateReplyData, 'content'>) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async () => {
+        mutationFn: async (content: string) => {
             const { error } = await supabase.from('comments')
                 .insert({
                     outfit_id: outfitId,

@@ -37,7 +37,6 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
         outfitId: comment.outfit_id || '',
         userId: userId || '',
         parentCommentId: targetParentId || comment.id,
-        content: "@" + name + " " + text,
     });
     const handleSend = async () => {
         if (!userId) {
@@ -46,7 +45,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
         }
         if (!text.trim()) return;
         try {
-            await createReply();
+            await createReply("@" + name + " " + text);
             setText('');
             setIsSetToReply(false);
         } catch (e: any) {

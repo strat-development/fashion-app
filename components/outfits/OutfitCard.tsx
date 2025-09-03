@@ -101,7 +101,7 @@ export const OutfitCard = ({
             <Link
               href={{
                 pathname: "/userProfile/[id]",
-                params: { id: outfit.created_by },
+                params: { id: outfit.created_by ?? "" },
               }}
               className="text-white font-semibold"
             >

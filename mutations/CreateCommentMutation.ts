@@ -7,11 +7,11 @@ interface CreateCommentParams {
   content: string;
 }
 
-export const useCreateCommentMutation = () => {
+export const useCreateCommentMutation = ({ outfitId, userId }: Omit<CreateCommentParams, 'content'>) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ outfitId, userId, content }: CreateCommentParams) => {
+    mutationFn: async (content: string) => {
       if (!content.trim()) {
         throw new Error('Comment content cannot be empty');
       }
@@ -25,8 +25,9 @@ export const useCreateCommentMutation = () => {
         });
       if (error) throw error;
     },
-    onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['comments', variables.outfitId] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments', outfitId] });
+      queryClient.refetchQueries({ queryKey: ['comments', outfitId] });
     },
     onError: (error) => {
       console.error('Failed to create comment:', error);

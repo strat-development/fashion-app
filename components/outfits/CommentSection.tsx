@@ -18,7 +18,7 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
   const { userId } = useUserContext();
   const { data: comments = [], isLoading } = useFetchComments(outfitId);
   const [text, setText] = useState('');
-  const { mutateAsync: createComment, isPending } = useCreateCommentMutation({ outfitId, userId: userId ?? '', content: text });
+  const { mutateAsync: createComment, isPending } = useCreateCommentMutation({ outfitId, userId: userId ?? '' });
 
   const handleSend = async () => {
     if (!userId) {
@@ -27,7 +27,7 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
     }
     if (!text.trim()) return;
     try {
-      await createComment();
+      await createComment(text);
       setText('');
     } catch (e: any) {
       Alert.alert('Error', e?.message || 'Failed to add comment');
