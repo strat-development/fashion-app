@@ -10,13 +10,13 @@ interface EmptyStateProps {
   onAction?: () => void;
 }
 
-export const EmptyState: React.FC<EmptyStateProps> = ({
+export const EmptyState = ({
   icon: Icon,
   title,
   description,
   actionText,
   onAction
-}) => {
+}: EmptyStateProps) => {
   return (
     <View className="items-center justify-center py-16">
       <Icon size={48} color="#4B5563" />
