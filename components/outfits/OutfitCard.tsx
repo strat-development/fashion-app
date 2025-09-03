@@ -9,8 +9,10 @@ import { Database } from "@/types/supabase";
 import { Link } from "expo-router";
 import { Bookmark, Delete, MessageCircle, Share, ThumbsDown, ThumbsUp, User } from "lucide-react-native";
 import React, { useState } from "react";
-import { Image, Pressable, ScrollView, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, Text, useWindowDimensions, View } from "react-native";
+import { State, TapGestureHandler } from "react-native-gesture-handler";
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring } from "react-native-reanimated";
+import Carousel from "react-native-reanimated-carousel";
 
 export type OutfitData = Database["public"]["Tables"]["created-outfits"]["Row"] & {
   likes: number;
@@ -63,6 +65,10 @@ export const OutfitCard = ({
   const [optimisticLiked, setOptimisticLiked] = useState(isPositiveRated);
   const [optimisticDisliked, setOptimisticDisliked] = useState(isNegativeRated);
   const [optimisticSaved, setOptimisticSaved] = useState(outfit.isSaved);
+  
+  const { width: screenWidth } = useWindowDimensions();
+  const progress = useSharedValue<number>(0);
+  const [isInteracting, setIsInteracting] = useState(false);
 
   React.useEffect(() => {
     setOptimisticLiked(isPositiveRated);
@@ -141,6 +147,25 @@ export const OutfitCard = ({
       ? [outfit.outfit_tags]
       : [];
 
+  const renderCarouselItem = ({ item }: { item: string }) => (
+    <TapGestureHandler
+      onHandlerStateChange={({ nativeEvent }) => {
+        if (nativeEvent.state === State.END && !isInteracting) {
+          onPress?.(outfit);
+        }
+      }}
+    >
+      <View>
+        <Image
+          source={{ uri: item }}
+          className="rounded-xl"
+          style={{ width: screenWidth - 64, height: 320 }}
+          resizeMode="cover"
+        />
+      </View>
+    </TapGestureHandler>
+  );
+
   return (
     <View className="bg-gradient-to-br from-gray-900/70 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 mb-4 border border-gray-700/30">
       {/* Header */}
@@ -187,12 +212,64 @@ export const OutfitCard = ({
         </View>
       </View>
 
-      {/* Image */}
-      <Pressable onPress={() => onPress?.(outfit)}>
-        <View className="relative mb-3">
-          <Image source={{ uri: imageUrls[0] || "" }} className="w-full h-80 rounded-xl" resizeMode="cover" />
-        </View>
-      </Pressable>
+      {/* Images */}
+      <View className="relative mb-3 overflow-hidden rounded-xl">
+        {imageUrls.length === 1 ? (
+          <Pressable onPress={() => onPress?.(outfit)}>
+            <Image source={{ uri: imageUrls[0] || "" }} className="w-full h-80 rounded-xl" resizeMode="cover" />
+          </Pressable>
+        ) : imageUrls.length > 1 ? (
+          <View className="relative">
+            <Carousel
+              width={screenWidth - 64}
+              height={320}
+              data={imageUrls}
+              onProgressChange={(_, absoluteProgress) => {
+                progress.value = absoluteProgress;
+                if (Math.abs(absoluteProgress % 1) > 0.1) {
+                  setIsInteracting(true);
+                } else {
+                  setTimeout(() => setIsInteracting(false), 200);
+                }
+              }}
+              renderItem={renderCarouselItem}
+              mode="parallax"
+              loop={false}
+              enabled={imageUrls.length > 1}
+              modeConfig={{
+                parallaxScrollingScale: 0.98,
+                parallaxScrollingOffset: 5,
+                parallaxAdjacentItemScale: 0.95,
+              }}
+              style={{ 
+                width: screenWidth - 64,
+                overflow: 'hidden'
+              }}
+            />
+            {/* Photo count indicator */}
+            <View className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-3 py-1.5 rounded-full border border-gray-400/30 z-20">
+              <Text className="text-white text-xs font-medium">{Math.round(progress.value) + 1}/{imageUrls.length}</Text>
+            </View>
+            {/* Custom pagination dots */}
+            {imageUrls.length <= 5 && (
+              <View className="flex-row justify-center mt-2 z-20">
+                {imageUrls.map((_, index) => (
+                  <View
+                    key={index}
+                    className={`w-2 h-2 rounded-full mx-1 ${
+                      Math.round(progress.value) === index ? 'bg-white' : 'bg-white/40'
+                    }`}
+                  />
+                ))}
+              </View>
+            )}
+          </View>
+        ) : (
+          <View className="w-full h-80 rounded-xl bg-gray-700 items-center justify-center">
+            <Text className="text-gray-400">No images</Text>
+          </View>
+        )}
+      </View>
 
       {/* Title and Tags */}
       <Text className="text-white font-semibold text-lg mb-2">{outfit.outfit_name || "Untitled Outfit"}</Text>
