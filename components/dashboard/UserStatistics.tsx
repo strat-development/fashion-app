@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Text, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 import { fetchUserStatistics } from '../../fetchers/dashboard/fetchUserStatistics';
 
 interface UserStatisticsProps {
@@ -19,15 +19,24 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                 <Text className="text-white text-base font-medium mb-4">Statistics</Text>
                 <View className="flex-row justify-between">
                     <View className="items-center">
-                        <Text className="text-white text-xl font-semibold">-</Text>
+                        <View className="flex-row items-center">
+                            <ActivityIndicator size="small" color="#888" />
+                            <Text className="text-gray-500 text-xl font-semibold ml-2">...</Text>
+                        </View>
                         <Text className="text-gray-400 text-xs mt-1">Created</Text>
                     </View>
                     <View className="items-center">
-                        <Text className="text-white text-xl font-semibold">-</Text>
+                        <View className="flex-row items-center">
+                            <ActivityIndicator size="small" color="#888" />
+                            <Text className="text-gray-500 text-xl font-semibold ml-2">...</Text>
+                        </View>
                         <Text className="text-gray-400 text-xs mt-1">Saved</Text>
                     </View>
                     <View className="items-center">
-                        <Text className="text-white text-xl font-semibold">-</Text>
+                        <View className="flex-row items-center">
+                            <ActivityIndicator size="small" color="#888" />
+                            <Text className="text-gray-500 text-xl font-semibold ml-2">...</Text>
+                        </View>
                         <Text className="text-gray-400 text-xs mt-1">Likes</Text>
                     </View>
                 </View>

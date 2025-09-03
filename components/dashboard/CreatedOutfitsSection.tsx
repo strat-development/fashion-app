@@ -175,27 +175,34 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                     );
                 }}
                 ListEmptyComponent={
-                    <>
-                        {profileId === userId && (
-                            <EmptyState
-                                icon={Plus}
-                                title="No outfits created yet"
-                                description="Start creating your first outfit!"
-                                actionText="Create Outfit"
-                                onAction={handleCreateOutfit}
-                            />
-                        )}
+                    isLoading ? (
+                        <View className="py-16 items-center">
+                            <ActivityIndicator size="large" color="#ffffff" />
+                            <Text className="text-gray-300 text-base mt-4">Loading outfits...</Text>
+                        </View>
+                    ) : (
+                        <>
+                            {profileId === userId && (
+                                <EmptyState
+                                    icon={Plus}
+                                    title="No outfits created yet"
+                                    description="Start creating your first outfit!"
+                                    actionText="Create Outfit"
+                                    onAction={handleCreateOutfit}
+                                />
+                            )}
 
-                        {!profileId && (
-                            <EmptyState
-                                icon={Plus}
-                                title="No outfits created yet"
-                                description="Start creating your first outfit!"
-                                actionText="Create Outfit"
-                                onAction={handleCreateOutfit}
-                            />
-                        )}
-                    </>
+                            {!profileId && (
+                                <EmptyState
+                                    icon={Plus}
+                                    title="No outfits created yet"
+                                    description="Start creating your first outfit!"
+                                    actionText="Create Outfit"
+                                    onAction={handleCreateOutfit}
+                                />
+                            )}
+                        </>
+                    )
                 }
                 ListHeaderComponent={
                     <View className="flex-row items-center justify-between mb-6">
@@ -219,7 +226,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                 onEndReached={handleEndReached}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={
-                    isLoading && hasMore ? (
+                    isLoading && hasMore && allOutfits.length > 0 ? (
                         <View className="py-4">
                             <ActivityIndicator size="large" color="#ffffff" />
                         </View>

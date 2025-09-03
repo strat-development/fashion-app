@@ -3,7 +3,7 @@ import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOut
 import { useUserContext } from "@/providers/userContext";
 import { Bookmark } from "lucide-react-native";
 import { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { ShareModal } from "../modals/ShareModal";
 import CommentSection from "../outfits/CommentSection";
@@ -127,17 +127,24 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
                     );
                 }}
                 ListEmptyComponent={
-                    <EmptyState
-                        icon={Bookmark}
-                        title="No saved outfits yet"
-                        description="Start saving outfits you love!"
-                    />
+                    isLoading ? (
+                        <View className="py-16 items-center">
+                            <ActivityIndicator size="large" color="#ffffff" />
+                            <Text className="text-gray-300 text-base mt-4">Loading saved outfits...</Text>
+                        </View>
+                    ) : (
+                        <EmptyState
+                            icon={Bookmark}
+                            title="No saved outfits yet"
+                            description="Start saving outfits you love!"
+                        />
+                    )
                 }
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 onEndReached={handleEndReached}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={
-                    isLoading && hasMore ? (
+                    isLoading && hasMore && allOutfits.length > 0 ? (
                         <View className="py-4">
                             <ActivityIndicator size="large" color="#ffffff" />
                         </View>
