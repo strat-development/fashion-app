@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { ActivityIndicator, Animated, Text, View } from 'react-native';
+import { ActivityIndicator, Animated, Text, View, Platform } from 'react-native';
 
 interface FeedLoadingScreenProps {
   message?: string;
@@ -109,12 +109,18 @@ export const FeedLoadingScreen = ({ message = "Loading your feed..." }: FeedLoad
             >
               <View 
                 className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400"
-                style={{
-                  shadowColor: '#A855F7',
-                  shadowOffset: { width: 0, height: 0 },
-                  shadowOpacity: 0.6,
-                  shadowRadius: 4,
-                }}
+                style={Platform.select({
+                  web: {
+                    boxShadow: '0 0 4px rgba(168, 85, 247, 0.6)',
+                  },
+                  default: {
+                    shadowColor: '#A855F7',
+                    shadowOffset: { width: 0, height: 0 },
+                    shadowOpacity: 0.6,
+                    shadowRadius: 4,
+                    elevation: 4, 
+                  },
+                })}
               />
             </Animated.View>
           ))}

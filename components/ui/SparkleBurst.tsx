@@ -19,7 +19,7 @@ export const SparkleBurst: React.FC<SparkleBurstProps> = ({ show, color = "#f472
     progress.value = withTiming(1, { duration: 450 });
   }, [progress]);
   return (
-    <View pointerEvents="none" style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0, alignItems: "center", justifyContent: "center" }}>
+    <View style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0, alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
       {dots.map((_, i) => {
         const angle = (i / dots.length) * Math.PI * 2;
         const dx = Math.cos(angle) * size;
