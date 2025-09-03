@@ -163,6 +163,12 @@ export const ProfileEdit = ({
       },
       {
         onSuccess: () => {
+          setUserName(data.name);
+          setUserBio(data.bio);
+          setUserImage(avatarUrl || '');
+          setUserEmail(data.email || '');
+          setUserSocials(data.socials);
+          
           Alert.alert('Success', 'Profile updated successfully');
           setSelectedImage(null);
           onClose();

@@ -1,5 +1,5 @@
 import { supabaseAdmin } from "@/lib/admin";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface UpdateProfileImageProps {
     image: File;
@@ -7,6 +7,7 @@ interface UpdateProfileImageProps {
 }
 
 export const useUpdateProfileImage = ({ image, userId }: UpdateProfileImageProps) => {
+    const queryClient = useQueryClient();
     const path = userId + image.name + Date.now();
 
     return useMutation({
@@ -21,6 +22,20 @@ export const useUpdateProfileImage = ({ image, userId }: UpdateProfileImageProps
             }
 
             return data
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['users']
+            });
+            queryClient.invalidateQueries({
+                queryKey: ['users', userId]
+            });
+            queryClient.refetchQueries({
+                queryKey: ['users']
+            });
+            queryClient.refetchQueries({
+                queryKey: ['users', userId]
+            });
         }
     })
 }

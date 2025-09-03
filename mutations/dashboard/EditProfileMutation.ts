@@ -46,7 +46,13 @@ export const useEditProfileMutation = (userId: string) => {
                 queryKey: ['users']
             });
             queryClient.invalidateQueries({
-                queryKey: ['user', userId]
+                queryKey: ['users', userId]
+            });
+            queryClient.refetchQueries({
+                queryKey: ['users']
+            });
+            queryClient.refetchQueries({
+                queryKey: ['users', userId]
             });
         }
     })
