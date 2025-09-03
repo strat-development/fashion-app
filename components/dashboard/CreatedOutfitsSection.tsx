@@ -184,7 +184,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                             <Text className="text-gray-300 text-base mt-4">Loading outfits...</Text>
                         </View>
                     ) : (
-                        <>
+                        <View>
                             {profileId === userId && (
                                 <EmptyState
                                     icon={Plus}
@@ -204,13 +204,13 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                                     onAction={handleCreateOutfit}
                                 />
                             )}
-                        </>
+                        </View>
                     )
                 }
                 ListHeaderComponent={
                     <View className="flex-row items-center justify-between mb-6">
                         {profileId === userId && (
-                            <>
+                            <View className="flex-row items-center justify-between w-full">
                                 <Text className="text-white text-xl font-semibold">Your Creations</Text>
                                 <Button
                                     onPress={handleCreateOutfit}
@@ -221,7 +221,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                                         <Text className="text-white ml-2 font-medium text-sm">Create</Text>
                                     </View>
                                 </Button>
-                            </>
+                            </View>
                         )}
                     </View>
                 }

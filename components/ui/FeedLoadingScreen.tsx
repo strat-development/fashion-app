@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { ActivityIndicator, Animated, Text, View, Platform } from 'react-native';
+import { ActivityIndicator, Animated, Platform, Text, View } from 'react-native';
 
 interface FeedLoadingScreenProps {
   message?: string;
@@ -11,7 +11,6 @@ export const FeedLoadingScreen = ({ message = "Loading your feed..." }: FeedLoad
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    // Entrance animation
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -26,7 +25,6 @@ export const FeedLoadingScreen = ({ message = "Loading your feed..." }: FeedLoad
       }),
     ]).start();
 
-    // Pulsing animation for the glow effect
     const pulseAnimation = Animated.loop(
       Animated.sequence([
         Animated.timing(pulseAnim, {
