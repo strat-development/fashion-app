@@ -45,7 +45,7 @@ export const useFetchSavedOutfits = (userId: string, page: number = 1, pageSize:
         .from('created-outfits')
         .select(`
           *,
-          comments:comments(count)
+          comments(count)
         `)
         .in('outfit_id', outfitIds)
         .order('created_at', { ascending: false });
@@ -61,7 +61,7 @@ export const useFetchSavedOutfits = (userId: string, page: number = 1, pageSize:
 
       return outfits.map(outfit => ({
         ...outfit,
-        comments: Array.isArray(outfit.comments) ? outfit.comments.length : 0
+        comments: outfit.comments?.[0]?.count || 0
       }));
     },
     enabled: !!userId,

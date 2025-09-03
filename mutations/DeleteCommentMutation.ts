@@ -22,6 +22,8 @@ export const useDeleteCommentMutation = ({ commentId, userId }: DeleteCommentDat
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments'] });
       queryClient.refetchQueries({ queryKey: ['comments'] });
+      queryClient.invalidateQueries({ queryKey: ['created-outfits'] });
+      queryClient.invalidateQueries({ queryKey: ['saved-outfits'] });
     },
   });
 };

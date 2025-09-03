@@ -28,6 +28,8 @@ export const useCreateReplyMutation = ({ outfitId, userId, parentCommentId }: Om
             queryClient.invalidateQueries({ queryKey: ['comments', parentCommentId] });
             queryClient.refetchQueries({ queryKey: ['comments', outfitId] });
             queryClient.refetchQueries({ queryKey: ['comments', parentCommentId] });
+            queryClient.invalidateQueries({ queryKey: ['created-outfits'] });
+            queryClient.invalidateQueries({ queryKey: ['saved-outfits'] });
         },
     });
 };

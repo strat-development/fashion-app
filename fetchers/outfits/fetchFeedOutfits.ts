@@ -16,7 +16,7 @@ export const useFetchFeedOutfits = (page: number = 1, pageSize: number = 10) => 
         .from('created-outfits')
         .select(`
           *,
-          comments:comments(count)
+          comments(count)
         `)
         .order('created_at', { ascending: false })
         .range(from, to);
@@ -32,7 +32,7 @@ export const useFetchFeedOutfits = (page: number = 1, pageSize: number = 10) => 
 
       return data.map(outfit => ({
         ...outfit,
-        comments: Array.isArray(outfit.comments) ? outfit.comments.length : 0
+        comments: outfit.comments?.[0]?.count || 0
       }));
     },
     staleTime: 5 * 60 * 1000,

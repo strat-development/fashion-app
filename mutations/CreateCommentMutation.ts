@@ -28,6 +28,8 @@ export const useCreateCommentMutation = ({ outfitId, userId }: Omit<CreateCommen
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', outfitId] });
       queryClient.refetchQueries({ queryKey: ['comments', outfitId] });
+      queryClient.invalidateQueries({ queryKey: ['created-outfits'] });
+      queryClient.invalidateQueries({ queryKey: ['saved-outfits'] });
     },
     onError: (error) => {
       console.error('Failed to create comment:', error);
