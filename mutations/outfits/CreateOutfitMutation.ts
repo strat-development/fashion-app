@@ -55,6 +55,11 @@ export const useCreateOutfitMutation = (
       queryClient.refetchQueries({
         queryKey: ['created-outfits', variables.created_by]
       });
+      
+      queryClient.invalidateQueries({
+        queryKey: ['userStatistics', variables.created_by]
+      });
+      
       onSuccess?.();
     },
     onError: (error: Error) => {

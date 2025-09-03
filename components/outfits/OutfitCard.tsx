@@ -44,10 +44,12 @@ export const OutfitCard = ({
   const { mutate: rateOutfit } = useRateOutfitMutation({
     outfitId: outfit.outfit_id || "",
     userId: userId || "",
+    outfitCreatorId: outfit.created_by || "",
   });
   const { mutate: unrateOutfit } = useUnrateOutfitMutation({
     outfitId: outfit.outfit_id || "",
     userId: userId || "",
+    outfitCreatorId: outfit.created_by || "",
   });
 
   const userRating = ratingStats?.data?.find((el) => el.rated_by === userId);

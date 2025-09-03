@@ -32,6 +32,10 @@ export const useSaveOutfitMutation = () => {
             queryClient.invalidateQueries({
                 queryKey: ['saved-outfits', variables.userId]
             });
+            
+            queryClient.invalidateQueries({
+                queryKey: ['userStatistics', variables.userId]
+            });
         }
     })
 }

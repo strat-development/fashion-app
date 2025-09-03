@@ -94,7 +94,7 @@ export default function ProfileScreen() {
             </View>
 
             {/* Statistics */}
-            <UserStatistics />
+            {profileId && <UserStatistics userId={profileId} />}
 
             {/* Recent Activity */}
             <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 border border-gray-800/50">

@@ -4,9 +4,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 interface RateOutfitMutationProps {
     outfitId: string;
     userId: string;
+    outfitCreatorId?: string;
 }
 
-export const useRateOutfitMutation = ({ outfitId, userId }: RateOutfitMutationProps) => {
+export const useRateOutfitMutation = ({ outfitId, userId, outfitCreatorId }: RateOutfitMutationProps) => {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -49,6 +50,12 @@ export const useRateOutfitMutation = ({ outfitId, userId }: RateOutfitMutationPr
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["outfits-rats", outfitId] });
+            
+            if (outfitCreatorId) {
+                queryClient.invalidateQueries({ 
+                    queryKey: ["userStatistics", outfitCreatorId] 
+                });
+            }
         },
         onError: (error) => {
             console.error("Error updating rating:", error);

@@ -62,7 +62,7 @@ export default function UserProfile({
             </View>
 
             {/* Statistics */}
-            <UserStatistics />
+            {userId && <UserStatistics userId={userId} />}
 
             {/* Recent Activity */}
             <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 border border-gray-800/50">

@@ -4,9 +4,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 interface UnrateOutfitMutationProps {
     outfitId: string;
     userId: string;
+    outfitCreatorId?: string;
 }
 
-export const useUnrateOutfitMutation = ({ userId, outfitId }: UnrateOutfitMutationProps) => {
+export const useUnrateOutfitMutation = ({ userId, outfitId, outfitCreatorId }: UnrateOutfitMutationProps) => {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -29,6 +30,12 @@ export const useUnrateOutfitMutation = ({ userId, outfitId }: UnrateOutfitMutati
             queryClient.invalidateQueries({ queryKey: ['outfits-rating', outfitId] });
             queryClient.invalidateQueries({ queryKey: ['outfits-rating', userId] });
             queryClient.invalidateQueries({ queryKey: ['outfits-rating'] });
+            
+            if (outfitCreatorId) {
+                queryClient.invalidateQueries({ 
+                    queryKey: ["userStatistics", outfitCreatorId] 
+                });
+            }
         },
         onError: (error) => {
             console.error('Error unliking outfit:', error);

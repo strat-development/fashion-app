@@ -1,21 +1,21 @@
+import { CommentData, useFetchComments } from '@/fetchers/fetchComments';
 import { useFetchUser } from '@/fetchers/fetchUser';
-import { useFetchSavedOutfits } from '@/fetchers/outfits/fetchSavedOutfits';
 import { useFetchRatingStats } from '@/fetchers/outfits/fetchRatedOutfits';
-import { useFetchComments, CommentData } from '@/fetchers/fetchComments';
+import { useFetchSavedOutfits } from '@/fetchers/outfits/fetchSavedOutfits';
 import { formatDate } from '@/helpers/helpers';
-import { useDeleteSavedOutfitMutation } from '@/mutations/outfits/DeleteSavedOutfitMutation';
-import { useSaveOutfitMutation } from '@/mutations/outfits/SaveOutfitMutation';
-import { useRateOutfitMutation } from '@/mutations/outfits/RateOutfitMutation';
-import { useUnrateOutfitMutation } from '@/mutations/outfits/UnrateOutfitMutation';
 import { useCreateCommentMutation } from '@/mutations/CreateCommentMutation';
+import { useDeleteSavedOutfitMutation } from '@/mutations/outfits/DeleteSavedOutfitMutation';
+import { useRateOutfitMutation } from '@/mutations/outfits/RateOutfitMutation';
+import { useSaveOutfitMutation } from '@/mutations/outfits/SaveOutfitMutation';
+import { useUnrateOutfitMutation } from '@/mutations/outfits/UnrateOutfitMutation';
 import { useUserContext } from '@/providers/userContext';
 import { Link } from 'expo-router';
 import { Bookmark, Heart, MessageCircle, Send, Share, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { Alert, Image, Modal, Pressable, ScrollView, Share as RNShare, Text, TextInput, View } from 'react-native';
+import { Alert, Image, Modal, Pressable, Share as RNShare, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { OutfitData } from '../outfits/OutfitCard';
 import { CommentItem } from '../outfits/CommentItem';
+import { OutfitData } from '../outfits/OutfitCard';
 
 interface OutfitDetailProps {
   outfit: OutfitData;
@@ -38,10 +38,12 @@ export const OutfitDetail = ({
   const { mutate: rateOutfit } = useRateOutfitMutation({
     outfitId: outfit.outfit_id || "",
     userId: userId || "",
+    outfitCreatorId: outfit.created_by || "",
   });
   const { mutate: unrateOutfit } = useUnrateOutfitMutation({
     outfitId: outfit.outfit_id || "",
     userId: userId || "",
+    outfitCreatorId: outfit.created_by || "",
   });
   const { mutateAsync: createComment, isPending: isCommentPending } = useCreateCommentMutation({
     outfitId: outfit.outfit_id,
