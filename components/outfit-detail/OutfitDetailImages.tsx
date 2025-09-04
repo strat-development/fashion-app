@@ -1,9 +1,9 @@
+import { OutfitElementData } from "@/types/createOutfitTypes";
+import { DollarSign, ExternalLink, Tag } from "lucide-react-native";
 import React, { useState } from "react";
-import { Image, Text, View, useWindowDimensions, Pressable, Linking } from "react-native";
+import { Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
-import { OutfitElementData } from "@/types/createOutfitTypes";
-import { ExternalLink, Tag, DollarSign } from "lucide-react-native";
 
 interface OutfitDetailImagesProps {
   imageUrls: string[];

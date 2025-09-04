@@ -286,44 +286,53 @@ export const OutfitCard = ({
       {/* Actions */}
       <View className="flex-row items-center justify-between pt-2 gap-3">
         <View className="flex-row items-center flex-shrink min-w-0">
-          <View className="flex-row items-center gap-1">
-            <Pressable
-              onPress={handlePositiveRate}
-              onPressIn={() => springDown(likeScale, 0.9)}
-              onPressOut={() => springUp(likeScale)}
-              className={`relative flex-row items-center px-2 py-1 rounded-full border ${optimisticLiked ? "bg-green-500/20 border-green-500/50" : "bg-gray-800/50 border-gray-600/30"}`}
-            >
-              <Animated.View
-                style={likeStyle}
-                className="relative"
+          <View className="flex-col">
+            <View className="flex-row items-center gap-1">
+              <Pressable
+                onPress={handlePositiveRate}
+                onPressIn={() => springDown(likeScale, 0.9)}
+                onPressOut={() => springUp(likeScale)}
+                className={`relative flex-row items-center px-2 py-1 rounded-full border ${optimisticLiked ? "bg-purple-600/20 border-purple-500/30" : "bg-gray-800/50 border-gray-600/30"}`}
               >
-                <ThumbsUp
-                  size={18}
-                  color={optimisticLiked ? "#22C55E" : "#9CA3AF"}
-                  fill={optimisticLiked ? "#22C55E" : "transparent"}
-                />
-                <SparkleBurst show={likeSparkle} color="#22C55E" />
-              </Animated.View>
-            </Pressable>
-            <Pressable
-              onPress={handleNegativeRate}
-              onPressIn={() => springDown(dislikeScale, 0.9)}
-              onPressOut={() => springUp(dislikeScale)}
-              className={`relative flex-row items-center px-2 py-1 rounded-full border ${optimisticDisliked ? "bg-red-500/20 border-red-500/50" : "bg-gray-800/50 border-gray-600/30"}`}
-            >
-              <Animated.View
-                style={dislikeStyle}
-                className="relative"
+                <Animated.View
+                  style={likeStyle}
+                  className="relative"
+                >
+                  <ThumbsUp
+                    size={18}
+                    color={optimisticLiked ? "#D8B4FE" : "#9CA3AF"}
+                    fill={optimisticLiked ? "#D8B4FE" : "transparent"}
+                  />
+                  <SparkleBurst show={likeSparkle} color="#D8B4FE" />
+                </Animated.View>
+              </Pressable>
+              <Pressable
+                onPress={handleNegativeRate}
+                onPressIn={() => springDown(dislikeScale, 0.9)}
+                onPressOut={() => springUp(dislikeScale)}
+                className={`relative flex-row items-center px-2 py-1 rounded-full border ${optimisticDisliked ? "bg-gray-700/20 border-gray-600/50" : "bg-gray-800/50 border-gray-600/30"}`}
               >
-                <ThumbsDown
-                  size={18}
-                  color={optimisticDisliked ? "#EF4444" : "#9CA3AF"}
-                  fill={optimisticDisliked ? "#EF4444" : "transparent"}
-                />
-                <SparkleBurst show={dislikeSparkle} color="#EF4444" />
-              </Animated.View>
-            </Pressable>
-            <Text className="text-gray-300 text-sm">{ratingStats?.positivePercentage || 0}%</Text>
+                <Animated.View
+                  style={dislikeStyle}
+                  className="relative"
+                >
+                  <ThumbsDown
+                    size={18}
+                    color={optimisticDisliked ? "#6B7280" : "#9CA3AF"}
+                    fill={optimisticDisliked ? "#6B7280" : "transparent"}
+                  />
+                  <SparkleBurst show={dislikeSparkle} color="#6B7280" />
+                </Animated.View>
+              </Pressable>
+            </View>
+            
+            {/* Visual percentage line */}
+            <View className="mt-2 w-24 h-1 bg-gray-700/50 rounded-full overflow-hidden">
+              <View 
+                className="h-full bg-gradient-to-r from-purple-500 to-purple-300 rounded-full"
+                style={{ width: `${ratingStats?.positivePercentage || 0}%` }}
+              />
+            </View>
           </View>
           <Pressable
             onPress={() => {

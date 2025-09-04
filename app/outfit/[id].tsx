@@ -1,10 +1,10 @@
-import CommentSection from "@/components/outfits/CommentSection";
 import { ShareModal } from "@/components/modals/ShareModal";
 import OutfitDetailHeader from "@/components/outfit-detail/OutfitDetailHeader";
 import OutfitDetailImages from "@/components/outfit-detail/OutfitDetailImages";
 import OutfitDetailInfo from "@/components/outfit-detail/OutfitDetailInfo";
 import OutfitDetailSections from "@/components/outfit-detail/OutfitDetailSections";
 import OutfitInteractionButtons from "@/components/outfit-detail/OutfitInteractionButtons";
+import CommentSection from "@/components/outfits/CommentSection";
 import { useFetchComments } from "@/fetchers/fetchComments";
 import { useFetchUser } from "@/fetchers/fetchUser";
 import { useFetchRatingStats } from "@/fetchers/outfits/fetchRatedOutfits";
