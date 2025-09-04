@@ -178,11 +178,15 @@ function OutfitDetailContent() {
     ? [outfit.outfit_tags]
     : [];
 
-  // Extract image URLs from outfit_elements_data
   const imageUrls = Array.isArray(outfit.outfit_elements_data)
     ? (outfit.outfit_elements_data as any[])
       .map((el) => (typeof el === "string" ? el : el?.imageUrl))
       .filter((u): u is string => typeof u === "string" && !!u)
+    : [];
+
+  const elementsData = Array.isArray(outfit.outfit_elements_data)
+    ? (outfit.outfit_elements_data as any[])
+      .filter((el) => el && typeof el === "object" && el.imageUrl)
     : [];
 
   const currentUserRating = ratingStats?.data?.find(rating => rating.rated_by === userId);
@@ -207,7 +211,10 @@ function OutfitDetailContent() {
             tags={tags}
           />
 
-          <OutfitDetailImages imageUrls={imageUrls} />
+          <OutfitDetailImages 
+            imageUrls={imageUrls} 
+            elementsData={elementsData}
+          />
           
           <OutfitDetailSections 
             description={outfit.description}
