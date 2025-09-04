@@ -286,20 +286,21 @@ export const OutfitCard = ({
       {/* Actions */}
       <View className="flex-row items-center justify-between pt-2 gap-3">
         <View className="flex-row items-center flex-shrink min-w-0">
-          <View className="flex-col">
-            <View className="flex-row items-center gap-1">
+          {/* Combined Rating Element - More Compact */}
+          <View className="bg-gray-800/20 border border-gray-600/20 rounded-lg px-2 py-1.5">
+            <View className="flex-row items-center gap-1 mb-1.5">
               <Pressable
                 onPress={handlePositiveRate}
                 onPressIn={() => springDown(likeScale, 0.9)}
                 onPressOut={() => springUp(likeScale)}
-                className={`relative flex-row items-center px-2 py-1 rounded-full border ${optimisticLiked ? "bg-purple-600/20 border-purple-500/30" : "bg-gray-800/50 border-gray-600/30"}`}
+                className={`relative flex-row items-center px-1.5 py-0.5 rounded-full border ${optimisticLiked ? "bg-purple-600/20 border-purple-500/30" : "bg-gray-700/30 border-gray-600/40"}`}
               >
                 <Animated.View
                   style={likeStyle}
                   className="relative"
                 >
                   <ThumbsUp
-                    size={18}
+                    size={16}
                     color={optimisticLiked ? "#D8B4FE" : "#9CA3AF"}
                     fill={optimisticLiked ? "#D8B4FE" : "transparent"}
                   />
@@ -310,14 +311,14 @@ export const OutfitCard = ({
                 onPress={handleNegativeRate}
                 onPressIn={() => springDown(dislikeScale, 0.9)}
                 onPressOut={() => springUp(dislikeScale)}
-                className={`relative flex-row items-center px-2 py-1 rounded-full border ${optimisticDisliked ? "bg-gray-700/20 border-gray-600/50" : "bg-gray-800/50 border-gray-600/30"}`}
+                className={`relative flex-row items-center px-1.5 py-0.5 rounded-full border ${optimisticDisliked ? "bg-gray-700/30 border-gray-600/50" : "bg-gray-700/30 border-gray-600/40"}`}
               >
                 <Animated.View
                   style={dislikeStyle}
                   className="relative"
                 >
                   <ThumbsDown
-                    size={18}
+                    size={16}
                     color={optimisticDisliked ? "#6B7280" : "#9CA3AF"}
                     fill={optimisticDisliked ? "#6B7280" : "transparent"}
                   />
@@ -326,8 +327,8 @@ export const OutfitCard = ({
               </Pressable>
             </View>
             
-            {/* Visual percentage line */}
-            <View className="mt-2 w-24 h-1 bg-gray-700/50 rounded-full overflow-hidden">
+            {/* Compact visual percentage line */}
+            <View className="h-0.5 bg-gray-700/40 rounded-full overflow-hidden" style={{ width: '100%' }}>
               <View 
                 className="h-full bg-gradient-to-r from-purple-500 to-purple-300 rounded-full"
                 style={{ width: `${ratingStats?.positivePercentage || 0}%` }}
