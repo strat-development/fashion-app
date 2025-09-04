@@ -66,46 +66,39 @@ export const OutfitCard = ({
   const [optimisticDisliked, setOptimisticDisliked] = useState(isNegativeRated);
   const [optimisticSaved, setOptimisticSaved] = useState(outfit.isSaved);
   
-  // Calculate optimistic percentage based on local state changes
+
   const calculateOptimisticPercentage = () => {
     if (!ratingStats) return 0;
     
     const basePositive = ratingStats.positiveRatings || 0;
     const baseTotal = ratingStats.totalRatings || 0;
     
-    // Calculate changes based on optimistic state vs server state
     let positiveChange = 0;
     let totalChange = 0;
     
-    // User wasn't rated before, but now is optimistically liked
     if (!isRated && optimisticLiked) {
       positiveChange = 1;
       totalChange = 1;
     }
-    // User wasn't rated before, but now is optimistically disliked  
     else if (!isRated && optimisticDisliked) {
       totalChange = 1;
     }
-    // User was liked before, but now is optimistically disliked
     else if (isPositiveRated && optimisticDisliked) {
       positiveChange = -1;
     }
-    // User was disliked before, but now is optimistically liked
     else if (isNegativeRated && optimisticLiked) {
       positiveChange = 1;
     }
-    // User removes their rating (from liked to neutral)
     else if (isPositiveRated && !optimisticLiked && !optimisticDisliked) {
       positiveChange = -1;
       totalChange = -1;
     }
-    // User removes their rating (from disliked to neutral)
     else if (isNegativeRated && !optimisticLiked && !optimisticDisliked) {
       totalChange = -1;
     }
     
     const newPositive = Math.max(0, basePositive + positiveChange);
-    const newTotal = Math.max(1, baseTotal + totalChange); // Minimum 1 to avoid division by zero
+    const newTotal = Math.max(1, baseTotal + totalChange);
     
     return Math.round((newPositive / newTotal) * 100);
   };
@@ -381,20 +374,21 @@ export const OutfitCard = ({
               />
             </View>
           </View>
+          {/* Comment Section - matching share/bookmark style */}
           <Pressable
             onPress={() => {
               onComment?.(outfit.outfit_id);
             }}
             onPressIn={() => springDown(commentScale, 0.94)}
             onPressOut={() => springUp(commentScale)}
-            className="flex-row items-center ml-3"
+            className="flex-row items-center justify-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 px-3 py-2 rounded-full border border-gray-600/30 ml-3"
           >
             <Animated.View
               style={commentStyle}
               className="flex-row items-center"
             >
-              <MessageCircle size={18} color="#9CA3AF" />
-              <Text className="text-gray-300 ml-1 text-sm">{outfit.comments}</Text>
+              <MessageCircle size={16} color="#9CA3AF" />
+              <Text className="text-gray-300 ml-2 text-sm font-medium">{outfit.comments}</Text>
             </Animated.View>
           </Pressable>
         </View>
