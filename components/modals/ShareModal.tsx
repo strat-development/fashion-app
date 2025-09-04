@@ -1,4 +1,5 @@
 import { OutfitData } from '@/types/createOutfitTypes';
+import { Image } from 'expo-image';
 import {
   Camera,
   Copy,
@@ -40,6 +41,12 @@ export const ShareModal = ({
   const shareUrl = `https://fashion-app.com/outfit/${outfit.outfit_id}`;
   const shareText = `Check out this amazing outfit: "${outfit.outfit_name}" on Fashion App!`;
   const fullShareText = `${shareText}\n\n${shareUrl}`;
+
+  const imageUrls = Array.isArray(outfit.outfit_elements_data)
+    ? (outfit.outfit_elements_data as any[])
+      .map((el) => (typeof el === "string" ? el : el?.imageUrl))
+      .filter((u): u is string => typeof u === "string" && !!u)
+    : [];
 
   const handleNativeShare = async () => {
     try {
@@ -172,20 +179,21 @@ export const ShareModal = ({
       animationType={isAnimated ? 'slide' : 'none'}
       transparent={true}
     >
-      <View className="flex-1 justify-end bg-black/50">
-        <View className="bg-gray-900 rounded-t-3xl border-t border-gray-700">
-          {/* Header */}
-          <View className="flex-row items-center justify-between px-6 py-4 border-b border-gray-800">
-            <Text className="text-white text-xl font-semibold">Share Outfit</Text>
-            <Pressable onPress={onClose} className="p-2">
-              <X size={24} color="#9CA3AF" />
-            </Pressable>
-          </View>
-
+      <View style={{
+        flex: 1,
+        backgroundColor: 'rgba(17, 24, 39, 0.95)',
+        backdropFilter: 'blur(10px)',
+      }}>
+        <View className="bg-gray-900 rounded-t-3xl mt-24">
           {/* Outfit Preview */}
-          <View className="px-6 py-4 border-b border-gray-800">
-            <View className="flex-row items-center">
-              <View className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl mr-4" />
+          <View className="px-6 py-4">
+            <View className="flex-row gap-2 items-center">
+              <View className="w-12 h-12">
+                <Image
+                  source={{ uri: imageUrls[0] }}
+                  className="w-12 h-12 rounded-2xl"
+                />
+              </View>
               <View className="flex-1">
                 <Text className="text-white font-medium text-lg" numberOfLines={1}>
                   {outfit.outfit_name || 'Untitled Outfit'}
@@ -233,6 +241,6 @@ export const ShareModal = ({
           </View>
         </View>
       </View>
-    </Modal>
+    </Modal >
   );
 };

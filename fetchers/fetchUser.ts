@@ -16,8 +16,10 @@ async function ensureUserProfile(userId: string) {
             .select()
             .single();
         if (insertError) throw insertError;
+
         return inserted;
     }
+    
     return data;
 }
 

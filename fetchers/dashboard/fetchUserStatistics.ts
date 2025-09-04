@@ -1,4 +1,4 @@
-import { supabase } from '../../lib/supabase';
+import { supabase } from "@/lib/supabase";
 
 export interface UserStatistics {
   createdCount: number;
@@ -13,17 +13,16 @@ export const fetchUserStatistics = async (userId: string): Promise<UserStatistic
     }
 
     const [createdResult, savedResult, userOutfitsResult] = await Promise.all([
-      // Count created outfits
       supabase
         .from('created-outfits')
         .select('*', { count: 'exact', head: true })
         .eq('created_by', userId),
-      
+
       supabase
         .from('saved-outfits')
         .select('*', { count: 'exact', head: true })
         .eq('saved_by', userId),
-      
+
       supabase
         .from('created-outfits')
         .select('outfit_id')
@@ -52,7 +51,7 @@ export const fetchUserStatistics = async (userId: string): Promise<UserStatistic
     let likesReceivedCount = 0;
     if (userOutfits && userOutfits.length > 0) {
       const outfitIds = userOutfits.map(outfit => outfit.outfit_id).filter(Boolean);
-      
+
       if (outfitIds.length > 0) {
         const { count: likesCount, error: likesError } = await supabase
           .from('outfits-rating')
