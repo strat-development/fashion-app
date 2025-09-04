@@ -9,6 +9,7 @@ import { Link } from "expo-router";
 import { Send, Trash } from "lucide-react-native";
 import { useState } from "react";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
+import { CommentReactions } from "./CommentReactions";
 
 export const CommentItem = ({ comment, isReply = false, depth = 0, parentCommentId }: {
     comment: CommentData;
@@ -107,6 +108,12 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                             </Pressable>
                         )}
                     </View>
+                    
+                    {/* Reactions component */}
+                    <CommentReactions 
+                        commentId={comment.id} 
+                        reactions={comment.reactions as any} 
+                    />
                 </View>
 
                 {!isReply && repliesVisible && replies && replies.length > 0 && (
