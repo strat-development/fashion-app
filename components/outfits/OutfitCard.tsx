@@ -66,6 +66,52 @@ export const OutfitCard = ({
   const [optimisticDisliked, setOptimisticDisliked] = useState(isNegativeRated);
   const [optimisticSaved, setOptimisticSaved] = useState(outfit.isSaved);
   
+  // Calculate optimistic percentage based on local state changes
+  const calculateOptimisticPercentage = () => {
+    if (!ratingStats) return 0;
+    
+    const basePositive = ratingStats.positiveRatings || 0;
+    const baseTotal = ratingStats.totalRatings || 0;
+    
+    // Calculate changes based on optimistic state vs server state
+    let positiveChange = 0;
+    let totalChange = 0;
+    
+    // User wasn't rated before, but now is optimistically liked
+    if (!isRated && optimisticLiked) {
+      positiveChange = 1;
+      totalChange = 1;
+    }
+    // User wasn't rated before, but now is optimistically disliked  
+    else if (!isRated && optimisticDisliked) {
+      totalChange = 1;
+    }
+    // User was liked before, but now is optimistically disliked
+    else if (isPositiveRated && optimisticDisliked) {
+      positiveChange = -1;
+    }
+    // User was disliked before, but now is optimistically liked
+    else if (isNegativeRated && optimisticLiked) {
+      positiveChange = 1;
+    }
+    // User removes their rating (from liked to neutral)
+    else if (isPositiveRated && !optimisticLiked && !optimisticDisliked) {
+      positiveChange = -1;
+      totalChange = -1;
+    }
+    // User removes their rating (from disliked to neutral)
+    else if (isNegativeRated && !optimisticLiked && !optimisticDisliked) {
+      totalChange = -1;
+    }
+    
+    const newPositive = Math.max(0, basePositive + positiveChange);
+    const newTotal = Math.max(1, baseTotal + totalChange); // Minimum 1 to avoid division by zero
+    
+    return Math.round((newPositive / newTotal) * 100);
+  };
+  
+  const optimisticPercentage = calculateOptimisticPercentage();
+  
   const { width: screenWidth } = useWindowDimensions();
   const progress = useSharedValue<number>(0);
   const [isInteracting, setIsInteracting] = useState(false);
@@ -327,11 +373,11 @@ export const OutfitCard = ({
               </Pressable>
             </View>
             
-            {/* Compact visual percentage line */}
+            {/* Compact visual percentage line - now dynamic to local changes */}
             <View className="h-0.5 bg-gray-700/40 rounded-full overflow-hidden" style={{ width: '100%' }}>
               <View 
                 className="h-full bg-gradient-to-r from-purple-500 to-purple-300 rounded-full"
-                style={{ width: `${ratingStats?.positivePercentage || 0}%` }}
+                style={{ width: `${optimisticPercentage}%` }}
               />
             </View>
           </View>
