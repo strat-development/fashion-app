@@ -25,7 +25,8 @@ export const EmptyState = ({
       {actionText && onAction && (
         <Pressable 
           onPress={onAction}
-          className="bg-gray-800 px-4 py-2 rounded-lg mt-4"
+          style={{ backgroundColor: '#1f1f1fcc' }}
+          className="px-4 py-2 rounded-lg mt-4 border border-gray-600/60"
         >
           <Text className="text-gray-300 font-medium text-sm">{actionText}</Text>
         </Pressable>

@@ -187,7 +187,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                             <Text className="text-gray-300 text-base mt-4">Loading outfits...</Text>
                         </View>
                     ) : (
-                        <View>
+                        <View className="px-6">
                             {profileId === userId && (
                                 <EmptyState
                                     icon={Plus}
@@ -211,7 +211,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                     )
                 }
                 ListHeaderComponent={
-                    <View className="flex-row items-center justify-between mb-6">
+                    <View className="flex-row items-center justify-between mb-6 px-6">
                         {profileId === userId && (
                             <View className="flex-row items-center justify-between w-full">
                                 <Text className="text-white text-xl font-semibold">Your Creations</Text>

@@ -52,21 +52,23 @@ export default function UserProfile({
     switch (activeTab) {
       case 'user-info':
         return (
-          <View className="mt-6 space-y-5">
+          <View className="mt-6 space-y-6 px-6">
             {/* Bio Section */}
-            <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 border border-gray-800/50">
-              <Text className="text-white text-base font-medium mb-3">Bio</Text>
-              <Text className="text-gray-300 text-sm leading-5">
+            <View className="pb-6 border-b border-gray-800/50">
+              <Text className="text-white text-lg font-semibold mb-3">About</Text>
+              <Text className="text-gray-300 text-base leading-6">
                 {userBio || "No bio available yet. Add one by editing your profile!"}
               </Text>
             </View>
 
             {/* Statistics */}
-            {userId && <UserStatistics userId={userId} />}
+            <View className="pb-6 border-b border-gray-800/50">
+              {userId && <UserStatistics userId={userId} />}
+            </View>
 
             {/* Recent Activity */}
-            <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 border border-gray-800/50">
-              <Text className="text-white text-base font-medium mb-4">Recent Activity</Text>
+            <View className="pb-6">
+              <Text className="text-white text-lg font-semibold mb-4">Recent Activity</Text>
               <View className="space-y-4">
                 <View className="flex-row items-center">
                   <View className="w-8 h-8 bg-green-500/20 rounded-full items-center justify-center mr-3">
@@ -112,27 +114,27 @@ export default function UserProfile({
 
   return (
     <ScrollView
-      className="flex-1 bg-gradient-to-b from-black to-gray-900"
+      className="flex-1 bg-black"
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <View className="px-6 pt-8 pb-20">
+      <View className="pt-8 pb-20">
         {/* Profile Header */}
-        <View className="items-center mb-8">
+        <View className="items-center mb-8 px-6">
           <View className="relative mb-4">
             {userImage ? (
               <Image
                 source={{ uri: userImage }}
-                className="w-28 h-28 rounded-full border-2 border-gray-700"
+                className="w-28 h-28 rounded-full border-2 border-gray-600"
               />
             ) : (
-              <View className="w-28 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center border-2 border-gray-700">
+              <View className="w-28 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center border-2 border-gray-600">
                 <User size={32} color="#FFFFFF" />
               </View>
             )}
             {/* Online indicator */}
-            <View className="absolute bottom-1 right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-900" />
+            <View className="absolute bottom-1 right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-black" />
           </View>
 
           <Text className="text-white text-2xl font-bold mb-1">{userName || "Anonymous User"}</Text>
@@ -141,7 +143,8 @@ export default function UserProfile({
           {isOwnProfile && (
             <Pressable
               onPress={handleEditProfile}
-              className="bg-gradient-to-r from-gray-800 to-gray-700 px-6 py-3 rounded-full flex-row items-center border border-gray-600/50"
+              style={{ backgroundColor: '#1f1f1fcc' }}
+              className="px-6 py-3 rounded-full flex-row items-center border border-gray-600/60"
             >
               <Edit3 size={16} color="#FFFFFF" />
               <Text className="text-white font-medium ml-2">Edit Profile</Text>
@@ -150,8 +153,8 @@ export default function UserProfile({
         </View>
 
         {/* Tab Navigation */}
-        <View className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-2 mb-6 border border-gray-800/50">
-          <View className="flex-row">
+        <View className="flex-row justify-center mb-8 px-6">
+          <View style={{ backgroundColor: '#1f1f1fcc' }} className="flex-row rounded-full p-1">
             {[
               { key: 'user-info', label: 'Profile', icon: User2 },
               { key: 'created-outfits', label: 'Created', icon: BookOpen },
@@ -160,17 +163,17 @@ export default function UserProfile({
               <Pressable
                 key={key}
                 onPress={() => setActiveTab(key as TabType)}
-                className={`flex-1 items-center py-3 rounded-xl ${activeTab === key
+                className={`flex-row items-center px-4 py-2 rounded-full ${activeTab === key
                   ? 'bg-gradient-to-r from-purple-600 to-pink-600'
                   : 'bg-transparent'
                   }`}
               >
                 <Icon
-                  size={20}
+                  size={16}
                   color={activeTab === key ? "#FFFFFF" : "#9CA3AF"}
                 />
                 <Text
-                  className={`text-xs mt-2 font-medium ${activeTab === key ? 'text-white' : 'text-gray-400'
+                  className={`text-sm ml-2 font-medium ${activeTab === key ? 'text-white' : 'text-gray-400'
                     }`}>
                   {label}
                 </Text>
