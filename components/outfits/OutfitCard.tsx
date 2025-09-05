@@ -220,7 +220,7 @@ export const OutfitCard = ({
 
         <View className="flex-row items-center gap-2">
           {outfit.created_by === userId && (
-            <View className="bg-purple-600/20 px-3 py-1 rounded-full border border-purple-500/30">
+            <View className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 px-3 py-1 rounded-full border border-purple-500/30">
               <Text className="text-purple-300 text-xs font-medium">Your creation</Text>
             </View>
           )}
@@ -320,7 +320,7 @@ export const OutfitCard = ({
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-3">
           <View className="flex-row">
             {tags.map((tag, index) => (
-              <View key={index} className="bg-gray-800/50 px-3 py-1 rounded-full mr-2 border border-gray-600/40">
+              <View key={index} style={{ backgroundColor: '#1f1f1fcc' }} className="px-3 py-1 rounded-full mr-2 border border-gray-600/60">
                 <Text className="text-gray-300 text-xs">{tag as any}</Text>
               </View>
             ))}
@@ -331,13 +331,13 @@ export const OutfitCard = ({
         <View className="flex-row items-center justify-between pt-2 gap-3">
           <View className="flex-row items-center flex-shrink min-w-0">
             {/* Combined Rating Element - More Compact */}
-            <View className="bg-gray-800/20 border border-gray-600/30 rounded-lg px-2 py-1.5">
+            <View style={{ backgroundColor: '#1f1f1fcc' }} className="border border-gray-600/60 rounded-lg px-2 py-1.5">
               <View className="flex-row items-center gap-1 mb-1.5">
                 <Pressable
                   onPress={handlePositiveRate}
                   onPressIn={() => springDown(likeScale, 0.9)}
                   onPressOut={() => springUp(likeScale)}
-                  className={`relative flex-row items-center px-1.5 py-0.5 rounded-full border ${optimisticLiked ? "bg-gray-600/40 border-gray-500/50" : "bg-gray-700/30 border-gray-600/50"}`}
+                  className={`relative flex-row items-center px-1.5 py-0.5 rounded-full border ${optimisticLiked ? "bg-gradient-to-r from-purple-600/30 to-pink-600/30 border-purple-500/50" : "bg-gray-700/30 border-gray-600/50"}`}
                 >
                   <Animated.View
                     style={likeStyle}
@@ -345,10 +345,10 @@ export const OutfitCard = ({
                   >
                     <ThumbsUp
                       size={16}
-                      color={optimisticLiked ? "#E5E7EB" : "#9CA3AF"}
-                      fill={optimisticLiked ? "#E5E7EB" : "transparent"}
+                      color={optimisticLiked ? "#EC4899" : "#9CA3AF"}
+                      fill={optimisticLiked ? "#EC4899" : "transparent"}
                     />
-                    <SparkleBurst show={likeSparkle} color="#E5E7EB" />
+                    <SparkleBurst show={likeSparkle} color="#EC4899" />
                   </Animated.View>
                 </Pressable>
                 <Pressable
@@ -374,7 +374,7 @@ export const OutfitCard = ({
             {/* Compact visual percentage line - now dynamic to local changes */}
             <View className="h-0.5 bg-gray-700/40 rounded-full overflow-hidden" style={{ width: '100%' }}>
               <View 
-                className="h-full bg-gradient-to-r from-purple-500 to-purple-300 rounded-full"
+                className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
                 style={{ width: `${optimisticPercentage}%` }}
               />
             </View>

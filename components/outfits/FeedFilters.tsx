@@ -56,7 +56,7 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
               onPress={() => toggleArrayFilter(filterKey, item.name)}
               className={`mr-2 mb-2 px-4 py-2 rounded-full border ${
                 isSelected 
-                  ? 'bg-purple-600 border-purple-500' 
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 border-purple-500' 
                   : 'bg-gray-900 border-gray-700'
               }`}
             >
@@ -107,7 +107,7 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
             onPress={() => setShowFilters(!showFilters)}
             className={`p-3 rounded-full ${
               hasActiveFilters() || showFilters
-                ? 'bg-purple-600 border border-purple-500'
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 border border-purple-500'
                 : 'border border-gray-600'
             }`}
             style={
@@ -118,7 +118,7 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
           >
             <Filter size={18} color={hasActiveFilters() || showFilters ? "#FFFFFF" : "#9CA3AF"} />
             {hasActiveFilters() && (
-              <View className="absolute -top-1 -right-1 bg-purple-500 rounded-full w-3 h-3 border-2 border-black" />
+              <View className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full w-3 h-3 border-2 border-black" />
             )}
           </TouchableOpacity>
         </View>
