@@ -12,7 +12,7 @@ interface CommentReactionsProps {
 const reactionConfig = {
   like: { emoji: '❤️', icon: Heart, color: '#ef4444', label: 'Like' },
   haha: { emoji: '😂', icon: Laugh, color: '#f59e0b', label: 'Haha' },
-  sad: { emoji: '😢', icon: Frown, color: '#3b82f6', label: 'Sad' },
+  sad: { emoji: '😢', icon: Frown, color: '#6b7280', label: 'Sad' },
 };
 
 export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps) => {

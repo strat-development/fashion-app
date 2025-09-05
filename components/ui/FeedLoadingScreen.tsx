@@ -48,7 +48,7 @@ export const FeedLoadingScreen = ({ message = "Loading your feed..." }: FeedLoad
   }, []);
 
   return (
-    <View className="flex-1 justify-center items-center bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900">
+    <View className="flex-1 justify-center items-center bg-black">
       <Animated.View
         style={{
           opacity: fadeAnim,
@@ -129,7 +129,7 @@ export const FeedLoadingScreen = ({ message = "Loading your feed..." }: FeedLoad
       <View className="absolute inset-0 opacity-20">
         <View className="absolute top-1/4 left-1/4 w-32 h-32 bg-purple-500 rounded-full blur-3xl" />
         <View className="absolute bottom-1/3 right-1/4 w-28 h-28 bg-pink-500 rounded-full blur-3xl" />
-        <View className="absolute top-1/2 right-1/3 w-20 h-20 bg-blue-500 rounded-full blur-2xl" />
+        <View className="absolute top-1/2 right-1/3 w-20 h-20 bg-purple-500 rounded-full blur-2xl" />
       </View>
 
       {/* Subtle overlay for depth */}

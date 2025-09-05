@@ -235,7 +235,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                 onFiltersChange={handleFiltersChange}
                 onClearFilters={handleClearFilters}
             />
-            <FlatList className="bg-gradient-to-t from-gray-900 to-gray-0"
+            <FlatList className="bg-black"
                 data={enrichedAllOutfits}
                 keyExtractor={item => item.outfit_id}
                 renderItem={({ item: outfit }) => (
@@ -284,7 +284,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                         </View>
                     ) : null
                 }
-                contentContainerStyle={{ paddingTop: 24, paddingBottom: 80, paddingHorizontal: 16 }}
+                contentContainerStyle={{ paddingTop: 0, paddingBottom: 80, paddingHorizontal: 0 }}
             />
 
             <CommentSection

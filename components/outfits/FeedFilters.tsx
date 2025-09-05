@@ -45,8 +45,8 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
   };
 
   const renderFilterSection = (title: string, items: any[], filterKey: keyof FilterOptions, isColor = false) => (
-    <View className="mb-4">
-      <Text className="text-white text-base font-semibold mb-2">{title}</Text>
+    <View className="mb-6">
+      <Text className="text-white text-lg font-semibold mb-3">{title}</Text>
       <View className="flex-row flex-wrap">
         {items.map((item) => {
           const isSelected = (filters[filterKey] as string[]).includes(item.name);
@@ -54,20 +54,20 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
             <TouchableOpacity
               key={item.name}
               onPress={() => toggleArrayFilter(filterKey, item.name)}
-              className={`mr-2 mb-2 px-2.5 py-1.5 rounded-full border ${
+              className={`mr-2 mb-2 px-4 py-2 rounded-full border ${
                 isSelected 
-                  ? 'bg-white border-white' 
-                  : 'bg-transparent border-white/30'
+                  ? 'bg-purple-600 border-purple-500' 
+                  : 'bg-gray-900 border-gray-700'
               }`}
             >
               <View className="flex-row items-center">
                 {isColor && (
                   <View 
-                    className="w-2.5 h-2.5 rounded-full mr-1.5"
+                    className="w-3 h-3 rounded-full mr-2"
                     style={{ backgroundColor: item.hex }}
                   />
                 )}
-                <Text className={`text-xs ${isSelected ? 'text-black' : 'text-white'}`}>
+                <Text className={`text-sm font-medium ${isSelected ? 'text-white' : 'text-gray-300'}`}>
                   {item.name}
                 </Text>
               </View>
@@ -79,38 +79,46 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
   );
 
   return (
-    <View className="bg-black/40 backdrop-blur-sm border-b border-white/10">
+    <View className="bg-black border-b border-gray-600">
       {/* Search Bar with Filter Button */}
-      <View className="px-4 py-3">
+      <View className="px-4 py-4">
         <View className="flex-row items-center space-x-3">
-          <View className="flex-1 flex-row items-center bg-white/10 rounded-lg px-3 py-2.5 border border-white/20">
-            <Search size={18} color="white" />
+          <View 
+            style={{ backgroundColor: '#1f1f1fcc' }}
+            className="flex-1 flex-row items-center rounded-full px-4 py-3 border border-gray-600"
+          >
+            <Search size={18} color="#9CA3AF" />
             <TextInput
               placeholder="Search outfits..."
-              placeholderTextColor="rgba(255,255,255,0.6)"
+              placeholderTextColor="#6B7280"
               value={filters.search}
               onChangeText={(text) => updateFilter('search', text)}
-              className="flex-1 text-white text-sm ml-3"
+              className="flex-1 text-white text-base ml-3"
             />
             {filters.search.length > 0 && (
               <TouchableOpacity onPress={() => updateFilter('search', '')}>
-                <X size={18} color="rgba(255,255,255,0.6)" />
+                <X size={18} color="#6B7280" />
               </TouchableOpacity>
             )}
           </View>
           
-          {/* Compact Filter Button */}
+          {/* Filter Button */}
           <TouchableOpacity
             onPress={() => setShowFilters(!showFilters)}
-            className={`p-2.5 rounded-lg border ${
+            className={`p-3 rounded-full ${
               hasActiveFilters() || showFilters
-                ? 'bg-white/20 border-white/40'
-                : 'bg-white/10 border-white/20'
+                ? 'bg-purple-600 border border-purple-500'
+                : 'border border-gray-600'
             }`}
+            style={
+              !(hasActiveFilters() || showFilters) 
+                ? { backgroundColor: '#1f1f1fcc' }
+                : undefined
+            }
           >
-            <Filter size={18} color="white" />
+            <Filter size={18} color={hasActiveFilters() || showFilters ? "#FFFFFF" : "#9CA3AF"} />
             {hasActiveFilters() && (
-              <View className="absolute -top-1 -right-1 bg-red-500 rounded-full w-2 h-2" />
+              <View className="absolute -top-1 -right-1 bg-purple-500 rounded-full w-3 h-3 border-2 border-black" />
             )}
           </TouchableOpacity>
         </View>
@@ -118,12 +126,12 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
 
       {/* Expandable Filters */}
       {showFilters && (
-        <View className="px-4 pb-3 border-t border-white/10">
+        <View className="px-4 pb-6 border-t border-gray-800">
           <ScrollView 
             className="max-h-80"
             showsVerticalScrollIndicator={false}
           >
-            <View className="pt-3">
+            <View className="pt-6">
               {renderFilterSection('Style Tags', OutfitStylesTags, 'tags')}
               {renderFilterSection('Elements', OutfitElements, 'elements')}
               
@@ -134,9 +142,9 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
                     onClearFilters();
                     setShowFilters(false);
                   }}
-                  className="bg-red-500/20 border border-red-500/40 rounded-lg py-2.5 px-3 mt-3"
+                  className="bg-gray-900 border border-gray-700 rounded-full py-3 px-6 mt-2"
                 >
-                  <Text className="text-red-400 text-center text-sm font-medium">
+                  <Text className="text-gray-300 text-center text-base font-medium">
                     Clear All Filters
                   </Text>
                 </TouchableOpacity>

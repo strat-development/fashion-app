@@ -68,8 +68,11 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
             </ScrollView>
 
             {/* Input */}
-            <View className="px-4 py-3 bg-gray-900/90 border-t border-gray-700/40">
-              <View className="flex-row items-center bg-gray-800/70 border border-gray-700/50 rounded-full px-3">
+            <View className="px-4 py-3 border-t border-gray-700/40" style={{ backgroundColor: '#1f1f1fcc' }}>
+              <View 
+                className="flex-row items-center border border-gray-700/50 rounded-full px-3"
+                style={{ backgroundColor: '#1f1f1fcc' }}
+              >
                 <TextInput
                   value={text}
                   onChangeText={setText}

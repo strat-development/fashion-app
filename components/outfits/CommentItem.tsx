@@ -99,12 +99,12 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                         </Pressable>
                         {!isReply && replies && replies.length > 0 && !repliesVisible && (
                             <Pressable onPress={() => setRepliesVisible(true)} hitSlop={8} className="rounded px-2 py-1 ml-1 active:opacity-70">
-                                <Text className="text-blue-400 text-[11px] tracking-tight">View {replies.length} {replies.length === 1 ? 'reply' : 'replies'}</Text>
+                                <Text className="text-purple-400 text-[11px] tracking-tight">View {replies.length} {replies.length === 1 ? 'reply' : 'replies'}</Text>
                             </Pressable>
                         )}
                         {!isReply && repliesVisible && replies && replies.length > 0 && (
                             <Pressable onPress={() => setRepliesVisible(false)} hitSlop={8} className="rounded px-2 py-1 ml-1 active:opacity-70">
-                                <Text className="text-blue-400 text-[11px] tracking-tight">Hide replies</Text>
+                                <Text className="text-purple-400 text-[11px] tracking-tight">Hide replies</Text>
                             </Pressable>
                         )}
                     </View>

@@ -81,8 +81,8 @@ export default function UserProfile({
                   <Text className="text-gray-300 text-sm flex-1">Liked 5 new outfits</Text>
                 </View>
                 <View className="flex-row items-center">
-                  <View className="w-8 h-8 bg-blue-500/20 rounded-full items-center justify-center mr-3">
-                    <Plus size={14} color="#3B82F6" />
+                  <View className="w-8 h-8 bg-purple-500/20 rounded-full items-center justify-center mr-3">
+                    <Plus size={14} color="#A855F7" />
                   </View>
                   <Text className="text-gray-300 text-sm flex-1">Created "Summer Casual Look"</Text>
                 </View>

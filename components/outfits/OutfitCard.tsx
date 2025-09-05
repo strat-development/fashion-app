@@ -186,29 +186,10 @@ export const OutfitCard = ({
       ? [outfit.outfit_tags]
       : [];
 
-  const renderCarouselItem = ({ item }: { item: string }) => (
-    <TapGestureHandler
-      onHandlerStateChange={({ nativeEvent }) => {
-        if (nativeEvent.state === State.END && !isInteracting) {
-          onPress?.(outfit);
-        }
-      }}
-    >
-      <View>
-        <Image
-          source={{ uri: item }}
-          className="rounded-xl"
-          style={{ width: screenWidth - 64, height: 320 }}
-          resizeMode="cover"
-        />
-      </View>
-    </TapGestureHandler>
-  );
-
   return (
-    <View className="bg-gradient-to-br from-gray-900/70 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 mb-4 border border-gray-700/30">
+    <View className="bg-black mb-4">
       {/* Header */}
-      <View className="flex-row items-center justify-between mb-3">
+      <View className="flex-row items-center justify-between px-4 py-3">
         <View className="flex-row items-center flex-1">
           {userData?.user_avatar ? (
             <View className="w-8 h-8 bg-gray-700 rounded-full items-center justify-center mr-3">
@@ -225,9 +206,13 @@ export const OutfitCard = ({
                 pathname: "/userProfile/[id]",
                 params: { id: outfit.created_by ?? "" },
               }}
-              className="text-white font-semibold"
+              asChild
             >
-              {userData?.nickname || 'Anonymous'}
+              <Pressable>
+                <Text className="text-white font-semibold">
+                  {userData?.nickname || 'Anonymous'}
+                </Text>
+              </Pressable>
             </Link>
             <Text className="text-gray-400 text-xs">{formatDate(outfit.created_at || "")}</Text>
           </View>
@@ -235,7 +220,7 @@ export const OutfitCard = ({
 
         <View className="flex-row items-center gap-2">
           {outfit.created_by === userId && (
-            <View className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 px-3 py-1 rounded-full border border-purple-500/30">
+            <View className="bg-purple-600/20 px-3 py-1 rounded-full border border-purple-500/30">
               <Text className="text-purple-300 text-xs font-medium">Your creation</Text>
             </View>
           )}
@@ -251,17 +236,17 @@ export const OutfitCard = ({
         </View>
       </View>
 
-      {/* Images */}
-      <View className="relative mb-3 overflow-hidden rounded-xl">
+      {/* Images - Full Width */}
+      <View className="relative overflow-hidden">
         {imageUrls.length === 1 ? (
           <Pressable onPress={() => onPress?.(outfit)}>
-            <Image source={{ uri: imageUrls[0] || "" }} className="w-full h-80 rounded-xl" resizeMode="cover" />
+            <Image source={{ uri: imageUrls[0] || "" }} className="w-full h-96" resizeMode="cover" />
           </Pressable>
         ) : imageUrls.length > 1 ? (
           <View className="relative">
             <Carousel
-              width={screenWidth - 64}
-              height={320}
+              width={screenWidth}
+              height={384}
               data={imageUrls}
               onProgressChange={(_, absoluteProgress) => {
                 progress.value = absoluteProgress;
@@ -271,17 +256,35 @@ export const OutfitCard = ({
                   setTimeout(() => setIsInteracting(false), 200);
                 }
               }}
-              renderItem={renderCarouselItem}
+              renderItem={({ item, index }) => (
+                <TapGestureHandler
+                  numberOfTaps={1}
+                  onHandlerStateChange={({ nativeEvent }) => {
+                    if (nativeEvent.state === State.ACTIVE) {
+                      onPress?.(outfit);
+                    }
+                  }}
+                >
+                  <View>
+                    <Image
+                      source={{ uri: item || "" }}
+                      className="w-full h-96"
+                      style={{ width: screenWidth, height: 384 }}
+                      resizeMode="cover"
+                    />
+                  </View>
+                </TapGestureHandler>
+              )}
               mode="parallax"
               loop={false}
               enabled={imageUrls.length > 1}
               modeConfig={{
-                parallaxScrollingScale: 0.98,
-                parallaxScrollingOffset: 5,
-                parallaxAdjacentItemScale: 0.95,
+                parallaxScrollingScale: 1.0,
+                parallaxScrollingOffset: 0,
+                parallaxAdjacentItemScale: 1.0,
               }}
               style={{ 
-                width: screenWidth - 64,
+                width: screenWidth,
                 overflow: 'hidden'
               }}
             />
@@ -291,7 +294,7 @@ export const OutfitCard = ({
             </View>
             {/* Custom pagination dots */}
             {imageUrls.length <= 5 && (
-              <View className="flex-row justify-center mt-2 z-20">
+              <View className="flex-row justify-center absolute bottom-3 w-full z-20">
                 {imageUrls.map((_, index) => (
                   <View
                     key={index}
@@ -304,53 +307,55 @@ export const OutfitCard = ({
             )}
           </View>
         ) : (
-          <View className="w-full h-80 rounded-xl bg-gray-700 items-center justify-center">
+          <View className="w-full h-96 bg-gray-800 items-center justify-center">
             <Text className="text-gray-400">No images</Text>
           </View>
         )}
       </View>
 
-      {/* Title and Tags */}
-      <Text className="text-white font-semibold text-lg mb-2">{outfit.outfit_name || "Untitled Outfit"}</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-3">
-        <View className="flex-row">
-          {tags.map((tag, index) => (
-            <View key={index} className="bg-gradient-to-r from-gray-800/50 to-gray-700/50 px-3 py-1 rounded-full mr-2 border border-gray-600/30">
-              <Text className="text-gray-200 text-xs">{tag as any}</Text>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
+      {/* Title, Tags and Actions */}
+      <View className="px-4 pt-2 pb-3">
+        {/* Title and Tags */}
+        <Text className="text-white font-semibold text-lg mb-2">{outfit.outfit_name || "Untitled Outfit"}</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-3">
+          <View className="flex-row">
+            {tags.map((tag, index) => (
+              <View key={index} className="bg-gray-800/50 px-3 py-1 rounded-full mr-2 border border-gray-600/40">
+                <Text className="text-gray-300 text-xs">{tag as any}</Text>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
 
-      {/* Actions */}
-      <View className="flex-row items-center justify-between pt-2 gap-3">
-        <View className="flex-row items-center flex-shrink min-w-0">
-          {/* Combined Rating Element - More Compact */}
-          <View className="bg-gray-800/20 border border-gray-600/20 rounded-lg px-2 py-1.5">
-            <View className="flex-row items-center gap-1 mb-1.5">
-              <Pressable
-                onPress={handlePositiveRate}
-                onPressIn={() => springDown(likeScale, 0.9)}
-                onPressOut={() => springUp(likeScale)}
-                className={`relative flex-row items-center px-1.5 py-0.5 rounded-full border ${optimisticLiked ? "bg-purple-600/20 border-purple-500/30" : "bg-gray-700/30 border-gray-600/40"}`}
-              >
-                <Animated.View
-                  style={likeStyle}
-                  className="relative"
+        {/* Actions */}
+        <View className="flex-row items-center justify-between pt-2 gap-3">
+          <View className="flex-row items-center flex-shrink min-w-0">
+            {/* Combined Rating Element - More Compact */}
+            <View className="bg-gray-800/20 border border-gray-600/30 rounded-lg px-2 py-1.5">
+              <View className="flex-row items-center gap-1 mb-1.5">
+                <Pressable
+                  onPress={handlePositiveRate}
+                  onPressIn={() => springDown(likeScale, 0.9)}
+                  onPressOut={() => springUp(likeScale)}
+                  className={`relative flex-row items-center px-1.5 py-0.5 rounded-full border ${optimisticLiked ? "bg-gray-600/40 border-gray-500/50" : "bg-gray-700/30 border-gray-600/50"}`}
                 >
-                  <ThumbsUp
-                    size={16}
-                    color={optimisticLiked ? "#D8B4FE" : "#9CA3AF"}
-                    fill={optimisticLiked ? "#D8B4FE" : "transparent"}
-                  />
-                  <SparkleBurst show={likeSparkle} color="#D8B4FE" />
-                </Animated.View>
-              </Pressable>
-              <Pressable
-                onPress={handleNegativeRate}
+                  <Animated.View
+                    style={likeStyle}
+                    className="relative"
+                  >
+                    <ThumbsUp
+                      size={16}
+                      color={optimisticLiked ? "#E5E7EB" : "#9CA3AF"}
+                      fill={optimisticLiked ? "#E5E7EB" : "transparent"}
+                    />
+                    <SparkleBurst show={likeSparkle} color="#E5E7EB" />
+                  </Animated.View>
+                </Pressable>
+                <Pressable
+                  onPress={handleNegativeRate}
                 onPressIn={() => springDown(dislikeScale, 0.9)}
                 onPressOut={() => springUp(dislikeScale)}
-                className={`relative flex-row items-center px-1.5 py-0.5 rounded-full border ${optimisticDisliked ? "bg-gray-700/30 border-gray-600/50" : "bg-gray-700/30 border-gray-600/40"}`}
+                className={`relative flex-row items-center px-1.5 py-0.5 rounded-full border ${optimisticDisliked ? "bg-gray-600/40 border-gray-500/50" : "bg-gray-700/30 border-gray-600/50"}`}
               >
                 <Animated.View
                   style={dislikeStyle}
@@ -358,10 +363,10 @@ export const OutfitCard = ({
                 >
                   <ThumbsDown
                     size={16}
-                    color={optimisticDisliked ? "#6B7280" : "#9CA3AF"}
-                    fill={optimisticDisliked ? "#6B7280" : "transparent"}
+                    color={optimisticDisliked ? "#9CA3AF" : "#6B7280"}
+                    fill={optimisticDisliked ? "#9CA3AF" : "transparent"}
                   />
-                  <SparkleBurst show={dislikeSparkle} color="#6B7280" />
+                  <SparkleBurst show={dislikeSparkle} color="#9CA3AF" />
                 </Animated.View>
               </Pressable>
             </View>
@@ -381,7 +386,8 @@ export const OutfitCard = ({
             }}
             onPressIn={() => springDown(commentScale, 0.94)}
             onPressOut={() => springUp(commentScale)}
-            className="flex-row items-center justify-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 px-3 py-2 rounded-full border border-gray-600/30 ml-3"
+            style={{ backgroundColor: '#1f1f1fcc' }}
+            className="flex-row items-center justify-center px-3 py-2 rounded-full border border-gray-600/60 ml-3"
           >
             <Animated.View
               style={commentStyle}
@@ -409,7 +415,8 @@ export const OutfitCard = ({
             }}
             onPressIn={() => springDown(saveScale, 0.9)}
             onPressOut={() => springUp(saveScale)}
-            className="relative flex-row items-center justify-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 p-2 rounded-full border border-gray-600/30"
+            style={{ backgroundColor: '#1f1f1fcc' }}
+            className="relative flex-row items-center justify-center p-2 rounded-full border border-gray-600/60"
           >
             <Animated.View
               style={saveStyle}
@@ -428,7 +435,8 @@ export const OutfitCard = ({
             onPress={() => onShare?.(outfit.outfit_id)}
             onPressIn={() => springDown(shareScale, 0.94)}
             onPressOut={() => springUp(shareScale)}
-            className="flex-row items-center justify-center bg-gradient-to-r from-gray-800/70 to-gray-700/50 p-2 rounded-full border border-gray-600/30"
+            style={{ backgroundColor: '#1f1f1fcc' }}
+            className="flex-row items-center justify-center p-2 rounded-full border border-gray-600/60"
           >
             <Animated.View
               style={shareStyle}
@@ -437,6 +445,8 @@ export const OutfitCard = ({
             </Animated.View>
           </Pressable>
         </View>
+      </View>
+        {/* Closing Title, Tags and Actions section */}
       </View>
     </View>
   );

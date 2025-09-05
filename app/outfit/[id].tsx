@@ -151,7 +151,7 @@ function OutfitDetailContent() {
 
   if (loading) {
     return (
-      <View className="flex-1 bg-gradient-to-b from-black to-gray-900 items-center justify-center">
+      <View className="flex-1 bg-black items-center justify-center">
         <ActivityIndicator size="large" color="#ffffff" />
         <Text className="text-white mt-4">Loading outfit...</Text>
       </View>
@@ -160,7 +160,7 @@ function OutfitDetailContent() {
 
   if (!outfit) {
     return (
-      <View className="flex-1 bg-gradient-to-b from-black to-gray-900 items-center justify-center">
+      <View className="flex-1 bg-black items-center justify-center">
         <Text className="text-white text-lg">Outfit not found</Text>
         <Pressable 
           onPress={() => router.back()}
