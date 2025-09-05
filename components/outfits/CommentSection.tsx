@@ -36,21 +36,21 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent onRequestClose={onClose}>
-      <View className="flex-1 bg-black/70 backdrop-blur-lg">
+      <View className="flex-1 bg-black">
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} className="flex-1">
           <SafeAreaView className="flex-1">
             {/* Header */}
-            <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-700/40 bg-gray-900/90">
+            <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-800/50" style={{ backgroundColor: '#000000' }}>
               <Text className="text-white font-semibold text-base" numberOfLines={1}>
                 {outfitTitle ? `Comments • ${outfitTitle}` : 'Comments'}
               </Text>
-              <Pressable onPress={onClose} className="p-2 rounded-full bg-gray-800/70 border border-gray-700/50">
+              <Pressable onPress={onClose} className="p-2 rounded-full border border-gray-600/50" style={{ backgroundColor: '#1f1f1fcc' }}>
                 <X size={16} color="#E5E7EB" />
               </Pressable>
             </View>
 
             {/* List */}
-            <ScrollView className="flex-1 bg-gray-900/80" contentContainerStyle={{ paddingVertical: 12 }}>
+            <ScrollView className="flex-1 bg-black" contentContainerStyle={{ paddingVertical: 12 }}>
               {isLoading && (
                 <Text className="text-gray-400 text-center mt-4">Loading…</Text>
               )}
@@ -68,22 +68,23 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
             </ScrollView>
 
             {/* Input */}
-            <View className="px-4 py-3 border-t border-gray-700/40" style={{ backgroundColor: '#1f1f1fcc' }}>
+            <View className="px-4 py-3 border-t border-gray-800/50 bg-black">
               <View 
-                className="flex-row items-center border border-gray-700/50 rounded-full px-3"
-                style={{ backgroundColor: '#1f1f1fcc' }}
+                className="flex-row items-center border border-gray-600/50 rounded-full px-3"
+                style={{ backgroundColor: '#1f1f1fcc', minHeight: 44 }}
               >
                 <TextInput
                   value={text}
                   onChangeText={setText}
                   placeholder="Add a comment…"
                   placeholderTextColor="#9CA3AF"
-                  className="flex-1 text-white py-2"
-                  multiline
+                  className="flex-1 text-white"
+                  style={{ paddingVertical: 12, textAlignVertical: 'center' }}
+                  multiline={false}
                 />
                 <Pressable onPress={handleSend} disabled={isPending || !text.trim()} className="ml-2 p-2">
                   <X size={0} color="transparent" />
-                  <Send size={18} color={text.trim() ? '#A78BFA' : '#6B7280'} />
+                  <Send size={18} color={text.trim() ? '#EC4899' : '#6B7280'} />
                 </Pressable>
               </View>
             </View>

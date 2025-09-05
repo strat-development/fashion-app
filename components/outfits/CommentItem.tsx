@@ -64,7 +64,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                 )}
             </View>
             <View className="flex-1">
-                <View className="bg-gray-800/40 border border-gray-700/40 rounded-xl px-3.5 py-3">
+                <View className="border border-gray-600/50 rounded-xl px-3.5 py-3" style={{ backgroundColor: '#1f1f1fcc' }}>
                     <View className="flex-row items-start justify-between">
                         <View className="flex-1 pr-2">
                             <View className="flex-row flex-wrap items-center gap-x-2 gap-y-1">
@@ -132,7 +132,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
 
                 {isSetToReply && (
                     <View className="mt-2">
-                        <View className="flex-row items-end bg-gray-800/50 border border-gray-700/50 rounded-xl px-3 py-2">
+                        <View className="flex-row items-end border border-gray-600/50 rounded-xl px-3 py-2" style={{ backgroundColor: '#1f1f1fcc' }}>
                             <TextInput
                                 value={text}
                                 onChangeText={setText}
