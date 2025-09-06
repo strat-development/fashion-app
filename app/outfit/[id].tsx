@@ -14,6 +14,7 @@ import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOut
 import { useRateOutfitMutation } from "@/mutations/outfits/RateOutfitMutation";
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useUnrateOutfitMutation } from "@/mutations/outfits/UnrateOutfitMutation";
+import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
 import { router, Stack, useLocalSearchParams } from "expo-router";
@@ -45,6 +46,7 @@ export default function OutfitDetail() {
 function OutfitDetailContent() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { userId } = useUserContext();
+  const { colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
   
   const [outfit, setOutfit] = useState<OutfitDetailData | null>(null);
@@ -231,8 +233,8 @@ function OutfitDetailContent() {
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#000" />
-      <View style={{ flex: 1, backgroundColor: '#000' }}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={colors.background} />
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
         <ScrollView 
           style={{ flex: 1 }}
           contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
