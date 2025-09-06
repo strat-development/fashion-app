@@ -3,7 +3,7 @@ import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection'
 import { UserStatistics } from '@/components/dashboard/UserStatistics';
 import { ProfileEdit } from '@/components/modals/ProfileEditModal';
 import { supabase } from '@/lib/supabase';
-import { useTheme, ThemedGradient } from '@/providers/themeContext';
+import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
@@ -332,20 +332,22 @@ export default function UserProfile({
                     }}
                   />
                 )}
-                <Icon
-                  size={16}
-                  color={activeTab === key ? colors.white : colors.textMuted}
-                />
-                <Text
-                  style={{
-                    fontSize: 14,
-                    marginLeft: 8,
-                    fontWeight: '500',
-                    color: activeTab === key ? colors.white : colors.textMuted
-                  }}
-                >
-                  {label}
-                </Text>
+                <View style={{ zIndex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                  <Icon
+                    size={16}
+                    color={activeTab === key ? colors.white : colors.textMuted}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      marginLeft: 8,
+                      fontWeight: '500',
+                      color: activeTab === key ? colors.white : colors.textMuted
+                    }}
+                  >
+                    {label}
+                  </Text>
+                </View>
               </Pressable>
             ))}
           </View>

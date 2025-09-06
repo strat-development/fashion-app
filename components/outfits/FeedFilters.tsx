@@ -1,5 +1,5 @@
 import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
-import { useTheme, ThemedGradient } from '@/providers/themeContext';
+import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { Filter, Search, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -176,7 +176,9 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
                 }}
               />
             )}
-            <Filter size={18} color={(hasActiveFilters() || showFilters) ? colors.white : colors.textSecondary} />
+            <View style={{ zIndex: 1 }}>
+              <Filter size={18} color={(hasActiveFilters() || showFilters) ? colors.white : colors.textSecondary} />
+            </View>
             {hasActiveFilters() && (
               <ThemedGradient
                 style={{
