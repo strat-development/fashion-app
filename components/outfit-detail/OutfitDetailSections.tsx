@@ -15,12 +15,12 @@ export default function OutfitDetailSections({ description, tags }: OutfitDetail
   const body = Math.round(15 * scale);
   const chip = Math.round(12 * scale);
   return (
-    <>
+    <View style={{ paddingHorizontal: 16 }}>
       {/* Description */}
       {description && (
-        <View className="mb-6 bg-gray-800/30 rounded-2xl p-4 border border-white/5">
-          <Text className="text-white font-semibold mb-2" style={{ fontSize: heading }}>Description</Text>
-          <Text className="text-gray-300" style={{ fontSize: body, lineHeight: body + 6 }}>
+        <View style={{ marginBottom: 20 }}>
+          <Text style={{ color: '#fff', fontWeight: '600', marginBottom: 8, fontSize: heading }}>Description</Text>
+          <Text style={{ color: '#9CA3AF', fontSize: body, lineHeight: body + 6 }}>
             {description}
           </Text>
         </View>
@@ -28,23 +28,23 @@ export default function OutfitDetailSections({ description, tags }: OutfitDetail
 
       {/* Tags */}
       {tags.length > 0 && (
-        <View className="mb-6 bg-gray-800/30 rounded-2xl p-4 border border-white/5">
-          <View className="flex-row items-center mb-3">
-            <Tag size={18} color="#A855F7" />
-            <Text className="text-white font-semibold ml-2" style={{ fontSize: heading }}>Tags</Text>
+        <View style={{ marginBottom: 12 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+            <Tag size={18} color="#9CA3AF" />
+            <Text style={{ color: '#fff', fontWeight: '600', marginLeft: 8, fontSize: heading }}>Tags</Text>
           </View>
-          <View className="flex-row flex-wrap">
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
             {tags.map((tag, index) => (
               <View
                 key={index}
-                className="bg-purple-600/20 border border-purple-500/30 rounded-full px-3 py-1 mr-2 mb-2"
+                style={{ backgroundColor: '#1f1f1fcc', borderWidth: 1, borderColor: '#2a2a2a', borderRadius: 999, paddingHorizontal: 12, paddingVertical: 6, marginRight: 8, marginBottom: 8 }}
               >
-                <Text className="text-purple-300" style={{ fontSize: chip }}>{String(tag)}</Text>
+                <Text style={{ color: '#9CA3AF', fontSize: chip }}>{String(tag)}</Text>
               </View>
             ))}
           </View>
         </View>
       )}
-    </>
+    </View>
   );
 }
