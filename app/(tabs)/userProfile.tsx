@@ -2,14 +2,27 @@ import { CreatedOutfitsSection } from '@/components/dashboard/CreatedOutfitsSect
 import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection';
 import { UserStatistics } from '@/components/dashboard/UserStatistics';
 import { ProfileEdit } from '@/components/modals/ProfileEditModal';
+import { Button, ButtonText } from '@/components/ui/button';
+import { useFetchNotifications } from '@/fetchers/dashboard/fetchUserNotifications';
 import { supabase } from '@/lib/supabase';
+import { useAcceptFollowerMutation } from '@/mutations/AcceptFollower';
+import { useUnFollowUserMutation } from '@/mutations/UnfollowUserMutation';
 import { useUserContext } from '@/providers/userContext';
 import { Image } from 'expo-image';
-import { BookOpen, Edit3, Heart, LogOut, Plus, Trophy, User, User2 } from 'lucide-react-native';
-import React, { useState } from 'react';
-import { Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
+import { Bell, BookOpen, Check, Edit3, Heart, LogOut, Plus, Trophy, User, User2, X } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, Modal, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 type TabType = 'user-info' | 'created-outfits' | 'saved-outfits';
+
+interface Notification {
+  id: string;
+  type: 'like' | 'follow_request';
+  message: string;
+  createdAt: string;
+  userId: string;
+}
 
 interface UserProfileProps {
   isOwnProfile?: boolean;
@@ -18,10 +31,6 @@ interface UserProfileProps {
 export default function UserProfile({
   isOwnProfile = true
 }: UserProfileProps) {
-  const [activeTab, setActiveTab] = useState<TabType>('user-info');
-  const [refreshing, setRefreshing] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-
   const {
     userName,
     userBio,
@@ -30,6 +39,36 @@ export default function UserProfile({
     userSocials,
     userId,
   } = useUserContext();
+
+  const [activeTab, setActiveTab] = useState<TabType>('user-info');
+  const [refreshing, setRefreshing] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const { data: notificationsData, isLoading, error } = useFetchNotifications(userId || "");
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [showDrawer, setShowDrawer] = useState(false);
+  const offset = useSharedValue(Dimensions.get('window').width);
+  const { mutate: acceptFollowRequest } = useAcceptFollowerMutation();
+  const { mutate: unFollowUser } = useUnFollowUserMutation();
+
+  useEffect(() => {
+    if (notificationsData) {
+      const transformedNotifications: Notification[] = notificationsData.map((follower) => ({
+        id: follower.user_id!,
+        type: 'follow_request',
+        message: `${follower.users?.nickname || follower.users?.full_name} requested to follow you`,
+        createdAt: follower.created_at,
+        userId: follower.user_id!,
+      }));
+      setNotifications(transformedNotifications);
+    }
+  }, [notificationsData]);
+
+  useEffect(() => {
+    offset.value = withSpring(showDrawer ? Dimensions.get('window').width * 0 : Dimensions.get('window').width, {
+      damping: 100,
+      stiffness: 200,
+    });
+  }, [showDrawer]);
 
   const handleEditProfile = () => {
     setShowEditModal(true);
@@ -42,7 +81,7 @@ export default function UserProfile({
       console.error('Error signing out:', error);
     }
   };
-  
+
   const onRefresh = () => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 1000);
@@ -150,6 +189,16 @@ export default function UserProfile({
               <Text className="text-white font-medium ml-2">Edit Profile</Text>
             </Pressable>
           )}
+          <Pressable
+            onPress={() => setShowDrawer(true)}
+            className="absolute top-4 right-4 flex-row items-center"
+          >
+            <Bell size={20} color="#9CA3AF" />
+            {notificationsData && notificationsData.length > 0 && (
+              <View className="absolute top-0 right-0 w-4 h-4 bg-red-600 rounded-full items-center justify-center">
+                <Text className="text-white text-xs font-semibold">{notificationsData.length}</Text>
+              </View>)}
+          </Pressable>
         </View>
 
         {/* Tab Navigation */}
@@ -184,6 +233,141 @@ export default function UserProfile({
 
         {/* Tab Content */}
         {renderTabContent()}
+
+        {/* Notification Modal */}
+        <Modal
+          visible={showDrawer}
+          onRequestClose={() => setShowDrawer(false)}
+          animationType="none"
+          transparent={true}
+        >
+          <Pressable
+            style={{
+              flex: 1,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+            }}
+            onPress={() => setShowDrawer(false)}
+          >
+            <Animated.View
+              style={[{
+                width: '75%',
+                height: '100%',
+                backgroundColor: '#111827',
+                borderLeftWidth: 1,
+                borderLeftColor: '#1F2937',
+              }, useAnimatedStyle(() => ({
+                transform: [{ translateX: offset.value }],
+              }))]}
+              onStartShouldSetResponder={() => true}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: 16,
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#1F2937',
+                }}
+              >
+                <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '500' }}>
+                  Notifications
+                </Text>
+                <Pressable onPress={() => setShowDrawer(false)}>
+                  <Text style={{ color: '#9CA3AF' }}>Close</Text>
+                </Pressable>
+              </View>
+              <ScrollView style={{ padding: 16 }}>
+                {isLoading ? (
+                  <Text style={{ color: '#9CA3AF', fontSize: 14 }}>Loading notifications...</Text>
+                ) : error ? (
+                  <Text style={{ color: '#EF4444', fontSize: 14 }}>
+                    Error loading notifications: {error.message}
+                  </Text>
+                ) : notifications.length === 0 ? (
+                  <Text style={{ color: '#9CA3AF', fontSize: 14 }}>No notifications yet.</Text>
+                ) : (
+                  notifications.map((notification) => (
+                    <View
+                      key={notification.id}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingVertical: 8,
+                      }}
+                    >
+                      <Text style={{ color: '#D1D5DB', fontSize: 14, flex: 1 }}>
+                        <Pressable onPress={() => { }}>
+                          <Text style={{ color: '#3B82F6', textDecorationLine: 'underline' }}>
+                            {notification.message.split(' requested')[0]}
+                          </Text>
+                        </Pressable>
+                        <Text style={{ color: '#D1D5DB' }}>
+                          {' requested to follow you'}
+                        </Text>
+                      </Text>
+                      <View className='flex flex-row gap-2'>
+                        {notification.type === 'follow_request' && (
+                          <View className='flex flex-row gap-2'>
+                            <Button
+                              size="sm"
+                              variant="link"
+                              onPress={() => {
+                                if (userId && notification.userId) {
+                                  acceptFollowRequest({ followerId: notification.userId, followedAccountId: userId });
+                                } else {
+                                  console.error('Invalid IDs:', { userId, followerId: notification.userId });
+                                }
+                              }}
+                              className='border border-gray-50/10 rounded-full p-2'
+                            >
+                              <Check size={20} color="#4ADE80" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="link"
+                              onPress={() => {
+                                if (userId && notification.userId) {
+                                  unFollowUser({ followedAccountId: userId, userId: notification.userId });
+                                } else {
+                                  console.error('Invalid IDs:', { userId, followerId: notification.userId });
+                                }
+                              }}
+                              className='border border-gray-50/10 rounded-full p-2'
+                            >
+                              <X size={20} color="#EF4444" />
+                            </Button>
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                  ))
+                )}
+              </ScrollView>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  padding: 16,
+                  borderTopWidth: 1,
+                  borderTopColor: '#1F2937',
+                }}
+              >
+                <Button
+                  size="sm"
+                  variant="link"
+                  onPress={() => setNotifications([])}
+                  disabled={notifications.length === 0}
+                >
+                  <ButtonText className="text-gray-400">Clear All</ButtonText>
+                </Button>
+              </View>
+            </Animated.View>
+          </Pressable>
+        </Modal>
       </View>
 
       {/* Profile Edit Modal */}
