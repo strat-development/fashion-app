@@ -1,3 +1,4 @@
+import { useTheme } from '@/providers/themeContext';
 import { LucideIcon } from 'lucide-react-native';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
@@ -17,18 +18,44 @@ export const EmptyState = ({
   actionText,
   onAction
 }: EmptyStateProps) => {
+  const { colors } = useTheme();
+  
   return (
-    <View className="items-center justify-center py-16">
-      <Icon size={48} color="#4B5563" />
-      <Text className="text-gray-300 text-base mt-4">{title}</Text>
-      <Text className="text-gray-500 text-center mt-2 text-sm">{description}</Text>
+    <View style={{ 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+      paddingVertical: 64 
+    }}>
+      <Icon size={48} color={colors.textMuted} />
+      <Text style={{ 
+        color: colors.textSecondary, 
+        fontSize: 16, 
+        marginTop: 16 
+      }}>{title}</Text>
+      <Text style={{ 
+        color: colors.textMuted, 
+        textAlign: 'center', 
+        marginTop: 8, 
+        fontSize: 14 
+      }}>{description}</Text>
       {actionText && onAction && (
         <Pressable 
           onPress={onAction}
-          style={{ backgroundColor: '#1f1f1fcc' }}
-          className="px-4 py-2 rounded-lg mt-4 border border-gray-600/60"
+          style={{
+            backgroundColor: colors.surface,
+            paddingHorizontal: 16,
+            paddingVertical: 8,
+            borderRadius: 8,
+            marginTop: 16,
+            borderWidth: 1,
+            borderColor: colors.border
+          }}
         >
-          <Text className="text-gray-300 font-medium text-sm">{actionText}</Text>
+          <Text style={{ 
+            color: colors.text, 
+            fontWeight: '500',
+            fontSize: 14
+          }}>{actionText}</Text>
         </Pressable>
       )}
     </View>

@@ -1,5 +1,6 @@
 
 import { supabase } from '@/lib/supabase'
+import { useTheme } from '@/providers/themeContext'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Lock, Mail, User } from 'lucide-react-native'
 import { useEffect, useRef, useState } from 'react'
@@ -17,6 +18,7 @@ interface FocusInputProps {
 }
 
 const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboardType = 'default' }: FocusInputProps) => {
+  const { colors } = useTheme()
   const focusAnim = useRef(new Animated.Value(0)).current;
   const [focused, setFocused] = useState(false);
 
@@ -31,7 +33,7 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
 
   const borderColor = focusAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#374151', '#d946ef']
+    outputRange: [colors.border, colors.accent]
   });
 
   const glowOpacity = focusAnim.interpolate({
@@ -47,7 +49,7 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
   return (
     <View style={{ width: '100%' }}>
       <Animated.Text style={{
-        color: '#9CA3AF',
+        color: colors.textSecondary,
         fontSize: 11,
         letterSpacing: 1,
         fontWeight: '600',
@@ -60,7 +62,7 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
         borderWidth: 1,
         borderColor,
         borderRadius: 14,
-        backgroundColor: 'rgba(31,41,55,0.55)',
+        backgroundColor: colors.surface,
         overflow: 'hidden'
       }}>
         {/* Glow layer (no web-only filter, ensures no layout shifts) */}
@@ -70,7 +72,7 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: '#db2777',
+          backgroundColor: colors.accent,
           opacity: glowOpacity,
         }} />
         <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, paddingVertical: 12 }}>
@@ -78,14 +80,14 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
           <TextInput
             value={value}
             placeholder={placeholder}
-            placeholderTextColor="#6B7280"
+            placeholderTextColor={colors.textSecondary}
             secureTextEntry={secure}
             autoCapitalize='none'
             keyboardType={keyboardType}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             onChangeText={onChange}
-            style={{ flex: 1, marginLeft: 10, color: 'white', fontSize: 15, paddingVertical: 0 }}
+            style={{ flex: 1, marginLeft: 10, color: colors.text, fontSize: 15, paddingVertical: 0 }}
           />
         </View>
       </Animated.View>
@@ -133,6 +135,7 @@ const AnimatedGradientOverlay = () => {
 }
 
 export default function Auth() {
+  const { colors } = useTheme()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -175,7 +178,7 @@ export default function Auth() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#000' }}>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
       <View style={{ flex: 1, position: 'relative' }}>
         <AnimatedGradientOverlay />
         <SafeAreaView style={{ flex: 1 }}>
@@ -188,14 +191,14 @@ export default function Auth() {
                       <LinearGradient colors={["#7e22ce", "#db2777"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
                       <User size={32} color="#fff" />
                     </View>
-                    <Text style={{ color: '#fff', fontSize: 28, fontWeight: '800', letterSpacing: -0.5 }}>Welcome</Text>
-                    <Text style={{ color: '#9CA3AF', marginTop: 6, fontSize: 13 }}>{mode === 'signin' ? 'Sign in to continue' : 'Create an account'}</Text>
+                    <Text style={{ color: colors.text, fontSize: 28, fontWeight: '800', letterSpacing: -0.5 }}>Welcome</Text>
+                    <Text style={{ color: colors.textSecondary, marginTop: 6, fontSize: 13 }}>{mode === 'signin' ? 'Sign in to continue' : 'Create an account'}</Text>
                   </View>
 
                   {/* FORM CARD */}
-                  <View style={{ backgroundColor: '#1f1f1fcc', borderWidth: 1, borderColor: '#2a2a2a', borderRadius: 18, padding: 18 }}>
+                  <View style={{ backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, borderRadius: 18, padding: 18 }}>
                   <FocusInput
-                    icon={<Mail size={18} color="#9CA3AF" />}
+                    icon={<Mail size={18} color={colors.textSecondary} />}
                     label="Email"
                     value={email}
                     onChange={setEmail}
@@ -204,7 +207,7 @@ export default function Auth() {
                   />
                     <View style={{ height: 16 }} />
                   <FocusInput
-                    icon={<Lock size={18} color="#9CA3AF" />}
+                    icon={<Lock size={18} color={colors.textSecondary} />}
                     label="Password"
                     value={password}
                     onChange={setPassword}
@@ -230,9 +233,9 @@ export default function Auth() {
                   </Pressable>
 
                   <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
-                    <Text style={{ color: '#9CA3AF', fontSize: 12 }}>{mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}</Text>
+                    <Text style={{ color: colors.textSecondary, fontSize: 12 }}>{mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}</Text>
                     <Pressable onPress={() => setMode(mode === 'signin' ? 'signup' : 'signin')}>
-                      <Text style={{ color: '#ec4899', fontSize: 12, fontWeight: '600' }}>
+                      <Text style={{ color: colors.accent, fontSize: 12, fontWeight: '600' }}>
                         {mode === 'signin' ? 'Sign up' : 'Sign in'}
                       </Text>
                     </Pressable>
@@ -241,7 +244,7 @@ export default function Auth() {
                 </View>
 
                 <View style={{ alignItems: 'center', marginTop: 24 }}>
-                  <Text style={{ color: '#4B5563', fontSize: 10 }}>By continuing you agree to our Terms & Privacy.</Text>
+                  <Text style={{ color: colors.textMuted, fontSize: 10 }}>By continuing you agree to our Terms & Privacy.</Text>
                 </View>
               </View>
             </ScrollView>

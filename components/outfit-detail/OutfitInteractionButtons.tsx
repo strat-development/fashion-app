@@ -1,5 +1,5 @@
 import { SparkleBurst } from "@/components/ui/SparkleBurst";
-import { MessageCircle, Share, ThumbsDown, ThumbsUp, Bookmark } from "lucide-react-native";
+import { Bookmark, MessageCircle, Share, ThumbsDown, ThumbsUp } from "lucide-react-native";
 import React, { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import Animated, { SharedValue, useAnimatedStyle, withSequence, withSpring } from "react-native-reanimated";

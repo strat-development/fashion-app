@@ -4,6 +4,7 @@ import { useFetchRatingStats } from "@/fetchers/outfits/fetchRatedOutfits";
 import { formatDate } from "@/helpers/helpers";
 import { useRateOutfitMutation } from "@/mutations/outfits/RateOutfitMutation";
 import { useUnrateOutfitMutation } from "@/mutations/outfits/UnrateOutfitMutation";
+import { useTheme, ThemedGradient } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
 import { Link } from "expo-router";
@@ -43,6 +44,7 @@ export const OutfitCard = ({
   isDeleteVisible,
   onUnsave,
 }: OutfitCardProps) => {
+  const { colors } = useTheme();
   const { userId } = useUserContext();
   const { data: userData } = useFetchUser(outfit.created_by || "");
   const { data: ratingStats } = useFetchRatingStats(outfit.outfit_id || "");
@@ -187,20 +189,45 @@ export const OutfitCard = ({
       : [];
 
   return (
-    <View className="bg-black mb-4">
+    <View style={{ backgroundColor: colors.background, marginBottom: 16 }}>
       {/* Header */}
-      <View className="flex-row items-center justify-between px-4 py-3">
-        <View className="flex-row items-center flex-1">
+      <View style={{ 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        justifyContent: 'space-between', 
+        paddingHorizontal: 16, 
+        paddingVertical: 12 
+      }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
           {userData?.user_avatar ? (
-            <View className="w-8 h-8 bg-gray-700 rounded-full items-center justify-center mr-3">
-              <Image source={{ uri: userData.user_avatar }} className="w-full h-full rounded-full" />
+            <View style={{
+              width: 32,
+              height: 32,
+              backgroundColor: colors.surfaceVariant,
+              borderRadius: 16,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: 12
+            }}>
+              <Image 
+                source={{ uri: userData.user_avatar }} 
+                style={{ width: '100%', height: '100%', borderRadius: 16 }}
+              />
             </View>
           ) : (
-            <View className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center mr-3">
-              <User size={16} color="#FFFFFF" />
+            <View style={{
+              width: 32,
+              height: 32,
+              backgroundColor: colors.accent,
+              borderRadius: 16,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: 12
+            }}>
+              <User size={16} color={colors.white} />
             </View>
           )}
-          <View className="flex-1">
+          <View style={{ flex: 1 }}>
             <Link
               href={{
                 pathname: "/userProfile/[id]",
@@ -209,35 +236,59 @@ export const OutfitCard = ({
               asChild
             >
               <Pressable>
-                <Text className="text-white font-semibold">
+                <Text style={{ 
+                  color: colors.text, 
+                  fontWeight: '600' 
+                }}>
                   {userData?.nickname || 'Anonymous'}
                 </Text>
               </Pressable>
             </Link>
-            <Text className="text-gray-400 text-xs">{formatDate(outfit.created_at || "")}</Text>
+            <Text style={{ 
+              color: colors.textSecondary, 
+              fontSize: 12 
+            }}>{formatDate(outfit.created_at || "")}</Text>
           </View>
         </View>
 
-        <View className="flex-row items-center gap-2">
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           {outfit.created_by === userId && (
-            <View className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 px-3 py-1 rounded-full border border-purple-500/30">
-              <Text className="text-purple-300 text-xs font-medium">Your creation</Text>
-            </View>
+            <ThemedGradient
+              style={{
+                paddingHorizontal: 12,
+                paddingVertical: 4,
+                borderRadius: 999,
+                borderWidth: 1,
+                borderColor: `${colors.accent}4D`
+              }}
+            >
+              <Text style={{ 
+                color: 'white', 
+                fontSize: 12, 
+                fontWeight: '500' 
+              }}>Your creation</Text>
+            </ThemedGradient>
           )}
 
           {isDeleteVisible && (
             <Pressable
-              className="bg-red-600/20 border border-red-600/30 p-2 rounded-full"
+              style={{
+                backgroundColor: `${colors.error}33`,
+                borderWidth: 1,
+                borderColor: `${colors.error}4D`,
+                padding: 8,
+                borderRadius: 999
+              }}
               onPress={() => onDelete?.(outfit.outfit_id)}
             >
-              <Delete size={16} color="#EF4444" />
+              <Delete size={16} color={colors.error} />
             </Pressable>
           )}
         </View>
       </View>
 
       {/* Images - Full Width */}
-      <View className="relative overflow-hidden">
+      <View style={{ position: 'relative', overflow: 'hidden' }}>
         {imageUrls.length === 1 ? (
           <Pressable onPress={() => onPress?.(outfit)}>
             <Image source={{ uri: imageUrls[0] || "" }} className="w-full h-96" resizeMode="cover" />
@@ -289,117 +340,239 @@ export const OutfitCard = ({
               }}
             />
             {/* Photo count indicator */}
-            <View className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-3 py-1.5 rounded-full border border-gray-400/30 z-20">
-              <Text className="text-white text-xs font-medium">{Math.round(progress.value) + 1}/{imageUrls.length}</Text>
+            <View style={{
+              position: 'absolute',
+              top: 12,
+              right: 12,
+              backgroundColor: `${colors.background}B3`,
+              paddingHorizontal: 12,
+              paddingVertical: 6,
+              borderRadius: 999,
+              borderWidth: 1,
+              borderColor: `${colors.border}4D`
+            }}>
+              <Text style={{
+                color: colors.text,
+                fontSize: 12,
+                fontWeight: '500'
+              }}>{Math.round(progress.value) + 1}/{imageUrls.length}</Text>
             </View>
             {/* Custom pagination dots */}
             {imageUrls.length <= 5 && (
-              <View className="flex-row justify-center absolute bottom-3 w-full z-20">
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                position: 'absolute',
+                bottom: 12,
+                width: '100%'
+              }}>
                 {imageUrls.map((_, index) => (
                   <View
                     key={index}
-                    className={`w-2 h-2 rounded-full mx-1 ${
-                      Math.round(progress.value) === index ? 'bg-white' : 'bg-white/40'
-                    }`}
+                    style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: 4,
+                      marginHorizontal: 4,
+                      backgroundColor: Math.round(progress.value) === index ? colors.white : `${colors.white}66`
+                    }}
                   />
                 ))}
               </View>
             )}
           </View>
         ) : (
-          <View className="w-full h-96 bg-gray-800 items-center justify-center">
-            <Text className="text-gray-400">No images</Text>
+          <View style={{
+            width: '100%',
+            height: 384,
+            backgroundColor: colors.surfaceVariant,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <Text style={{ color: colors.textSecondary }}>No images</Text>
           </View>
         )}
       </View>
 
       {/* Title, Tags and Actions */}
-      <View className="px-4 pt-2 pb-3">
+      <View style={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: 12 }}>
         {/* Title and Tags */}
-        <Text className="text-white font-semibold text-lg mb-2">{outfit.outfit_name || "Untitled Outfit"}</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-3">
-          <View className="flex-row">
+        <Text style={{
+          color: colors.text,
+          fontWeight: '600',
+          fontSize: 18,
+          marginBottom: 8
+        }}>{outfit.outfit_name || "Untitled Outfit"}</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }}>
+          <View style={{ flexDirection: 'row' }}>
             {tags.map((tag, index) => (
-              <View key={index} style={{ backgroundColor: '#1f1f1fcc' }} className="px-3 py-1 rounded-full mr-2 border border-gray-600/60">
-                <Text className="text-gray-300 text-xs">{tag as any}</Text>
+              <View 
+                key={index} 
+                style={{ 
+                  backgroundColor: colors.surface, 
+                  paddingHorizontal: 12, 
+                  paddingVertical: 4, 
+                  borderRadius: 999, 
+                  marginRight: 8, 
+                  borderWidth: 1, 
+                  borderColor: colors.border 
+                }}
+              >
+                <Text style={{ 
+                  color: colors.textSecondary, 
+                  fontSize: 12 
+                }}>{tag as any}</Text>
               </View>
             ))}
           </View>
         </ScrollView>
 
         {/* Actions */}
-        <View className="flex-row items-center justify-between pt-2 gap-3">
-          <View className="flex-row items-center flex-shrink min-w-0">
+        <View style={{ 
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          justifyContent: 'space-between', 
+          paddingTop: 8, 
+          gap: 12 
+        }}>
+          <View style={{ 
+            flexDirection: 'row', 
+            alignItems: 'center', 
+            flexShrink: 1, 
+            minWidth: 0 
+          }}>
             {/* Combined Rating Element - More Compact */}
-            <View style={{ backgroundColor: '#1f1f1fcc' }} className="border border-gray-600/60 rounded-lg px-2 py-1.5">
-              <View className="flex-row items-center gap-1 mb-1.5">
+            <View style={{ 
+              backgroundColor: colors.surface, 
+              borderWidth: 1, 
+              borderColor: colors.border, 
+              borderRadius: 8, 
+              paddingHorizontal: 8, 
+              paddingVertical: 6 
+            }}>
+              <View style={{ 
+                flexDirection: 'row', 
+                alignItems: 'center', 
+                gap: 4, 
+                marginBottom: 6 
+              }}>
                 <Pressable
                   onPress={handlePositiveRate}
                   onPressIn={() => springDown(likeScale, 0.9)}
                   onPressOut={() => springUp(likeScale)}
-                  className={`relative flex-row items-center px-1.5 py-0.5 rounded-full border ${optimisticLiked ? "bg-gradient-to-r from-purple-600/30 to-pink-600/30 border-purple-500/50" : "bg-gray-700/30 border-gray-600/50"}`}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: 6,
+                    paddingVertical: 2,
+                    borderRadius: 999,
+                    borderWidth: 1,
+                    backgroundColor: optimisticLiked ? 'transparent' : `${colors.surfaceVariant}80`,
+                    borderColor: optimisticLiked ? 'transparent' : `${colors.border}80`,
+                    overflow: 'hidden'
+                  }}
                 >
+                  <ThemedGradient
+                    active={optimisticLiked}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                    }}
+                  />
                   <Animated.View
                     style={likeStyle}
-                    className="relative"
                   >
                     <ThumbsUp
                       size={16}
-                      color={optimisticLiked ? "#EC4899" : "#9CA3AF"}
-                      fill={optimisticLiked ? "#EC4899" : "transparent"}
+                      color={optimisticLiked ? 'white' : colors.textSecondary}
+                      fill={optimisticLiked ? 'white' : "transparent"}
                     />
-                    <SparkleBurst show={likeSparkle} color="#EC4899" />
+                    <SparkleBurst show={likeSparkle} color="#ec4899" size={32} />
                   </Animated.View>
                 </Pressable>
                 <Pressable
                   onPress={handleNegativeRate}
                 onPressIn={() => springDown(dislikeScale, 0.9)}
                 onPressOut={() => springUp(dislikeScale)}
-                className={`relative flex-row items-center px-1.5 py-0.5 rounded-full border ${optimisticDisliked ? "bg-gray-600/40 border-gray-500/50" : "bg-gray-700/30 border-gray-600/50"}`}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingHorizontal: 6,
+                  paddingVertical: 2,
+                  borderRadius: 999,
+                  borderWidth: 1,
+                  backgroundColor: optimisticDisliked ? `${colors.textSecondary}40` : `${colors.surfaceVariant}80`,
+                  borderColor: optimisticDisliked ? `${colors.textSecondary}80` : `${colors.border}80`
+                }}
               >
                 <Animated.View
                   style={dislikeStyle}
-                  className="relative"
                 >
                   <ThumbsDown
                     size={16}
-                    color={optimisticDisliked ? "#9CA3AF" : "#6B7280"}
-                    fill={optimisticDisliked ? "#9CA3AF" : "transparent"}
+                    color={optimisticDisliked ? colors.textSecondary : colors.textMuted}
+                    fill={optimisticDisliked ? colors.textSecondary : "transparent"}
                   />
-                  <SparkleBurst show={dislikeSparkle} color="#9CA3AF" />
+                  <SparkleBurst show={dislikeSparkle} color={colors.textSecondary} />
                 </Animated.View>
               </Pressable>
             </View>
             
-            {/* Compact visual percentage line - now dynamic to local changes */}
-            <View className="h-0.5 bg-gray-700/40 rounded-full overflow-hidden" style={{ width: '100%' }}>
-              <View 
-                className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
-                style={{ width: `${optimisticPercentage}%` }}
+            {/* Compact visual percentage line */}
+            <View style={{
+              height: 2,
+              backgroundColor: `${colors.border}66`,
+              borderRadius: 999,
+              overflow: 'hidden',
+              width: '100%'
+            }}>
+              <ThemedGradient
+                style={{ 
+                  height: '100%', 
+                  borderRadius: 999,
+                  width: `${optimisticPercentage}%` 
+                }}
               />
             </View>
           </View>
-          {/* Comment Section - matching share/bookmark style */}
+          {/* Comment Section */}
           <Pressable
             onPress={() => {
               onComment?.(outfit.outfit_id);
             }}
             onPressIn={() => springDown(commentScale, 0.94)}
             onPressOut={() => springUp(commentScale)}
-            style={{ backgroundColor: '#1f1f1fcc' }}
-            className="flex-row items-center justify-center px-3 py-2 rounded-full border border-gray-600/60 ml-3"
+            style={{
+              backgroundColor: colors.surface,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingHorizontal: 12,
+              paddingVertical: 8,
+              borderRadius: 999,
+              borderWidth: 1,
+              borderColor: colors.border,
+              marginLeft: 12
+            }}
           >
             <Animated.View
-              style={commentStyle}
-              className="flex-row items-center"
+              style={[commentStyle, { flexDirection: 'row', alignItems: 'center' }]}
             >
-              <MessageCircle size={16} color="#9CA3AF" />
-              <Text className="text-gray-300 ml-2 text-sm font-medium">{outfit.comments}</Text>
+              <MessageCircle size={16} color={colors.textSecondary} />
+              <Text style={{
+                color: colors.textSecondary,
+                marginLeft: 8,
+                fontSize: 14,
+                fontWeight: '500'
+              }}>{outfit.comments}</Text>
             </Animated.View>
           </Pressable>
         </View>
 
-        <View className="flex-row items-center gap-2 flex-shrink-0">
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <Pressable
             onPress={() => {
               const newSaved = !optimisticSaved;
@@ -415,19 +588,26 @@ export const OutfitCard = ({
             }}
             onPressIn={() => springDown(saveScale, 0.9)}
             onPressOut={() => springUp(saveScale)}
-            style={{ backgroundColor: '#1f1f1fcc' }}
-            className="relative flex-row items-center justify-center p-2 rounded-full border border-gray-600/60"
+            style={{
+              backgroundColor: colors.surface,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 8,
+              borderRadius: 999,
+              borderWidth: 1,
+              borderColor: colors.border
+            }}
           >
             <Animated.View
               style={saveStyle}
-              className="relative"
             >
               <Bookmark
                 size={16}
-                color={optimisticSaved ? "#EC4899" : "#9CA3AF"}
-                fill={optimisticSaved ? "#EC4899" : "transparent"}
+                color={optimisticSaved ? '#ec4899' : colors.textSecondary}
+                fill={optimisticSaved ? '#ec4899' : "transparent"}
               />
-              <SparkleBurst show={saveSparkle} color="#EC4899" />
+              <SparkleBurst show={saveSparkle} color="#ec4899" size={32} />
             </Animated.View>
           </Pressable>
 
@@ -435,18 +615,25 @@ export const OutfitCard = ({
             onPress={() => onShare?.(outfit.outfit_id)}
             onPressIn={() => springDown(shareScale, 0.94)}
             onPressOut={() => springUp(shareScale)}
-            style={{ backgroundColor: '#1f1f1fcc' }}
-            className="flex-row items-center justify-center p-2 rounded-full border border-gray-600/60"
+            style={{
+              backgroundColor: colors.surface,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 8,
+              borderRadius: 999,
+              borderWidth: 1,
+              borderColor: colors.border
+            }}
           >
             <Animated.View
               style={shareStyle}
             >
-              <Share size={16} color="#9CA3AF" />
+              <Share size={16} color={colors.textSecondary} />
             </Animated.View>
           </Pressable>
         </View>
       </View>
-        {/* Closing Title, Tags and Actions section */}
       </View>
     </View>
   );

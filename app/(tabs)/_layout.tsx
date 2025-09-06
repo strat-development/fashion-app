@@ -1,5 +1,6 @@
 import RegistrationModal from '@/components/modals/RegistrationModal';
 import { supabase } from '@/lib/supabase';
+import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs } from 'expo-router';
@@ -8,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, Text, View } from 'react-native';
 
 export default function TabLayout() {
+  const { colors } = useTheme();
   const { userId, loading: userContextLoading } = useUserContext();
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
@@ -57,13 +59,21 @@ export default function TabLayout() {
 
   if (userContextLoading || isCheckingProfile) {
     return (
-      <View className="flex-1 justify-center items-center bg-black">
-        <ActivityIndicator size="large" color="#ffffff" />
-        <Text className="text-gray-300 text-sm mt-4">Loading...</Text>
+      <View style={{ 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        backgroundColor: colors.background 
+      }}>
+        <ActivityIndicator size="large" color={colors.accent} />
+        <Text style={{ 
+          color: colors.textSecondary, 
+          fontSize: 14, 
+          marginTop: 16 
+        }}>Loading...</Text>
       </View>
     );
   }
-
 
   return (
     <>
@@ -81,14 +91,14 @@ export default function TabLayout() {
             marginBottom: 16,
             borderRadius: 999,
             borderWidth: 1,
-            borderColor: 'rgba(107, 114, 128, 0.3)',
-            backgroundColor: '#1f1f1fcc',
+            borderColor: colors.border,
+            backgroundColor: colors.surface,
             padding: 4,
             height: 60,
           },
           tabBarBackground: () => (
             <LinearGradient
-              colors={['#1f1f1fcc', '#1f1f1fcc']}
+              colors={[colors.surface, colors.surface]}
               style={{
                 flex: 1,
                 borderRadius: 999,
@@ -119,7 +129,7 @@ export default function TabLayout() {
               <View style={{ alignItems: 'center' }}>
                 <Compass
                   size={24}
-                  color={focused ? '#FFFFFF' : '#9CA3AF'}
+                  color={focused ? colors.text : colors.textSecondary}
                 />
               </View>
             ),
@@ -133,7 +143,7 @@ export default function TabLayout() {
               <View style={{ alignItems: 'center' }}>
                 <Bot
                   size={24}
-                  color={focused ? '#FFFFFF' : '#9CA3AF'}
+                  color={focused ? colors.text : colors.textSecondary}
                 />
               </View>
             ),
@@ -147,7 +157,7 @@ export default function TabLayout() {
               <View style={{ alignItems: 'center' }}>
                 <Trophy
                   size={24}
-                  color={focused ? '#FFFFFF' : '#9CA3AF'}
+                  color={focused ? colors.text : colors.textSecondary}
                 />
               </View>
             ),
@@ -161,7 +171,7 @@ export default function TabLayout() {
               <View style={{ alignItems: 'center' }}>
                 <User2
                   size={24}
-                  color={focused ? '#FFFFFF' : '#9CA3AF'}
+                  color={focused ? colors.text : colors.textSecondary}
                 />
               </View>
             ),

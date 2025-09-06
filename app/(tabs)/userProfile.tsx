@@ -3,9 +3,11 @@ import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection'
 import { UserStatistics } from '@/components/dashboard/UserStatistics';
 import { ProfileEdit } from '@/components/modals/ProfileEditModal';
 import { supabase } from '@/lib/supabase';
+import { useTheme, ThemedGradient } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { Image } from 'expo-image';
-import { BookOpen, Edit3, Heart, LogOut, Plus, Trophy, User, User2 } from 'lucide-react-native';
+import { router } from 'expo-router';
+import { BookOpen, Edit3, Heart, LogOut, Palette, Plus, Trophy, User, User2 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
 
@@ -21,6 +23,8 @@ export default function UserProfile({
   const [activeTab, setActiveTab] = useState<TabType>('user-info');
   const [refreshing, setRefreshing] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  
+  const { colors } = useTheme();
 
   const {
     userName,
@@ -54,52 +58,150 @@ export default function UserProfile({
         return (
           <View className="mt-6 space-y-6 px-6">
             {/* Bio Section */}
-            <View className="pb-6 border-b border-gray-800/50">
-              <Text className="text-white text-lg font-semibold mb-3">About</Text>
-              <Text className="text-gray-300 text-base leading-6">
+            <View style={{ 
+              paddingBottom: 24, 
+              borderBottomWidth: 1, 
+              borderBottomColor: colors.border,
+              marginBottom: 24
+            }}>
+              <Text style={{ 
+                color: colors.text, 
+                fontSize: 18, 
+                fontWeight: '600', 
+                marginBottom: 12 
+              }}>About</Text>
+              <Text style={{ 
+                color: colors.textSecondary, 
+                fontSize: 16, 
+                lineHeight: 24 
+              }}>
                 {userBio || "No bio available yet. Add one by editing your profile!"}
               </Text>
             </View>
 
             {/* Statistics */}
-            <View className="pb-6 border-b border-gray-800/50">
+            <View style={{ 
+              paddingBottom: 24, 
+              borderBottomWidth: 1, 
+              borderBottomColor: colors.border,
+              marginBottom: 24
+            }}>
               {userId && <UserStatistics userId={userId} />}
             </View>
 
             {/* Recent Activity */}
-            <View className="pb-6">
-              <Text className="text-white text-lg font-semibold mb-4">Recent Activity</Text>
-              <View className="space-y-4">
-                <View className="flex-row items-center">
-                  <View className="w-8 h-8 bg-green-500/20 rounded-full items-center justify-center mr-3">
-                    <Trophy size={14} color="#22C55E" />
+            <View style={{ paddingBottom: 24 }}>
+              <Text style={{ 
+                color: colors.text, 
+                fontSize: 18, 
+                fontWeight: '600', 
+                marginBottom: 16 
+              }}>Recent Activity</Text>
+              <View style={{ gap: 16 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{
+                    width: 32,
+                    height: 32,
+                    backgroundColor: `${colors.success}33`,
+                    borderRadius: 16,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: 12
+                  }}>
+                    <Trophy size={14} color={colors.success} />
                   </View>
-                  <Text className="text-gray-300 text-sm flex-1">Your outfit got 50+ likes!</Text>
+                  <Text style={{ 
+                    color: colors.textSecondary, 
+                    fontSize: 14, 
+                    flex: 1 
+                  }}>Your outfit got 50+ likes!</Text>
                 </View>
-                <View className="flex-row items-center">
-                  <View className="w-8 h-8 bg-pink-500/20 rounded-full items-center justify-center mr-3">
-                    <Heart size={14} color="#EC4899" />
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{
+                    width: 32,
+                    height: 32,
+                    backgroundColor: `${colors.accent}33`,
+                    borderRadius: 16,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: 12
+                  }}>
+                    <Heart size={14} color={colors.accent} />
                   </View>
-                  <Text className="text-gray-300 text-sm flex-1">Liked 5 new outfits</Text>
+                  <Text style={{ 
+                    color: colors.textSecondary, 
+                    fontSize: 14, 
+                    flex: 1 
+                  }}>Liked 5 new outfits</Text>
                 </View>
-                <View className="flex-row items-center">
-                  <View className="w-8 h-8 bg-purple-500/20 rounded-full items-center justify-center mr-3">
-                    <Plus size={14} color="#A855F7" />
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{
+                    width: 32,
+                    height: 32,
+                    backgroundColor: `${colors.secondary}33`,
+                    borderRadius: 16,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: 12
+                  }}>
+                    <Plus size={14} color={colors.secondary} />
                   </View>
-                  <Text className="text-gray-300 text-sm flex-1">Created "Summer Casual Look"</Text>
+                  <Text style={{ 
+                    color: colors.textSecondary, 
+                    fontSize: 14, 
+                    flex: 1 
+                  }}>Created "Summer Casual Look"</Text>
                 </View>
               </View>
             </View>
 
-            {/* Logout Button */}
+            {/* Settings Buttons */}
             {isOwnProfile && (
-              <Pressable
-                onPress={handleLogout}
-                className="bg-red-600/20 border border-red-600/30 rounded-xl p-4 flex-row items-center justify-center mt-4"
-              >
-                <LogOut size={18} color="#EF4444" />
-                <Text className="text-red-400 font-medium ml-2">Logout</Text>
-              </Pressable>
+              <View style={{ gap: 12, marginTop: 16 }}>
+                {/* Theme Settings Button */}
+                <Pressable
+                  onPress={() => router.push('/(tabs)/theme-settings' as any)}
+                  style={{
+                    backgroundColor: `${colors.accent}33`,
+                    borderWidth: 1,
+                    borderColor: `${colors.accent}4D`,
+                    borderRadius: 12,
+                    padding: 16,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Palette size={18} color={colors.accent} />
+                  <Text style={{ 
+                    color: colors.accent, 
+                    fontWeight: '500', 
+                    marginLeft: 8 
+                  }}>Theme Settings</Text>
+                </Pressable>
+                
+                {/* Logout Button */}
+                <Pressable
+                  onPress={handleLogout}
+                  style={{
+                    backgroundColor: `${colors.error}33`,
+                    borderWidth: 1,
+                    borderColor: `${colors.error}4D`,
+                    borderRadius: 12,
+                    padding: 16,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <LogOut size={18} color={colors.error} />
+                  <Text style={{ 
+                    color: colors.error, 
+                    fontWeight: '500', 
+                    marginLeft: 8 
+                  }}>Logout</Text>
+                </Pressable>
+              </View>
             )}
           </View>
         );
@@ -114,47 +216,93 @@ export default function UserProfile({
 
   return (
     <ScrollView
-      className="flex-1 bg-black"
+      style={{ flex: 1, backgroundColor: colors.background }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <View className="pt-8 pb-20">
+      <View style={{ paddingTop: 32, paddingBottom: 80 }}>
         {/* Profile Header */}
-        <View className="items-center mb-8 px-6">
-          <View className="relative mb-4">
+        <View style={{ alignItems: 'center', marginBottom: 32, paddingHorizontal: 24 }}>
+          <View style={{ position: 'relative', marginBottom: 16 }}>
             {userImage ? (
               <Image
                 source={{ uri: userImage }}
-                className="w-28 h-28 rounded-full border-2 border-gray-600"
+                style={{ 
+                  width: 112, 
+                  height: 112, 
+                  borderRadius: 56, 
+                  borderWidth: 2, 
+                  borderColor: colors.border 
+                }}
               />
             ) : (
-              <View className="w-28 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center border-2 border-gray-600">
-                <User size={32} color="#FFFFFF" />
+              <View style={{
+                width: 112,
+                height: 112,
+                borderRadius: 56,
+                backgroundColor: colors.accent,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderWidth: 2,
+                borderColor: colors.border
+              }}>
+                <User size={32} color={colors.white} />
               </View>
             )}
             {/* Online indicator */}
-            <View className="absolute bottom-1 right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-black" />
+            <View style={{
+              position: 'absolute',
+              bottom: 4,
+              right: 4,
+              width: 24,
+              height: 24,
+              backgroundColor: colors.success,
+              borderRadius: 12,
+              borderWidth: 2,
+              borderColor: colors.background
+            }} />
           </View>
 
-          <Text className="text-white text-2xl font-bold mb-1">{userName || "Anonymous User"}</Text>
-          <Text className="text-gray-400 text-sm mb-4">Fashion Enthusiast</Text>
+          <Text style={{ color: colors.text, fontSize: 24, fontWeight: 'bold', marginBottom: 4 }}>
+            {userName || "Anonymous User"}
+          </Text>
+          <Text style={{ color: colors.textMuted, fontSize: 14, marginBottom: 16 }}>
+            Fashion Enthusiast
+          </Text>
 
           {isOwnProfile && (
             <Pressable
               onPress={handleEditProfile}
-              style={{ backgroundColor: '#1f1f1fcc' }}
-              className="px-6 py-3 rounded-full flex-row items-center border border-gray-600/60"
+              style={{ 
+                backgroundColor: colors.surface,
+                paddingHorizontal: 24,
+                paddingVertical: 12,
+                borderRadius: 999,
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderWidth: 1,
+                borderColor: colors.border
+              }}
             >
-              <Edit3 size={16} color="#FFFFFF" />
-              <Text className="text-white font-medium ml-2">Edit Profile</Text>
+              <Edit3 size={16} color={colors.text} />
+              <Text style={{ color: colors.text, fontWeight: '500', marginLeft: 8 }}>
+                Edit Profile
+              </Text>
             </Pressable>
           )}
         </View>
 
         {/* Tab Navigation */}
-        <View className="flex-row justify-center mb-8 px-6">
-          <View style={{ backgroundColor: '#1f1f1fcc' }} className="flex-row rounded-full p-1">
+        <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 32, paddingHorizontal: 24 }}>
+          <View style={{ 
+            backgroundColor: colors.surface, 
+            flexDirection: 'row', 
+            borderRadius: 999, 
+            padding: 4,
+            borderWidth: 1,
+            borderColor: colors.border
+          }}>
             {[
               { key: 'user-info', label: 'Profile', icon: User2 },
               { key: 'created-outfits', label: 'Created', icon: BookOpen },
@@ -163,18 +311,39 @@ export default function UserProfile({
               <Pressable
                 key={key}
                 onPress={() => setActiveTab(key as TabType)}
-                className={`flex-row items-center px-4 py-2 rounded-full ${activeTab === key
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600'
-                  : 'bg-transparent'
-                  }`}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingHorizontal: 16,
+                  paddingVertical: 8,
+                  borderRadius: 999,
+                  backgroundColor: activeTab === key ? 'transparent' : 'transparent',
+                  overflow: 'hidden'
+                }}
               >
+                {activeTab === key && (
+                  <ThemedGradient
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                    }}
+                  />
+                )}
                 <Icon
                   size={16}
-                  color={activeTab === key ? "#FFFFFF" : "#9CA3AF"}
+                  color={activeTab === key ? colors.white : colors.textMuted}
                 />
                 <Text
-                  className={`text-sm ml-2 font-medium ${activeTab === key ? 'text-white' : 'text-gray-400'
-                    }`}>
+                  style={{
+                    fontSize: 14,
+                    marginLeft: 8,
+                    fontWeight: '500',
+                    color: activeTab === key ? colors.white : colors.textMuted
+                  }}
+                >
                   {label}
                 </Text>
               </Pressable>

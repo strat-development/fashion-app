@@ -8,6 +8,7 @@ import { useFetchFilteredFeedOutfits } from "@/fetchers/outfits/fetchFilteredFee
 import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation";
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
+import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { OutfitData } from "@/types/createOutfitTypes";
 import { enrichOutfit } from "@/utils/enrichOutfit";
@@ -22,6 +23,7 @@ interface FeedSectionProps {
 }
 
 export default function FeedSection({ refreshing }: FeedSectionProps) {
+    const { colors } = useTheme();
     const { userId } = useUserContext();
     const { mutate: saveOutfit } = useSaveOutfitMutation();
     const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
@@ -222,7 +224,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
 
     if (!userId) {
         return (
-            <Text className="text-white">
+            <Text style={{ color: colors.text }}>
                 Please sign in to view your feed
             </Text>
         );
@@ -235,7 +237,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                 onFiltersChange={handleFiltersChange}
                 onClearFilters={handleClearFilters}
             />
-            <FlatList className="bg-black"
+            <FlatList style={{ backgroundColor: colors.background }}
                 data={enrichedAllOutfits}
                 keyExtractor={item => item.outfit_id}
                 renderItem={({ item: outfit }) => (
@@ -253,9 +255,9 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                 )}
                 ListEmptyComponent={
                     isLoading ? (
-                        <View className="py-16 items-center">
-                            <ActivityIndicator size="large" color="#ffffff" />
-                            <Text className="text-gray-300 text-base mt-4">Loading outfits...</Text>
+                        <View style={{ paddingVertical: 64, alignItems: 'center' }}>
+                            <ActivityIndicator size="large" color={colors.accent} />
+                            <Text style={{ color: colors.textSecondary, fontSize: 16, marginTop: 16 }}>Loading outfits...</Text>
                         </View>
                     ) : (
                         <EmptyState
@@ -279,8 +281,8 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={
                     isLoading && hasMore && allOutfits.length > 0 ? (
-                        <View className="py-4">
-                            <ActivityIndicator size="large" color="#ffffff" />
+                        <View style={{ paddingVertical: 16 }}>
+                            <ActivityIndicator size="large" color={colors.accent} />
                         </View>
                     ) : null
                 }
