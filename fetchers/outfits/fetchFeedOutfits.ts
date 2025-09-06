@@ -14,10 +14,7 @@ export const useFetchFeedOutfits = (page: number = 1, pageSize: number = 10) => 
 
       const { data, error } = await supabase
         .from('created-outfits')
-        .select(`
-          *,
-          comments(count)
-        `)
+        .select('*')
         .order('created_at', { ascending: false })
         .range(from, to);
         
@@ -30,9 +27,26 @@ export const useFetchFeedOutfits = (page: number = 1, pageSize: number = 10) => 
         return [];
       }
 
-      return data.map(outfit => ({
+      const ids = (data as any[]).map((o: any) => o.outfit_id).filter(Boolean) as string[];
+      let countsMap = new Map<string, number>();
+      if (ids.length) {
+        const { data: commentsRows } = await supabase
+          .from('comments')
+          .select('outfit_id')
+          .in('outfit_id', ids);
+        if (Array.isArray(commentsRows)) {
+          countsMap = commentsRows.reduce((acc, row: any) => {
+            const id = row.outfit_id as string | null;
+            if (!id) return acc;
+            acc.set(id, (acc.get(id) || 0) + 1);
+            return acc;
+          }, new Map<string, number>());
+        }
+      }
+
+      return (data as any[]).map((outfit: any) => ({
         ...outfit,
-        comments: outfit.comments?.[0]?.count || 0
+        comments: countsMap.get(outfit.outfit_id) || 0,
       }));
     },
     staleTime: 5 * 60 * 1000,
