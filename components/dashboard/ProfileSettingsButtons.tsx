@@ -19,7 +19,7 @@ export function ProfileSettingsButtons() {
   return (
     <View style={{ gap: 12, marginTop: 16 }}>
       <Pressable
-        onPress={() => router.push('/(tabs)/theme-settings' as any)}
+        onPress={() => router.push('/theme-settings' as any)}
         style={{
           backgroundColor: `${colors.accent}33`,
           borderWidth: 1,

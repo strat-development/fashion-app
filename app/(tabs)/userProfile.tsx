@@ -10,14 +10,6 @@ import { RefreshControl, ScrollView, View } from 'react-native';
 
 type TabType = 'user-info' | 'created-outfits' | 'saved-outfits';
 
-interface Notification {
-  id: string;
-  type: 'like' | 'follow_request';
-  message: string;
-  createdAt: string;
-  userId: string;
-}
-
 interface UserProfileProps {
   isOwnProfile?: boolean;
 }

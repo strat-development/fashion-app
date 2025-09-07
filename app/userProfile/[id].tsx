@@ -88,12 +88,12 @@ export default function ProfileScreen() {
     );
   }
 
-  const showPrivateMessage = userData?.is_public === false && !isOwnProfile && !isFollowed; 
+  const showPrivateMessage = userData?.is_public === false && !isOwnProfile && !isFollowed;
 
   const renderFollowButton = () => {
     if (isOwnProfile) return null;
 
-    if (isPending) {
+    if (isPending && userData.is_public === false) {
       return (
         <Pressable
           disabled={true}
@@ -123,7 +123,11 @@ export default function ProfileScreen() {
       <Pressable
         onPress={() => {
           if (profileId) {
-            followUser({ followedAccountId: profileId, userId: userId || '' });
+            followUser({
+              followedAccountId: profileId,
+              userId: userId || '',
+              isPublicAccount: !!userData.is_public
+            });
           } else {
             console.error('profileId is null');
           }

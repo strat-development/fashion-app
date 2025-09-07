@@ -16,6 +16,7 @@ export const useFetchNotifications = (userId: string) => {
         `)
         .eq('followed_account', userId)
         .eq('is_approved', false)
+        .eq('is_public_account', false)
         .order('created_at', { ascending: true });
       if (error) throw error;
       return data;

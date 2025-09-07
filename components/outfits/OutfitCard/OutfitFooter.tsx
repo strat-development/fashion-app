@@ -38,7 +38,7 @@ export const OutfitFooter = ({
   const [likeSparkle, setLikeSparkle] = useState(false);
   const [dislikeSparkle, setDislikeSparkle] = useState(false);
   const [saveSparkle, setSaveSparkle] = useState(false);
-  
+
   const likeScale = useSharedValue(1);
   const dislikeScale = useSharedValue(1);
   const saveScale = useSharedValue(1);
@@ -93,53 +93,49 @@ export const OutfitFooter = ({
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }}>
         <View style={{ flexDirection: 'row' }}>
           {tags.map((tag, index) => (
-            <View 
-              key={index} 
-              style={{ 
-                backgroundColor: colors.surface, 
-                paddingHorizontal: 12, 
-                paddingVertical: 4, 
-                borderRadius: 999, 
-                marginRight: 8, 
-                borderWidth: 1, 
-                borderColor: colors.border 
+            <View
+              key={index}
+              style={{
+                backgroundColor: colors.surface,
+                paddingHorizontal: 12,
+                paddingVertical: 4,
+                borderRadius: 999,
+                marginRight: 8,
+                borderWidth: 1,
+                borderColor: colors.border
               }}
             >
-              <Text style={{ 
-                color: colors.textSecondary, 
-                fontSize: 12 
+              <Text style={{
+                color: colors.textSecondary,
+                fontSize: 12
               }}>{tag}</Text>
             </View>
           ))}
         </View>
       </ScrollView>
 
-      <View style={{ 
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        justifyContent: 'space-between', 
+      <View style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         paddingTop: 8,
-        gap: 12 
+        gap: 12
       }}>
-        <View style={{ 
-          flexDirection: 'row', 
-          alignItems: 'center', 
-          flexShrink: 1, 
-          minWidth: 0 
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          flexShrink: 1,
+          minWidth: 0
         }}>
-          <View style={{ 
-            backgroundColor: colors.surface, 
-            borderWidth: 1, 
-            borderColor: colors.border, 
-            borderRadius: 8, 
-            paddingHorizontal: 8, 
-            paddingVertical: 6 
+          <View style={{
+            paddingHorizontal: 8,
+            paddingVertical: 6
           }}>
-            <View style={{ 
-              flexDirection: 'row', 
-              alignItems: 'center', 
-              gap: 4, 
-              marginBottom: 6 
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 4,
+              marginBottom: 6
             }}>
               <Pressable
                 onPress={handlePositiveRate}
@@ -202,7 +198,7 @@ export const OutfitFooter = ({
                 </Animated.View>
               </Pressable>
             </View>
-            
+
             <View style={{
               height: 2,
               backgroundColor: `${colors.border}66`,
@@ -211,10 +207,10 @@ export const OutfitFooter = ({
               width: '100%'
             }}>
               <ThemedGradient
-                style={{ 
-                  height: '100%', 
+                style={{
+                  height: '100%',
                   borderRadius: 999,
-                  width: `${optimisticPercentage}%` 
+                  width: `${optimisticPercentage}%`
                 }}
               />
             </View>
