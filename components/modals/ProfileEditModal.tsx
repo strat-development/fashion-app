@@ -1,6 +1,7 @@
 import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { supabaseAdmin } from '@/lib/admin';
 import { useEditProfileMutation } from '@/mutations/dashboard/EditProfileMutation';
+import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { DevTool } from '@hookform/devtools';
 import { Camera, User, X } from 'lucide-react-native';
@@ -43,6 +44,7 @@ export const ProfileEdit = ({
   onClose,
   currentUserData,
 }: ProfileEditProps) => {
+  const { colors } = useTheme();
   const { userId, setUserName, setUserBio, setUserImage, setUserEmail, setUserSocials, isPublic: currentIsPublic, setIsPublic } = useUserContext();
   const { mutate: editProfile, isPending } = useEditProfileMutation(userId || '');
   const [selectedImage, setSelectedImage] = useState<PendingImage | null>(null);
@@ -197,13 +199,21 @@ export const ProfileEdit = ({
       animationType="slide"
       presentationStyle="pageSheet"
     >
-      <SafeAreaView className="flex-1 bg-gradient-to-b from-black to-gray-900">
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
         {/* Header */}
-        <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-800/50">
-          <Pressable onPress={onClose} className="p-2">
-            <X size={24} color="#9CA3AF" />
+        <View style={{ 
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          justifyContent: 'space-between', 
+          paddingHorizontal: 16, 
+          paddingVertical: 12, 
+          borderBottomWidth: 1, 
+          borderBottomColor: colors.border
+        }}>
+          <Pressable onPress={onClose} style={{ padding: 8 }}>
+            <X size={24} color={colors.textMuted} />
           </Pressable>
-          <Text className="text-white font-semibold text-lg">Edit Profile</Text>
+          <Text style={{ color: colors.text, fontWeight: '600', fontSize: 18 }}>Edit Profile</Text>
           <Pressable
             onPress={handleSubmit(onSubmit)}
             className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"

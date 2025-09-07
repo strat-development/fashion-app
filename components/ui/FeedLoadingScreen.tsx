@@ -69,7 +69,7 @@ export const FeedLoadingScreen = ({ message = "Loading your feed..." }: FeedLoad
           
           {/* Main spinner container */}
           <View className="w-20 h-20 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-full items-center justify-center border border-purple-500/30 backdrop-blur-sm">
-            <ActivityIndicator size="large" color="#A855F7" />
+            <ActivityIndicator size="large" color="#ec4899" />
           </View>
         </Animated.View>
 

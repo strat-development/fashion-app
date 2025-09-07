@@ -1,4 +1,5 @@
 import { OutfitElementData } from "@/types/createOutfitTypes";
+import { LinearGradient } from "expo-linear-gradient";
 import { DollarSign, ExternalLink, Tag } from "lucide-react-native";
 import React, { useState } from "react";
 import { Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
@@ -67,9 +68,16 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
                 {elementData.siteUrl && (
                   <Pressable
                     onPress={handleSitePress}
-                    className="bg-purple-600/80 backdrop-blur-sm p-2.5 rounded-full border border-purple-400/30"
+                    style={{ borderRadius: 999, overflow: 'hidden' }}
                   >
-                    <ExternalLink size={16} color="#FFFFFF" />
+                    <LinearGradient
+                      colors={['#7e22ce', '#db2777']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={{ padding: 10, borderRadius: 999 }}
+                    >
+                      <ExternalLink size={16} color="#FFFFFF" />
+                    </LinearGradient>
                   </Pressable>
                 )}
               </View>
@@ -120,9 +128,16 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
                         console.error('Failed to open URL:', err)
                       );
                     }}
-                    className="bg-purple-600/80 backdrop-blur-sm p-3 rounded-full border border-purple-400/30"
+                    style={{ borderRadius: 999, overflow: 'hidden' }}
                   >
-                    <ExternalLink size={18} color="#FFFFFF" />
+                    <LinearGradient
+                      colors={['#7e22ce', '#db2777']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={{ padding: 12, borderRadius: 999 }}
+                    >
+                      <ExternalLink size={18} color="#FFFFFF" />
+                    </LinearGradient>
                   </Pressable>
                 )}
               </View>

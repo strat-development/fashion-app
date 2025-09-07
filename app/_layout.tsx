@@ -9,6 +9,7 @@ import Auth from '@/components/Auth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { supabase } from '@/lib/supabase';
 import ViewContextProvider from '@/providers/chatViewContext';
+import { ThemeProvider as CustomThemeProvider } from '@/providers/themeContext';
 import UserContextProvider from '@/providers/userContext';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import type { Session } from '@supabase/supabase-js';
@@ -55,27 +56,31 @@ export default function RootLayout() {
 
   if (!session) {
     return (
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Auth />
-      </ThemeProvider>
+      <CustomThemeProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Auth />
+        </ThemeProvider>
+      </CustomThemeProvider>
     );
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <QueryClientProvider client={queryClient}>
-        <SessionContextProvider supabaseClient={supabase as any}>
-          <UserContextProvider>
-            <ViewContextProvider>
-              <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="+not-found" />
-              </Stack>
-              <StatusBar style="auto" />
-            </ViewContextProvider>
-          </UserContextProvider>
-        </SessionContextProvider>
-      </QueryClientProvider>
-    </ThemeProvider>
+    <CustomThemeProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <QueryClientProvider client={queryClient}>
+          <SessionContextProvider supabaseClient={supabase as any}>
+            <UserContextProvider>
+              <ViewContextProvider>
+                <Stack>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                  <Stack.Screen name="+not-found" />
+                </Stack>
+                <StatusBar style="auto" />
+              </ViewContextProvider>
+            </UserContextProvider>
+          </SessionContextProvider>
+        </QueryClientProvider>
+      </ThemeProvider>
+    </CustomThemeProvider>
   );
 }

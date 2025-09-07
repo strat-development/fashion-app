@@ -1,5 +1,6 @@
 
 import { supabase } from '@/lib/supabase'
+import { useTheme } from '@/providers/themeContext'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Lock, Mail, User } from 'lucide-react-native'
 import { useEffect, useRef, useState } from 'react'
@@ -17,6 +18,7 @@ interface FocusInputProps {
 }
 
 const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboardType = 'default' }: FocusInputProps) => {
+  const { colors } = useTheme()
   const focusAnim = useRef(new Animated.Value(0)).current;
   const [focused, setFocused] = useState(false);
 
@@ -31,7 +33,7 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
 
   const borderColor = focusAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#374151', '#d946ef']
+    outputRange: [colors.border, colors.accent]
   });
 
   const glowOpacity = focusAnim.interpolate({
@@ -47,7 +49,7 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
   return (
     <View style={{ width: '100%' }}>
       <Animated.Text style={{
-        color: '#9CA3AF',
+        color: colors.textSecondary,
         fontSize: 11,
         letterSpacing: 1,
         fontWeight: '600',
@@ -60,30 +62,32 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
         borderWidth: 1,
         borderColor,
         borderRadius: 14,
-        backgroundColor: 'rgba(31,41,55,0.55)',
+        backgroundColor: colors.surface,
         overflow: 'hidden'
       }}>
-        {/* Glow layer */}
+        {/* Glow layer (no web-only filter, ensures no layout shifts) */}
         <Animated.View style={{
           position: 'absolute',
-          inset: 0,
-          backgroundColor: '#db2777',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: colors.accent,
           opacity: glowOpacity,
-          filter: Platform.OS === 'web' ? 'blur(14px)' as any : undefined
         }} />
         <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, paddingVertical: 12 }}>
           <View style={{ opacity: 0.85 }}>{icon}</View>
           <TextInput
             value={value}
             placeholder={placeholder}
-            placeholderTextColor="#6B7280"
+            placeholderTextColor={colors.textSecondary}
             secureTextEntry={secure}
             autoCapitalize='none'
             keyboardType={keyboardType}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             onChangeText={onChange}
-            style={{ flex: 1, marginLeft: 10, color: 'white', fontSize: 15, paddingVertical: 0 }}
+            style={{ flex: 1, marginLeft: 10, color: colors.text, fontSize: 15, paddingVertical: 0 }}
           />
         </View>
       </Animated.View>
@@ -99,7 +103,39 @@ AppState.addEventListener('change', (state) => {
   }
 })
 
+const AnimatedGradientOverlay = () => {
+  const fade = useRef(new Animated.Value(0)).current
+  useEffect(() => {
+    const anim = Animated.loop(
+      Animated.sequence([
+        Animated.timing(fade, { toValue: 1, duration: 8000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(fade, { toValue: 0, duration: 8000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+      ])
+    )
+    anim.start()
+    return () => anim.stop()
+  }, [fade])
+  return (
+    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+      <LinearGradient
+        colors={[ 'rgba(126,34,206,0.08)', 'rgba(219,39,119,0.06)' ]}
+        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+      />
+      <Animated.View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: fade }}>
+        <LinearGradient
+          colors={[ 'rgba(219,39,119,0.08)', 'rgba(126,34,206,0.06)' ]}
+          start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+        />
+      </Animated.View>
+      <LinearGradient colors={[ 'rgba(0,0,0,0.04)', 'rgba(0,0,0,0.1)' ]} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+    </View>
+  )
+}
+
 export default function Auth() {
+  const { colors } = useTheme()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -142,32 +178,36 @@ export default function Auth() {
   }
 
   return (
-    <LinearGradient colors={["#050505", "#111827", "#1f2937"]} style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-          <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-            <View className="flex-1 px-6 pt-10 pb-12 justify-between">
-              <View>
-                <View className="items-center mb-10">
-                  <View className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 items-center justify-center mb-4">
-                    <User size={32} color="#fff" />
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <View style={{ flex: 1, position: 'relative' }}>
+        <AnimatedGradientOverlay />
+        <SafeAreaView style={{ flex: 1 }}>
+          <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+              <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28, paddingBottom: 28, justifyContent: 'space-between' }}>
+                <View>
+                  <View style={{ alignItems: 'center', marginBottom: 28 }}>
+                    <View style={{ width: 64, height: 64, borderRadius: 18, overflow: 'hidden', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
+                      <LinearGradient colors={["#7e22ce", "#db2777"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+                      <User size={32} color="#fff" />
+                    </View>
+                    <Text style={{ color: colors.text, fontSize: 28, fontWeight: '800', letterSpacing: -0.5 }}>Welcome</Text>
+                    <Text style={{ color: colors.textSecondary, marginTop: 6, fontSize: 13 }}>{mode === 'signin' ? 'Sign in to continue' : 'Create an account'}</Text>
                   </View>
-                  <Text className="text-white text-3xl font-extrabold tracking-tight">Welcome</Text>
-                  <Text className="text-gray-400 mt-2 text-sm">{mode === 'signin' ? 'Sign in to continue' : 'Create an account'}</Text>
-                </View>
 
-                {/* FORM CARD */}
-                <View className="bg-gradient-to-b from-gray-900/70 to-gray-800/40 border border-gray-700/40 rounded-2xl p-5 space-y-6">
+                  {/* FORM CARD */}
+                  <View style={{ backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, borderRadius: 18, padding: 18 }}>
                   <FocusInput
-                    icon={<Mail size={18} color="#9CA3AF" />}
+                    icon={<Mail size={18} color={colors.textSecondary} />}
                     label="Email"
                     value={email}
                     onChange={setEmail}
                     placeholder="you@example.com"
                     keyboardType="email-address"
                   />
+                    <View style={{ height: 16 }} />
                   <FocusInput
-                    icon={<Lock size={18} color="#9CA3AF" />}
+                    icon={<Lock size={18} color={colors.textSecondary} />}
                     label="Password"
                     value={password}
                     onChange={setPassword}
@@ -178,38 +218,39 @@ export default function Auth() {
                   <Pressable
                     disabled={loading}
                     onPress={mode === 'signin' ? signInWithEmail : signUpWithEmail}
-                    className={`mt-2 rounded-xl py-4 items-center justify-center ${loading ? 'opacity-60' : ''}`}
+                      style={{ marginTop: 18, borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center', opacity: loading ? 0.6 : 1, overflow: 'hidden' }}
                   >
                     <LinearGradient
                       colors={["#7e22ce", "#db2777"]}
                       start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                      style={{ position: 'absolute', inset: 0, borderRadius: 12 }}
+                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 12 }}
                     />
-                    {loading ? <ActivityIndicator color="#fff" /> : (
-                      <Text className="text-white font-semibold tracking-wide">
+                      {loading ? <ActivityIndicator color="#fff" /> : (
+                      <Text style={{ color: '#fff', fontWeight: '600', letterSpacing: 0.3 }}>
                         {mode === 'signin' ? 'Sign In' : 'Create Account'}
                       </Text>
                     )}
                   </Pressable>
 
-                  <View className="flex-row justify-center mt-1">
-                    <Text className="text-gray-400 text-xs">{mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}</Text>
+                  <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                    <Text style={{ color: colors.textSecondary, fontSize: 12 }}>{mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}</Text>
                     <Pressable onPress={() => setMode(mode === 'signin' ? 'signup' : 'signin')}>
-                      <Text className="text-pink-500 text-xs font-medium">
+                      <Text style={{ color: colors.accent, fontSize: 12, fontWeight: '600' }}>
                         {mode === 'signin' ? 'Sign up' : 'Sign in'}
                       </Text>
                     </Pressable>
                   </View>
                 </View>
-              </View>
+                </View>
 
-              <View className="items-center mt-10">
-                <Text className="text-gray-600 text-[10px]">By continuing you agree to our Terms & Privacy.</Text>
+                <View style={{ alignItems: 'center', marginTop: 24 }}>
+                  <Text style={{ color: colors.textMuted, fontSize: 10 }}>By continuing you agree to our Terms & Privacy.</Text>
+                </View>
               </View>
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </LinearGradient>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </View>
+    </View>
   )
 }
