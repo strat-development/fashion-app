@@ -16,7 +16,7 @@ export default function ThemeSettings() {
       description: 'Always use light theme',
       icon: Sun,
     },
-    {
+    { 
       key: 'dark' as const,
       label: 'Dark',
       description: 'Always use dark theme',

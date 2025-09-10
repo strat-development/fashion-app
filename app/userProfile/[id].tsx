@@ -2,7 +2,10 @@ import { CreatedOutfitsSection } from '@/components/dashboard/CreatedOutfitsSect
 import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection';
 import { UserStatistics } from '@/components/dashboard/UserStatistics';
 import { ReportModal } from '@/components/modals/ReportModal';
+import { useFetchIsFollowed } from '@/fetchers/fetchIsFollowed';
 import { useFetchUser } from '@/fetchers/fetchUser';
+import { useFollowUserMutation } from '@/mutations/FollowUserMutation';
+import { useUnFollowUserMutation } from '@/mutations/UnfollowUserMutation';
 import { useUserContext } from '@/providers/userContext';
 import { BlurView } from 'expo-blur';
 import { Image } from 'expo-image';
@@ -18,7 +21,12 @@ export default function ProfileScreen() {
   const { userId } = useUserContext();
   const isOwnProfile = !id || id === userId;
   const profileId = isOwnProfile ? userId : id;
-  const { data: userData, isLoading, error } = useFetchUser(profileId || '');
+  const { data: userData, isLoading: userLoading, error: userError } = useFetchUser(profileId || '');
+  const { data: followStatus, isLoading: followLoading } = useFetchIsFollowed(userId || '', profileId || '');
+  const isFollowed = followStatus?.isFollowed || false;
+  const isPending = followStatus?.isPending || false;
+  const { mutate: followUser } = useFollowUserMutation();
+  const { mutate: unFollowUser } = useUnFollowUserMutation();
   const navigation = useNavigation();
   const router = useRouter();
 
@@ -64,7 +72,7 @@ export default function ProfileScreen() {
     setTimeout(() => setRefreshing(false), 1000);
   };
 
-  if (isLoading) {
+  if (userLoading || followLoading) {
     return (
       <View className="flex-1 bg-gradient-to-b from-black to-gray-900 items-center justify-center">
         <Text className="text-white text-lg">Loading profile...</Text>
@@ -72,7 +80,7 @@ export default function ProfileScreen() {
     );
   }
 
-  if (error || !userData) {
+  if (userError || !userData) {
     return (
       <View className="flex-1 bg-gradient-to-b from-black to-gray-900 items-center justify-center">
         <Text className="text-white text-lg">Failed to load profile</Text>
@@ -80,54 +88,69 @@ export default function ProfileScreen() {
     );
   }
 
-  const isPrivateProfile = userData?.is_public === false && !isOwnProfile;
+  const showPrivateMessage = userData?.is_public === false && !isOwnProfile && !isFollowed;
 
-  if (isPrivateProfile) {
-    return (
-      <View className="flex-1 bg-gradient-to-b from-black to-gray-900">
-        <View className="flex-col items-center justify-center pt-32 px-6">
-          <Image
-            source={{ uri: userData.user_avatar || 'https://via.placeholder.com/120' }}
-            className="w-32 h-32 rounded-full border-2 border-gray-600 mb-6"
-            style={{ width: 128, height: 128, borderRadius: 64 }}
-          />
-          <Text className="text-white text-2xl font-bold mb-2">
-            {userData.nickname || userData.full_name || 'User'}
-          </Text>
-          <Text className="text-gray-400 text-lg mb-8">
-            @{userData.nickname || userData.full_name || 'username'}
-          </Text>
-          <View className="bg-gray-800/80 backdrop-blur-xl rounded-xl p-6 mx-4 border border-gray-700/50">
-            <View className="flex-row items-center justify-center mb-3">
-              <User className="w-6 h-6 text-gray-400 mr-2" />
-              <Text className="text-gray-300 text-lg font-semibold">Private Account</Text>
-            </View>
-            <Text className="text-gray-500 text-center text-base">
-              This account is private. Only approved followers can see their content.
-            </Text>
-          </View>
+  const renderFollowButton = () => {
+    if (isOwnProfile) return null;
+
+    if (isPending && userData.is_public === false) {
+      return (
+        <Pressable
+          disabled={true}
+          className="bg-gray-600 py-4 rounded-lg mt-4 w-full opacity-50"
+        >
+          <Text className="text-gray-300 font-medium text-sm text-center">Follow Request Pending</Text>
+        </Pressable>
+      );
+    }
+
+    return isFollowed ? (
+      <Pressable
+        onPress={() => {
+          if (profileId) {
+            unFollowUser({ followedAccountId: profileId, userId: userId || '' });
+          } else {
+            console.error('profileId is null');
+          }
+        }}
+        className="bg-gray-800 py-4 rounded-lg mt-4 w-full"
+      >
+        <View className="flex-row items-center justify-center">
+          <Text className="text-gray-300 font-semibold">Unfollow</Text>
         </View>
-      </View>
+      </Pressable>
+    ) : (
+      <Pressable
+        onPress={() => {
+          if (profileId) {
+            followUser({
+              followedAccountId: profileId,
+              userId: userId || '',
+              isPublicAccount: !!userData.is_public
+            });
+          } else {
+            console.error('profileId is null');
+          }
+        }}
+        className="bg-gray-800 py-4 rounded-lg mt-4 w-full"
+      >
+        <Text className="text-gray-300 font-medium text-sm text-center">Follow</Text>
+      </Pressable>
     );
-  }
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'user-info':
         return (
           <View className="space-y-4">
-            {/* Bio Section */}
             <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 border border-gray-800/50">
               <Text className="text-white text-base font-medium mb-3">Bio</Text>
               <Text className="text-gray-300 text-sm leading-5">
                 {userData.bio || "No bio available yet. Add one by editing your profile!"}
               </Text>
             </View>
-
-            {/* Statistics */}
             {profileId && <UserStatistics userId={profileId} />}
-
-            {/* Recent Activity */}
             <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 border border-gray-800/50">
               <Text className="text-white text-base font-medium mb-4">Recent Activity</Text>
               <View className="space-y-4">
@@ -162,6 +185,36 @@ export default function ProfileScreen() {
     }
   };
 
+  if (showPrivateMessage) {
+    return (
+      <View className="flex-1 bg-gradient-to-b from-black to-gray-900 mt-24">
+        <View className="items-center justify-center px-6">
+          <Image
+            source={{ uri: userData.user_avatar || 'https://via.placeholder.com/120' }}
+            className="w-32 h-32 rounded-full border-2 border-gray-600 mb-6"
+            style={{ width: 128, height: 128, borderRadius: 64 }}
+          />
+          <Text className="text-white text-2xl font-bold mb-2">
+            {userData.nickname || userData.full_name || 'User'}
+          </Text>
+          <Text className="text-gray-400 text-lg mb-8">
+            @{userData.nickname || userData.full_name || 'username'}
+          </Text>
+          <View className="bg-gray-800/80 backdrop-blur-xl rounded-xl py-4 border border-gray-700/50">
+            <View className="flex-row items-center justify-center mb-3">
+              <User className="w-6 h-6 text-gray-400 mr-2" />
+              <Text className="text-gray-300 text-lg font-semibold">Private Account</Text>
+            </View>
+            <Text className="text-gray-500 text-center text-base">
+              This account is private. Only approved followers can see their content.
+            </Text>
+          </View>
+          {renderFollowButton()}
+        </View>
+      </View>
+    );
+  }
+
   return (
     <ScrollView
       className="flex-1 bg-gradient-to-b from-black to-gray-900 mt-8"
@@ -170,7 +223,6 @@ export default function ProfileScreen() {
       }
     >
       <View className="px-6 pt-8 pb-20">
-        {/* Profile Header */}
         <View className="items-center mb-8">
           <View className="relative mb-4">
             {userData.user_avatar ? (
@@ -183,15 +235,12 @@ export default function ProfileScreen() {
                 <User size={32} color="#FFFFFF" />
               </View>
             )}
-            {/* Online indicator */}
             <View className="absolute bottom-1 right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-900" />
           </View>
-
           <Text className="text-white text-2xl font-bold mb-1">{userData.nickname || "Anonymous User"}</Text>
           <Text className="text-gray-400 text-sm mb-4">Fashion Enthusiast</Text>
+          {renderFollowButton()}
         </View>
-
-        {/* Tab Navigation */}
         <View className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-2 mb-6 border border-gray-800/50">
           <View className="flex-row">
             {[
@@ -221,8 +270,6 @@ export default function ProfileScreen() {
             ))}
           </View>
         </View>
-
-        {/* Tab Content */}
         {renderTabContent()}
       </View>
     </ScrollView>

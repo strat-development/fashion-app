@@ -44,19 +44,19 @@ export default function OutfitInteractionButtons({
   const [likeSparkle, setLikeSparkle] = useState(false);
   const [dislikeSparkle, setDislikeSparkle] = useState(false);
   const [saveSparkle, setSaveSparkle] = useState(false);
-  
+
   const likeStyle = useAnimatedStyle(() => ({
     transform: [{ scale: likeScale.value }],
   }));
-  
+
   const dislikeStyle = useAnimatedStyle(() => ({
     transform: [{ scale: dislikeScale.value }],
   }));
-  
+
   const shareStyle = useAnimatedStyle(() => ({
     transform: [{ scale: shareScale.value }],
   }));
-  
+
   const commentStyle = useAnimatedStyle(() => ({
     transform: [{ scale: commentScale.value }],
   }));
@@ -67,7 +67,7 @@ export default function OutfitInteractionButtons({
 
   const springDown = (sv: SharedValue<number>, to = 0.9) => (sv.value = withSpring(to, { damping: 14, stiffness: 220 }));
   const springUp = (sv: SharedValue<number>) => (sv.value = withSpring(1, { damping: 14, stiffness: 220 }));
-  
+
   const pop = (sv: SharedValue<number>) => {
     sv.value = withSequence(
       withSpring(1.15, { damping: 14, stiffness: 220 }),
@@ -113,7 +113,8 @@ export default function OutfitInteractionButtons({
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, gap: 12 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', flexShrink: 1, minWidth: 0 }}>
         {/* Combined Rating Element */}
-        <View style={{ backgroundColor: '#1f1f1fcc', borderWidth: 1, borderColor: '#2a2a2a', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 6 }}>
+        <View style={{ paddingHorizontal: 8, paddingVertical: 6
+        }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 6 }}>
             <Pressable
               onPress={handlePositiveRate}
@@ -164,10 +165,10 @@ export default function OutfitInteractionButtons({
               </Animated.View>
             </Pressable>
           </View>
-          
+
           {/* Compact visual percentage line */}
           <View style={{ height: 2, backgroundColor: '#374151', borderRadius: 999, overflow: 'hidden', width: '100%' }}>
-            <View 
+            <View
               style={{
                 height: '100%',
                 backgroundColor: '#7e22ce',
@@ -177,7 +178,7 @@ export default function OutfitInteractionButtons({
             />
           </View>
         </View>
-        
+
         {/* Comment Section */}
         <Pressable
           onPress={onComments}
@@ -231,7 +232,7 @@ export default function OutfitInteractionButtons({
             </Animated.View>
           </Pressable>
         )}
-        
+
         <Pressable
           onPress={onShare}
           onPressIn={() => springDown(shareScale, 0.94)}

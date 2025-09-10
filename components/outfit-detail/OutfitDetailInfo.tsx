@@ -34,12 +34,7 @@ export default function OutfitDetailInfo({ outfit, userData, tags }: OutfitDetai
     <>
       {/* Header Card */}
       <View style={{
-        backgroundColor: '#1f1f1fcc',
-        borderRadius: 16,
-        padding: 16,
         marginBottom: 16,
-        borderWidth: 1,
-        borderColor: '#2a2a2a'
       }}>
         {/* Creator Info */}
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
