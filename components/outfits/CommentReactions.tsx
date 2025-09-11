@@ -1,4 +1,5 @@
 import { ReactionData, ReactionType, useUpdateCommentReactionMutation } from "@/mutations/UpdateCommentReactionMutation";
+import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Frown, Heart, Laugh, Plus } from "lucide-react-native";
 import { useState } from "react";
@@ -18,6 +19,7 @@ const reactionConfig = {
 export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps) => {
   const [showReactionPicker, setShowReactionPicker] = useState(false);
   const { userId } = useUserContext();
+  const { colors } = useTheme();
   const { mutate: updateReaction, isPending } = useUpdateCommentReactionMutation();
 
   // Debug logging
@@ -109,15 +111,31 @@ export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps
 
         {/* Reaction options dropdown */}
         {showReactionPicker && (
-          <View className="absolute top-8 left-0 bg-gray-800 border border-gray-600 rounded-lg p-2 flex-row space-x-1 z-10 shadow-lg">
+          <View style={{
+            position: 'absolute',
+            top: 32,
+            left: 0,
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
+            borderWidth: 1,
+            borderRadius: 12,
+            padding: 8,
+            flexDirection: 'row',
+            zIndex: 1000,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.15,
+            shadowRadius: 8,
+            elevation: 10,
+          }}>
             {Object.entries(reactionConfig).map(([reactionType, config]) => (
               <Pressable
                 key={reactionType}
                 onPress={() => handleReactionPress(reactionType as ReactionType)}
                 disabled={isPending}
-                className="items-center justify-center w-10 h-10 rounded-lg active:bg-gray-700"
+                style={{ alignItems: 'center', justifyContent: 'center', width: 40, height: 40, borderRadius: 8, marginHorizontal: 2 }}
               >
-                <Text className="text-lg">{config.emoji}</Text>
+                <Text style={{ fontSize: 22 }}>{config.emoji}</Text>
               </Pressable>
             ))}
           </View>
