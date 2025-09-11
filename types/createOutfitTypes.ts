@@ -10,6 +10,7 @@ export interface ModalProps {
 export type OutfitElementData = {
   type: string;
   price: number | null;
+  currency: string | null;
   imageUrl: string;
   siteUrl: string;
 };

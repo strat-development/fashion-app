@@ -1,11 +1,11 @@
 import {
-    Select,
-    SelectBackdrop,
-    SelectContent,
-    SelectInput,
-    SelectItem,
-    SelectPortal,
-    SelectTrigger,
+  Select,
+  SelectBackdrop,
+  SelectContent,
+  SelectInput,
+  SelectItem,
+  SelectPortal,
+  SelectTrigger,
 } from '@/components/ui/select';
 import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
 import { useRequestPermission } from '@/hooks/useRequestPermission';
@@ -46,7 +46,7 @@ export const OutfitCreateModal = ({
   const [selectedImageName, setSelectedImageName] = useState<string | null>(null);
 
   const pendingImagesRef = useRef<Record<string, PendingImage>>({});
-  const { userId } = useUserContext();
+  const { userId, preferredCurrency } = useUserContext();
   const URL_PATTERN = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?(\?[^\s]*)?$/;
 
   const {
@@ -82,6 +82,7 @@ export const OutfitCreateModal = ({
     defaultValues: {
       type: '',
       price: null,
+      currency: preferredCurrency || "USD",
       imageUrl: '',
       siteUrl: ''
     },
@@ -109,7 +110,7 @@ export const OutfitCreateModal = ({
     }
 
     try {
-      const enrichedElements = data.outfit_elements_data.map(el => {
+      const enrichedElements = data.outfit_elements_data.map((el) => {
         if (el.imageUrl.startsWith('temp://')) {
           const pending = pendingImagesRef.current[el.imageUrl];
           if (pending?.uri) {
@@ -117,7 +118,7 @@ export const OutfitCreateModal = ({
           }
         }
         return el as any;
-      });
+      }); 
 
       createOutfit({
         ...data,
@@ -253,8 +254,8 @@ export const OutfitCreateModal = ({
               <View className="mb-6">
                 <Text className="text-gray-300 font-medium text-base mb-3">Outfit Elements</Text>
                 <View className='flex flex-col gap-4'>
-                  <ScrollView horizontal 
-                  showsHorizontalScrollIndicator={false}>
+                  <ScrollView horizontal
+                    showsHorizontalScrollIndicator={false}>
                     <View className="flex-row gap-4">
                       <Pressable
                         onPress={() => setElementModalVisible(true)}

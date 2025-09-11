@@ -14,6 +14,7 @@ export default function OutfitDetailSections({ description, tags }: OutfitDetail
   const heading = Math.round(18 * scale);
   const body = Math.round(15 * scale);
   const chip = Math.round(12 * scale);
+  
   return (
     <View style={{ paddingHorizontal: 16 }}>
       {/* Description */}

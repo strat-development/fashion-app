@@ -5,7 +5,7 @@ import { useUnrateOutfitMutation } from "@/mutations/outfits/UnrateOutfitMutatio
 import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { OutfitFooter, OutfitHeader, OutfitImageCarousel } from "./OutfitCard/index";
 
@@ -62,12 +62,12 @@ export const OutfitCard = ({
   const [optimisticDisliked, setOptimisticDisliked] = useState(isNegativeRated);
   const [optimisticSaved, setOptimisticSaved] = useState(outfit.isSaved);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setOptimisticLiked(isPositiveRated);
     setOptimisticDisliked(isNegativeRated);
   }, [isPositiveRated, isNegativeRated]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setOptimisticSaved(outfit.isSaved);
   }, [outfit.isSaved]);
 

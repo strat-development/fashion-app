@@ -168,7 +168,7 @@ export const ProfileEdit = ({
         userImage: avatarUrl || '',
         userEmail: data.email || '',
         userSocials: data.socials,
-        isPublic: data.isPublic,
+        isPublic: data.isPublic
       },
       {
         onSuccess: (result) => {

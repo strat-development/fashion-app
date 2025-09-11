@@ -18,7 +18,7 @@ import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { useSharedValue, withSequence, withSpring } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -56,7 +56,6 @@ function OutfitDetailContent() {
   
   const { data: userData } = useFetchUser(outfit?.created_by || "");
   const { data: ratingStats } = useFetchRatingStats(id || "");
-  const { data: comments = [] } = useFetchComments(id || "");
   const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
   
   const { mutate: rateOutfit } = useRateOutfitMutation({
