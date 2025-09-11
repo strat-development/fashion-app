@@ -20,20 +20,11 @@ export const useEditProfileMutation = (userId: string) => {
             userImage,
             userEmail,
             userSocials,
-            isPublic
+            isPublic,
         }: EditProfileMutationProps) => {
             if (!supabase) {
                 throw new Error('Supabase client is not initialized.');
             }
-
-            console.log('Updating profile with data:', {
-                full_name: userName,
-                bio: userBio,
-                user_avatar: userImage,
-                email: userEmail,
-                socials: userSocials,
-                is_public: isPublic
-            });
 
             const { data, error } = await supabase.from('users')
                 .update({

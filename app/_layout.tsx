@@ -7,6 +7,7 @@ import 'react-native-reanimated';
 
 import Auth from '@/components/Auth';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import i18n from '@/i18n';
 import { supabase } from '@/lib/supabase';
 import ViewContextProvider from '@/providers/chatViewContext';
 import { ThemeProvider as CustomThemeProvider } from '@/providers/themeContext';
@@ -14,13 +15,14 @@ import UserContextProvider from '@/providers/userContext';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import type { Session } from '@supabase/supabase-js';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { I18nextProvider } from 'react-i18next';
 import "../global.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, 
-      gcTime: 10 * 60 * 1000, 
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
       refetchOnWindowFocus: false,
       retry: 3,
       retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
@@ -68,17 +70,19 @@ export default function RootLayout() {
     <CustomThemeProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <QueryClientProvider client={queryClient}>
-          <SessionContextProvider supabaseClient={supabase as any}>
-            <UserContextProvider>
-              <ViewContextProvider>
-                <Stack screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                  <Stack.Screen name="+not-found" />
-                </Stack>
-                <StatusBar style="auto" />
-              </ViewContextProvider>
-            </UserContextProvider>
-          </SessionContextProvider>
+          <I18nextProvider i18n={i18n}>
+            <SessionContextProvider supabaseClient={supabase as any}>
+              <UserContextProvider>
+                <ViewContextProvider>
+                  <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                    <Stack.Screen name="+not-found" />
+                  </Stack>
+                  <StatusBar style="auto" />
+                </ViewContextProvider>
+              </UserContextProvider>
+            </SessionContextProvider>
+          </I18nextProvider>
         </QueryClientProvider>
       </ThemeProvider>
     </CustomThemeProvider>
