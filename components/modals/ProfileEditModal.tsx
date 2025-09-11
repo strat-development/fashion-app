@@ -254,7 +254,7 @@ export const ProfileEdit = ({
 
             {/* Name Field */}
             <View className="mb-6">
-              <Text className="text-gray-300 font-medium text-base mb-3">Display Name</Text>
+              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">Display Name</Text>
               <Controller
                 control={control}
                 name="name"
@@ -265,10 +265,16 @@ export const ProfileEdit = ({
                     onChangeText={onChange}
                     onBlur={onBlur}
                     placeholder="Enter your name"
-                    placeholderTextColor="#6B7280"
-                    className={`bg-gray-800/50 border ${
-                      errors.name ? 'border-pink-600' : 'border-gray-700/50'
-                    } text-white px-4 py-3 rounded-lg text-base`}
+                    placeholderTextColor={colors.textSecondary}
+                    style={{
+                      backgroundColor: colors.surfaceVariant,
+                      borderColor: errors.name ? colors.error : colors.border,
+                      borderWidth: 1,
+                      color: colors.text,
+                      padding: 12,
+                      borderRadius: 8,
+                      fontSize: 16
+                    }}
                     maxLength={50}
                   />
                 )}
