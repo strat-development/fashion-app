@@ -14,17 +14,25 @@ export const useCreateOutfitMutation = (
       if (!supabase) {
         throw new Error('Supabase client is not initialized.');
       }
-      
+
+      // Mapping of temp images, ensuring _localUri is being used
       const tempImages = outfitData.outfit_elements_data
-        .filter(el => el.imageUrl.startsWith('temp://'))
-        .map(el => ({ tempKey: el.imageUrl, uri: (el as any)._localUri || (el as any).uri || el.imageUrl, fileName: 'image.jpg' }));
+        .filter((el) => el.imageUrl.startsWith('temp://'))
+        .map((el) => ({
+          tempKey: el.imageUrl,
+          uri: (el as any)._localUri || el.imageUrl, // Using _localUri if available
+          fileName: (el as any)._fileName || 'image.jpg',
+        }));
 
       let replacements: Record<string, string> = {};
       if (tempImages.length) {
-        replacements = await uploadImagesAndGetPublicUrls(tempImages, { userId: outfitData.created_by || undefined });
+        replacements = await uploadImagesAndGetPublicUrls(tempImages, {
+          userId: outfitData.created_by || undefined,
+        });
       }
 
-      const finalElements = outfitData.outfit_elements_data.map(el => {
+      // Replacing temp:// URLs with public URLs
+      const finalElements = outfitData.outfit_elements_data.map((el) => {
         if (replacements[el.imageUrl]) {
           return { ...el, imageUrl: replacements[el.imageUrl] };
         }
@@ -32,14 +40,16 @@ export const useCreateOutfitMutation = (
       });
 
       const { data, error } = await supabase
-        .from('created-outfits').insert({
+        .from('created-outfits')
+        .insert({
           outfit_name: outfitData.outfit_name || null,
           description: outfitData.description || null,
           outfit_tags: outfitData.outfit_tags,
           outfit_elements_data: finalElements,
           created_at: new Date().toISOString(),
           created_by: outfitData.created_by,
-        }).select();
+        })
+        .select();
 
       if (error) {
         console.error('Insert outfit error', error);
@@ -50,16 +60,14 @@ export const useCreateOutfitMutation = (
     },
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['created-outfits', variables.created_by]
+        queryKey: ['created-outfits', variables.created_by],
       });
       queryClient.refetchQueries({
-        queryKey: ['created-outfits', variables.created_by]
+        queryKey: ['created-outfits', variables.created_by],
       });
-      
       queryClient.invalidateQueries({
-        queryKey: ['userStatistics', variables.created_by]
+        queryKey: ['userStatistics', variables.created_by],
       });
-      
       onSuccess?.();
     },
     onError: (error: Error) => {

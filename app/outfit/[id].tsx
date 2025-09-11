@@ -1,20 +1,24 @@
-import CommentSection from "@/components/outfits/CommentSection";
 import { ShareModal } from "@/components/modals/ShareModal";
 import OutfitDetailHeader from "@/components/outfit-detail/OutfitDetailHeader";
 import OutfitDetailImages from "@/components/outfit-detail/OutfitDetailImages";
 import OutfitDetailInfo from "@/components/outfit-detail/OutfitDetailInfo";
 import OutfitDetailSections from "@/components/outfit-detail/OutfitDetailSections";
 import OutfitInteractionButtons from "@/components/outfit-detail/OutfitInteractionButtons";
+import CommentSection from "@/components/outfits/CommentSection";
 import { useFetchComments } from "@/fetchers/fetchComments";
 import { useFetchUser } from "@/fetchers/fetchUser";
 import { useFetchRatingStats } from "@/fetchers/outfits/fetchRatedOutfits";
+import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { supabase } from "@/lib/supabase";
+import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation";
 import { useRateOutfitMutation } from "@/mutations/outfits/RateOutfitMutation";
+import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useUnrateOutfitMutation } from "@/mutations/outfits/UnrateOutfitMutation";
+import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { useSharedValue, withSequence, withSpring } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -42,6 +46,7 @@ export default function OutfitDetail() {
 function OutfitDetailContent() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { userId } = useUserContext();
+  const { colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
   
   const [outfit, setOutfit] = useState<OutfitDetailData | null>(null);
@@ -51,7 +56,7 @@ function OutfitDetailContent() {
   
   const { data: userData } = useFetchUser(outfit?.created_by || "");
   const { data: ratingStats } = useFetchRatingStats(id || "");
-  const { data: comments = [] } = useFetchComments(id || "");
+  const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
   
   const { mutate: rateOutfit } = useRateOutfitMutation({
     outfitId: id || "",
@@ -64,11 +69,20 @@ function OutfitDetailContent() {
     userId: userId || "",
   });
 
+  const { mutate: saveOutfit } = useSaveOutfitMutation();
+  const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
+
+  // Check if outfit is saved
+  const isSaved = useMemo(() => {
+    return savedOutfits?.some(saved => saved.outfit_id === id) || false;
+  }, [savedOutfits, id]);
+
   // Animation values
   const likeScale = useSharedValue(1);
   const dislikeScale = useSharedValue(1);
   const shareScale = useSharedValue(1);
   const commentScale = useSharedValue(1);
+  const saveScale = useSharedValue(1);
 
   // Fetch outfit data
   useEffect(() => {
@@ -149,24 +163,46 @@ function OutfitDetailContent() {
     setShowComments(true);
   };
 
+  const handleSave = () => {
+    saveScale.value = withSequence(
+      withSpring(1.2, { damping: 14, stiffness: 220 }),
+      withSpring(1, { damping: 14, stiffness: 220 })
+    );
+
+    if (!userId || !id) return;
+
+    if (isSaved) {
+      unsaveOutfit({ outfitId: id, userId });
+    } else {
+      saveOutfit({ userId, outfitId: id, savedAt: new Date().toISOString() });
+    }
+  };
+
   if (loading) {
     return (
-      <View className="flex-1 bg-gradient-to-b from-black to-gray-900 items-center justify-center">
+      <View style={{ flex: 1, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
         <ActivityIndicator size="large" color="#ffffff" />
-        <Text className="text-white mt-4">Loading outfit...</Text>
+        <Text style={{ color: '#fff', marginTop: 16, fontSize: 16 }}>Loading outfit...</Text>
       </View>
     );
   }
 
   if (!outfit) {
     return (
-      <View className="flex-1 bg-gradient-to-b from-black to-gray-900 items-center justify-center">
-        <Text className="text-white text-lg">Outfit not found</Text>
+      <View style={{ flex: 1, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
+        <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', marginBottom: 16 }}>Outfit not found</Text>
         <Pressable 
           onPress={() => router.back()}
-          className="mt-4 bg-purple-600 px-6 py-3 rounded-xl"
+          style={{ 
+            backgroundColor: '#1f1f1fcc', 
+            paddingHorizontal: 24, 
+            paddingVertical: 12, 
+            borderRadius: 999,
+            borderWidth: 1,
+            borderColor: '#2a2a2a'
+          }}
         >
-          <Text className="text-white font-medium">Go Back</Text>
+          <Text style={{ color: '#fff', fontWeight: '600' }}>Go Back</Text>
         </Pressable>
       </View>
     );
@@ -178,11 +214,15 @@ function OutfitDetailContent() {
     ? [outfit.outfit_tags]
     : [];
 
-  // Extract image URLs from outfit_elements_data
   const imageUrls = Array.isArray(outfit.outfit_elements_data)
     ? (outfit.outfit_elements_data as any[])
       .map((el) => (typeof el === "string" ? el : el?.imageUrl))
       .filter((u): u is string => typeof u === "string" && !!u)
+    : [];
+
+  const elementsData = Array.isArray(outfit.outfit_elements_data)
+    ? (outfit.outfit_elements_data as any[])
+      .filter((el) => el && typeof el === "object" && el.imageUrl)
     : [];
 
   const currentUserRating = ratingStats?.data?.find(rating => rating.rated_by === userId);
@@ -192,45 +232,53 @@ function OutfitDetailContent() {
 
   return (
     <>
-      <StatusBar barStyle="light-content" />
-      <ScrollView 
-        className="flex-1 bg-gradient-to-b from-black to-gray-900"
-        contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
-      >
-        <OutfitDetailHeader />
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={colors.background} />
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
+        <ScrollView 
+          style={{ flex: 1 }}
+          contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
+        >
+          <OutfitDetailHeader />
 
-        {/* Main Content */}
-        <View className="px-4">
-          <OutfitDetailInfo 
-            outfit={outfit}
-            userData={userData}
-            tags={tags}
-          />
+          {/* Main Content */}
+          <View style={{ paddingHorizontal: 16 }}>
+            <OutfitDetailInfo 
+              outfit={outfit}
+              userData={userData}
+              tags={tags}
+            />
 
-          <OutfitDetailImages imageUrls={imageUrls} />
-          
+            <OutfitDetailImages 
+              imageUrls={imageUrls} 
+              elementsData={elementsData}
+            />
+          </View>
+            
           <OutfitDetailSections 
             description={outfit.description}
             tags={tags}
           />
 
           <OutfitInteractionButtons
-            isLiked={isLiked}
-            isDisliked={isDisliked}
-            positiveRatings={ratingStats?.positiveRatings || 0}
-            negativeRatings={negativeRatings}
-            commentsCount={outfit.comments}
-            onPositiveRate={handlePositiveRate}
-            onNegativeRate={handleNegativeRate}
-            onComments={handleComments}
-            onShare={handleShare}
-            likeScale={likeScale}
-            dislikeScale={dislikeScale}
-            commentScale={commentScale}
-            shareScale={shareScale}
-          />
-        </View>
-      </ScrollView>
+              isLiked={isLiked}
+              isDisliked={isDisliked}
+              isSaved={isSaved}
+              positiveRatings={ratingStats?.positiveRatings || 0}
+              negativeRatings={negativeRatings}
+              commentsCount={outfit.comments}
+              onPositiveRate={handlePositiveRate}
+              onNegativeRate={handleNegativeRate}
+              onComments={handleComments}
+              onShare={handleShare}
+              onSave={handleSave}
+              likeScale={likeScale}
+              dislikeScale={dislikeScale}
+              commentScale={commentScale}
+              shareScale={shareScale}
+              saveScale={saveScale}
+            />
+        </ScrollView>
+      </View>
 
       {/* Comments Modal */}
       <CommentSection

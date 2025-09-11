@@ -139,11 +139,13 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
                             <Text className="text-gray-300 text-base mt-4">Loading saved outfits...</Text>
                         </View>
                     ) : (
-                        <EmptyState
-                            icon={Bookmark}
-                            title="No saved outfits yet"
-                            description="Start saving outfits you love!"
-                        />
+                        <View className="px-6">
+                            <EmptyState
+                                icon={Bookmark}
+                                title="No saved outfits yet"
+                                description="Start saving outfits you love!"
+                            />
+                        </View>
                     )
                 }
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}

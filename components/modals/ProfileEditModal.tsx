@@ -1,6 +1,7 @@
 import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { supabaseAdmin } from '@/lib/admin';
 import { useEditProfileMutation } from '@/mutations/dashboard/EditProfileMutation';
+import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { DevTool } from '@hookform/devtools';
 import { Camera, User, X } from 'lucide-react-native';
@@ -43,6 +44,7 @@ export const ProfileEdit = ({
   onClose,
   currentUserData,
 }: ProfileEditProps) => {
+  const { colors } = useTheme();
   const { userId, setUserName, setUserBio, setUserImage, setUserEmail, setUserSocials, isPublic: currentIsPublic, setIsPublic } = useUserContext();
   const { mutate: editProfile, isPending } = useEditProfileMutation(userId || '');
   const [selectedImage, setSelectedImage] = useState<PendingImage | null>(null);
@@ -166,7 +168,7 @@ export const ProfileEdit = ({
         userImage: avatarUrl || '',
         userEmail: data.email || '',
         userSocials: data.socials,
-        isPublic: data.isPublic,
+        isPublic: data.isPublic
       },
       {
         onSuccess: (result) => {
@@ -197,13 +199,21 @@ export const ProfileEdit = ({
       animationType="slide"
       presentationStyle="pageSheet"
     >
-      <SafeAreaView className="flex-1 bg-gradient-to-b from-black to-gray-900">
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
         {/* Header */}
-        <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-800/50">
-          <Pressable onPress={onClose} className="p-2">
-            <X size={24} color="#9CA3AF" />
+        <View style={{ 
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          justifyContent: 'space-between', 
+          paddingHorizontal: 16, 
+          paddingVertical: 12, 
+          borderBottomWidth: 1, 
+          borderBottomColor: colors.border
+        }}>
+          <Pressable onPress={onClose} style={{ padding: 8 }}>
+            <X size={24} color={colors.textMuted} />
           </Pressable>
-          <Text className="text-white font-semibold text-lg">Edit Profile</Text>
+          <Text style={{ color: colors.text, fontWeight: '600', fontSize: 18 }}>Edit Profile</Text>
           <Pressable
             onPress={handleSubmit(onSubmit)}
             className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
@@ -244,7 +254,7 @@ export const ProfileEdit = ({
 
             {/* Name Field */}
             <View className="mb-6">
-              <Text className="text-gray-300 font-medium text-base mb-3">Display Name</Text>
+              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">Display Name</Text>
               <Controller
                 control={control}
                 name="name"
@@ -255,10 +265,16 @@ export const ProfileEdit = ({
                     onChangeText={onChange}
                     onBlur={onBlur}
                     placeholder="Enter your name"
-                    placeholderTextColor="#6B7280"
-                    className={`bg-gray-800/50 border ${
-                      errors.name ? 'border-pink-600' : 'border-gray-700/50'
-                    } text-white px-4 py-3 rounded-lg text-base`}
+                    placeholderTextColor={colors.textSecondary}
+                    style={{
+                      backgroundColor: colors.surfaceVariant,
+                      borderColor: errors.name ? colors.error : colors.border,
+                      borderWidth: 1,
+                      color: colors.text,
+                      padding: 12,
+                      borderRadius: 8,
+                      fontSize: 16
+                    }}
                     maxLength={50}
                   />
                 )}
@@ -277,7 +293,7 @@ export const ProfileEdit = ({
 
             {/* Bio Field */}
             <View className="mb-6">
-              <Text className="text-gray-300 font-medium text-base mb-3">Bio</Text>
+              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">Bio</Text>
               <Controller
                 control={control}
                 name="bio"
@@ -290,13 +306,19 @@ export const ProfileEdit = ({
                     onChangeText={onChange}
                     onBlur={onBlur}
                     placeholder="Tell us about your style..."
-                    placeholderTextColor="#6B7280"
-                    className={`bg-gray-800/50 border ${
-                      errors.bio ? 'border-pink-600' : 'border-gray-700/50'
-                    } text-white px-4 py-3 rounded-lg text-base`}
+                    placeholderTextColor={colors.textSecondary}
+                    style={{
+                      backgroundColor: colors.surfaceVariant,
+                      borderColor: errors.bio ? colors.error : colors.border,
+                      borderWidth: 1,
+                      color: colors.text,
+                      padding: 12,
+                      borderRadius: 8,
+                      fontSize: 16,
+                      textAlignVertical: 'top',
+                    }}
                     multiline
                     numberOfLines={4}
-                    textAlignVertical="top"
                     maxLength={200}
                   />
                 )}
@@ -315,9 +337,9 @@ export const ProfileEdit = ({
 
             {/* Style Preferences */}
             <View className="mb-6">
-              <Text className="text-gray-300 font-medium text-base mb-3">Style Preferences</Text>
-              <View className="bg-gray-800/30 border border-gray-700/30 rounded-lg p-4">
-                <Text className="text-gray-400 text-base">
+              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">Style Preferences</Text>
+              <View style={{ backgroundColor: colors.surfaceVariant, borderColor: colors.border, borderWidth: 1, borderRadius: 8, padding: 16 }}>
+                <Text style={{ color: colors.textSecondary, fontSize: 16 }}>
                   Coming soon! Set your favorite styles, colors, and brands.
                 </Text>
               </View>
@@ -325,37 +347,31 @@ export const ProfileEdit = ({
 
             {/* Privacy Settings */}
             <View className="mb-8">
-              <Text className="text-gray-300 font-medium text-base mb-3">Privacy</Text>
-              <View className="bg-gray-800/30 border border-gray-700/30 rounded-lg p-4">
+              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">Privacy</Text>
+              <View style={{ backgroundColor: colors.surfaceVariant, borderColor: colors.border, borderWidth: 1, borderRadius: 8, padding: 16 }}>
                 <Controller
                   control={control}
                   name="isPublic"
                   render={({ field: { onChange, value } }) => (
                     <Pressable
                       onPress={() => onChange(!value)}
-                      className="flex-row items-center justify-between mb-3"
+                      style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}
                     >
-                      <View className="flex-1">
-                        <Text className="text-gray-300 font-medium">Public Profile</Text>
-                        <Text className="text-gray-500 text-sm mt-1">
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: colors.text, fontWeight: '500' }}>Public Profile</Text>
+                        <Text style={{ color: colors.textSecondary, fontSize: 13, marginTop: 4 }}>
                           {value 
                             ? "Others can see your profile and created outfits" 
                             : "Only your nickname and avatar will be visible"
                           }
                         </Text>
                       </View>
-                      <View className="ml-4">
+                      <View style={{ marginLeft: 16 }}>
                         <View 
-                          className={`w-12 h-6 rounded-full justify-center ${
-                            value 
-                              ? 'bg-gradient-to-r from-purple-600 to-pink-600' 
-                              : 'bg-gray-600'
-                          }`}
+                          style={{ width: 48, height: 24, borderRadius: 12, justifyContent: 'center', backgroundColor: value ? colors.accent : colors.borderVariant }}
                         >
                           <View 
-                            className={`bg-white w-5 h-5 rounded-full transition-all duration-200 ${
-                              value ? 'self-end mr-0.5' : 'self-start ml-0.5'
-                            }`} 
+                            style={{ backgroundColor: colors.background, width: 20, height: 20, borderRadius: 10, alignSelf: value ? 'flex-end' : 'flex-start', margin: 2 }} 
                           />
                         </View>
                       </View>
@@ -363,9 +379,9 @@ export const ProfileEdit = ({
                   )}
                 />
                 {!watchIsPublic && (
-                  <View className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 mt-3">
-                    <Text className="text-amber-400 text-sm font-medium">Private Account</Text>
-                    <Text className="text-amber-300/80 text-xs mt-1">
+                  <View style={{ backgroundColor: colors.warning + '22', borderColor: colors.warning, borderWidth: 1, borderRadius: 8, padding: 12, marginTop: 12 }}>
+                    <Text style={{ color: colors.warning, fontSize: 14, fontWeight: '500' }}>Private Account</Text>
+                    <Text style={{ color: colors.warning, fontSize: 12, marginTop: 4 }}>
                       When private, only your username and profile picture will be visible to others. Your bio and outfits will be hidden.
                     </Text>
                   </View>

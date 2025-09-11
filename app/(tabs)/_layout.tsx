@@ -1,13 +1,15 @@
 import RegistrationModal from '@/components/modals/RegistrationModal';
 import { supabase } from '@/lib/supabase';
+import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs } from 'expo-router';
-import { Bot, Compass, User2 } from 'lucide-react-native';
+import { Bot, Compass, Trophy, User2 } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, Text, View } from 'react-native';
 
 export default function TabLayout() {
+  const { colors } = useTheme();
   const { userId, loading: userContextLoading } = useUserContext();
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
@@ -57,13 +59,21 @@ export default function TabLayout() {
 
   if (userContextLoading || isCheckingProfile) {
     return (
-      <View className="flex-1 justify-center items-center bg-gray-900">
-        <ActivityIndicator size="large" color="#ffffff" />
-        <Text className="text-gray-300 text-sm mt-4">Loading...</Text>
+      <View style={{ 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        backgroundColor: colors.background 
+      }}>
+        <ActivityIndicator size="large" color={colors.accent} />
+        <Text style={{ 
+          color: colors.textSecondary, 
+          fontSize: 14, 
+          marginTop: 16 
+        }}>Loading...</Text>
       </View>
     );
   }
-
 
   return (
     <>
@@ -81,14 +91,14 @@ export default function TabLayout() {
             marginBottom: 16,
             borderRadius: 999,
             borderWidth: 1,
-            borderColor: 'rgba(75, 85, 99, 0.5)',
-            backgroundColor: 'rgba(17, 24, 39, 0.9)',
+            borderColor: colors.border,
+            backgroundColor: colors.surface,
             padding: 4,
             height: 60,
           },
           tabBarBackground: () => (
             <LinearGradient
-              colors={['rgba(17, 24, 39, 0.9)', 'rgba(17, 24, 39, 0.9)']}
+              colors={[colors.surface, colors.surface]}
               style={{
                 flex: 1,
                 borderRadius: 999,
@@ -118,19 +128,9 @@ export default function TabLayout() {
             tabBarIcon: ({ focused }) => (
               <View style={{ alignItems: 'center' }}>
                 <Compass
-                  size={18}
-                  color={focused ? '#FFFFFF' : '#9CA3AF'}
+                  size={24}
+                  color={focused ? colors.text : colors.textSecondary}
                 />
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginTop: 4,
-                    fontWeight: '500',
-                    color: focused ? '#FFFFFF' : '#9CA3AF',
-                  }}
-                >
-                  Feed
-                </Text>
               </View>
             ),
           }}
@@ -142,19 +142,23 @@ export default function TabLayout() {
             tabBarIcon: ({ focused }) => (
               <View style={{ alignItems: 'center' }}>
                 <Bot
-                  size={18}
-                  color={focused ? '#FFFFFF' : '#9CA3AF'}
+                  size={24}
+                  color={focused ? colors.text : colors.textSecondary}
                 />
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginTop: 4,
-                    fontWeight: '500',
-                    color: focused ? '#FFFFFF' : '#9CA3AF',
-                  }}
-                >
-                  Create
-                </Text>
+              </View>
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="ranking"
+          options={{
+            title: '',
+            tabBarIcon: ({ focused }) => (
+              <View style={{ alignItems: 'center' }}>
+                <Trophy
+                  size={24}
+                  color={focused ? colors.text : colors.textSecondary}
+                />
               </View>
             ),
           }}
@@ -166,19 +170,9 @@ export default function TabLayout() {
             tabBarIcon: ({ focused }) => (
               <View style={{ alignItems: 'center' }}>
                 <User2
-                  size={18}
-                  color={focused ? '#FFFFFF' : '#9CA3AF'}
+                  size={24}
+                  color={focused ? colors.text : colors.textSecondary}
                 />
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginTop: 4,
-                    fontWeight: '500',
-                    color: focused ? '#FFFFFF' : '#9CA3AF',
-                  }}
-                >
-                  Profile
-                </Text>
               </View>
             ),
           }}

@@ -1,3 +1,4 @@
+import { useTheme } from '@/providers/themeContext';
 import { useQuery } from '@tanstack/react-query';
 import { ActivityIndicator, Text, View } from "react-native";
 import { fetchUserStatistics } from '../../fetchers/dashboard/fetchUserStatistics';
@@ -7,6 +8,7 @@ interface UserStatisticsProps {
 }
 
 export const UserStatistics = ({ userId }: UserStatisticsProps) => {
+    const { colors } = useTheme();
     const { data: statistics, isLoading, error } = useQuery({
         queryKey: ['userStatistics', userId],
         queryFn: () => fetchUserStatistics(userId),
@@ -15,29 +17,64 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
 
     if (isLoading) {
         return (
-            <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 mb-5 border border-gray-800/50">
-                <Text className="text-white text-base font-medium mb-4">Statistics</Text>
-                <View className="flex-row justify-between">
-                    <View className="items-center">
-                        <View className="flex-row items-center">
-                            <ActivityIndicator size="small" color="#888" />
-                            <Text className="text-gray-500 text-xl font-semibold ml-2">...</Text>
+            <View>
+                <Text style={{ 
+                    color: colors.text, 
+                    fontSize: 18, 
+                    fontWeight: '600', 
+                    marginBottom: 16 
+                }}>Statistics</Text>
+                <View style={{ 
+                    flexDirection: 'row', 
+                    justifyContent: 'space-around' 
+                }}>
+                    <View style={{ alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <ActivityIndicator size="small" color="#ec4899" />
+                            <Text style={{ 
+                                color: colors.textMuted, 
+                                fontSize: 20, 
+                                fontWeight: '600', 
+                                marginLeft: 8 
+                            }}>...</Text>
                         </View>
-                        <Text className="text-gray-400 text-xs mt-1">Created</Text>
+                        <Text style={{ 
+                            color: colors.textSecondary, 
+                            fontSize: 14, 
+                            marginTop: 4 
+                        }}>Created</Text>
                     </View>
-                    <View className="items-center">
-                        <View className="flex-row items-center">
-                            <ActivityIndicator size="small" color="#888" />
-                            <Text className="text-gray-500 text-xl font-semibold ml-2">...</Text>
+                    <View style={{ alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <ActivityIndicator size="small" color="#ec4899" />
+                            <Text style={{ 
+                                color: colors.textMuted, 
+                                fontSize: 20, 
+                                fontWeight: '600', 
+                                marginLeft: 8 
+                            }}>...</Text>
                         </View>
-                        <Text className="text-gray-400 text-xs mt-1">Saved</Text>
+                        <Text style={{ 
+                            color: colors.textSecondary, 
+                            fontSize: 14, 
+                            marginTop: 4 
+                        }}>Saved</Text>
                     </View>
-                    <View className="items-center">
-                        <View className="flex-row items-center">
-                            <ActivityIndicator size="small" color="#888" />
-                            <Text className="text-gray-500 text-xl font-semibold ml-2">...</Text>
+                    <View style={{ alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <ActivityIndicator size="small" color="#ec4899" />
+                            <Text style={{ 
+                                color: colors.textMuted, 
+                                fontSize: 20, 
+                                fontWeight: '600', 
+                                marginLeft: 8 
+                            }}>...</Text>
                         </View>
-                        <Text className="text-gray-400 text-xs mt-1">Likes</Text>
+                        <Text style={{ 
+                            color: colors.textSecondary, 
+                            fontSize: 14, 
+                            marginTop: 4 
+                        }}>Likes</Text>
                     </View>
                 </View>
             </View>
@@ -47,20 +84,52 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
     if (error) {
         console.error('Error loading user statistics:', error);
         return (
-            <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 mb-5 border border-gray-800/50">
-                <Text className="text-white text-base font-medium mb-4">Statistics</Text>
-                <View className="flex-row justify-between">
-                    <View className="items-center">
-                        <Text className="text-white text-xl font-semibold">0</Text>
-                        <Text className="text-gray-400 text-xs mt-1">Created</Text>
+            <View>
+                <Text style={{ 
+                    color: colors.text, 
+                    fontSize: 18, 
+                    fontWeight: '600', 
+                    marginBottom: 16 
+                }}>Statistics</Text>
+                <View style={{ 
+                    flexDirection: 'row', 
+                    justifyContent: 'space-around' 
+                }}>
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={{ 
+                            color: colors.text, 
+                            fontSize: 24, 
+                            fontWeight: 'bold' 
+                        }}>0</Text>
+                        <Text style={{ 
+                            color: colors.textSecondary, 
+                            fontSize: 14, 
+                            marginTop: 4 
+                        }}>Created</Text>
                     </View>
-                    <View className="items-center">
-                        <Text className="text-white text-xl font-semibold">0</Text>
-                        <Text className="text-gray-400 text-xs mt-1">Saved</Text>
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={{ 
+                            color: colors.text, 
+                            fontSize: 24, 
+                            fontWeight: 'bold' 
+                        }}>0</Text>
+                        <Text style={{ 
+                            color: colors.textSecondary, 
+                            fontSize: 14, 
+                            marginTop: 4 
+                        }}>Saved</Text>
                     </View>
-                    <View className="items-center">
-                        <Text className="text-white text-xl font-semibold">0</Text>
-                        <Text className="text-gray-400 text-xs mt-1">Likes</Text>
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={{ 
+                            color: colors.text, 
+                            fontSize: 24, 
+                            fontWeight: 'bold' 
+                        }}>0</Text>
+                        <Text style={{ 
+                            color: colors.textSecondary, 
+                            fontSize: 14, 
+                            marginTop: 4 
+                        }}>Likes</Text>
                     </View>
                 </View>
             </View>
@@ -68,20 +137,52 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
     }
 
     return (
-        <View className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 mb-5 border border-gray-800/50">
-            <Text className="text-white text-base font-medium mb-4">Statistics</Text>
-            <View className="flex-row justify-between">
-                <View className="items-center">
-                    <Text className="text-white text-xl font-semibold">{statistics?.createdCount || 0}</Text>
-                    <Text className="text-gray-400 text-xs mt-1">Created</Text>
+        <View>
+            <Text style={{ 
+                color: colors.text, 
+                fontSize: 18, 
+                fontWeight: '600', 
+                marginBottom: 16 
+            }}>Statistics</Text>
+            <View style={{ 
+                flexDirection: 'row', 
+                justifyContent: 'space-around' 
+            }}>
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={{ 
+                        color: colors.text, 
+                        fontSize: 24, 
+                        fontWeight: 'bold' 
+                    }}>{statistics?.createdCount || 0}</Text>
+                    <Text style={{ 
+                        color: colors.textSecondary, 
+                        fontSize: 14, 
+                        marginTop: 4 
+                    }}>Created</Text>
                 </View>
-                <View className="items-center">
-                    <Text className="text-white text-xl font-semibold">{statistics?.savedCount || 0}</Text>
-                    <Text className="text-gray-400 text-xs mt-1">Saved</Text>
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={{ 
+                        color: colors.text, 
+                        fontSize: 24, 
+                        fontWeight: 'bold' 
+                    }}>{statistics?.savedCount || 0}</Text>
+                    <Text style={{ 
+                        color: colors.textSecondary, 
+                        fontSize: 14, 
+                        marginTop: 4 
+                    }}>Saved</Text>
                 </View>
-                <View className="items-center">
-                    <Text className="text-white text-xl font-semibold">{statistics?.likesReceivedCount || 0}</Text>
-                    <Text className="text-gray-400 text-xs mt-1">Likes</Text>
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={{ 
+                        color: colors.text, 
+                        fontSize: 24, 
+                        fontWeight: 'bold' 
+                    }}>{statistics?.likesReceivedCount || 0}</Text>
+                    <Text style={{ 
+                        color: colors.textSecondary, 
+                        fontSize: 14, 
+                        marginTop: 4 
+                    }}>Likes</Text>
                 </View>
             </View>
         </View>

@@ -9,19 +9,34 @@ export default function OutfitDetailHeader() {
 
   return (
     <View
-      className="flex-row items-center justify-between px-4"
-      style={{ paddingTop: insets.top + 8, paddingBottom: 8 }}
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16,
+        paddingTop: insets.top + 16,
+        paddingBottom: 16,
+      }}
     >
       <Pressable
         onPress={() => router.back()}
-        className="w-10 h-10 bg-gray-800/80 rounded-full items-center justify-center"
+        style={{
+          width: 44,
+          height: 44,
+          backgroundColor: '#1f1f1fcc',
+          borderRadius: 22,
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderWidth: 1,
+          borderColor: '#2a2a2a',
+        }}
       >
         <ArrowLeft size={20} color="#ffffff" />
       </Pressable>
       
-      <Text className="text-white text-lg font-semibold">Outfit Details</Text>
+      <Text style={{ color: '#fff', fontSize: 18, fontWeight: '700' }}>Outfit Details</Text>
       
-      <View className="w-10" />
+      <View style={{ width: 44 }} />
     </View>
   );
 }

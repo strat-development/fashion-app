@@ -1,0 +1,13 @@
+{
+  "profile": {
+    "editProfile": "Edit Profile",
+    "save": "Save",
+    "displayName": "Display Name",
+    "bio": "Bio",
+    "stylePreferences": "Style Preferences",
+    "privacy": "Privacy",
+    "publicProfile": "Public Profile",
+    "privateAccount": "Private Account",
+    "privateDescription": "When private, only your username and profile picture will be visible to others. Your bio and outfits will be hidden."
+  }
+}

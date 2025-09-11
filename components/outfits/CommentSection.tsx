@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CommentData, useFetchComments } from '../../fetchers/fetchComments';
+import { useTheme } from '../../providers/themeContext';
 import { useUserContext } from '../../providers/userContext';
 import { CommentItem } from './CommentItem';
 
@@ -15,6 +16,7 @@ interface CommentSectionProps {
 }
 
 export default function CommentSection({ isVisible, onClose, outfitId, outfitTitle }: CommentSectionProps) {
+  const { colors } = useTheme();
   const { userId } = useUserContext();
   const { data: comments = [], isLoading } = useFetchComments(outfitId);
   const [text, setText] = useState('');
@@ -36,26 +38,26 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent onRequestClose={onClose}>
-      <View className="flex-1 bg-black/70 backdrop-blur-lg">
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} className="flex-1">
-          <SafeAreaView className="flex-1">
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1 }}>
             {/* Header */}
-            <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-700/40 bg-gray-900/90">
-              <Text className="text-white font-semibold text-base" numberOfLines={1}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: colors.border, backgroundColor: colors.surface }}>
+              <Text style={{ color: colors.text, fontWeight: '600', fontSize: 16 }} numberOfLines={1}>
                 {outfitTitle ? `Comments • ${outfitTitle}` : 'Comments'}
               </Text>
-              <Pressable onPress={onClose} className="p-2 rounded-full bg-gray-800/70 border border-gray-700/50">
-                <X size={16} color="#E5E7EB" />
+              <Pressable onPress={onClose} style={{ padding: 8, borderRadius: 999, borderWidth: 1, borderColor: colors.borderVariant, backgroundColor: colors.surfaceVariant }}>
+                <X size={16} color={colors.textMuted} />
               </Pressable>
             </View>
 
             {/* List */}
-            <ScrollView className="flex-1 bg-gray-900/80" contentContainerStyle={{ paddingVertical: 12 }}>
+            <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ paddingVertical: 12 }}>
               {isLoading && (
-                <Text className="text-gray-400 text-center mt-4">Loading…</Text>
+                <Text style={{ color: colors.textMuted, textAlign: 'center', marginTop: 16 }}>Loading…</Text>
               )}
               {!isLoading && comments.length === 0 && (
-                <Text className="text-gray-400 text-center mt-4">No comments yet. Be the first!</Text>
+                <Text style={{ color: colors.textMuted, textAlign: 'center', marginTop: 16 }}>No comments yet. Be the first!</Text>
               )}
               {!isLoading && comments.map((c: CommentData) => (
                 <CommentItem 
@@ -68,19 +70,20 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
             </ScrollView>
 
             {/* Input */}
-            <View className="px-4 py-3 bg-gray-900/90 border-t border-gray-700/40">
-              <View className="flex-row items-center bg-gray-800/70 border border-gray-700/50 rounded-full px-3">
+            <View style={{ paddingHorizontal: 16, paddingVertical: 12, borderTopWidth: 1, borderTopColor: colors.border, backgroundColor: colors.surface }}>
+              <View 
+                style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.borderVariant, borderRadius: 999, paddingHorizontal: 12, backgroundColor: colors.surfaceVariant, minHeight: 44 }}
+              >
                 <TextInput
                   value={text}
                   onChangeText={setText}
                   placeholder="Add a comment…"
-                  placeholderTextColor="#9CA3AF"
-                  className="flex-1 text-white py-2"
-                  multiline
+                  placeholderTextColor={colors.textMuted}
+                  style={{ flex: 1, color: colors.text, paddingVertical: 12, textAlignVertical: 'center', backgroundColor: 'transparent' }}
+                  multiline={false}
                 />
-                <Pressable onPress={handleSend} disabled={isPending || !text.trim()} className="ml-2 p-2">
-                  <X size={0} color="transparent" />
-                  <Send size={18} color={text.trim() ? '#A78BFA' : '#6B7280'} />
+                <Pressable onPress={handleSend} disabled={isPending || !text.trim()} style={{ marginLeft: 8, padding: 8 }}>
+                  <Send size={18} color={text.trim() ? colors.secondary : colors.textMuted} />
                 </Pressable>
               </View>
             </View>

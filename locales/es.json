@@ -1,0 +1,13 @@
+{
+  "profile": {
+    "editProfile": "Editar perfil",
+    "save": "Guardar",
+    "displayName": "Nombre visible",
+    "bio": "Biografía",
+    "stylePreferences": "Preferencias de estilo",
+    "privacy": "Privacidad",
+    "publicProfile": "Perfil público",
+    "privateAccount": "Cuenta privada",
+    "privateDescription": "Cuando es privada, solo tu nombre de usuario y foto de perfil serán visibles. Tu biografía y conjuntos estarán ocultos."
+  }
+}

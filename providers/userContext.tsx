@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import {
     useSessionContext
 } from "@supabase/auth-helpers-react";
@@ -16,6 +17,10 @@ type UserContextType = {
     setUserSocials: (userSocials: string[]) => void;
     userJoinedAt: string;
     setUserJoinedAt: (userJoinedAt: string) => void;
+    preferredLanguage: string;
+    setPreferredLanguage: (lang: string) => void;
+    preferredCurrency: string;
+    setPreferredCurrency: (currency: string) => void;
     userId: string | null;
     loading: boolean;
     isPublic: boolean;
@@ -31,10 +36,18 @@ export default function UserContextProvider({ children }: { children: React.Reac
     const [userEmail, setUserEmail] = useState<string>("");
     const [userSocials, setUserSocials] = useState<string[]>([]);
     const [userJoinedAt, setUserJoinedAt] = useState<string>("");
+    const [preferredLanguage, setPreferredLanguage] = useState<string>("en");
+    const [preferredCurrency, setPreferredCurrency] = useState<string>("USD");
     const [isPublic, setIsPublic] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(true);
     const { supabaseClient: supabase, session } = useSessionContext();
     const userId = session?.user?.id || "";
+
+    useEffect(() => {
+        if (preferredLanguage) {
+            i18n.changeLanguage(preferredLanguage);
+        }
+    }, [preferredLanguage]);
 
     useEffect(() => {
         if (session?.user) {
@@ -58,6 +71,8 @@ export default function UserContextProvider({ children }: { children: React.Reac
                     setUserSocials(userData.socials);
                     setUserJoinedAt(userData.created_at);
                     setIsPublic(userData.is_public ?? true);
+                    setPreferredLanguage(userData.preferred_language || "en");
+                    setPreferredCurrency(userData.preferred_currency || "USD");
                 }
 
                 setLoading(false);
@@ -69,22 +84,16 @@ export default function UserContextProvider({ children }: { children: React.Reac
 
     return (
         <UserContext.Provider value={{
-            userName,
-            setUserName,
-            userBio,
-            setUserBio,
-            userImage,
-            setUserImage,
-            userEmail,
-            setUserEmail,
-            userSocials,
-            setUserSocials,
-            userJoinedAt,
-            setUserJoinedAt,
-            userId,
-            loading,
-            isPublic,
-            setIsPublic
+            userName, setUserName,
+            userBio, setUserBio,
+            userImage, setUserImage,
+            userEmail, setUserEmail,
+            userSocials, setUserSocials,
+            userJoinedAt, setUserJoinedAt,
+            userId, loading,
+            isPublic, setIsPublic,
+            preferredLanguage, setPreferredLanguage,
+            preferredCurrency, setPreferredCurrency
         }}>
             {children}
         </UserContext.Provider>
