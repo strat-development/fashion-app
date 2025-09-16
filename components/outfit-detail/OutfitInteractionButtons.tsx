@@ -1,6 +1,7 @@
 import { SparkleBurst } from "@/components/ui/SparkleBurst";
 import { Bookmark, MessageCircle, Share, ThumbsDown, ThumbsUp } from "lucide-react-native";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import Animated, { SharedValue, useAnimatedStyle, withSequence, withSpring } from "react-native-reanimated";
 
@@ -41,6 +42,7 @@ export default function OutfitInteractionButtons({
   shareScale,
   saveScale,
 }: OutfitInteractionButtonsProps) {
+  const { t } = useTranslation();
   const [likeSparkle, setLikeSparkle] = useState(false);
   const [dislikeSparkle, setDislikeSparkle] = useState(false);
   const [saveSparkle, setSaveSparkle] = useState(false);
@@ -199,7 +201,9 @@ export default function OutfitInteractionButtons({
         >
           <Animated.View style={[commentStyle, { flexDirection: 'row', alignItems: 'center' }]}>
             <MessageCircle size={16} color="#9CA3AF" />
-            <Text style={{ color: '#9CA3AF', marginLeft: 8, fontSize: 14, fontWeight: '500' }}>{commentsCount}</Text>
+            <Text style={{ color: '#9CA3AF', marginLeft: 8, fontSize: 14, fontWeight: '500' }}>
+              {t('outfitDetail.interactions.comments')} { commentsCount }
+            </Text>
           </Animated.View>
         </Pressable>
       </View>

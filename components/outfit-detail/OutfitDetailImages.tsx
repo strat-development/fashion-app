@@ -1,4 +1,4 @@
-import { Currencies } from "@/consts/userSettings"; // Import your Currencies object
+import { Currencies } from "@/consts/userSettings";
 import { useUserContext } from "@/providers/userContext";
 import { OutfitElementData } from "@/types/createOutfitTypes";
 import { LinearGradient } from "expo-linear-gradient";
@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
+import { useTranslation } from "react-i18next";
 
 const exchangeRateCache: Record<string, number> = {};
 
@@ -20,6 +21,7 @@ interface OutfitDetailImagesProps {
 }
 
 export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDetailImagesProps) {
+  const { t } = useTranslation();
   const { preferredCurrency } = useUserContext();
   const progress = useSharedValue<number>(0);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -29,9 +31,6 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
   const singleH = Math.min(520, Math.max(280, Math.floor(height * 0.55)));
   const multiH = Math.min(450, Math.max(300, Math.floor(height * 0.45)));
   const cardW = width - 32;
-
-
-  // Function which validates currencies and converts prices to the preferred currency
 
   useEffect(() => {
     const convertPrices = async () => {

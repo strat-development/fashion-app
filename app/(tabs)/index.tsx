@@ -15,6 +15,7 @@ import { enrichOutfit } from "@/utils/enrichOutfit";
 import { router } from "expo-router";
 import { Grid } from "lucide-react-native";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
 
 interface FeedSectionProps {
@@ -23,6 +24,7 @@ interface FeedSectionProps {
 }
 
 export default function FeedSection({ refreshing }: FeedSectionProps) {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const { userId } = useUserContext();
     const { mutate: saveOutfit } = useSaveOutfitMutation();
@@ -125,8 +127,6 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
         }
     }, [fetchedOutfits, page, pageSize, isLoading]);
 
-
-
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [commentOutfitId, setCommentOutfitId] = useState<string | null>(null);
     const [showCommentSection, setShowCommentSection] = useState(false);
@@ -225,7 +225,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     if (!userId) {
         return (
             <Text style={{ color: colors.text }}>
-                Please sign in to view your feed
+                {t('feedSection.signInMessage')}
             </Text>
         );
     }
@@ -257,14 +257,16 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                     isLoading ? (
                         <View style={{ paddingVertical: 64, alignItems: 'center' }}>
                             <ActivityIndicator size="large" color={colors.accent} />
-                            <Text style={{ color: colors.textSecondary, fontSize: 16, marginTop: 16 }}>Loading outfits...</Text>
+                            <Text style={{ color: colors.textSecondary, fontSize: 16, marginTop: 16 }}>
+                                {t('feedSection.loadingOutfits')}
+                            </Text>
                         </View>
                     ) : (
                         <EmptyState
                             icon={Grid}
-                            title="No outfits yet"
-                            description="Create your first outfit or follow others to see their creations"
-                            actionText="Create Outfit"
+                            title={t('feedSection.emptyState.title')}
+                            description={t('feedSection.emptyState.description')}
+                            actionText={t('feedSection.emptyState.actionText')}
                         />
                     )
                 }
@@ -274,7 +276,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                         setPage(1);
                         setAllOutfits([]);
                         setHasMore(true);
-                        setDebouncedFilters(filters); // Force immediate filter application on refresh
+                        setDebouncedFilters(filters);
                     }} 
                 />}
                 onEndReached={handleEndReached}

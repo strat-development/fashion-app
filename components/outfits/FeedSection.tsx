@@ -5,7 +5,8 @@ import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation"
 import { useUserContext } from "@/providers/userContext"
 import { Grid } from "lucide-react-native"
 import { useMemo, useState } from "react"
-import { RefreshControl, ScrollView, View } from "react-native"
+import { Alert, RefreshControl, ScrollView, View } from "react-native"
+import { useTranslation } from "react-i18next";
 import { enrichOutfit } from '../../utils/enrichOutfit'
 import { EmptyState } from "../dashboard/EmptyState"
 import CommentSection from "./CommentSection"
@@ -17,6 +18,7 @@ interface FeedSectionProps {
 }
 
 export const FeedSection = ({ refreshing }: FeedSectionProps) => {
+    const { t } = useTranslation();
     const { data: fetchedOutfits = [], isLoading } = useFetchFeedOutfits();
     const { userId } = useUserContext();
     const { mutate: saveOutfit } = useSaveOutfitMutation();
@@ -45,9 +47,11 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
         });
     };
 
-
     const handleToggleSave = (outfitId: string) => {
-        if (!userId) return;
+        if (!userId) {
+            Alert.alert(t('feedSection.alerts.notLoggedIn.title'), t('feedSection.alerts.notLoggedIn.message'));
+            return;
+        }
 
         const isCurrentlySaved = savedOutfitIds.has(outfitId);
 
@@ -98,9 +102,9 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                     ) : (
                             <EmptyState
                                 icon={Grid}
-                                title="No outfits yet"
-                                description="Create your first outfit or follow others to see their creations"
-                                actionText="Create Outfit"
+                                title={t('feedSection.emptyState.title')}
+                                description={t('feedSection.emptyState.description')}
+                                actionText={t('feedSection.emptyState.actionText')}
                             />
                         )}
                 </View>

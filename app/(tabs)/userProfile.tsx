@@ -3,11 +3,12 @@ import { ProfileHeader } from '@/components/dashboard/ProfileHeader';
 import { ProfileUserInfoContent } from '@/components/dashboard/ProfileUserInfoContent';
 import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection';
 import { ProfileEdit } from '@/components/modals/ProfileEditModal';
+import { useFetchUser } from '@/fetchers/fetchUser';
 import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
-import { useFetchUser } from '@/fetchers/fetchUser';
 
 type TabType = 'user-info' | 'created-outfits' | 'saved-outfits';
 
@@ -17,6 +18,7 @@ interface UserProfileProps {
 }
 
 export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabType>('user-info');
   const [refreshing, setRefreshing] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -29,15 +31,13 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
     setTimeout(() => setRefreshing(false), 1000);
   };
 
-
   if (isLoading || !userData) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
-        <Text>Loading...</Text>
+        <Text>{t('userProfile.loading')}</Text>
       </View>
     );
   }
-
 
   const { full_name, bio, user_avatar, email, socials, user_id, is_public } = userData;
 
@@ -55,12 +55,12 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
           />
           <View style={{ paddingHorizontal: 24 }}>
             <Text style={{ color: colors.text, fontSize: 18, fontWeight: 'bold', marginBottom: 8 }}>
-              About
+              {t('userProfile.about')}
             </Text>
             <Text style={{ color: colors.text, fontSize: 16, marginBottom: 16 }}>{bio}</Text>
             <View style={{ borderBottomWidth: 1, borderBottomColor: colors.border, marginBottom: 24 }} />
             <Text style={{ color: colors.text, fontSize: 16, textAlign: 'center', marginTop: 32 }}>
-              This profile is private.
+              {t('userProfile.privateProfile')}
             </Text>
           </View>
         </View>

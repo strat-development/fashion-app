@@ -3,6 +3,7 @@ import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { Filter, Search, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from "react-i18next";
 
 export interface FilterOptions {
   search: string;
@@ -21,6 +22,7 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
   onFiltersChange,
   onClearFilters
 }) => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
   const [showFilters, setShowFilters] = useState(false);
 
@@ -117,7 +119,6 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
       borderBottomWidth: 1, 
       borderBottomColor: colors.border 
     }}>
-      {/* Search Bar with Filter Button */}
       <View style={{ paddingHorizontal: 16, paddingVertical: 16 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
           <View 
@@ -135,7 +136,7 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
           >
             <Search size={18} color={colors.textSecondary} />
             <TextInput
-              placeholder="Search outfits..."
+              placeholder={t('feedFilters.searchPlaceholder')}
               placeholderTextColor={colors.textMuted}
               value={filters.search}
               onChangeText={(text) => updateFilter('search', text)}
@@ -153,7 +154,6 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
             )}
           </View>
           
-          {/* Filter Button */}
           <TouchableOpacity
             onPress={() => setShowFilters(!showFilters)}
             style={{
@@ -197,7 +197,6 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
         </View>
       </View>
 
-      {/* Expandable Filters */}
       {showFilters && (
         <View style={{ 
           paddingHorizontal: 16, 
@@ -210,10 +209,9 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
             showsVerticalScrollIndicator={false}
           >
             <View style={{ paddingTop: 24 }}>
-              {renderFilterSection('Style Tags', OutfitStylesTags, 'tags')}
-              {renderFilterSection('Elements', OutfitElements, 'elements')}
+              {renderFilterSection(t('feedFilters.sections.styleTags'), OutfitStylesTags, 'tags')}
+              {renderFilterSection(t('feedFilters.sections.elements'), OutfitElements, 'elements')}
               
-              {/* Clear Filters Button */}
               {hasActiveFilters() && (
                 <TouchableOpacity
                   onPress={() => {
@@ -236,7 +234,7 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
                     fontSize: 16,
                     fontWeight: '500'
                   }}>
-                    Clear All Filters
+                    {t('feedFilters.clearFilters')}
                   </Text>
                 </TouchableOpacity>
               )}

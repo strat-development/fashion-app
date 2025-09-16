@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Calendar, User } from "lucide-react-native";
 import React from "react";
 import { Image, Text, View, useWindowDimensions } from "react-native";
+import { useTranslation } from "react-i18next";
 
 type UserData = {
   nickname?: string | null;
@@ -24,6 +25,7 @@ interface OutfitDetailInfoProps {
 }
 
 export default function OutfitDetailInfo({ outfit, userData, tags }: OutfitDetailInfoProps) {
+  const { t } = useTranslation();
   const { width } = useWindowDimensions();
   const scale = Math.min(1.25, Math.max(0.85, width / 390));
   const titleSize = Math.round(24 * scale);
@@ -62,7 +64,7 @@ export default function OutfitDetailInfo({ outfit, userData, tags }: OutfitDetai
           )}
           <View style={{ flex: 1 }}>
             <Text style={{ color: '#fff', fontWeight: '600', fontSize: nameSize }}>
-              {userData?.nickname || "Anonymous"}
+              {userData?.nickname || t('outfitDetail.info.anonymous')}
             </Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 2 }}>
               <Calendar size={14} color="#9CA3AF" />
@@ -86,7 +88,6 @@ export default function OutfitDetailInfo({ outfit, userData, tags }: OutfitDetai
             {outfit.outfit_name}
           </Text>
         )}
-
       </View>
     </>
   );

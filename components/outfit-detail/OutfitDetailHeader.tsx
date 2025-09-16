@@ -3,8 +3,10 @@ import { ArrowLeft } from "lucide-react-native";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 
 export default function OutfitDetailHeader() {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
 
   return (
@@ -34,7 +36,9 @@ export default function OutfitDetailHeader() {
         <ArrowLeft size={20} color="#ffffff" />
       </Pressable>
       
-      <Text style={{ color: '#fff', fontSize: 18, fontWeight: '700' }}>Outfit Details</Text>
+      <Text style={{ color: '#fff', fontSize: 18, fontWeight: '700' }}>
+        {t('outfitDetail.header.title')}
+      </Text>
       
       <View style={{ width: 44 }} />
     </View>

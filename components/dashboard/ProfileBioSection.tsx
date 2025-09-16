@@ -1,12 +1,14 @@
 import { useTheme } from '@/providers/themeContext';
 import React from 'react';
 import { Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 interface ProfileBioSectionProps {
   bio: string | null;
 }
 
 export function ProfileBioSection({ bio }: ProfileBioSectionProps) {
+  const { t } = useTranslation();
   const { colors } = useTheme();
   return (
     <View
@@ -18,10 +20,10 @@ export function ProfileBioSection({ bio }: ProfileBioSectionProps) {
       }}
     >
       <Text style={{ color: colors.text, fontSize: 18, fontWeight: '600', marginBottom: 12 }}>
-        About
+        {t('profileBioSection.title')}
       </Text>
       <Text style={{ color: colors.textSecondary, fontSize: 16, lineHeight: 24 }}>
-        {bio || 'No bio available yet. Add one by editing your profile!'}
+        {bio || t('profileBioSection.noBio')}
       </Text>
     </View>
   );

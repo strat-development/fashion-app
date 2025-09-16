@@ -2,6 +2,7 @@ import SparkleBurst from "@/components/ui/SparkleBurst";
 import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { Bookmark, MessageCircle, Share, ThumbsDown, ThumbsUp } from "lucide-react-native";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring } from "react-native-reanimated";
 
@@ -34,6 +35,7 @@ export const OutfitFooter = ({
   onShare,
   onToggleSave,
 }: OutfitFooterProps) => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
   const [likeSparkle, setLikeSparkle] = useState(false);
   const [dislikeSparkle, setDislikeSparkle] = useState(false);
@@ -88,7 +90,7 @@ export const OutfitFooter = ({
         fontWeight: '600',
         fontSize: 18,
         marginBottom: 8
-      }}>{outfitName || "Untitled Outfit"}</Text>
+      }}>{outfitName || t('outfitDetail.defaultOutfitName')}</Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }}>
         <View style={{ flexDirection: 'row' }}>
@@ -268,7 +270,7 @@ export const OutfitFooter = ({
                 marginLeft: 8,
                 fontSize: 14,
                 fontWeight: '500'
-              }}>{commentsCount}</Text>
+              }}>{t('outfitDetail.interactions.comments')} { commentsCount }</Text>
             </Animated.View>
           </Pressable>
 

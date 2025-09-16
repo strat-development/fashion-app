@@ -8,7 +8,6 @@ interface SparkleBurstProps {
   size?: number;
 }
 
-// Lightweight sparkle burst using Moti circles
 export const SparkleBurst: React.FC<SparkleBurstProps> = ({ show, color = "#f472b6", size = 24 }) => {
   if (!show) return null;
   const dots = new Array(6).fill(0);

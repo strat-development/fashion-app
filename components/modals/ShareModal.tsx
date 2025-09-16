@@ -21,6 +21,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 interface ShareModalProps {
   isVisible: boolean;
@@ -35,10 +36,12 @@ export const ShareModal = ({
   outfit,
   isAnimated = true,
 }: ShareModalProps) => {
+  const { t } = useTranslation();
+
   if (!outfit) return null;
 
   const shareUrl = `https://fashion-app.com/outfit/${outfit.outfit_id}`;
-  const shareText = `Check out this amazing outfit: "${outfit.outfit_name}" on Fashion App!`;
+  const shareText = t('shareModal.shareText', { outfitName: outfit.outfit_name || t('shareModal.untitledOutfit') });
   const fullShareText = `${shareText}\n\n${shareUrl}`;
 
   const handleNativeShare = async () => {
@@ -46,24 +49,24 @@ export const ShareModal = ({
       const result = await Share.share({
         message: fullShareText,
         url: shareUrl,
-        title: outfit.outfit_name || 'Fashion Outfit',
+        title: outfit.outfit_name || t('shareModal.untitledOutfit'),
       });
 
       if (result.action === Share.sharedAction) {
         onClose();
       }
     } catch (error) {
-      Alert.alert('Error', 'Unable to share this outfit');
+      Alert.alert(t('shareModal.alerts.shareError.title'), t('shareModal.alerts.shareError.message'));
     }
   };
 
   const handleCopyLink = async () => {
     try {
       await Clipboard.setString(shareUrl);
-      Alert.alert('Success', 'Link copied to clipboard!');
+      Alert.alert(t('shareModal.alerts.copySuccess.title'), t('shareModal.alerts.copySuccess.message'));
       onClose();
     } catch (error) {
-      Alert.alert('Error', 'Failed to copy link');
+      Alert.alert(t('shareModal.alerts.copyError.title'), t('shareModal.alerts.copyError.message'));
     }
   };
 
@@ -81,13 +84,10 @@ export const ShareModal = ({
         break;
       case 'instagram':
         await handleCopyLink();
-        Alert.alert(
-          'Instagram Share',
-          'Link copied! You can now paste it in your Instagram story or post.'
-        );
+        Alert.alert(t('shareModal.alerts.instagramShare.title'), t('shareModal.alerts.instagramShare.message'));
         return;
       case 'email':
-        url = `mailto:?subject=${encodeURIComponent(outfit.outfit_name || 'Fashion Outfit')}&body=${encodeURIComponent(fullShareText)}`;
+        url = `mailto:?subject=${encodeURIComponent(outfit.outfit_name || t('shareModal.untitledOutfit'))}&body=${encodeURIComponent(fullShareText)}`;
         break;
       case 'sms':
         url = `sms:?body=${encodeURIComponent(fullShareText)}`;
@@ -100,66 +100,66 @@ export const ShareModal = ({
         await Linking.openURL(url);
         onClose();
       } else {
-        Alert.alert('Error', `Cannot open ${platform}`);
+        Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform ));
       }
     } catch (error) {
-      Alert.alert('Error', `Failed to open ${platform}`);
+      Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform ));
     }
   };
 
   const shareOptions = [
     {
       id: 'native',
-      label: 'Share...',
+      label: t('shareModal.shareOptions.native'),
       icon: ShareIcon,
       color: '#3B82F6',
       onPress: handleNativeShare,
     },
     {
       id: 'copy',
-      label: 'Copy Link',
+      label: t('shareModal.shareOptions.copy'),
       icon: Copy,
       color: '#10B981',
       onPress: handleCopyLink,
     },
     {
       id: 'twitter',
-      label: 'Twitter',
+      label: t('shareModal.shareOptions.twitter'),
       icon: Twitter,
       color: '#1DA1F2',
       onPress: () => handleSocialShare('twitter'),
     },
     {
       id: 'facebook',
-      label: 'Facebook',
+      label: t('shareModal.shareOptions.facebook'),
       icon: Facebook,
       color: '#1877F2',
       onPress: () => handleSocialShare('facebook'),
     },
     {
       id: 'instagram',
-      label: 'Instagram',
+      label: t('shareModal.shareOptions.instagram'),
       icon: Camera,
       color: '#E4405F',
       onPress: () => handleSocialShare('instagram'),
     },
     {
       id: 'email',
-      label: 'Email',
+      label: t('shareModal.shareOptions.email'),
       icon: Mail,
       color: '#6B7280',
       onPress: () => handleSocialShare('email'),
     },
     {
       id: 'sms',
-      label: 'Message',
+      label: t('shareModal.shareOptions.sms'),
       icon: MessageCircle,
       color: '#10B981',
       onPress: () => handleSocialShare('sms'),
     },
     {
       id: 'more',
-      label: 'More',
+      label: t('shareModal.shareOptions.more'),
       icon: MoreHorizontal,
       color: '#9CA3AF',
       onPress: handleNativeShare,
@@ -176,7 +176,7 @@ export const ShareModal = ({
         <View className="bg-gray-900 rounded-t-3xl border-t border-gray-700">
           {/* Header */}
           <View className="flex-row items-center justify-between px-6 py-4 border-b border-gray-800">
-            <Text className="text-white text-xl font-semibold">Share Outfit</Text>
+            <Text className="text-white text-xl font-semibold">{t('shareModal.title')}</Text>
             <Pressable onPress={onClose} className="p-2">
               <X size={24} color="#9CA3AF" />
             </Pressable>
@@ -188,10 +188,10 @@ export const ShareModal = ({
               <View className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl mr-4" />
               <View className="flex-1">
                 <Text className="text-white font-medium text-lg" numberOfLines={1}>
-                  {outfit.outfit_name || 'Untitled Outfit'}
+                  {outfit.outfit_name || t('shareModal.untitledOutfit')}
                 </Text>
                 <Text className="text-gray-400 text-sm" numberOfLines={1}>
-                  {outfit.description || 'Fashion outfit to share'}
+                  {outfit.description || t('shareModal.defaultDescription')}
                 </Text>
               </View>
             </View>
@@ -227,7 +227,7 @@ export const ShareModal = ({
               className="bg-gray-800 py-4 rounded-2xl border border-gray-700"
             >
               <Text className="text-white font-medium text-center text-lg">
-                Cancel
+                {t('shareModal.cancel')}
               </Text>
             </Pressable>
           </View>

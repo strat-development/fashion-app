@@ -9,5 +9,6 @@ export default function ProfileScreen() {
   const { userId } = useUserContext();
   const isOwnProfile = !id || id === userId;
   const profileId = (isOwnProfile ? userId : id) ?? '';
+
   return <UserProfile isOwnProfile={isOwnProfile} profileId={profileId} />;
 }

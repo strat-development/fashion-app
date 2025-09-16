@@ -9,6 +9,7 @@ import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { Send, Trash } from "lucide-react-native";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { CommentReactions } from "./CommentReactions";
 
@@ -18,6 +19,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
     depth?: number;
     parentCommentId?: string;
 }) => {
+    const { t } = useTranslation();
     const [isSetToReply, setIsSetToReply] = useState(false);
     const [repliesVisible, setRepliesVisible] = useState(isReply);
     const [text, setText] = useState('');
@@ -25,7 +27,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
     const { userId } = useUserContext();
     const { colors } = useTheme();
     const avatar = comment.user_info?.user_avatar;
-    const name = comment.user_info?.nickname || 'Anonymous';
+    const name = comment.user_info?.nickname || t('outfitDetail.info.anonymous');
 
     const { data: replies } = useFetchCommentsReplies(comment.id);
 
@@ -41,9 +43,10 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
         userId: userId || '',
         parentCommentId: targetParentId || comment.id,
     });
+
     const handleSend = async () => {
         if (!userId) {
-            Alert.alert('Not logged in', 'You must be logged in to comment.');
+            Alert.alert(t('commentItem.alerts.notLoggedIn.title'), t('commentItem.alerts.notLoggedIn.message'));
             return;
         }
         if (!text.trim()) return;
@@ -52,7 +55,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
             setText('');
             setIsSetToReply(false);
         } catch (e: any) {
-            Alert.alert('Error', e?.message || 'Failed to add comment');
+            Alert.alert(t('commentItem.alerts.error.title'), e?.message || t('commentItem.alerts.error.message'));
         }
     };
 
@@ -91,23 +94,22 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                             hitSlop={8}
                             style={{ borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4 }}
                         >
-                            <Text style={{ color: colors.textMuted, fontSize: 11, letterSpacing: 0.2 }}>Reply</Text>
+                            <Text style={{ color: colors.textMuted, fontSize: 11, letterSpacing: 0.2 }}>{t('commentItem.reply')}</Text>
                         </Pressable>
                         {!isReply && replies && replies.length > 0 && !repliesVisible && (
                             <Pressable onPress={() => setRepliesVisible(true)} hitSlop={8} style={{ borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4, marginLeft: 4 }}>
-                                <Text style={{ color: colors.primary, fontSize: 11, letterSpacing: 0.2 }}>View {replies.length} {replies.length === 1 ? 'reply' : 'replies'}</Text>
+                                <Text style={{ color: colors.primary, fontSize: 11, letterSpacing: 0.2 }}>{t('commentItem.viewReplies')} { replies.length }</Text>
                             </Pressable>
                         )}
                         {!isReply && repliesVisible && replies && replies.length > 0 && (
                             <Pressable onPress={() => setRepliesVisible(false)} hitSlop={8} style={{ borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4, marginLeft: 4 }}>
-                                <Text style={{ color: colors.primary, fontSize: 11, letterSpacing: 0.2 }}>Hide replies</Text>
+                                <Text style={{ color: colors.primary, fontSize: 11, letterSpacing: 0.2 }}>{t('commentItem.hideReplies')}</Text>
                             </Pressable>
                         )}
                     </View>
-                    {/* Reactions component */}
-                    <CommentReactions 
-                        commentId={comment.id} 
-                        reactions={comment.reactions as any} 
+                    <CommentReactions
+                        commentId={comment.id}
+                        reactions={comment.reactions as any}
                     />
                 </View>
 
@@ -131,7 +133,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                             <TextInput
                                 value={text}
                                 onChangeText={setText}
-                                placeholder={`Reply to ${name}`}
+                                placeholder={t('commentItem.replyPlaceholder' + name )}
                                 placeholderTextColor={colors.textMuted}
                                 style={{ flex: 1, color: colors.text, fontSize: 13, maxHeight: 128 }}
                                 multiline
@@ -146,7 +148,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                             </Pressable>
                         </View>
                         <Pressable onPress={() => setIsSetToReply(false)} hitSlop={8} style={{ alignSelf: 'flex-end', marginTop: 4, paddingHorizontal: 8, paddingVertical: 4 }}>
-                            <Text style={{ color: colors.textMuted, fontSize: 11 }}>Cancel</Text>
+                            <Text style={{ color: colors.textMuted, fontSize: 11 }}>{t('commentItem.cancel')}</Text>
                         </Pressable>
                     </View>
                 )}

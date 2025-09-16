@@ -1,5 +1,6 @@
 import { useTheme } from '@/providers/themeContext';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Text, View } from "react-native";
 import { fetchUserStatistics } from '../../fetchers/dashboard/fetchUserStatistics';
 
@@ -8,6 +9,7 @@ interface UserStatisticsProps {
 }
 
 export const UserStatistics = ({ userId }: UserStatisticsProps) => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const { data: statistics, isLoading, error } = useQuery({
         queryKey: ['userStatistics', userId],
@@ -23,7 +25,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                     fontSize: 18, 
                     fontWeight: '600', 
                     marginBottom: 16 
-                }}>Statistics</Text>
+                }}>{t('userStatistics.title')}</Text>
                 <View style={{ 
                     flexDirection: 'row', 
                     justifyContent: 'space-around' 
@@ -36,13 +38,13 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                                 fontSize: 20, 
                                 fontWeight: '600', 
                                 marginLeft: 8 
-                            }}>...</Text>
+                            }}>{t('userStatistics.loading')}</Text>
                         </View>
                         <Text style={{ 
                             color: colors.textSecondary, 
                             fontSize: 14, 
                             marginTop: 4 
-                        }}>Created</Text>
+                        }}>{t('userStatistics.created')}</Text>
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -52,13 +54,13 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                                 fontSize: 20, 
                                 fontWeight: '600', 
                                 marginLeft: 8 
-                            }}>...</Text>
+                            }}>{t('userStatistics.loading')}</Text>
                         </View>
                         <Text style={{ 
                             color: colors.textSecondary, 
                             fontSize: 14, 
                             marginTop: 4 
-                        }}>Saved</Text>
+                        }}>{t('userStatistics.saved')}</Text>
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -68,13 +70,13 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                                 fontSize: 20, 
                                 fontWeight: '600', 
                                 marginLeft: 8 
-                            }}>...</Text>
+                            }}>{t('userStatistics.loading')}</Text>
                         </View>
                         <Text style={{ 
                             color: colors.textSecondary, 
                             fontSize: 14, 
                             marginTop: 4 
-                        }}>Likes</Text>
+                        }}>{t('userStatistics.likes')}</Text>
                     </View>
                 </View>
             </View>
@@ -90,7 +92,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                     fontSize: 18, 
                     fontWeight: '600', 
                     marginBottom: 16 
-                }}>Statistics</Text>
+                }}>{t('userStatistics.title')}</Text>
                 <View style={{ 
                     flexDirection: 'row', 
                     justifyContent: 'space-around' 
@@ -105,7 +107,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                             color: colors.textSecondary, 
                             fontSize: 14, 
                             marginTop: 4 
-                        }}>Created</Text>
+                        }}>{t('userStatistics.created')}</Text>
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <Text style={{ 
@@ -117,7 +119,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                             color: colors.textSecondary, 
                             fontSize: 14, 
                             marginTop: 4 
-                        }}>Saved</Text>
+                        }}>{t('userStatistics.saved')}</Text>
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <Text style={{ 
@@ -129,7 +131,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                             color: colors.textSecondary, 
                             fontSize: 14, 
                             marginTop: 4 
-                        }}>Likes</Text>
+                        }}>{t('userStatistics.likes')}</Text>
                     </View>
                 </View>
             </View>
@@ -143,7 +145,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                 fontSize: 18, 
                 fontWeight: '600', 
                 marginBottom: 16 
-            }}>Statistics</Text>
+            }}>{t('userStatistics.title')}</Text>
             <View style={{ 
                 flexDirection: 'row', 
                 justifyContent: 'space-around' 
@@ -158,7 +160,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                         color: colors.textSecondary, 
                         fontSize: 14, 
                         marginTop: 4 
-                    }}>Created</Text>
+                    }}>{t('userStatistics.created')}</Text>
                 </View>
                 <View style={{ alignItems: 'center' }}>
                     <Text style={{ 
@@ -170,7 +172,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                         color: colors.textSecondary, 
                         fontSize: 14, 
                         marginTop: 4 
-                    }}>Saved</Text>
+                    }}>{t('userStatistics.saved')}</Text>
                 </View>
                 <View style={{ alignItems: 'center' }}>
                     <Text style={{ 
@@ -182,7 +184,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                         color: colors.textSecondary, 
                         fontSize: 14, 
                         marginTop: 4 
-                    }}>Likes</Text>
+                    }}>{t('userStatistics.likes')}</Text>
                 </View>
             </View>
         </View>

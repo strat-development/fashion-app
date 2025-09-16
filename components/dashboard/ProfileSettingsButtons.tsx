@@ -4,8 +4,10 @@ import { router } from 'expo-router';
 import { LogOut, Palette } from 'lucide-react-native';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 export function ProfileSettingsButtons() {
+  const { t } = useTranslation();
   const { colors } = useTheme();
 
   const handleLogout = async () => {
@@ -33,7 +35,7 @@ export function ProfileSettingsButtons() {
       >
         <Palette size={18} color={colors.accent} />
         <Text style={{ color: colors.accent, fontWeight: '500', marginLeft: 8 }}>
-          Theme Settings
+          {t('profileSettingsButtons.themeSettings')}
         </Text>
       </Pressable>
 
@@ -52,7 +54,7 @@ export function ProfileSettingsButtons() {
       >
         <LogOut size={18} color={colors.error} />
         <Text style={{ color: colors.error, fontWeight: '500', marginLeft: 8 }}>
-          Logout
+          {t('profileSettingsButtons.logout')}
         </Text>
       </Pressable>
     </View>

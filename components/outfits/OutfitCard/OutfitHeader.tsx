@@ -4,6 +4,7 @@ import { Database } from "@/types/supabase";
 import { Link } from "expo-router";
 import { Delete, User } from "lucide-react-native";
 import { Image, Pressable, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 type UserData = Database["public"]["Tables"]["users"]["Row"];
 
@@ -26,6 +27,7 @@ export const OutfitHeader = ({
   onDelete,
   outfitId,
 }: OutfitHeaderProps) => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
 
   return (
@@ -78,7 +80,7 @@ export const OutfitHeader = ({
                 color: colors.text, 
                 fontWeight: '600' 
               }}>
-                {userData?.nickname || 'Anonymous'}
+                {userData?.nickname || t('outfitDetail.info.anonymous')}
               </Text>
             </Pressable>
           </Link>
@@ -104,7 +106,7 @@ export const OutfitHeader = ({
               color: 'white', 
               fontSize: 12, 
               fontWeight: '500' 
-            }}>Your creation</Text>
+            }}>{t('outfitDetail.header.yourCreation')}</Text>
           </ThemedGradient>
         )}
 
