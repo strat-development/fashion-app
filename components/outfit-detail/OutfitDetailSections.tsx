@@ -2,6 +2,7 @@ import { Json } from "@/types/supabase";
 import { Tag } from "lucide-react-native";
 import React from "react";
 import { Text, View, useWindowDimensions } from "react-native";
+import { useTranslation } from "react-i18next";
 
 interface OutfitDetailSectionsProps {
   description?: string | null;
@@ -9,6 +10,7 @@ interface OutfitDetailSectionsProps {
 }
 
 export default function OutfitDetailSections({ description, tags }: OutfitDetailSectionsProps) {
+  const { t } = useTranslation();
   const { width } = useWindowDimensions();
   const scale = Math.min(1.2, Math.max(0.9, width / 390));
   const heading = Math.round(18 * scale);
@@ -20,7 +22,9 @@ export default function OutfitDetailSections({ description, tags }: OutfitDetail
       {/* Description */}
       {description && (
         <View style={{ marginBottom: 20 }}>
-          <Text style={{ color: '#fff', fontWeight: '600', marginBottom: 8, fontSize: heading }}>Description</Text>
+          <Text style={{ color: '#fff', fontWeight: '600', marginBottom: 8, fontSize: heading }}>
+            {t('outfitDetail.sections.description')}
+          </Text>
           <Text style={{ color: '#9CA3AF', fontSize: body, lineHeight: body + 6 }}>
             {description}
           </Text>
@@ -32,7 +36,9 @@ export default function OutfitDetailSections({ description, tags }: OutfitDetail
         <View style={{ marginBottom: 12 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
             <Tag size={18} color="#9CA3AF" />
-            <Text style={{ color: '#fff', fontWeight: '600', marginLeft: 8, fontSize: heading }}>Tags</Text>
+            <Text style={{ color: '#fff', fontWeight: '600', marginLeft: 8, fontSize: heading }}>
+              {t('outfitDetail.sections.tags')}
+            </Text>
           </View>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
             {tags.map((tag, index) => (

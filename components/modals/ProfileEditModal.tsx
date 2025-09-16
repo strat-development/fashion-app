@@ -7,6 +7,7 @@ import { DevTool } from '@hookform/devtools';
 import { Camera, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -44,14 +45,13 @@ export const ProfileEdit = ({
   onClose,
   currentUserData,
 }: ProfileEditProps) => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
   const { userId, setUserName, setUserBio, setUserImage, setUserEmail, setUserSocials, isPublic: currentIsPublic, setIsPublic } = useUserContext();
   const { mutate: editProfile, isPending } = useEditProfileMutation(userId || '');
   const [selectedImage, setSelectedImage] = useState<PendingImage | null>(null);
 
-
   const { control, handleSubmit, formState: { errors, isValid }, setValue, watch } = useForm<FormData>({
-
     defaultValues: {
       name: currentUserData?.name || '',
       bio: currentUserData?.bio || '',
@@ -68,7 +68,7 @@ export const ProfileEdit = ({
   const handleImageSelect = async () => {
     const hasPermission = await useRequestPermission();
     if (!hasPermission) {
-      Alert.alert('Permission Denied', 'Storage permission is required to select images.');
+      Alert.alert(t('profileEdit.alerts.permissionDenied.title'), t('profileEdit.alerts.permissionDenied.message'));
       return;
     }
 
@@ -86,35 +86,31 @@ export const ProfileEdit = ({
             console.log('User cancelled image picker');
           } else if (response.errorCode) {
             console.error('Image picker error:', response.errorMessage);
-            Alert.alert('Error', `Image picker error: ${response.errorMessage}`);
+            Alert.alert(t('profileEdit.alerts.imagePickerErrorMessage.title'), t('profileEdit.alerts.imagePickerErrorMessage.message' + response.errorMessage ));
           } else if (response.assets && response.assets[0]) {
             const { uri, fileName, type } = response.assets[0];
             if (uri) {
               setSelectedImage({ uri, fileName: fileName || 'image.jpg', type });
-
-
               setValue('avatar', uri);
             } else {
               console.error('No URI in image picker response');
-              Alert.alert('Error', 'Failed to select image');
+              Alert.alert(t('profileEdit.alerts.imageSelectError.title'), t('profileEdit.alerts.imageSelectError.message'));
             }
           } else {
             console.error('No assets in image picker response');
-            Alert.alert('Error', 'No image selected');
+            Alert.alert(t('profileEdit.alerts.noImageSelected.title'), t('profileEdit.alerts.noImageSelected.message'));
           }
         }
       );
     } catch (error) {
       console.error('Image picker error:', error);
-      Alert.alert('Error', 'Failed to open image picker');
+      Alert.alert(t('profileEdit.alerts.imagePickerError.title'), t('profileEdit.alerts.imagePickerError.message'));
     }
   };
 
-
   const onSubmit = async (data: FormData) => {
-
     if (!data.name.trim()) {
-      Alert.alert('Error', 'Name is required');
+      Alert.alert(t('profileEdit.alerts.error.title'), t('profileEdit.errors.nameRequired'));
       return;
     }
 
@@ -137,7 +133,7 @@ export const ProfileEdit = ({
 
         if (uploadError) {
           console.error('Image upload error:', uploadError);
-          Alert.alert('Error', 'Failed to upload image');
+          Alert.alert(t('profileEdit.alerts.imageUploadError.title'), t('profileEdit.alerts.imageUploadError.message'));
           return;
         }
 
@@ -147,19 +143,17 @@ export const ProfileEdit = ({
 
         if (!publicUrlData?.publicUrl) {
           console.error('Failed to get public URL');
-          Alert.alert('Error', 'Failed to retrieve image URL');
+          Alert.alert(t('profileEdit.alerts.imageUrlError.title'), t('profileEdit.alerts.imageUrlError.message'));
           return;
         }
 
         avatarUrl = publicUrlData.publicUrl;
       } catch (error) {
         console.error('Image upload error:', error);
-        Alert.alert('Error', 'Failed to upload image');
+        Alert.alert(t('profileEdit.alerts.imageUploadError.title'), t('profileEdit.alerts.imageUploadError.message'));
         return;
       }
     }
-
-    console.log('Submitting profile data:', data);
 
     editProfile(
       {
@@ -179,19 +173,18 @@ export const ProfileEdit = ({
           setUserEmail(data.email || '');
           setUserSocials(data.socials);
           setIsPublic(data.isPublic);
-          
-          Alert.alert('Success', 'Profile updated successfully');
+
+          Alert.alert(t('profileEdit.alerts.success.title'), t('profileEdit.alerts.success.message'));
           setSelectedImage(null);
           onClose();
         },
         onError: (error) => {
           console.error('Profile update failed:', error);
-          Alert.alert('Error', error.message || 'Failed to update profile');
+          Alert.alert(t('profileEdit.alerts.error.title'), error.message || t('profileEdit.alerts.error.message'));
         },
       }
     );
   };
-
 
   return (
     <Modal
@@ -201,26 +194,26 @@ export const ProfileEdit = ({
     >
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
         {/* Header */}
-        <View style={{ 
-          flexDirection: 'row', 
-          alignItems: 'center', 
-          justifyContent: 'space-between', 
-          paddingHorizontal: 16, 
-          paddingVertical: 12, 
-          borderBottomWidth: 1, 
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+          borderBottomWidth: 1,
           borderBottomColor: colors.border
         }}>
           <Pressable onPress={onClose} style={{ padding: 8 }}>
             <X size={24} color={colors.textMuted} />
           </Pressable>
-          <Text style={{ color: colors.text, fontWeight: '600', fontSize: 18 }}>Edit Profile</Text>
+          <Text style={{ color: colors.text, fontWeight: '600', fontSize: 18 }}>{t('profileEdit.title')}</Text>
           <Pressable
             onPress={handleSubmit(onSubmit)}
             className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
             disabled={isPending || !isValid}
           >
             <Text className="text-white font-medium text-sm">
-              {isPending ? 'Saving...' : 'Save'}
+              {isPending ? t('profileEdit.saving') : t('profileEdit.save')}
             </Text>
           </Pressable>
         </View>
@@ -234,7 +227,6 @@ export const ProfileEdit = ({
                   {selectedImage?.uri || currentUserData?.avatar ? (
                     <Image
                       source={{ uri: selectedImage?.uri || currentUserData?.avatar }}
-
                       className="w-24 h-24 rounded-full"
                       resizeMode="cover"
                     />
@@ -249,22 +241,22 @@ export const ProfileEdit = ({
                   <Camera size={14} color="white" />
                 </Pressable>
               </View>
-              <Text className="text-gray-400 text-sm mt-2">Tap to change photo</Text>
+              <Text className="text-gray-400 text-sm mt-2">{t('profileEdit.changePhoto')}</Text>
             </View>
 
             {/* Name Field */}
             <View className="mb-6">
-              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">Display Name</Text>
+              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">{t('profileEdit.displayName')}</Text>
               <Controller
                 control={control}
                 name="name"
-                rules={{ required: 'Name is required' }}
+                rules={{ required: t('profileEdit.errors.nameRequired') }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
-                    placeholder="Enter your name"
+                    placeholder={t('profileEdit.placeholders.name')}
                     placeholderTextColor={colors.textSecondary}
                     style={{
                       backgroundColor: colors.surfaceVariant,
@@ -284,28 +276,27 @@ export const ProfileEdit = ({
                   <Text className="text-pink-600 text-xs">{errors.name.message}</Text>
                 ) : (
                   <Text className="text-gray-500 text-sm mt-1">
-                    {control._formValues.name?.length || 0}/50
+                    {control._formValues.name?.length || 0} / 50
                   </Text>
-
                 )}
               </View>
             </View>
 
             {/* Bio Field */}
             <View className="mb-6">
-              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">Bio</Text>
+              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">{t('profileEdit.bio')}</Text>
               <Controller
                 control={control}
                 name="bio"
                 rules={{
-                  maxLength: { value: 200, message: 'Bio should not exceed 200 characters' },
+                  maxLength: { value: 200, message: t('profileEdit.errors.bioMaxLength') },
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
-                    placeholder="Tell us about your style..."
+                    placeholder={t('profileEdit.placeholders.bio')}
                     placeholderTextColor={colors.textSecondary}
                     style={{
                       backgroundColor: colors.surfaceVariant,
@@ -328,26 +319,25 @@ export const ProfileEdit = ({
                   <Text className="text-pink-600 text-xs">{errors.bio.message}</Text>
                 ) : (
                   <Text className="text-gray-500 text-sm mt-1">
-                    {control._formValues.bio?.length || 0}/200
+                    {control._formValues.bio?.length || 0} / 200
                   </Text>
-
                 )}
               </View>
             </View>
 
             {/* Style Preferences */}
             <View className="mb-6">
-              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">Style Preferences</Text>
+              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">{t('profileEdit.stylePreferences')}</Text>
               <View style={{ backgroundColor: colors.surfaceVariant, borderColor: colors.border, borderWidth: 1, borderRadius: 8, padding: 16 }}>
                 <Text style={{ color: colors.textSecondary, fontSize: 16 }}>
-                  Coming soon! Set your favorite styles, colors, and brands.
+                  {t('profileEdit.stylePreferencesComingSoon')}
                 </Text>
               </View>
             </View>
 
             {/* Privacy Settings */}
             <View className="mb-8">
-              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">Privacy</Text>
+              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">{t('profileEdit.privacy')}</Text>
               <View style={{ backgroundColor: colors.surfaceVariant, borderColor: colors.border, borderWidth: 1, borderRadius: 8, padding: 16 }}>
                 <Controller
                   control={control}
@@ -358,20 +348,17 @@ export const ProfileEdit = ({
                       style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}
                     >
                       <View style={{ flex: 1 }}>
-                        <Text style={{ color: colors.text, fontWeight: '500' }}>Public Profile</Text>
+                        <Text style={{ color: colors.text, fontWeight: '500' }}>{t('profileEdit.publicProfile')}</Text>
                         <Text style={{ color: colors.textSecondary, fontSize: 13, marginTop: 4 }}>
-                          {value 
-                            ? "Others can see your profile and created outfits" 
-                            : "Only your nickname and avatar will be visible"
-                          }
+                          {value ? t('profileEdit.publicProfileDescription') : t('profileEdit.privateProfileDescription')}
                         </Text>
                       </View>
                       <View style={{ marginLeft: 16 }}>
-                        <View 
+                        <View
                           style={{ width: 48, height: 24, borderRadius: 12, justifyContent: 'center', backgroundColor: value ? colors.accent : colors.borderVariant }}
                         >
-                          <View 
-                            style={{ backgroundColor: colors.background, width: 20, height: 20, borderRadius: 10, alignSelf: value ? 'flex-end' : 'flex-start', margin: 2 }} 
+                          <View
+                            style={{ backgroundColor: colors.background, width: 20, height: 20, borderRadius: 10, alignSelf: value ? 'flex-end' : 'flex-start', margin: 2 }}
                           />
                         </View>
                       </View>
@@ -380,22 +367,22 @@ export const ProfileEdit = ({
                 />
                 {!watchIsPublic && (
                   <View style={{ backgroundColor: colors.warning + '22', borderColor: colors.warning, borderWidth: 1, borderRadius: 8, padding: 12, marginTop: 12 }}>
-                    <Text style={{ color: colors.warning, fontSize: 14, fontWeight: '500' }}>Private Account</Text>
+                    <Text style={{ color: colors.warning, fontSize: 14, fontWeight: '500' }}>{t('profileEdit.privateAccount')}</Text>
                     <Text style={{ color: colors.warning, fontSize: 12, marginTop: 4 }}>
-                      When private, only your username and profile picture will be visible to others. Your bio and outfits will be hidden.
+                      {t('profileEdit.privateAccountDescription')}
                     </Text>
                   </View>
                 )}
               </View>
             </View>
-            
+
             <Pressable
-              onPress={handleSubmit(onSubmit)} 
+              onPress={handleSubmit(onSubmit)}
               className="bg-gradient-to-r from-purple-600 to-pink-600 py-4 rounded-lg"
               disabled={isPending || !isValid}
             >
               <Text className="text-white font-semibold text-base text-center">
-                {isPending ? 'Saving...' : 'Save Changes'}
+                {isPending ? t('profileEdit.saving') : t('profileEdit.save')}
               </Text>
             </Pressable>
           </View>

@@ -10,6 +10,7 @@ import { ShareModal } from "../modals/ShareModal";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
 import { EmptyState } from "./EmptyState";
+import { useTranslation } from 'react-i18next';
 
 interface SavedOutfitsSectionProps {
     refreshing: boolean;
@@ -18,6 +19,7 @@ interface SavedOutfitsSectionProps {
 }
 
 export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSectionProps) => {
+    const { t } = useTranslation();
     const { userId } = useUserContext();
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
 
@@ -136,14 +138,14 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
                     isLoading ? (
                         <View className="py-16 items-center">
                             <ActivityIndicator size="large" color="#ffffff" />
-                            <Text className="text-gray-300 text-base mt-4">Loading saved outfits...</Text>
+                            <Text className="text-gray-300 text-base mt-4">{t('savedOutfitsSection.loading')}</Text>
                         </View>
                     ) : (
                         <View className="px-6">
                             <EmptyState
                                 icon={Bookmark}
-                                title="No saved outfits yet"
-                                description="Start saving outfits you love!"
+                                title={t('savedOutfitsSection.emptyState.title')}
+                                description={t('savedOutfitsSection.emptyState.description')}
                             />
                         </View>
                     )
@@ -176,4 +178,4 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
             />
         </View>
     );
-};
+}

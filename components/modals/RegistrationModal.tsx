@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Modal, SafeAreaView, ScrollView, Text, TextInput, Pressable, View, Image, Alert } from "react-native";
-import { supabase } from "@/lib/supabase";
-import { Camera, User } from "lucide-react-native";
-import { launchImageLibrary } from "react-native-image-picker";
-import { BlurView } from "expo-blur";
 import { useRequestPermission } from "@/hooks/useRequestPermission";
+import { supabase } from "@/lib/supabase";
+import { BlurView } from "expo-blur";
+import { Camera, User } from "lucide-react-native";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { Alert, Image, Modal, Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from "react-native";
+import { launchImageLibrary } from "react-native-image-picker";
 
 interface RegistrationData {
     username: string;
@@ -27,6 +28,7 @@ interface RegistrationModalProps {
 }
 
 export default function RegistrationModal({ isVisible, onClose, userId }: RegistrationModalProps) {
+    const { t } = useTranslation();
     const [registrationStep, setRegistrationStep] = useState(1);
     const [selectedImage, setSelectedImage] = useState<PendingImage | null>(null);
     const [isPending, setIsPending] = useState(false);
@@ -44,7 +46,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
     const handleImageSelect = async () => {
         const hasPermission = await useRequestPermission();
         if (!hasPermission) {
-            Alert.alert('Permission Denied', 'Storage permission is required to select images.');
+            Alert.alert(t('registrationModal.alerts.permissionDenied.title'), t('registrationModal.alerts.permissionDenied.message'));
             return;
         }
 
@@ -62,7 +64,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                         console.log('User cancelled image picker');
                     } else if (response.errorCode) {
                         console.error('Image picker error:', response.errorMessage);
-                        Alert.alert('Error', `Image picker error: ${response.errorMessage}`);
+                        Alert.alert(t('registrationModal.alerts.imagePickerErrorMessage.title'), t('registrationModal.alerts.imagePickerErrorMessage.message' + response.errorMessage ));
                     } else if (response.assets && response.assets[0]) {
                         const { uri, fileName, type } = response.assets[0];
                         if (uri) {
@@ -70,23 +72,23 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                             setValue('profilePicture', uri, { shouldValidate: true });
                         } else {
                             console.error('No URI in image picker response');
-                            Alert.alert('Error', 'Failed to select image');
+                            Alert.alert(t('registrationModal.alerts.imageSelectError.title'), t('registrationModal.alerts.imageSelectError.message'));
                         }
                     } else {
                         console.error('No assets in image picker response');
-                        Alert.alert('Error', 'No image selected');
+                        Alert.alert(t('registrationModal.alerts.noImageSelected.title'), t('registrationModal.alerts.noImageSelected.message'));
                     }
                 }
             );
         } catch (error) {
             console.error('Image picker error:', error);
-            Alert.alert('Error', 'Failed to open image picker');
+            Alert.alert(t('registrationModal.alerts.imagePickerError.title'), t('registrationModal.alerts.imagePickerError.message'));
         }
     };
 
     const handleNextStep = async (data: RegistrationData) => {
         if (!userId) {
-            Alert.alert('Error', 'User ID is missing. Please sign in again.');
+            Alert.alert(t('registrationModal.alerts.error.title'), t('registrationModal.errors.userIdMissing'));
             setIsPending(false);
             return;
         }
@@ -116,7 +118,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
 
                     if (uploadError) {
                         console.error('Image upload error:', uploadError);
-                        Alert.alert('Error', 'Failed to upload image');
+                        Alert.alert(t('registrationModal.alerts.imageUploadError.title'), t('registrationModal.alerts.imageUploadError.message'));
                         setIsPending(false);
                         return;
                     }
@@ -127,7 +129,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
 
                     if (!publicUrlData?.publicUrl) {
                         console.error('Failed to get public URL');
-                        Alert.alert('Error', 'Failed to retrieve image URL');
+                        Alert.alert(t('registrationModal.alerts.imageUrlError.title'), t('registrationModal.alerts.imageUrlError.message'));
                         setIsPending(false);
                         return;
                     }
@@ -135,7 +137,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                     avatarUrl = publicUrlData.publicUrl;
                 } catch (error) {
                     console.error('Image upload error:', error);
-                    Alert.alert('Error', 'Failed to upload image');
+                    Alert.alert(t('registrationModal.alerts.imageUploadError.title'), t('registrationModal.alerts.imageUploadError.message'));
                     setIsPending(false);
                     return;
                 }
@@ -154,7 +156,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                     });
 
                 if (error) {
-                    Alert.alert('Error', error.message);
+                    Alert.alert(t('registrationModal.alerts.error.title'), error.message);
                     setIsPending(false);
                     return;
                 }
@@ -164,7 +166,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                 setSelectedImage(null);
                 setIsPending(false);
             } catch (error) {
-                Alert.alert('Error', 'Failed to complete registration. Please try again.');
+                Alert.alert(t('registrationModal.alerts.registrationError.title'), t('registrationModal.alerts.registrationError.message'));
                 setIsPending(false);
             }
         }
@@ -179,13 +181,13 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
             const { error } = await supabase.auth.signOut();
             if (error) {
                 console.error('Logout error:', error);
-                Alert.alert('Error', 'Failed to log out. Please try again.');
+                Alert.alert(t('registrationModal.alerts.logoutError.title'), t('registrationModal.alerts.logoutError.message'));
                 return;
             }
             onClose();
         } catch (error) {
             console.error('Logout error:', error);
-            Alert.alert('Error', 'Failed to log out. Please try again.');
+            Alert.alert(t('registrationModal.alerts.logoutError.title'), t('registrationModal.alerts.logoutError.message'));
         }
     };
 
@@ -206,13 +208,13 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                 <View>
                                     <View className="items-center mb-8">
                                         <Text className="text-white text-lg font-semibold text-center">
-                                            Welcome to the App!
+                                            {t('registrationModal.welcome')}
                                         </Text>
                                         <Text className="text-gray-300 text-base text-center mt-4">
-                                            To use the app, you need to complete the registration process.
+                                            {t('registrationModal.welcomeDescription')}
                                         </Text>
                                         <Text className="text-gray-400 text-sm text-center mt-2">
-                                            Please provide your profile details in the next steps.
+                                            {t('registrationModal.provideDetails')}
                                         </Text>
                                     </View>
                                     <View className="flex-row items-center justify-between mt-6">
@@ -220,13 +222,13 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                             onPress={handleLogout}
                                             className="bg-gradient-to-r from-red-600 to-red-800 px-4 py-2 rounded-full"
                                         >
-                                            <Text className="text-white font-medium text-sm">Logout</Text>
+                                            <Text className="text-white font-medium text-sm">{t('registrationModal.logout')}</Text>
                                         </Pressable>
                                         <Pressable
                                             onPress={handleSubmit(handleNextStep)}
                                             className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
                                         >
-                                            <Text className="text-white font-medium text-sm">Proceed</Text>
+                                            <Text className="text-white font-medium text-sm">{t('registrationModal.proceed')}</Text>
                                         </Pressable>
                                     </View>
                                 </View>
@@ -255,24 +257,24 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                                 <Camera size={14} color="white" />
                                             </Pressable>
                                         </View>
-                                        <Text className="text-gray-400 text-sm mt-2">Tap to set photo (optional)</Text>
+                                        <Text className="text-gray-400 text-sm mt-2">{t('registrationModal.setPhoto')}</Text>
                                         {errors.profilePicture && (
                                             <Text className="text-pink-600 text-xs mt-1">{errors.profilePicture.message}</Text>
                                         )}
                                     </View>
 
                                     <View className="mb-6">
-                                        <Text className="text-gray-300 font-medium text-base mb-3">Username</Text>
+                                        <Text className="text-gray-300 font-medium text-base mb-3">{t('registrationModal.username')}</Text>
                                         <Controller
                                             control={control}
                                             name="username"
                                             rules={{
-                                                required: 'Username is required',
-                                                minLength: { value: 3, message: 'Username must be at least 3 characters' },
-                                                maxLength: { value: 20, message: 'Username cannot exceed 20 characters' },
+                                                required: t('registrationModal.errors.usernameRequired'),
+                                                minLength: { value: 3, message: t('registrationModal.errors.usernameMinLength') },
+                                                maxLength: { value: 20, message: t('registrationModal.errors.usernameMaxLength') },
                                                 pattern: {
                                                     value: /^[a-zA-Z0-9_]+$/,
-                                                    message: 'Username can only contain letters, numbers, and underscores',
+                                                    message: t('registrationModal.errors.usernamePattern'),
                                                 },
                                             }}
                                             render={({ field: { onChange, onBlur, value } }) => (
@@ -280,11 +282,10 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                                     value={value}
                                                     onChangeText={onChange}
                                                     onBlur={onBlur}
-                                                    placeholder="Enter your username"
+                                                    placeholder={t('registrationModal.placeholders.username')}
                                                     placeholderTextColor="#6B7280"
-                                                    className={`bg-gray-800/50 border ${
-                                                        errors.username ? 'border-pink-600' : 'border-gray-700/50'
-                                                    } text-white px-4 py-3 rounded-lg text-base`}
+                                                    className={`bg-gray-800/50 border ${errors.username ? 'border-pink-600' : 'border-gray-700/50'
+                                                        } text-white px-4 py-3 rounded-lg text-base`}
                                                     maxLength={20}
                                                 />
                                             )}
@@ -294,31 +295,30 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                                 <Text className="text-pink-600 text-xs">{errors.username.message}</Text>
                                             ) : (
                                                 <Text className="text-gray-500 text-sm">
-                                                    {control._formValues.username?.length || 0}/20
+                                                    {control._formValues.username?.length || 0}
                                                 </Text>
                                             )}
                                         </View>
                                     </View>
 
                                     <View className="mb-6">
-                                        <Text className="text-gray-300 font-medium text-base mb-3">Full Name</Text>
+                                        <Text className="text-gray-300 font-medium text-base mb-3">{t('registrationModal.fullName')}</Text>
                                         <Controller
                                             control={control}
                                             name="fullName"
                                             rules={{
-                                                required: 'Full name is required',
-                                                maxLength: { value: 50, message: 'Full name cannot exceed 50 characters' },
+                                                required: t('registrationModal.errors.fullNameRequired'),
+                                                maxLength: { value: 50, message: t('registrationModal.errors.fullNameMaxLength') },
                                             }}
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     value={value}
                                                     onChangeText={onChange}
                                                     onBlur={onBlur}
-                                                    placeholder="Enter your full name"
+                                                    placeholder={t('registrationModal.placeholders.fullName')}
                                                     placeholderTextColor="#6B7280"
-                                                    className={`bg-gray-800/50 border ${
-                                                        errors.fullName ? 'border-pink-600' : 'border-gray-700/50'
-                                                    } text-white px-4 py-3 rounded-lg text-base`}
+                                                    className={`bg-gray-800/50 border ${errors.fullName ? 'border-pink-600' : 'border-gray-700/50'
+                                                        } text-white px-4 py-3 rounded-lg text-base`}
                                                     maxLength={50}
                                                 />
                                             )}
@@ -328,30 +328,29 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                                 <Text className="text-pink-600 text-xs">{errors.fullName.message}</Text>
                                             ) : (
                                                 <Text className="text-gray-500 text-sm">
-                                                    {control._formValues.fullName?.length || 0}/50
+                                                    {control._formValues.fullName?.length || 0} / 50
                                                 </Text>
                                             )}
                                         </View>
                                     </View>
 
                                     <View className="mb-6">
-                                        <Text className="text-gray-300 font-medium text-base mb-3">Bio</Text>
+                                        <Text className="text-gray-300 font-medium text-base mb-3">{t('registrationModal.bio')}</Text>
                                         <Controller
                                             control={control}
                                             name="bio"
                                             rules={{
-                                                maxLength: { value: 200, message: 'Bio cannot exceed 200 characters' },
+                                                maxLength: { value: 200, message: t('registrationModal.errors.bioMaxLength') },
                                             }}
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     value={value}
                                                     onChangeText={onChange}
                                                     onBlur={onBlur}
-                                                    placeholder="Tell us about your style... (optional)"
+                                                    placeholder={t('registrationModal.placeholders.bio')}
                                                     placeholderTextColor="#6B7280"
-                                                    className={`bg-gray-800/50 border ${
-                                                        errors.bio ? 'border-pink-600' : 'border-gray-700/50'
-                                                    } text-white px-4 py-3 rounded-lg text-base`}
+                                                    className={`bg-gray-800/50 border ${errors.bio ? 'border-pink-600' : 'border-gray-700/50'
+                                                        } text-white px-4 py-3 rounded-lg text-base`}
                                                     multiline
                                                     numberOfLines={4}
                                                     textAlignVertical="top"
@@ -364,7 +363,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                                 <Text className="text-pink-600 text-xs">{errors.bio.message}</Text>
                                             ) : (
                                                 <Text className="text-gray-500 text-sm">
-                                                    {control._formValues.bio?.length || 0}/200
+                                                    { control._formValues.bio?.length || 0 } / 200
                                                 </Text>
                                             )}
                                         </View>
@@ -374,11 +373,11 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
 
                             {registrationStep === 3 && (
                                 <View className="mb-6">
-                                    <Text className="text-gray-300 font-medium text-base mb-3">Review Your Information</Text>
+                                    <Text className="text-gray-300 font-medium text-base mb-3">{t('registrationModal.reviewInfo')}</Text>
                                     <View className="bg-gray-800/30 border border-gray-700/30 rounded-lg p-4">
                                         {control._formValues.profilePicture && (
                                             <View className="mb-4">
-                                                <Text className="text-gray-300 mb-2">Profile Picture:</Text>
+                                                <Text className="text-gray-300 mb-2">{t('registrationModal.profilePicture')}:</Text>
                                                 <Image
                                                     source={{ uri: control._formValues.profilePicture }}
                                                     className="w-16 h-16 rounded-full"
@@ -386,9 +385,9 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                                 />
                                             </View>
                                         )}
-                                        <Text className="text-gray-300 mb-2">Username: {control._formValues.username}</Text>
-                                        <Text className="text-gray-300 mb-2">Full Name: {control._formValues.fullName}</Text>
-                                        <Text className="text-gray-300">Bio: {control._formValues.bio || 'Not provided'}</Text>
+                                        <Text className="text-gray-300 mb-2">{t('registrationModal.username')}: {control._formValues.username}</Text>
+                                        <Text className="text-gray-300 mb-2">{t('registrationModal.fullName')}: {control._formValues.fullName}</Text>
+                                        <Text className="text-gray-300">{t('registrationModal.bio')}: {control._formValues.bio || t('registrationModal.notProvided')}</Text>
                                     </View>
                                 </View>
                             )}
@@ -399,7 +398,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                         onPress={handlePreviousStep}
                                         className="bg-gray-700 px-4 py-2 rounded-full"
                                     >
-                                        <Text className="text-white font-medium text-sm">Previous</Text>
+                                        <Text className="text-white font-medium text-sm">{t('registrationModal.previous')}</Text>
                                     </Pressable>
                                 )}
                                 {registrationStep === 2 && isValid && (
@@ -409,7 +408,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                         disabled={isPending}
                                     >
                                         <Text className="text-white font-medium text-sm">
-                                            {isPending ? 'Saving...' : 'Next'}
+                                            {isPending ? t('registrationModal.saving') : t('registrationModal.next')}
                                         </Text>
                                     </Pressable>
                                 )}
@@ -420,7 +419,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                                         disabled={isPending}
                                     >
                                         <Text className="text-white font-medium text-sm">
-                                            {isPending ? 'Saving...' : 'Complete'}
+                                            {isPending ? t('registrationModal.saving') : t('registrationModal.complete')}
                                         </Text>
                                     </Pressable>
                                 )}

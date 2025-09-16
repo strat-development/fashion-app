@@ -22,6 +22,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { useSharedValue, withSequence, withSpring } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from 'react-i18next';
 
 type OutfitDetailData = Database["public"]["Tables"]["created-outfits"]["Row"] & {
   likes: number;
@@ -44,6 +45,7 @@ export default function OutfitDetail() {
 }
 
 function OutfitDetailContent() {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { userId } = useUserContext();
   const { colors, isDark } = useTheme();
@@ -152,7 +154,7 @@ function OutfitDetailContent() {
       withSpring(1.2, { damping: 14, stiffness: 220 }),
       withSpring(1, { damping: 14, stiffness: 220 })
     );
-  setShowShareModal(true);
+    setShowShareModal(true);
   };
 
   const handleComments = () => {
@@ -182,7 +184,7 @@ function OutfitDetailContent() {
     return (
       <View style={{ flex: 1, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
         <ActivityIndicator size="large" color="#ffffff" />
-        <Text style={{ color: '#fff', marginTop: 16, fontSize: 16 }}>Loading outfit...</Text>
+        <Text style={{ color: '#fff', marginTop: 16, fontSize: 16 }}>{t('outfitDetail.loading')}</Text>
       </View>
     );
   }
@@ -190,7 +192,7 @@ function OutfitDetailContent() {
   if (!outfit) {
     return (
       <View style={{ flex: 1, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
-        <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', marginBottom: 16 }}>Outfit not found</Text>
+        <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', marginBottom: 16 }}>{t('outfitDetail.notFound')}</Text>
         <Pressable 
           onPress={() => router.back()}
           style={{ 
@@ -202,7 +204,7 @@ function OutfitDetailContent() {
             borderColor: '#2a2a2a'
           }}
         >
-          <Text style={{ color: '#fff', fontWeight: '600' }}>Go Back</Text>
+          <Text style={{ color: '#fff', fontWeight: '600' }}>{t('outfitDetail.goBack')}</Text>
         </Pressable>
       </View>
     );
@@ -260,23 +262,23 @@ function OutfitDetailContent() {
           />
 
           <OutfitInteractionButtons
-              isLiked={isLiked}
-              isDisliked={isDisliked}
-              isSaved={isSaved}
-              positiveRatings={ratingStats?.positiveRatings || 0}
-              negativeRatings={negativeRatings}
-              commentsCount={outfit.comments}
-              onPositiveRate={handlePositiveRate}
-              onNegativeRate={handleNegativeRate}
-              onComments={handleComments}
-              onShare={handleShare}
-              onSave={handleSave}
-              likeScale={likeScale}
-              dislikeScale={dislikeScale}
-              commentScale={commentScale}
-              shareScale={shareScale}
-              saveScale={saveScale}
-            />
+            isLiked={isLiked}
+            isDisliked={isDisliked}
+            isSaved={isSaved}
+            positiveRatings={ratingStats?.positiveRatings || 0}
+            negativeRatings={negativeRatings}
+            commentsCount={outfit.comments}
+            onPositiveRate={handlePositiveRate}
+            onNegativeRate={handleNegativeRate}
+            onComments={handleComments}
+            onShare={handleShare}
+            onSave={handleSave}
+            likeScale={likeScale}
+            dislikeScale={dislikeScale}
+            commentScale={commentScale}
+            shareScale={shareScale}
+            saveScale={saveScale}
+          />
         </ScrollView>
       </View>
 
@@ -285,7 +287,7 @@ function OutfitDetailContent() {
         isVisible={showComments}
         onClose={() => setShowComments(false)}
         outfitId={id || ''}
-        outfitTitle={outfit.outfit_name || 'Outfit'}
+        outfitTitle={outfit.outfit_name || t('outfitDetail.defaultOutfitName')}
       />
 
       <ShareModal

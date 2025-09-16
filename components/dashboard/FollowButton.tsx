@@ -1,16 +1,18 @@
-import React from 'react';
-import { Pressable, Text, View } from 'react-native';
-import { useUserContext } from '@/providers/userContext';
 import { useFetchIsFollowed } from '@/fetchers/fetchIsFollowed';
 import { useFollowUserMutation } from '@/mutations/FollowUserMutation';
 import { useUnFollowUserMutation } from '@/mutations/UnfollowUserMutation';
+import { useUserContext } from '@/providers/userContext';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Pressable, Text, View } from 'react-native';
 
 interface FollowButtonProps {
   profileId: string;
   isPublic: boolean;
 }
 
-export const FollowButton: React.FC<FollowButtonProps> = ({ profileId, isPublic }) => {
+export const FollowButton = ({ profileId, isPublic }: FollowButtonProps) => {
+  const { t } = useTranslation();
   const { userId } = useUserContext();
   const { data: followStatus, isLoading: followLoading } = useFetchIsFollowed(userId || '', profileId || '');
   const isFollowed = followStatus?.isFollowed || false;
@@ -23,7 +25,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({ profileId, isPublic 
   if (isPending && !isPublic) {
     return (
       <Pressable disabled style={{ backgroundColor: '#666', paddingVertical: 12, borderRadius: 8, marginTop: 16, opacity: 0.5 }}>
-        <Text style={{ color: '#ccc', textAlign: 'center', fontSize: 14 }}>Follow Request Pending</Text>
+        <Text style={{ color: '#ccc', textAlign: 'center', fontSize: 14 }}>{t('followButton.pending')}</Text>
       </Pressable>
     );
   }
@@ -34,7 +36,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({ profileId, isPublic 
       style={{ backgroundColor: '#222', paddingVertical: 12, borderRadius: 8, marginTop: 16 }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{ color: '#ccc', fontWeight: 'bold' }}>Unfollow</Text>
+        <Text style={{ color: '#ccc', fontWeight: 'bold' }}>{t('followButton.unfollow')}</Text>
       </View>
     </Pressable>
   ) : (
@@ -42,7 +44,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({ profileId, isPublic 
       onPress={() => followUser({ followedAccountId: profileId, userId: userId, isPublicAccount: isPublic })}
       style={{ backgroundColor: '#222', paddingVertical: 12, borderRadius: 8, marginTop: 16 }}
     >
-      <Text style={{ color: '#ccc', textAlign: 'center', fontSize: 14 }}>Follow</Text>
+      <Text style={{ color: '#ccc', textAlign: 'center', fontSize: 14 }}>{t('followButton.follow')}</Text>
     </Pressable>
   );
 };

@@ -12,11 +12,11 @@ import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { useCreateOutfitMutation } from '@/mutations/outfits/CreateOutfitMutation';
 import { useUserContext } from '@/providers/userContext';
 import { ModalProps, OutfitElementData } from '@/types/createOutfitTypes';
-
 import { DevTool } from '@hookform/devtools';
 import { Plus, Trash2, X } from 'lucide-react-native';
 import React, { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -42,6 +42,7 @@ export const OutfitCreateModal = ({
   onClose,
   isAnimated
 }: ModalProps) => {
+  const { t } = useTranslation();
   const [elementModalVisible, setElementModalVisible] = useState(false);
   const [selectedImageName, setSelectedImageName] = useState<string | null>(null);
 
@@ -96,16 +97,16 @@ export const OutfitCreateModal = ({
       setSelectedImageName(null);
       pendingImagesRef.current = {};
       onClose?.();
-      Alert.alert('Success', 'Outfit saved successfully!');
+      Alert.alert(t('outfitCreateModal.alerts.success.title'), t('outfitCreateModal.alerts.success.message'));
     },
     (error) => {
-      Alert.alert('Error', error.message);
+      Alert.alert(t('outfitCreateModal.alerts.error.title'), error.message || t('outfitCreateModal.alerts.error.message'));
     }
   );
 
   const onSubmit = async (data: OutfitState) => {
     if (data.outfit_elements_data.length === 0) {
-      Alert.alert('Error', 'At least one outfit element is required');
+      Alert.alert(t('outfitCreateModal.alerts.error.title'), t('outfitCreateModal.errors.elementRequired'));
       return;
     }
 
@@ -118,7 +119,7 @@ export const OutfitCreateModal = ({
           }
         }
         return el as any;
-      }); 
+      });
 
       createOutfit({
         ...data,
@@ -127,9 +128,9 @@ export const OutfitCreateModal = ({
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
-        Alert.alert('Error', error.message || 'Failed to create outfit');
+        Alert.alert(t('outfitCreateModal.alerts.error.title'), error.message || t('outfitCreateModal.alerts.error.message'));
       } else {
-        Alert.alert('Error', 'An unknown error occurred');
+        Alert.alert(t('outfitCreateModal.alerts.error.title'), t('outfitCreateModal.alerts.unknownError'));
       }
     }
   };
@@ -177,7 +178,7 @@ export const OutfitCreateModal = ({
   const handleImageSelect = async () => {
     const hasPermission = await useRequestPermission();
     if (!hasPermission) {
-      Alert.alert('Permission Denied', 'Storage permission is required to select images.');
+      Alert.alert(t('outfitCreateModal.alerts.permissionDenied.title'), t('outfitCreateModal.alerts.permissionDenied.message'));
       return;
     }
 
@@ -195,7 +196,7 @@ export const OutfitCreateModal = ({
             console.log('User cancelled image picker');
           } else if (response.errorCode) {
             console.error('Image picker error:', response.errorMessage);
-            Alert.alert('Error', `Image picker error: ${response.errorMessage}`);
+            Alert.alert(t('outfitCreateModal.alerts.imagePickerErrorMessage.title'), t('outfitCreateModal.alerts.imagePickerErrorMessage') + ' ' + response.errorMessage);;
           } else if (response.assets && response.assets[0]) {
             const { uri, fileName, type } = response.assets[0];
 
@@ -207,17 +208,17 @@ export const OutfitCreateModal = ({
               trigger('imageUrl');
             } else {
               console.error('No URI in image picker response');
-              Alert.alert('Error', 'Failed to select image');
+              Alert.alert(t('outfitCreateModal.alerts.imageSelectError.title'), t('outfitCreateModal.alerts.imageSelectError.message'));
             }
           } else {
             console.error('No assets in image picker response');
-            Alert.alert('Error', 'No image selected');
+            Alert.alert(t('outfitCreateModal.alerts.noImageSelected.title'), t('outfitCreateModal.alerts.noImageSelected.message'));
           }
         }
       );
     } catch (error) {
       console.error('Image picker error:', error);
-      Alert.alert('Error', 'Failed to open image picker');
+      Alert.alert(t('outfitCreateModal.alerts.imagePickerError.title'), t('outfitCreateModal.alerts.imagePickerError.message'));
     }
   };
 
@@ -238,13 +239,13 @@ export const OutfitCreateModal = ({
             <Pressable onPress={onClose} className="p-2">
               <X size={24} color="#9CA3AF" />
             </Pressable>
-            <Text className="text-white font-semibold text-lg">Create Outfit</Text>
+            <Text className="text-white font-semibold text-lg">{t('outfitCreateModal.title')}</Text>
             <Pressable
               onPress={handleSubmit(onSubmit)}
               disabled={!isValid || outfitElements.length === 0 || isPending}
               className={`px-4 py-2 rounded-full ${isValid && outfitElements.length > 0 && !isPending ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-gray-600'}`}
             >
-              <Text className="text-white font-medium text-sm">{isPending ? 'Saving...' : 'Save'}</Text>
+              <Text className="text-white font-medium text-sm">{isPending ? t('outfitCreateModal.saving') : t('outfitCreateModal.save')}</Text>
             </Pressable>
           </View>
 
@@ -252,7 +253,7 @@ export const OutfitCreateModal = ({
             <View className="pt-6 pb-20">
               {/* Images Section */}
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">Outfit Elements</Text>
+                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.outfitElements')}</Text>
                 <View className='flex flex-col gap-4'>
                   <ScrollView horizontal
                     showsHorizontalScrollIndicator={false}>
@@ -262,7 +263,7 @@ export const OutfitCreateModal = ({
                         className="w-24 h-32 bg-gray-800/50 border-2 border-dashed border-gray-700/50 rounded-xl items-center justify-center"
                       >
                         <Plus size={24} color="#9CA3AF" />
-                        <Text className="text-gray-400 text-xs mt-1">Add Element</Text>
+                        <Text className="text-gray-400 text-xs mt-1">{t('outfitCreateModal.addElement')}</Text>
                       </Pressable>
                       {outfitElements.map((element, index) => (
                         <View key={index} className="relative border-2 border-gray-700/50 rounded-xl overflow-hidden">
@@ -289,10 +290,14 @@ export const OutfitCreateModal = ({
                   </ScrollView>
                   <View className="flex-row items-center justify-between self-end w-full">
                     <Text className={`text-sm ${outfitElements.length === 0 ? 'text-pink-600' : 'text-gray-400'}`}>
-                      {outfitElements.length === 0 ? 'Add at least 1 element' : `${outfitElements.length} elements added`}
-                    </Text>
+                      {outfitElements.length === 0 && (
+                        t('outfitCreateModal.elementCount.zero')
+                      ) ||
+                        outfitElements.length + t('outfitCreateModal.elementCount.one')
+                        ||
+                        outfitElements.length + t('outfitCreateModal.elementCount.other')} </Text>
                     <Text className={`text-gray-400 text-sm ${outfitElements.length === 0 ? 'hidden' : ''}`}>
-                      Total price: ${calculateTotalPrice(outfitElements).toFixed(2)}
+                      {t('outfitCreateModal.totalPrice')} {calculateTotalPrice(outfitElements).toFixed(2)}
                     </Text>
                   </View>
                 </View>
@@ -300,17 +305,17 @@ export const OutfitCreateModal = ({
 
               {/* Title Field */}
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">Name</Text>
+                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.name')}</Text>
                 <Controller
                   control={control}
                   name="outfit_name"
-                  rules={{ required: 'Outfit name is required' }}
+                  rules={{ required: t('outfitCreateModal.errors.nameRequired') }}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       value={value}
                       onChangeText={onChange}
                       onBlur={onBlur}
-                      placeholder="Enter outfit name"
+                      placeholder={t('outfitCreateModal.placeholders.name')}
                       placeholderTextColor="#6B7280"
                       className={`bg-gray-800/50 border ${errors.outfit_name ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
                       maxLength={50}
@@ -330,17 +335,17 @@ export const OutfitCreateModal = ({
 
               {/* Description Field */}
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">Description</Text>
+                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.description')}</Text>
                 <Controller
                   control={control}
                   name="description"
-                  rules={{ required: 'Description is required' }}
+                  rules={{ required: t('outfitCreateModal.errors.descriptionRequired') }}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       value={value || ''}
                       onChangeText={onChange}
                       onBlur={onBlur}
-                      placeholder="Describe your outfit..."
+                      placeholder={t('outfitCreateModal.placeholders.description')}
                       placeholderTextColor="#6B7280"
                       className={`bg-gray-800/50 border ${errors.description ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
                       multiline
@@ -355,7 +360,7 @@ export const OutfitCreateModal = ({
                     <Text className="text-pink-600 text-xs">{errors.description.message}</Text>
                   ) : (
                     <Text className="text-gray-400 text-xs">
-                      {description?.length || 0} / 200
+                      {description?.length || 0}
                     </Text>
                   )}
                 </View>
@@ -363,7 +368,7 @@ export const OutfitCreateModal = ({
 
               {/* Style Tags */}
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">Style Tags</Text>
+                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.styleTags')}</Text>
                 <View className="flex-row flex-wrap">
                   {OutfitStylesTags.map((style) => (
                     <Pressable
@@ -379,7 +384,7 @@ export const OutfitCreateModal = ({
                   ))}
                   {errors.outfit_tags && (
                     <Text className="text-pink-600 text-xs w-full">
-                      Please select at least one style tag
+                      {t('outfitCreateModal.errors.styleTagsRequired')}
                     </Text>
                   )}
                 </View>
@@ -407,23 +412,23 @@ export const OutfitCreateModal = ({
               }} className="p-2">
                 <X size={24} color="#9CA3AF" />
               </Pressable>
-              <Text className="text-white font-semibold text-lg">Add Outfit Element</Text>
+              <Text className="text-white font-semibold text-lg">{t('outfitCreateModal.addElement')}</Text>
               <Pressable
                 onPress={handleElementSubmit(onElementSubmit)}
                 disabled={!isElementValid}
                 className={`px-4 py-2 rounded-full ${isElementValid ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-gray-600'}`}
               >
-                <Text className="text-white font-medium text-sm">Save</Text>
+                <Text className="text-white font-medium text-sm">{t('outfitCreateModal.save')}</Text>
               </Pressable>
             </View>
 
             <ScrollView>
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">Element Type</Text>
+                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.elementType')}</Text>
                 <Controller
                   control={elementControl}
                   name="type"
-                  rules={{ required: 'Element type is required' }}
+                  rules={{ required: t('outfitCreateModal.errors.elementTypeRequired') }}
                   render={({ field: { onChange, value } }) => (
                     <Select
                       selectedValue={value}
@@ -434,7 +439,7 @@ export const OutfitCreateModal = ({
                     >
                       <SelectTrigger className={`bg-gray-800/50 border ${elementErrors.type ? 'border-pink-600' : 'border-gray-700/50'} rounded-lg`}>
                         <SelectInput
-                          placeholder="Select element type"
+                          placeholder={t('outfitCreateModal.placeholders.elementType')}
                           placeholderTextColor="#6B7280"
                           value={value}
                         />
@@ -463,21 +468,21 @@ export const OutfitCreateModal = ({
               </View>
 
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">Price</Text>
+                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.price')}</Text>
                 <Controller
                   control={elementControl}
                   name="price"
                   rules={{
                     validate: (value) => {
                       if (value === null) return true;
-                      if (isNaN(value)) return 'Price must be a number';
-                      if (value < 0) return 'Price cannot be negative';
+                      if (isNaN(value)) return t('outfitCreateModal.errors.priceInvalid');
+                      if (value < 0) return t('outfitCreateModal.errors.priceNegative');
                       return true;
                     }
                   }}
                   render={({ field: { onChange, value } }) => (
                     <TextInput
-                      placeholder="Enter price (optional)"
+                      placeholder={t('outfitCreateModal.placeholders.price')}
                       placeholderTextColor="#6B7280"
                       value={value !== null ? value.toString() : ''}
                       onChangeText={(text) => {
@@ -498,15 +503,15 @@ export const OutfitCreateModal = ({
               </View>
 
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">Site URL</Text>
+                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.siteUrl')}</Text>
                 <Controller
                   control={elementControl}
                   name="siteUrl"
                   rules={{
-                    required: 'Site URL is required',
+                    required: t('outfitCreateModal.errors.siteUrlRequired'),
                     pattern: {
                       value: URL_PATTERN,
-                      message: 'Please enter a valid URL'
+                      message: t('outfitCreateModal.errors.siteUrlInvalid')
                     }
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
@@ -517,7 +522,7 @@ export const OutfitCreateModal = ({
                         trigger('siteUrl');
                       }}
                       onBlur={onBlur}
-                      placeholder="Enter site URL"
+                      placeholder={t('outfitCreateModal.placeholders.siteUrl')}
                       placeholderTextColor="#6B7280"
                       className={`bg-gray-800/50 border ${elementErrors.siteUrl ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
                     />
@@ -531,12 +536,12 @@ export const OutfitCreateModal = ({
               </View>
 
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">Image</Text>
+                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.image')}</Text>
                 <Controller
                   control={elementControl}
                   name="imageUrl"
                   rules={{
-                    required: 'Image is required'
+                    required: t('outfitCreateModal.errors.imageRequired')
                   }}
                   render={({ field: { onChange, value } }) => (
                     <>
@@ -563,7 +568,7 @@ export const OutfitCreateModal = ({
                           <View className="mt-2 flex-row items-center justify-center bg-green-500/10 py-1 px-2 rounded-full">
                             <View className="w-2 h-2 bg-green-500 rounded-full mr-2" />
                             <Text className="text-green-500 text-xs">
-                              Image selected successfully
+                              {t('outfitCreateModal.imageSelected')}
                             </Text>
                           </View>
                         </View>
@@ -576,8 +581,8 @@ export const OutfitCreateModal = ({
                             <View className="items-center justify-center mb-2">
                               <Plus size={24} color="#9CA3AF" />
                             </View>
-                            <Text className="text-gray-300 text-sm font-medium">Select Image</Text>
-                            <Text className="text-gray-500 text-xs mt-1">JPG, PNG (max 5MB)</Text>
+                            <Text className="text-gray-300 text-sm font-medium">{t('outfitCreateModal.placeholders.image')}</Text>
+                            <Text className="text-gray-500 text-xs mt-1">{t('outfitCreateModal.imageFormat')}</Text>
                           </Pressable>
                           {elementErrors.imageUrl && (
                             <Text className="text-pink-600 text-xs mt-2 text-center">

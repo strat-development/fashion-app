@@ -2,6 +2,7 @@ import { useDeleteOutfitMutation } from '@/mutations/outfits/DeleteOutfitMutatio
 import { ModalProps } from '@/types/createOutfitTypes';
 import { AlertTriangle, X } from "lucide-react-native";
 import { Modal, Pressable, Text, View } from "react-native";
+import { useTranslation } from 'react-i18next';
 
 interface DeleteOutfitModalProps {
     outfitId: string;
@@ -17,11 +18,12 @@ export const DeleteModalOutfit = ({
     onSuccess,
     userId
 }: ModalProps & DeleteOutfitModalProps) => {
+    const { t } = useTranslation();
     const { mutate: deleteOutfit, isPending } = useDeleteOutfitMutation();
 
     const handleDelete = () => {
         if (!userId) {
-            console.error('User ID is required for deletion');
+            console.error(t('deleteModalOutfit.error'));
             return;
         }
 
@@ -53,7 +55,7 @@ export const DeleteModalOutfit = ({
                             <View className="w-8 h-8 bg-red-500/20 rounded-full items-center justify-center mr-3">
                                 <AlertTriangle size={16} color="#EF4444" />
                             </View>
-                            <Text className="text-white text-lg font-semibold">Delete Outfit</Text>
+                            <Text className="text-white text-lg font-semibold">{t('deleteModalOutfit.title')}</Text>
                         </View>
                         <Pressable onPress={onClose} className="p-1">
                             <X size={20} color="#9CA3AF" />
@@ -62,7 +64,7 @@ export const DeleteModalOutfit = ({
 
                     {/* Content */}
                     <Text className="text-gray-300 text-base mb-6 leading-5">
-                        Are you sure you want to delete this outfit? This action cannot be undone.
+                        {t('deleteModalOutfit.message')}
                     </Text>
 
                     {/* Actions */}
@@ -71,7 +73,7 @@ export const DeleteModalOutfit = ({
                             onPress={onClose}
                             className="flex-1 bg-gray-800 py-3 rounded-xl border border-gray-700"
                         >
-                            <Text className="text-gray-300 font-medium text-center">Cancel</Text>
+                            <Text className="text-gray-300 font-medium text-center">{t('deleteModalOutfit.cancel')}</Text>
                         </Pressable>
                         <Pressable
                             onPress={handleDelete}
@@ -79,7 +81,7 @@ export const DeleteModalOutfit = ({
                             className={`flex-1 py-3 rounded-xl ${isPending ? 'bg-red-600/50' : 'bg-red-600'}`}
                         >
                             <Text className="text-white font-medium text-center">
-                                {isPending ? 'Deleting...' : 'Delete'}
+                                {isPending ? t('deleteModalOutfit.deleting') : t('deleteModalOutfit.delete')}
                             </Text>
                         </Pressable>
                     </View>

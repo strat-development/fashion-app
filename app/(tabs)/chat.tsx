@@ -3,11 +3,13 @@ import { ConstuctorSection } from '@/components/outfit-constructor/ConstructorSe
 import { Button } from '@/components/ui/button';
 import { useViewContext } from '@/providers/chatViewContext';
 import { useTheme } from '@/providers/themeContext';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
 export default function HomeScreen() {
   const { colors } = useTheme();
   const { view, setView } = useViewContext();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -24,7 +26,7 @@ export default function HomeScreen() {
             fontWeight: 'bold', 
             color: colors.text, 
             textAlign: 'center' 
-          }}>Welcome, how would like to create an outfit?</Text>
+          }}>{t('homeScreen.welcomeMessage')}</Text>
           <View style={{ 
             flexDirection: 'column', 
             gap: 16, 
@@ -35,13 +37,13 @@ export default function HomeScreen() {
               style={{ backgroundColor: colors.accent }}
               onPress={() => setView('outfitAIConstructor')}
             >
-              <Text style={{ fontSize: 18, color: '#fff' }}>AI Constructor</Text>
+              <Text style={{ fontSize: 18, color: '#fff' }}>{t('homeScreen.aiConstructorButton')}</Text>
             </Button>
             <Button 
               style={{ backgroundColor: colors.accent }}
               onPress={() => setView('outfitCreator')}
             >
-              <Text style={{ fontSize: 18, color: '#fff' }}>Create your own outfit</Text>
+              <Text style={{ fontSize: 18, color: '#fff' }}>{t('homeScreen.createOwnOutfitButton')}</Text>
             </Button>
           </View>
         </View>
