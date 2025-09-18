@@ -11,35 +11,48 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { Currencies, Languages } from '@/consts/userSettings';
+import i18n from '@/i18n';
 import { useUpdatePreferredCurrency } from '@/mutations/dashboard/UpdatePreferredCurrency';
 import { useUpdatePreferredLanguage } from '@/mutations/dashboard/UpdatePreferredLanguage';
 import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { router } from 'expo-router';
 import { ChevronLeft, DollarSign, Globe, Moon, Smartphone, Sun } from 'lucide-react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ThemeSettings() {
   const { t } = useTranslation();
-  const { userId } = useUserContext();
+  const { userId, preferredLanguage: userLanguage, preferredCurrency: userCurrency } = useUserContext();
   const { mode, setMode, colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
 
-  const [selectedCurrency, setSelectedCurrency] = useState(Currencies[0].name);
-  const [selectedLanguage, setSelectedLanguage] = useState(Languages[0].code);
+  const [selectedCurrency, setSelectedCurrency] = useState(userCurrency || Currencies[0].name);
+  const [selectedLanguage, setSelectedLanguage] = useState(userLanguage || Languages[0].code);
 
-  const { mutate: preferredLanguage } = useUpdatePreferredLanguage({
+  const { mutate: updateLanguage } = useUpdatePreferredLanguage({
     userId: userId || '',
     language: selectedLanguage,
   });
 
-  const { mutate: preferredCurrency } = useUpdatePreferredCurrency({
+  const { mutate: updateCurrency } = useUpdatePreferredCurrency({
     userId: userId || '',
     currency: selectedCurrency,
   });
+
+  useEffect(() => {
+    if (userLanguage) {
+      setSelectedLanguage(userLanguage);
+    }
+  }, [userLanguage]);
+
+  useEffect(() => {
+    if (userCurrency) {
+      setSelectedCurrency(userCurrency);
+    }
+  }, [userCurrency]);
 
   const themeOptions = [
     {
@@ -87,7 +100,7 @@ export default function ThemeSettings() {
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Pressable
-            onPress={() => router.back()}
+            onPress={() => router.push('/(tabs)/userProfile')}
             style={{
               padding: 8,
               marginRight: 8,
@@ -354,7 +367,8 @@ export default function ThemeSettings() {
                 selectedValue={selectedLanguage}
                 onValueChange={(value: string) => {
                   setSelectedLanguage(value);
-                  preferredLanguage();
+                  i18n.changeLanguage(value);
+                  updateLanguage();
                 }}
               >
                 <SelectTrigger
@@ -386,6 +400,7 @@ export default function ThemeSettings() {
                   </View>
                   <SelectInput
                     placeholder={t('themeSettings.languageCurrency.languagePlaceholder')}
+                    value={Languages.find(lang => lang.code === selectedLanguage)?.name || ''}
                     style={{
                       fontSize: 16,
                       fontWeight: '600',
@@ -476,7 +491,7 @@ export default function ThemeSettings() {
                 selectedValue={selectedCurrency}
                 onValueChange={(value: string) => {
                   setSelectedCurrency(value);
-                  preferredCurrency();
+                  updateCurrency();
                 }}
               >
                 <SelectTrigger
@@ -507,6 +522,8 @@ export default function ThemeSettings() {
                   </View>
                   <SelectInput
                     placeholder={t('themeSettings.languageCurrency.currencyPlaceholder')}
+                    value={Currencies.find(currency => currency.name === selectedCurrency)?.name ? 
+                           `${Currencies.find(currency => currency.name === selectedCurrency)?.name} (${Currencies.find(currency => currency.name === selectedCurrency)?.symbol})` : ''}
                     style={{
                       fontSize: 16,
                       fontWeight: '600',
