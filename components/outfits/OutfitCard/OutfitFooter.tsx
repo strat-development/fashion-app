@@ -270,7 +270,7 @@ export const OutfitFooter = ({
                 marginLeft: 8,
                 fontSize: 14,
                 fontWeight: '500'
-              }}>{t('outfitDetail.interactions.comments')} { commentsCount }</Text>
+              }}>{ commentsCount }</Text>
             </Animated.View>
           </Pressable>
 

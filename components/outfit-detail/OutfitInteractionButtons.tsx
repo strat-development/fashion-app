@@ -202,7 +202,7 @@ export default function OutfitInteractionButtons({
           <Animated.View style={[commentStyle, { flexDirection: 'row', alignItems: 'center' }]}>
             <MessageCircle size={16} color="#9CA3AF" />
             <Text style={{ color: '#9CA3AF', marginLeft: 8, fontSize: 14, fontWeight: '500' }}>
-              {t('outfitDetail.interactions.comments')} { commentsCount }
+              { commentsCount }
             </Text>
           </Animated.View>
         </Pressable>

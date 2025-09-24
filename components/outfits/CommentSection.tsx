@@ -45,7 +45,7 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
           <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: colors.border, backgroundColor: colors.surface }}>
               <Text style={{ color: colors.text, fontWeight: '600', fontSize: 16 }} numberOfLines={1}>
-                {outfitTitle ? t('commentSection.header' + outfitTitle) : t('commentSection.headerDefault')}
+                {outfitTitle ? `${t('commentSection.header')}${outfitTitle}` : t('commentSection.headerDefault')}
               </Text>
               <Pressable onPress={onClose} style={{ padding: 8, borderRadius: 999, borderWidth: 1, borderColor: colors.borderVariant, backgroundColor: colors.surfaceVariant }}>
                 <X size={16} color={colors.textMuted} />
