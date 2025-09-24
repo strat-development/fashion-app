@@ -10,6 +10,7 @@ import {
 import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
 import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { useCreateOutfitMutation } from '@/mutations/outfits/CreateOutfitMutation';
+import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { ModalProps, OutfitElementData } from '@/types/createOutfitTypes';
 import { DevTool } from '@hookform/devtools';
@@ -43,6 +44,7 @@ export const OutfitCreateModal = ({
   isAnimated
 }: ModalProps) => {
   const { t } = useTranslation();
+  const { colors, isDark } = useTheme();
   const [elementModalVisible, setElementModalVisible] = useState(false);
   const [selectedImageName, setSelectedImageName] = useState<string | null>(null);
 
@@ -234,18 +236,19 @@ export const OutfitCreateModal = ({
         animationType={isAnimated ? 'slide' : 'none'}
         presentationStyle="pageSheet"
       >
-        <SafeAreaView className="flex-1 bg-gradient-to-b from-black to-gray-900">
-          <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-800/50">
+        <SafeAreaView className="flex-1" style={{ backgroundColor: colors.background }}>
+          <View className="flex-row items-center justify-between px-4 py-3" style={{ borderBottomWidth: 1, borderBottomColor: colors.border, backgroundColor: colors.surface }}>
             <Pressable onPress={onClose} className="p-2">
-              <X size={24} color="#9CA3AF" />
+              <X size={24} color={colors.textMuted} />
             </Pressable>
-            <Text className="text-white font-semibold text-lg">{t('outfitCreateModal.title')}</Text>
+            <Text className="font-semibold text-lg" style={{ color: colors.text }}>{t('outfitCreateModal.title')}</Text>
             <Pressable
               onPress={handleSubmit(onSubmit)}
               disabled={!isValid || outfitElements.length === 0 || isPending}
-              className={`px-4 py-2 rounded-full ${isValid && outfitElements.length > 0 && !isPending ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-gray-600'}`}
+              style={{ paddingHorizontal: 16, paddingVertical: 8, borderRadius: 9999, overflow: 'hidden', backgroundColor: (!isValid || outfitElements.length === 0 || isPending) ? colors.borderVariant : 'transparent' }}
             >
-              <Text className="text-white font-medium text-sm">{isPending ? t('outfitCreateModal.saving') : t('outfitCreateModal.save')}</Text>
+              <ThemedGradient active={isValid && outfitElements.length > 0 && !isPending} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+              <Text className="font-medium text-sm" style={{ color: colors.white }}>{isPending ? t('outfitCreateModal.saving') : t('outfitCreateModal.save')}</Text>
             </Pressable>
           </View>
 
@@ -253,20 +256,21 @@ export const OutfitCreateModal = ({
             <View className="pt-6 pb-20">
               {/* Images Section */}
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.outfitElements')}</Text>
+                <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>{t('outfitCreateModal.outfitElements')}</Text>
                 <View className='flex flex-col gap-4'>
                   <ScrollView horizontal
                     showsHorizontalScrollIndicator={false}>
                     <View className="flex-row gap-4">
                       <Pressable
                         onPress={() => setElementModalVisible(true)}
-                        className="w-24 h-32 bg-gray-800/50 border-2 border-dashed border-gray-700/50 rounded-xl items-center justify-center"
+                        className="w-24 h-32 border-2 border-dashed rounded-xl items-center justify-center"
+                        style={{ backgroundColor: colors.surfaceVariant, borderColor: colors.borderVariant }}
                       >
-                        <Plus size={24} color="#9CA3AF" />
-                        <Text className="text-gray-400 text-xs mt-1">{t('outfitCreateModal.addElement')}</Text>
+                        <Plus size={24} color={colors.textMuted} />
+                        <Text className="text-xs mt-1" style={{ color: colors.textMuted }}>{t('outfitCreateModal.addElement')}</Text>
                       </Pressable>
                       {outfitElements.map((element, index) => (
-                        <View key={index} className="relative border-2 border-gray-700/50 rounded-xl overflow-hidden">
+                        <View key={index} className="relative border-2 rounded-xl overflow-hidden" style={{ borderColor: colors.borderVariant }}>
                           <Image
                             source={{ uri: element?.imageUrl.startsWith('temp://') ? pendingImagesRef.current[element.imageUrl]?.uri : element.imageUrl }}
                             className="w-24 h-32 rounded-xl"
@@ -274,13 +278,15 @@ export const OutfitCreateModal = ({
                           />
                           <Pressable
                             onPress={() => removeImage(index)}
-                            className="absolute top-2 right-2 bg-gradient-to-r from-purple-600 to-pink-600 p-1 rounded-full border-2 border-black"
+                            className="absolute top-2 right-2 p-1 rounded-full overflow-hidden"
+                            style={{ borderWidth: 2, borderColor: colors.black }}
                           >
-                            <Trash2 size={12} color="white" />
+                            <ThemedGradient style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+                            <Trash2 size={12} color={colors.white} />
                           </Pressable>
-                          <View className="absolute bottom-0 left-0 right-0 bg-black/50 px-2 py-1">
-                            <Text className="text-white text-xs">{element?.type}</Text>
-                            <Text className="text-gray-400 text-xs">
+                          <View className="absolute bottom-0 left-0 right-0 px-2 py-1" style={{ backgroundColor: isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.3)' }}>
+                            <Text className="text-xs" style={{ color: colors.white }}>{element?.type}</Text>
+                            <Text className="text-xs" style={{ color: colors.textMuted }}>
                               {element?.price !== null ? `$${element?.price.toFixed(2)}` : 'Free'}
                             </Text>
                           </View>
@@ -289,14 +295,14 @@ export const OutfitCreateModal = ({
                     </View>
                   </ScrollView>
                   <View className="flex-row items-center justify-between self-end w-full">
-                    <Text className={`text-sm ${outfitElements.length === 0 ? 'text-pink-600' : 'text-gray-400'}`}>
+                    <Text className={`text-sm`} style={{ color: outfitElements.length === 0 ? colors.error : colors.textMuted }}>
                       {outfitElements.length === 0 && (
                         t('outfitCreateModal.elementCount.zero')
                       ) ||
                         outfitElements.length + t('outfitCreateModal.elementCount.one')
                         ||
                         outfitElements.length + t('outfitCreateModal.elementCount.other')} </Text>
-                    <Text className={`text-gray-400 text-sm ${outfitElements.length === 0 ? 'hidden' : ''}`}>
+                    <Text className={`text-sm ${outfitElements.length === 0 ? 'hidden' : ''}`} style={{ color: colors.textMuted }}>
                       {t('outfitCreateModal.totalPrice')} {calculateTotalPrice(outfitElements).toFixed(2)}
                     </Text>
                   </View>
@@ -305,7 +311,7 @@ export const OutfitCreateModal = ({
 
               {/* Title Field */}
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.name')}</Text>
+                <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>{t('outfitCreateModal.name')}</Text>
                 <Controller
                   control={control}
                   name="outfit_name"
@@ -316,17 +322,18 @@ export const OutfitCreateModal = ({
                       onChangeText={onChange}
                       onBlur={onBlur}
                       placeholder={t('outfitCreateModal.placeholders.name')}
-                      placeholderTextColor="#6B7280"
-                      className={`bg-gray-800/50 border ${errors.outfit_name ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
+                      placeholderTextColor={colors.textMuted}
+                      className={`px-4 py-3 rounded-lg text-base`}
+                      style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: errors.outfit_name ? colors.error : colors.border, color: colors.text }}
                       maxLength={50}
                     />
                   )}
                 />
                 <View className="flex-row items-center justify-between mt-1">
                   {errors.outfit_name ? (
-                    <Text className="text-pink-600 text-xs">{errors.outfit_name.message}</Text>
+                    <Text className="text-xs" style={{ color: colors.error }}>{errors.outfit_name.message}</Text>
                   ) : (
-                    <Text className="text-gray-400 text-xs">
+                    <Text className="text-xs" style={{ color: colors.textMuted }}>
                       {outfitName?.length || 0} / 50
                     </Text>
                   )}
@@ -335,7 +342,7 @@ export const OutfitCreateModal = ({
 
               {/* Description Field */}
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.description')}</Text>
+                <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>{t('outfitCreateModal.description')}</Text>
                 <Controller
                   control={control}
                   name="description"
@@ -346,8 +353,9 @@ export const OutfitCreateModal = ({
                       onChangeText={onChange}
                       onBlur={onBlur}
                       placeholder={t('outfitCreateModal.placeholders.description')}
-                      placeholderTextColor="#6B7280"
-                      className={`bg-gray-800/50 border ${errors.description ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
+                      placeholderTextColor={colors.textMuted}
+                      className={`px-4 py-3 rounded-lg text-base`}
+                      style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: errors.description ? colors.error : colors.border, color: colors.text }}
                       multiline
                       numberOfLines={3}
                       textAlignVertical="top"
@@ -357,9 +365,9 @@ export const OutfitCreateModal = ({
                 />
                 <View className="flex-row items-center justify-between mt-1">
                   {errors.description ? (
-                    <Text className="text-pink-600 text-xs">{errors.description.message}</Text>
+                    <Text className="text-xs" style={{ color: colors.error }}>{errors.description.message}</Text>
                   ) : (
-                    <Text className="text-gray-400 text-xs">
+                    <Text className="text-xs" style={{ color: colors.textMuted }}>
                       {description?.length || 0}
                     </Text>
                   )}
@@ -368,22 +376,23 @@ export const OutfitCreateModal = ({
 
               {/* Style Tags */}
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.styleTags')}</Text>
+                <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>{t('outfitCreateModal.styleTags')}</Text>
                 <View className="flex-row flex-wrap">
                   {OutfitStylesTags.map((style) => (
                     <Pressable
                       key={style.name}
                       onPress={() => toggleTag(style.name)}
-                      className={`px-3 py-2 rounded-full mr-2 mb-2 border ${outfitTags.includes(style.name)
-                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 border-purple-500/50'
-                        : 'bg-gray-800/30 border-gray-700/30'
-                        }`}
+                      className={`px-3 py-2 rounded-full mr-2 mb-2 border overflow-hidden`}
+                      style={{ backgroundColor: outfitTags.includes(style.name) ? 'transparent' : colors.surfaceVariant, borderColor: outfitTags.includes(style.name) ? 'transparent' : colors.borderVariant }}
                     >
-                      <Text className="text-gray-200 text-sm">{style.name}</Text>
+                      {outfitTags.includes(style.name) && (
+                        <ThemedGradient style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+                      )}
+                      <Text className="text-sm" style={{ color: outfitTags.includes(style.name) ? colors.white : colors.text }}>{style.name}</Text>
                     </Pressable>
                   ))}
                   {errors.outfit_tags && (
-                    <Text className="text-pink-600 text-xs w-full">
+                    <Text className="text-xs w-full" style={{ color: colors.error }}>
                       {t('outfitCreateModal.errors.styleTagsRequired')}
                     </Text>
                   )}
@@ -401,8 +410,8 @@ export const OutfitCreateModal = ({
         animationType="fade"
         transparent={true}
       >
-        <View className="flex-1 bg-black/50 backdrop-blur-sm justify-center items-center px-4">
-          <View className="bg-gradient-to-b from-black to-gray-900 rounded-2xl p-4 w-full border border-gray-800/50">
+        <View className="flex-1 justify-center items-center px-4" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <View className="rounded-2xl p-4 w-full" style={{ backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border }}>
             <View className="flex-row items-center justify-between mb-4">
               <Pressable onPress={() => {
                 setElementModalVisible(false);
@@ -410,21 +419,22 @@ export const OutfitCreateModal = ({
                 setElementValue('imageUrl', '');
                 trigger('imageUrl');
               }} className="p-2">
-                <X size={24} color="#9CA3AF" />
+                <X size={24} color={colors.textMuted} />
               </Pressable>
-              <Text className="text-white font-semibold text-lg">{t('outfitCreateModal.addElement')}</Text>
+              <Text className="font-semibold text-lg" style={{ color: colors.text }}>{t('outfitCreateModal.addElement')}</Text>
               <Pressable
                 onPress={handleElementSubmit(onElementSubmit)}
                 disabled={!isElementValid}
-                className={`px-4 py-2 rounded-full ${isElementValid ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-gray-600'}`}
+                style={{ paddingHorizontal: 16, paddingVertical: 8, borderRadius: 9999, overflow: 'hidden', backgroundColor: !isElementValid ? colors.borderVariant : 'transparent' }}
               >
-                <Text className="text-white font-medium text-sm">{t('outfitCreateModal.save')}</Text>
+                <ThemedGradient active={isElementValid} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+                <Text className="font-medium text-sm" style={{ color: colors.white }}>{t('outfitCreateModal.save')}</Text>
               </Pressable>
             </View>
 
             <ScrollView>
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.elementType')}</Text>
+                <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>{t('outfitCreateModal.elementType')}</Text>
                 <Controller
                   control={elementControl}
                   name="type"
@@ -437,22 +447,23 @@ export const OutfitCreateModal = ({
                         trigger('type');
                       }}
                     >
-                      <SelectTrigger className={`bg-gray-800/50 border ${elementErrors.type ? 'border-pink-600' : 'border-gray-700/50'} rounded-lg`}>
+                      <SelectTrigger className={`rounded-lg`} style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: elementErrors.type ? colors.error : colors.border }}>
                         <SelectInput
                           placeholder={t('outfitCreateModal.placeholders.elementType')}
-                          placeholderTextColor="#6B7280"
+                          placeholderTextColor={colors.textMuted}
                           value={value}
                         />
                       </SelectTrigger>
                       <SelectPortal>
-                        <SelectBackdrop className="bg-black/50 backdrop-blur-sm" />
-                        <SelectContent className="bg-gray-800/50 border border-gray-700/50 rounded-lg">
+                        <SelectBackdrop />
+                        <SelectContent className="rounded-lg" style={{ backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border }}>
                           {OutfitElements.map((element, index) => (
                             <SelectItem
                               key={index}
                               label={element.name}
                               value={element.name}
-                              className="px-4 py-3 text-white hover:bg-gradient-to-r hover:from-purple-600/50 hover:to-pink-600/50 active:bg-gradient-to-r active:from-purple-600 active:to-pink-600 border-b border-gray-700/30 last:border-b-0"
+                              className="px-4 py-3 border-b last:border-b-0"
+                              style={{ borderColor: colors.borderVariant }}
                             />
                           ))}
                         </SelectContent>
@@ -461,14 +472,14 @@ export const OutfitCreateModal = ({
                   )}
                 />
                 {elementErrors.type && (
-                  <Text className="text-pink-600 text-xs mt-1">
+                  <Text className="text-xs mt-1" style={{ color: colors.error }}>
                     {elementErrors.type.message}
                   </Text>
                 )}
               </View>
 
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.price')}</Text>
+                <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>{t('outfitCreateModal.price')}</Text>
                 <Controller
                   control={elementControl}
                   name="price"
@@ -483,7 +494,7 @@ export const OutfitCreateModal = ({
                   render={({ field: { onChange, value } }) => (
                     <TextInput
                       placeholder={t('outfitCreateModal.placeholders.price')}
-                      placeholderTextColor="#6B7280"
+                      placeholderTextColor={colors.textMuted}
                       value={value !== null ? value.toString() : ''}
                       onChangeText={(text) => {
                         const num = text ? parseFloat(text) : null;
@@ -491,19 +502,20 @@ export const OutfitCreateModal = ({
                         trigger('price');
                       }}
                       keyboardType="numeric"
-                      className={`bg-gray-800/50 border ${elementErrors.price ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
+                      className={`px-4 py-3 rounded-lg text-base`}
+                      style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: elementErrors.price ? colors.error : colors.border, color: colors.text }}
                     />
                   )}
                 />
                 {elementErrors.price && (
-                  <Text className="text-pink-600 text-xs mt-1">
+                  <Text className="text-xs mt-1" style={{ color: colors.error }}>
                     {elementErrors.price.message}
                   </Text>
                 )}
               </View>
 
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.siteUrl')}</Text>
+                <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>{t('outfitCreateModal.siteUrl')}</Text>
                 <Controller
                   control={elementControl}
                   name="siteUrl"
@@ -523,20 +535,21 @@ export const OutfitCreateModal = ({
                       }}
                       onBlur={onBlur}
                       placeholder={t('outfitCreateModal.placeholders.siteUrl')}
-                      placeholderTextColor="#6B7280"
-                      className={`bg-gray-800/50 border ${elementErrors.siteUrl ? 'border-pink-600' : 'border-gray-700/50'} text-white px-4 py-3 rounded-lg text-base`}
+                      placeholderTextColor={colors.textMuted}
+                      className={`px-4 py-3 rounded-lg text-base`}
+                      style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: elementErrors.siteUrl ? colors.error : colors.border, color: colors.text }}
                     />
                   )}
                 />
                 {elementErrors.siteUrl && (
-                  <Text className="text-pink-600 text-xs mt-1">
+                  <Text className="text-xs mt-1" style={{ color: colors.error }}>
                     {elementErrors.siteUrl.message}
                   </Text>
                 )}
               </View>
 
               <View className="mb-6">
-                <Text className="text-gray-300 font-medium text-base mb-3">{t('outfitCreateModal.image')}</Text>
+                <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>{t('outfitCreateModal.image')}</Text>
                 <Controller
                   control={elementControl}
                   name="imageUrl"
@@ -547,8 +560,8 @@ export const OutfitCreateModal = ({
                     <>
                       {value && selectedImageName ? (
                         <View className="mb-4">
-                          <View className="relative bg-gray-800/50 border border-gray-700/50 rounded-lg p-4">
-                            <Text className="text-white text-sm font-medium truncate">
+                          <View className="relative rounded-lg p-4" style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: colors.border }}>
+                            <Text className="text-sm font-medium truncate" style={{ color: colors.text }}>
                               {selectedImageName}
                             </Text>
                             <Pressable
@@ -560,14 +573,16 @@ export const OutfitCreateModal = ({
                                 setSelectedImageName(null);
                                 trigger('imageUrl');
                               }}
-                              className="absolute top-2 right-2 bg-red-500 p-2 rounded-full"
+                              className="absolute top-2 right-2 p-2 rounded-full overflow-hidden"
+                              style={{ backgroundColor: colors.error }}
                             >
-                              <Trash2 size={16} color="white" />
+                              <ThemedGradient style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+                              <Trash2 size={16} color={colors.white} />
                             </Pressable>
                           </View>
-                          <View className="mt-2 flex-row items-center justify-center bg-green-500/10 py-1 px-2 rounded-full">
-                            <View className="w-2 h-2 bg-green-500 rounded-full mr-2" />
-                            <Text className="text-green-500 text-xs">
+                          <View className="mt-2 flex-row items-center justify-center py-1 px-2 rounded-full" style={{ backgroundColor: isDark ? 'rgba(16,185,129,0.12)' : 'rgba(16,185,129,0.12)' }}>
+                            <View className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: colors.success }} />
+                            <Text className="text-xs" style={{ color: colors.success }}>
                               {t('outfitCreateModal.imageSelected')}
                             </Text>
                           </View>
@@ -576,16 +591,17 @@ export const OutfitCreateModal = ({
                         <View className="flex-col items-center">
                           <Pressable
                             onPress={handleImageSelect}
-                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 items-center justify-center"
+                            className="w-full rounded-lg p-4 items-center justify-center"
+                            style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: colors.border }}
                           >
                             <View className="items-center justify-center mb-2">
-                              <Plus size={24} color="#9CA3AF" />
+                              <Plus size={24} color={colors.textMuted} />
                             </View>
-                            <Text className="text-gray-300 text-sm font-medium">{t('outfitCreateModal.placeholders.image')}</Text>
-                            <Text className="text-gray-500 text-xs mt-1">{t('outfitCreateModal.imageFormat')}</Text>
+                            <Text className="text-sm font-medium" style={{ color: colors.text }}>{t('outfitCreateModal.placeholders.image')}</Text>
+                            <Text className="text-xs mt-1" style={{ color: colors.textMuted }}>{t('outfitCreateModal.imageFormat')}</Text>
                           </Pressable>
                           {elementErrors.imageUrl && (
-                            <Text className="text-pink-600 text-xs mt-2 text-center">
+                            <Text className="text-xs mt-2 text-center" style={{ color: colors.error }}>
                               {elementErrors.imageUrl.message}
                             </Text>
                           )}
