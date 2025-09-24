@@ -1,15 +1,20 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectInput, SelectItem, SelectPortal, SelectTrigger } from "@/components/ui/select";
-import { Currencies, OutfitColors, OutfitElements, OutfitFit, OutfitGender, OutfitStylesTags } from '@/consts/chatFilterConsts';
-import { CheckBox } from '@rneui/themed';
-import { ChevronDown, ChevronUp } from 'lucide-react-native';
-import { useState } from 'react';
-import { ScrollView, Text, TextInput, View } from 'react-native';
-import { ChatSwitch } from './ChatSwitch';
+import { Button, ButtonText } from '@/components/ui/button';
+import { webSearch } from '@/fetchers/webSearch';
+import { openAiClient } from '@/lib/openAiClient';
+import { supabase } from '@/lib/supabase';
+import { useUserContext } from '@/providers/userContext';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ScrollView, Text, View } from 'react-native';
+import { ChatComposer } from './ChatComposer';
+import { ChatHeader } from './ChatHeader';
+import { ChatMessages } from './ChatMessages';
+import { ChatSwitch } from './ChatSwitch';
+import { FiltersOverlay } from './FiltersOverlay';
 
 export const ChatSection = () => {
   const { t } = useTranslation();
+  const { userId, preferredCurrency, preferredLanguage } = useUserContext();
   const [outfitTag, setOutfitTag] = useState<string[]>(['']);
   const [outfitElement, setOutfitElement] = useState<string[]>(['']);
   const [outfitColor, setOutfitColor] = useState<string[]>(['']);
@@ -19,311 +24,355 @@ export const ChatSection = () => {
   const [lowestPrice, setLowestPrice] = useState<number>(0);
   const [highestPrice, setHighestPrice] = useState<number>(0);
   const [currency, setCurrency] = useState<string>('');
+  const [messages, setMessages] = useState<Array<{ id: string; role: 'user' | 'assistant'; content: string; created_at?: string }>>([]);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [sending, setSending] = useState<boolean>(false);
+  const scrollRef = useRef<ScrollView | null>(null);
+  const [conversationList, setConversationList] = useState<Array<{ id: string; title: string; created_at: string }>>([]);
+  const [filtersExpanded, setFiltersExpanded] = useState<boolean>(false);
+  const [isStreaming, setIsStreaming] = useState<boolean>(false);
+
+  function getCleanAssistantText(text: string) {
+    let cleaned = text.replace(/```[\s\S]*?```/g, '').trim();
+    cleaned = cleaned.replace(/^#+\s*(Summary|Items?)\s*$/gim, '').trim();
+
+    cleaned = cleaned.replace(/\[IMAGE:\s*([^\]]+)\]/gi, '$1');
+
+    cleaned = cleaned.replace(/\s{2,}/g, ' ').trim();
+    return cleaned;
+  }
+
+  const effectiveCurrency = useMemo(() => currency || preferredCurrency || 'USD', [currency, preferredCurrency]);
+
+  function buildSystemPrompt() {
+    const gender = outfitGender.filter(Boolean).join(', ');
+    const styles = outfitTag.filter(Boolean).join(', ');
+    const colors = outfitColor.filter(Boolean).join(', ');
+    const elements = outfitElement.filter(Boolean).join(', ');
+    const fit = outfitFit.filter(Boolean).join(', ');
+
+    return [
+      `You are a professional fashion stylist and image consultant.`,
+      `User language: ${preferredLanguage || 'en'}. Always respond in this language.`,
+      gender && `Target audience: ${gender}.`,
+      styles && `Style preferences: ${styles}.`,
+      fit && `Fit preferences: ${fit}.`,
+      colors && `Color palette: ${colors}.`,
+      elements && `Key elements to include: ${elements}.`,
+      (lowestPrice || highestPrice) && `Budget range: ${lowestPrice || 0} to ${highestPrice || '∞'} ${effectiveCurrency}.`,
+      `Provide professional styling advice with these components:`,
+      `1. A brief outfit concept and overall styling philosophy`,
+      `2. Detailed breakdown of each clothing item with styling tips`,
+      `3. Color coordination advice and why these combinations work`,
+      `4. Accessory suggestions and finishing touches`,
+      `5. Occasion-appropriate styling notes`,
+      `6. Provide concise, readable tips without extra JSON or code blocks.`,
+      `For each clothing item you recommend, append a bracketed marker like [IMAGE: concise search query] that captures the item (brand-neutral). Keep it short and specific (e.g., "white canvas slip-on sneakers minimal" or "beige linen shorts tailored").`,
+      `End with a short section titled Helpful links listing 3-6 reputable brand or style-guide URLs relevant to your advice (format: Name - https://example.com). Avoid placeholders.`,
+      `Focus on timeless principles, versatility, and helping users understand the "why" behind each choice.`,
+      `Be encouraging and educational in your tone.`,
+      `Do not explain the [IMAGE: ...] markers; they are for internal use and will not be shown to the user.`,
+    ].filter(Boolean).join(' ');
+  }
+
+  async function ensureConversation() {
+
+    if (conversationId) return conversationId;
+
+    const title = `Outfit AI - ${new Date().toISOString()}`;
+
+    try {
+      const { data, error } = await (supabase as any)
+        .from('ai_conversations')
+        .insert({ user_id: userId, title })
+        .select('id')
+        .single();
+
+      if (error) throw error;
+
+      setConversationId((data as any).id);
+
+      return (data as any).id as string;
+    } catch {
+      const tmp = `local-${Date.now()}`;
+
+      setConversationId(tmp);
+
+      return tmp;
+    }
+  }
+
+  async function persistMessage(convId: string, role: 'user' | 'assistant', content: string, createdAt?: string) {
+    try {
+      await (supabase as any).from('ai_messages').insert({ conversation_id: convId, role, content, created_at: createdAt });
+    } catch { }
+  }
+
+  async function handleSend() {
+    const userText = searchQuery.trim();
+
+    if (!userText || sending) return;
+
+    setSending(true);
+    setIsStreaming(true);
+    setFiltersExpanded(false);
+    setSearchQuery('');
+
+    const convId = await ensureConversation();
+
+    const userMsg = { id: `u-${Date.now()}`, role: 'user' as const, content: userText, created_at: new Date().toISOString() };
+
+    setMessages((prev) => [...prev, userMsg, { id: `a-${Date.now()}`, role: 'assistant', content: '' }]);
+    persistMessage(convId, 'user', userText, userMsg.created_at);
+
+    try {
+      const systemPrompt = buildSystemPrompt();
+      const history = messages.map((m) => ({ role: m.role, content: m.content }));
+
+      const tools = [
+        {
+          type: 'function',
+          function: {
+            name: 'web_search',
+            description: 'Search the web for the latest fashion brand pages or style guides relevant to the query.',
+            parameters: {
+              type: 'object',
+              properties: {
+                query: { type: 'string' },
+                num: { type: 'number' },
+              },
+              required: ['query'],
+            },
+          },
+        },
+      ];
+
+      const pre = await (openAiClient as any).chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...history,
+          { role: 'user', content: userText },
+        ],
+        tools,
+        tool_choice: 'auto',
+        temperature: 0.7,
+        stream: false,
+      });
+
+      const preChoice = pre.choices?.[0];
+      const toolCalls = preChoice?.message?.tool_calls as Array<any> | undefined;
+
+      // Build the message list we'll stream from
+      const workingMessages: Array<any> = [
+        { role: 'system', content: systemPrompt },
+        ...history,
+        { role: 'user', content: userText },
+      ];
+
+      if (toolCalls && toolCalls.length) {
+        for (const call of toolCalls) {
+          if (call.type === 'function' && call.function?.name === 'web_search') {
+            let args: any = {};
+            try { args = JSON.parse(call.function.arguments || '{}'); } catch {}
+            const q = String(args.query || userText);
+            const num = Number(args.num || 5);
+            const results = await webSearch(q, num);
+            // Append assistant tool-call and tool result
+            workingMessages.push({
+              role: 'assistant',
+              tool_calls: [call],
+              content: '',
+            });
+            workingMessages.push({
+              role: 'tool',
+              tool_call_id: call.id,
+              content: JSON.stringify({ results }),
+            });
+          }
+        }
+      } else if (preChoice?.message?.content) {
+        // If the model already produced a direct answer in pre-pass, include it as context
+        workingMessages.push({ role: 'assistant', content: preChoice.message.content });
+      }
+
+      // 2) Final streaming answer with tool results in context (if any)
+      const finalStream = await (openAiClient as any).chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: workingMessages,
+        temperature: 0.7,
+        stream: true,
+      });
+
+      let assembled = '';
+      let updateCount = 0;
+      // @ts-ignore for-await in RN
+      for await (const chunk of finalStream) {
+        const delta = chunk.choices?.[0]?.delta?.content || '';
+        if (!delta) continue;
+        assembled += delta;
+        updateCount++;
+        if (updateCount % 3 === 0) {
+          setMessages((prev) => {
+            const copy = [...prev];
+            const lastIndex = copy.length - 1;
+            if (lastIndex >= 0 && copy[lastIndex].role === 'assistant') {
+              copy[lastIndex] = { ...copy[lastIndex], content: assembled };
+            }
+            return copy;
+          });
+        }
+      }
+
+      setMessages((prev) => {
+        const copy = [...prev];
+        const lastIndex = copy.length - 1;
+        if (lastIndex >= 0 && copy[lastIndex].role === 'assistant') {
+          copy[lastIndex] = { ...copy[lastIndex], content: assembled };
+        }
+        return copy;
+      });
+
+      persistMessage(convId, 'assistant', assembled, new Date().toISOString());
+    } catch (err) {
+      setMessages((prev) => {
+        const copy = [...prev];
+        const lastIndex = copy.length - 1;
+        if (lastIndex >= 0 && copy[lastIndex].role === 'assistant') {
+          copy[lastIndex] = { ...copy[lastIndex], content: t('common.error') || 'Error generating response.' };
+        }
+        return copy;
+      });
+    } finally {
+      setSending(false);
+      setIsStreaming(false);
+      requestAnimationFrame(() => {
+        scrollRef.current?.scrollToEnd({ animated: true });
+      });
+    }
+  }
+
+
+  useEffect(() => {
+    if (!conversationId) return;
+    // Subscribe to realtime message inserts for this conversation (if configured)
+    const channel = (supabase as any)
+      .channel(`ai_messages_${conversationId}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'ai_messages', filter: `conversation_id=eq.${conversationId}` }, (payload: any) => {
+        const { role, content, id, created_at } = payload.new || {};
+        setMessages((prev) => {
+          // Skip if we already have an assistant placeholder being filled locally
+          const exists = prev.some((m) => m.id === id);
+          if (exists) return prev;
+          return [...prev, { id: id || `srv-${Date.now()}`, role, content, created_at }];
+        });
+        requestAnimationFrame(() => {
+          scrollRef.current?.scrollToEnd({ animated: true });
+        });
+      })
+      .subscribe();
+
+    return () => {
+      (supabase as any).removeChannel(channel);
+    };
+  }, [conversationId]);
 
   return (
-    <View className='flex flex-col items-center justify-center w-full h-full'>
+    <>
       <ChatSwitch />
-      <ScrollView className='flex flex-col bg-gray-800 w-full items-center justify-start gap-4'>
-        <Accordion
-          variant="filled"
-          type="multiple"
-          className='w-[95vw] bg-transparent mt-24 mb-32'>
-          <AccordionItem className='w-full' value="gender">
-            <AccordionTrigger>
-              {({ isExpanded }: { isExpanded: boolean }) => {
-                return (
-                  <>
-                    <Text className='text-2xl text-white font-bold'>{t('chatSection.selectGender')}</Text>
-                    {
-                      isExpanded ? (
-                        <ChevronDown size={24} color="white" />
-                      ) : (
-                        <ChevronUp size={24} color="white" />
-                      )
-                    }
-                  </>
-                )
+
+      <View className='flex-1 bg-gray-900'>
+        {/* Header Section - Fixed at top */}
+        <View className='bg-gray-900/95 backdrop-blur-xl border-b border-gray-800 px-4 py-3 z-10'>
+
+          <View className='mt-3'>
+            <ChatHeader
+              onShowConversations={async () => {
+                try {
+                  const { data } = await (supabase as any)
+                    .from('ai_conversations')
+                    .select('id,title,created_at')
+                    .order('created_at', { ascending: false });
+                  setConversationList(data || []);
+                } catch { }
               }}
-            </AccordionTrigger>
-            <AccordionContent>
-              <View className='flex flex-row items-center w-full flex-wrap'>
-                {OutfitGender.map((gender) => (
-                  <CheckBox
-                    key={gender.name}
-                    title={t(`chatSection.genders.${gender.name.toLowerCase()}`)}
-                    checked={outfitGender.includes(gender.name)}
-                    onPress={() => {
-                      setOutfitGender((prev) => {
-                        if (prev.includes(gender.name)) {
-                          return prev.filter((t) => t !== gender.name);
-                        } else {
-                          return [...prev, gender.name];
-                        }
-                      });
-                    }}
-                    checkedIcon='check-square'
-                    uncheckedIcon='square-o'
-                    containerStyle={{ backgroundColor: 'transparent' }}
-                    textStyle={{ color: 'white' }}
-                    checkedColor='white'
-                  />
-                ))}
-              </View>
-            </AccordionContent>
-          </AccordionItem>
+              onNewChat={() => { setConversationId(null); setMessages([]); }}
+              filtersExpanded={filtersExpanded}
+              onToggleFilters={() => setFiltersExpanded((v) => !v)}
+              t={(k) => t(k)}
+            />
+          </View>
+        </View>
 
-          <AccordionItem value="styles">
-            <AccordionTrigger>
-              {({ isExpanded }: { isExpanded: boolean }) => {
-                return (
-                  <>
-                    <Text className='text-2xl text-white font-bold'>{t('chatSection.selectOutfitStyles')}</Text>
-                    {
-                      isExpanded ? (
-                        <ChevronDown size={24} color="white" />
-                      ) : (
-                        <ChevronUp size={24} color="white" />
-                      )
-                    }
-                  </>
-                )
-              }}
-            </AccordionTrigger>
-            <AccordionContent>
-              <View className='flex flex-row items-center w-full flex-wrap'>
-                {OutfitStylesTags.map((tag) => (
-                  <CheckBox
-                    key={tag.name}
-                    title={t(`chatSection.styles.${tag.name.toLowerCase()}`)}
-                    checked={outfitTag.includes(tag.name)}
-                    onPress={() => {
-                      setOutfitTag((prev) => {
-                        if (prev.includes(tag.name)) {
-                          return prev.filter((t) => t !== tag.name);
-                        } else {
-                          return [...prev, tag.name];
-                        }
-                      });
-                    }}
-                    checkedIcon='check-square'
-                    uncheckedIcon='square-o'
-                    containerStyle={{ backgroundColor: 'transparent' }}
-                    textStyle={{ color: 'white' }}
-                    checkedColor='white'
-                  />
-                ))}
-              </View>
-            </AccordionContent>
-          </AccordionItem>
+        {/* Conversations List - Overlay */}
+        {conversationList.length > 0 && (
+          <View className='absolute top-32 left-4 right-4 z-50 bg-gray-800/95 backdrop-blur-xl border border-gray-700 rounded-2xl p-4 shadow-2xl'>
+            <Text className='text-white text-sm font-medium mb-3'>Recent Conversations</Text>
+            {conversationList.map((c) => (
+              <Button key={c.id} variant='link' action='primary' size='sm' className='justify-start mb-2' onPress={async () => {
+                setConversationId(c.id);
+                try {
+                  const { data } = await (supabase as any)
+                    .from('ai_messages')
+                    .select('id,role,content,created_at')
+                    .eq('conversation_id', c.id)
+                    .order('created_at', { ascending: true });
+                  const mapped = (data || []).map((m: any) => ({ id: m.id, role: m.role, content: m.content, created_at: m.created_at }));
+                  setMessages(mapped);
+                } catch { }
+                setConversationList([]);
+              }}>
+                <ButtonText className='text-gray-300 text-left'>{c.title || c.id}</ButtonText>
+              </Button>
+            ))}
+          </View>
+        )}
 
-          <AccordionItem value="fit">
-            <AccordionTrigger>
-              {({ isExpanded }: { isExpanded: boolean }) => {
-                return (
-                  <>
-                    <Text className='text-2xl text-white font-bold'>{t('chatSection.selectFit')}</Text>
-                    {
-                      isExpanded ? (
-                        <ChevronDown size={24} color="white" />
-                      ) : (
-                        <ChevronUp size={24} color="white" />
-                      )
-                    }
-                  </>
-                )
-              }}
-            </AccordionTrigger>
-            <AccordionContent>
-              <View className='flex flex-row items-center w-full flex-wrap'>
-                {OutfitFit.map((fit) => (
-                  <CheckBox
-                    key={fit.name}
-                    title={t(`chatSection.fits.${fit.name.toLowerCase()}`)}
-                    checked={outfitFit.includes(fit.name)}
-                    onPress={() => {
-                      setOutfitFit((prev) => {
-                        if (prev.includes(fit.name)) {
-                          return prev.filter((t) => t !== fit.name);
-                        } else {
-                          return [...prev, fit.name];
-                        }
-                      });
-                    }}
-                    checkedIcon='check-square'
-                    uncheckedIcon='square-o'
-                    containerStyle={{ backgroundColor: 'transparent' }}
-                    textStyle={{ color: 'white' }}
-                    checkedColor='white'
-                  />
-                ))}
-              </View>
-            </AccordionContent>
-          </AccordionItem>
+        {/* Main Chat Area */}
+        <View className='flex-1 pb-24'>
+          <ChatMessages
+            messages={messages}
+            isStreaming={isStreaming}
+            getCleanAssistantText={getCleanAssistantText}
+            t={(k) => t(k)}
+            scrollRef={scrollRef}
+          />
+        </View>
 
-          <AccordionItem value="colors">
-            <AccordionTrigger>
-              {({ isExpanded }: { isExpanded: boolean }) => {
-                return (
-                  <>
-                    <Text className='text-2xl text-white font-bold'>{t('chatSection.selectDominantColors')}</Text>
-                    {
-                      isExpanded ? (
-                        <ChevronDown size={24} color="white" />
-                      ) : (
-                        <ChevronUp size={24} color="white" />
-                      )
-                    }
-                  </>
-                )
-              }}
-            </AccordionTrigger>
-            <AccordionContent>
-              <View className='flex flex-row items-center w-full flex-wrap'>
-                {OutfitColors.map((color) => (
-                  <CheckBox
-                    key={color.name}
-                    title={t(`chatSection.colors.${color.name.toLowerCase()}`)}
-                    checked={outfitColor.includes(color.name)}
-                    onPress={() => {
-                      setOutfitColor((prev) => {
-                        if (prev.includes(color.name)) {
-                          return prev.filter((t) => t !== color.name);
-                        } else {
-                          return [...prev, color.name];
-                        }
-                      });
-                    }}
-                    checkedIcon={<View style={{ backgroundColor: color.hex, width: 24, height: 24, borderRadius: 12 }} />}
-                    uncheckedIcon={<View style={{ backgroundColor: '#ccc', width: 24, height: 24, borderRadius: 12 }} />}
-                    containerStyle={{ backgroundColor: 'transparent' }}
-                    textStyle={{ color: 'white' }}
-                    checkedColor='white'
-                  />
-                ))}
-              </View>
-            </AccordionContent>
-          </AccordionItem>
+        {/* Input Section - Fixed at bottom with proper z-index */}
+        <View className='absolute bottom-0 left-0 right-0 bg-gray-900/95 backdrop-blur-xl border-t border-gray-800 px-4 py-3 z-20' style={{ paddingBottom: 34 }}>
+          <ChatComposer
+            value={searchQuery}
+            onChange={setSearchQuery}
+            onSend={handleSend}
+            sending={sending}
+            placeholder={t('chatSection.placeholders.outfitDescription')}
+          />
+        </View>
 
-          <AccordionItem value="elements">
-            <AccordionTrigger>
-              {({ isExpanded }: { isExpanded: boolean }) => {
-                return (
-                  <>
-                    <Text className='text-2xl text-white font-bold'>{t('chatSection.selectOutfitElements')}</Text>
-                    {
-                      isExpanded ? (
-                        <ChevronDown size={24} color="white" />
-                      ) : (
-                        <ChevronUp size={24} color="white" />
-                      )
-                    }
-                  </>
-                )
-              }}
-            </AccordionTrigger>
-            <AccordionContent>
-              <View className='flex flex-row items-center w-full flex-wrap'>
-                {OutfitElements.map((element) => (
-                  <CheckBox
-                    key={element.name}
-                    title={t(`chatSection.elements.${element.name.toLowerCase()}`)}
-                    checked={outfitElement.includes(element.name)}
-                    onPress={() => {
-                      setOutfitElement((prev) => {
-                        if (prev.includes(element.name)) {
-                          return prev.filter((t) => t !== element.name);
-                        } else {
-                          return [...prev, element.name];
-                        }
-                      });
-                    }}
-                    checkedIcon='check-square'
-                    uncheckedIcon='square-o'
-                    containerStyle={{ backgroundColor: 'transparent' }}
-                    textStyle={{ color: 'white' }}
-                    checkedColor='white'
-                  />
-                ))}
-              </View>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="price-range">
-            <AccordionTrigger>
-              {({ isExpanded }: { isExpanded: boolean }) => (
-                <>
-                  <Text className="text-2xl text-white font-bold">{t('chatSection.selectPriceRange')}</Text>
-                  {isExpanded ? (
-                    <ChevronDown size={24} color="white" />
-                  ) : (
-                    <ChevronUp size={24} color="white" />
-                  )}
-                </>
-              )}
-            </AccordionTrigger>
-            <AccordionContent className="flex flex-col items-start gap-2">
-              <Text className="text-white">{t('chatSection.from')}</Text>
-              <TextInput
-                value={`${lowestPrice}`}
-                onChangeText={(text) => setLowestPrice(Number(text))}
-                placeholder={t('chatSection.placeholders.lowestPrice')}
-                keyboardType="numeric"
-                className="p-4 bg-gray/10 border-[1px] border-white/10 backdrop-blur-xl text-white/80 rounded-lg mb-2"
-              />
-              <Text className="text-white">{t('chatSection.to')}</Text>
-              <TextInput
-                value={`${highestPrice}`}
-                onChangeText={(text) => setHighestPrice(Number(text))}
-                placeholder={t('chatSection.placeholders.highestPrice')}
-                keyboardType="numeric"
-                className="p-4 bg-gray/10 border-[1px] border-white/10 backdrop-blur-xl text-white/80 rounded-lg"
-              />
-              <Text className="text-white text-sm mt-2">{t('chatSection.currency')}</Text>
-              <Select
-                selectedValue={currency}
-                onValueChange={(value: string) => setCurrency(value)}
-              >
-                <SelectTrigger className="bg-gray-800/10 border border-white/10 backdrop-blur-xl text-white/80 rounded-lg">
-                  <SelectInput
-                    placeholder={t('chatSection.placeholders.currency')}
-                    className="text-white/80"
-                    value={currency}
-                  />
-                </SelectTrigger>
-                <SelectPortal>
-                  <SelectBackdrop className="bg-black/50 backdrop-blur-sm" />
-                  <SelectContent className="bg-gray-800 border border-white/10 rounded-lg overflow-hidden">
-                    <SelectDragIndicatorWrapper>
-                      <SelectDragIndicator className="bg-white/20" />
-                    </SelectDragIndicatorWrapper>
-                    {Currencies.map((currencyItem: any) => (
-                      <SelectItem
-                        key={currencyItem.name}
-                        value={currencyItem.name}
-                        label={t(`chatSection.currencies.${currencyItem.name.toLowerCase()}`)}
-                        className="px-4 py-3 border-b border-white/10 last:border-b-0 active:bg-gray-700"
-                      >
-                        <Text className="text-white">{t(`chatSection.currencies.${currencyItem.name.toLowerCase()}`)}</Text>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </SelectPortal>
-              </Select>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </ScrollView>
-
-      <View className='fixed bottom-12 w-full bg-transparent p-4'>
-        <TextInput
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          multiline={true}
-          numberOfLines={4}
-          placeholder={t('chatSection.placeholders.outfitDescription')}
-          className='p-4 bg-gray/10 border-[1px] border-white/10 backdrop-blur-xl text-white/80 rounded-lg'
+        {/* Filters Overlay */}
+        <FiltersOverlay
+          visible={filtersExpanded}
+          onClose={() => setFiltersExpanded(false)}
+          t={(k) => t(k)}
+          outfitGender={outfitGender}
+          setOutfitGender={setOutfitGender}
+          outfitTag={outfitTag}
+          setOutfitTag={setOutfitTag}
+          outfitFit={outfitFit}
+          setOutfitFit={setOutfitFit}
+          outfitColor={outfitColor}
+          setOutfitColor={setOutfitColor}
+          outfitElement={outfitElement}
+          setOutfitElement={setOutfitElement}
+          lowestPrice={lowestPrice}
+          setLowestPrice={setLowestPrice}
+          highestPrice={highestPrice}
+          setHighestPrice={setHighestPrice}
+          currency={currency}
+          setCurrency={setCurrency}
         />
       </View>
-    </View>
+    </>
   );
 }
