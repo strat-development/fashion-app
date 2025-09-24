@@ -20,6 +20,65 @@ function extractImageDescriptions(raw: string): string[] {
   return matches ? matches.map(m => m.replace(/\[IMAGE:\s*|\]/gi, '').trim()) : [];
 }
 
+function extractLinks(text: string): Array<{ text: string; url: string; start: number; end: number }> {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const links: Array<{ text: string; url: string; start: number; end: number }> = [];
+  let match;
+  
+  while ((match = urlRegex.exec(text)) !== null) {
+    links.push({
+      text: match[1],
+      url: match[1],
+      start: match.index,
+      end: match.index + match[0].length
+    });
+  }
+  
+  return links;
+}
+
+function LinkText({ text, links }: { text: string; links: Array<{ text: string; url: string; start: number; end: number }> }) {
+  if (links.length === 0) {
+    return <Text className='text-gray-100 leading-6'>{text}</Text>;
+  }
+
+  const parts: Array<{ text: string; isLink: boolean; url?: string }> = [];
+  let lastIndex = 0;
+
+  links.forEach((link) => {
+    // Add text before the link
+    if (link.start > lastIndex) {
+      parts.push({ text: text.slice(lastIndex, link.start), isLink: false });
+    }
+    // Add the link
+    parts.push({ text: link.text, isLink: true, url: link.url });
+    lastIndex = link.end;
+  });
+
+  // Add remaining text
+  if (lastIndex < text.length) {
+    parts.push({ text: text.slice(lastIndex), isLink: false });
+  }
+
+  return (
+    <Text className='text-gray-100 leading-6'>
+      {parts.map((part, index) => 
+        part.isLink ? (
+          <Text
+            key={index}
+            className='text-blue-400 underline'
+            onPress={() => Linking.openURL(part.url!)}
+          >
+            {part.text}
+          </Text>
+        ) : (
+          <Text key={index}>{part.text}</Text>
+        )
+      )}
+    </Text>
+  );
+}
+
 function WebImageCard({ query, id }: { query: string; id: string }) {
   const [img, setImg] = useState<ImageResult>(null);
   const [loading, setLoading] = useState(true);
@@ -32,8 +91,9 @@ function WebImageCard({ query, id }: { query: string; id: string }) {
     (async () => {
       try {
         setLoading(true);
-        const [first] = await searchImages({ queries: [query] });
-        if (first && first?.url) setImg(first); else setError(true);
+        const results = await searchImages({ queries: [query] });
+        const firstValid = (results || []).find((r) => r && (r as any).url);
+        if (firstValid && (firstValid as any).url) setImg(firstValid); else setError(true);
       } catch {
         setError(true);
       } finally {
@@ -43,26 +103,47 @@ function WebImageCard({ query, id }: { query: string; id: string }) {
   }, [query, id]);
 
   if (loading) return (
-    <View className='bg-gray-800/30 border border-gray-700 rounded-xl p-3 w-[150px] h-[200px] relative overflow-hidden'>
+    <View className='bg-gray-800/30 border border-gray-700 rounded-xl p-3 w-[180px] h-[240px] relative overflow-hidden'>
       <ParticleLoader />
     </View>
   );
   if (error || !img?.url) return (
-    <View className='bg-gray-800/30 border border-gray-700 rounded-xl p-3 w-[150px] h-[200px] items-center justify-center'>
-      <Text className='text-gray-400 text-xs text-center'>No image</Text>
+    <View className='bg-gray-800/30 border border-gray-700 rounded-xl p-3 w-[180px] h-[240px] items-center justify-center'>
+      <Text className='text-gray-400 text-xs text-center'>No image found</Text>
     </View>
   );
   return (
-    <Pressable onPress={() => { if (img?.pageUrl) Linking.openURL(img.pageUrl); }} className='bg-gray-800/30 border border-gray-700 rounded-xl p-3 w-[150px] h-[200px]'>
-      <View className='relative'>
-        <Image source={{ uri: img.url as string }} className='w-full h-32 rounded-lg mb-2' resizeMode='cover' />
+    <Pressable 
+      onPress={() => { if (img?.pageUrl) Linking.openURL(img.pageUrl); }} 
+      className='bg-gray-800/30 border border-gray-700 rounded-xl p-3 w-[180px] h-[240px] active:bg-gray-700/30'
+    >
+      <View className='relative flex-1'>
+        <Image 
+          source={{ uri: img.url as string }} 
+          className='w-full h-36 rounded-lg mb-2' 
+          resizeMode='cover' 
+        />
         {!!img?.source && (
-          <View className='absolute top-1 right-1 bg-black/60 px-2 py-0.5 rounded-full border border-white/10'>
-            <Text className='text-[10px] text-gray-200' numberOfLines={1}>{img.source}</Text>
+          <View className='absolute top-1 right-1 bg-black/70 px-2 py-1 rounded-full border border-white/20'>
+            <Text className='text-[10px] text-white font-medium' numberOfLines={1}>{img.source}</Text>
           </View>
         )}
       </View>
-      <Text className='text-gray-300 text-xs text-center' numberOfLines={2}>{query}</Text>
+      
+      <View className='flex-1 justify-between'>
+        <Text className='text-gray-200 text-xs font-medium mb-1' numberOfLines={2}>
+          {img?.title || query}
+        </Text>
+        
+        {img?.pageUrl && (
+          <View className='flex-row items-center justify-between'>
+            <Text className='text-blue-400 text-[10px] font-medium' numberOfLines={1}>
+              View Product
+            </Text>
+            <Text className='text-gray-400 text-[10px]'>→</Text>
+          </View>
+        )}
+      </View>
     </Pressable>
   );
 }
@@ -108,24 +189,42 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
               </View>
               
               {/* Message Content */}
-              <View className={`${m.role === 'user' ? 'bg-blue-500/20' : 'bg-gray-800/50'} border ${m.role === 'user' ? 'border-blue-500/30' : 'border-gray-700'} backdrop-blur-sm px-4 py-3 rounded-2xl`}>
+              <View className={`${m.role === 'user' ? 'bg-blue-500/15' : 'bg-gray-800/60'} border ${m.role === 'user' ? 'border-blue-500/30' : 'border-gray-700'} backdrop-blur-sm px-4 py-3 rounded-2xl`}>
                 {m.role === 'assistant' ? (
-                  <TypingEffect 
-                    text={getCleanAssistantText(cleanContent)}
-                    speed={20}
-                    isStreaming={isStreaming}
-                    style={{ color: '#F3F4F6', lineHeight: 24 }}
-                  />
+                  <View>
+                    {isStreaming ? (
+                      <TypingEffect 
+                        text={getCleanAssistantText(cleanContent)}
+                        speed={18}
+                        isStreaming={isStreaming}
+                        style={{ color: '#F3F4F6', lineHeight: 24 }}
+                      />
+                    ) : (
+                      <View>
+                        {/* Headings */}
+                        <Text className='text-gray-100 text-base font-semibold mb-2'>
+                          {(() => {
+                            const firstLine = getCleanAssistantText(cleanContent).split('\n')[0] || '';
+                            return firstLine.length < 120 ? firstLine : 'Recommendation';
+                          })()}
+                        </Text>
+                        {/* Body with clickable links */}
+                        <LinkText text={getCleanAssistantText(cleanContent)} links={extractLinks(getCleanAssistantText(cleanContent))} />
+                        {/* Bullet spacing (simple visual gap) */}
+                        <View className='mt-2' />
+                      </View>
+                    )}
+                  </View>
                 ) : (
-                  <Text className='text-gray-100 leading-6'>{cleanContent}</Text>
+                  <LinkText text={cleanContent} links={extractLinks(cleanContent)} />
                 )}
               </View>
               
               {/* Web image gallery (no generation) */}
               {m.role === 'assistant' && imageQueries.length > 0 && (
-                <View className='mt-3 flex-row flex-wrap gap-2'>
+                <View className='mt-3 flex-row flex-wrap gap-3'>
                   {imageQueries.map((q, idx) => (
-                    <View key={`${m.id}-${idx}`} className='w-[150px]'>
+                    <View key={`${m.id}-${idx}`} className='w-[180px]'>
                       <WebImageCard query={q} id={`${m.id}-${idx}`} />
                     </View>
                   ))}

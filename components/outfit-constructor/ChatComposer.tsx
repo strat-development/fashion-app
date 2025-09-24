@@ -5,11 +5,12 @@ type ChatComposerProps = {
   value: string;
   onChange: (v: string) => void;
   onSend: () => void;
+  onStop?: () => void;
   sending: boolean;
   placeholder: string;
 };
 
-export const ChatComposer = ({ value, onChange, onSend, sending, placeholder }: ChatComposerProps) => {
+export const ChatComposer = ({ value, onChange, onSend, onStop, sending, placeholder }: ChatComposerProps) => {
   return (
     <View className='w-full mb-16'>
       <View className='flex-row items-end gap-3'>
@@ -26,18 +27,28 @@ export const ChatComposer = ({ value, onChange, onSend, sending, placeholder }: 
             style={{ minHeight: 48, maxHeight: 120 }}
           />
         </View>
-        <Button 
-          onPress={onSend} 
-          action='primary' 
-          variant='solid' 
-          size='lg' 
-          className='bg-blue-600 hover:bg-blue-700 border-0 rounded-2xl px-6 h-12'
-          disabled={sending || !value.trim()}
-        >
-          <ButtonText className='text-white font-medium'>
-            {sending ? '...' : 'Send'}
-          </ButtonText>
-        </Button>
+        {sending ? (
+          <Button
+            onPress={onStop}
+            action='primary'
+            variant='outline'
+            size='lg'
+            className='border border-red-500 rounded-2xl px-6 h-12'
+          >
+            <ButtonText className='text-red-400 font-medium'>Stop</ButtonText>
+          </Button>
+        ) : (
+          <Button 
+            onPress={onSend} 
+            action='primary' 
+            variant='solid' 
+            size='lg' 
+            className='bg-blue-600 hover:bg-blue-700 border-0 rounded-2xl px-6 h-12'
+            disabled={!value.trim()}
+          >
+            <ButtonText className='text-white font-medium'>Send</ButtonText>
+          </Button>
+        )}
       </View>
     </View>
   );

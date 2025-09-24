@@ -501,14 +501,26 @@
       "business": "Business",
       "party": "Party",
       "beach": "Beach",
-      "office": "Office"
+      "office": "Office",
+      "old money": "Old Money",
+      "athleisure": "Athleisure",
+      "minimalist": "Minimalist",
+      "gothic": "Gothic",
+      "preppy": "Preppy",
+      "punk": "Punk",
+      "grunge": "Grunge"
     },
     "fits": {
       "slim": "Slim",
       "regular": "Regular",
       "relaxed": "Relaxed",
       "oversized": "Oversized",
-      "tailored": "Tailored"
+      "tailored": "Tailored",
+      "slim fit": "Slim Fit",
+      "regular fit": "Regular Fit",
+      "relaxed fit": "Relaxed Fit",
+      "loose fit": "Loose Fit",
+      "oversized fit": "Oversized Fit"
     },
     "colors": {
       "black": "Black",
@@ -532,7 +544,13 @@
       "hat": "Hat",
       "belt": "Belt",
       "watch": "Watch",
-      "bag": "Bag"
+      "bag": "Bag",
+      "top": "Top",
+      "bottom": "Bottom",
+      "footwear": "Footwear",
+      "accessories": "Accessories",
+      "outerwear": "Outerwear",
+      "headwear": "Headwear"
     },
     "currencies": {
       "usd": "USD ($)",
@@ -541,7 +559,11 @@
       "jpy": "JPY (¥)",
       "aud": "AUD (A$)",
       "cad": "CAD (C$)"
-    }
+    },
+    "conversations": "Conversations",
+    "newChat": "New chat",
+    "showFilters": "Show filters",
+    "hideFilters": "Hide filters"
   },
   "chatSwitch": {
     "ai": "AI",

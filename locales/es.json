@@ -501,14 +501,26 @@
       "business": "Negocios",
       "party": "Fiesta",
       "beach": "Playa",
-      "office": "Oficina"
+      "office": "Oficina",
+      "old money": "Old Money",
+      "athleisure": "Athleisure",
+      "minimalist": "Minimalista",
+      "gothic": "Gótico",
+      "preppy": "Preppy",
+      "punk": "Punk",
+      "grunge": "Grunge"
     },
     "fits": {
       "slim": "Ajustado",
       "regular": "Regular",
       "relaxed": "Relajado",
       "oversized": "Extragrande",
-      "tailored": "A medida"
+      "tailored": "A medida",
+      "slim fit": "Ajuste slim",
+      "regular fit": "Ajuste regular",
+      "relaxed fit": "Ajuste relajado",
+      "loose fit": "Ajuste suelto",
+      "oversized fit": "Ajuste extragrande"
     },
     "colors": {
       "black": "Negro",
@@ -532,7 +544,13 @@
       "hat": "Sombrero",
       "belt": "Cinturón",
       "watch": "Reloj",
-      "bag": "Bolso"
+      "bag": "Bolso",
+      "top": "Parte superior",
+      "bottom": "Parte inferior",
+      "footwear": "Calzado",
+      "accessories": "Accesorios",
+      "outerwear": "Prendas exteriores",
+      "headwear": "Sombrerería"
     },
     "currencies": {
       "usd": "USD ($)",
@@ -541,7 +559,11 @@
       "jpy": "JPY (¥)",
       "aud": "AUD (A$)",
       "cad": "CAD (C$)"
-    }
+    },
+    "conversations": "Conversaciones",
+    "newChat": "Nuevo chat",
+    "showFilters": "Mostrar filtros",
+    "hideFilters": "Ocultar filtros"
   },
   "chatSwitch": {
     "ai": "IA",
