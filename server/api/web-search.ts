@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 type Body = { query: string; num?: number; gl?: string; hl?: string };
 
-const SERPER_API_KEY = process.env.SERPER_API_KEY || '';
+const SERPER_API_KEY = process.env.EXPO_PUBLIC_SERPER_API_KEY || '';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');

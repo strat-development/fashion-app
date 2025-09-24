@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase';
 import { useUserContext } from '@/providers/userContext';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { ChatComposer } from './ChatComposer';
 import { ChatHeader } from './ChatHeader';
 import { ChatMessages } from './ChatMessages';
@@ -31,6 +31,7 @@ export const ChatSection = () => {
   const [conversationList, setConversationList] = useState<Array<{ id: string; title: string; created_at: string }>>([]);
   const [filtersExpanded, setFiltersExpanded] = useState<boolean>(false);
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
+  const abortRef = useRef<AbortController | null>(null);
 
   function getCleanAssistantText(text: string) {
     let cleaned = text.replace(/```[\s\S]*?```/g, '').trim();
@@ -68,7 +69,7 @@ export const ChatSection = () => {
       `5. Occasion-appropriate styling notes`,
       `6. Provide concise, readable tips without extra JSON or code blocks.`,
       `For each clothing item you recommend, append a bracketed marker like [IMAGE: concise search query] that captures the item (brand-neutral). Keep it short and specific (e.g., "white canvas slip-on sneakers minimal" or "beige linen shorts tailored").`,
-      `End with a short section titled Helpful links listing 3-6 reputable brand or style-guide URLs relevant to your advice (format: Name - https://example.com). Avoid placeholders.`,
+      `End with a short section titled "Helpful links" listing 3-6 reputable brand or style-guide URLs relevant to your advice. Use real URLs from major retailers like Amazon, ASOS, Uniqlo, Zara, Nike, Adidas, H&M, etc. Format as: Brand Name - https://real-url.com.`,
       `Focus on timeless principles, versatility, and helping users understand the "why" behind each choice.`,
       `Be encouraging and educational in your tone.`,
       `Do not explain the [IMAGE: ...] markers; they are for internal use and will not be shown to the user.`,
@@ -79,7 +80,8 @@ export const ChatSection = () => {
 
     if (conversationId) return conversationId;
 
-    const title = `Outfit AI - ${new Date().toISOString()}`;
+    const dt = new Date();
+    const title = `Outfit AI - ${dt.toLocaleDateString()} ${dt.toLocaleTimeString()}`;
 
     try {
       const { data, error } = await (supabase as any)
@@ -147,8 +149,10 @@ export const ChatSection = () => {
         },
       ];
 
+      abortRef.current?.abort();
+      abortRef.current = new AbortController();
       const pre = await (openAiClient as any).chat.completions.create({
-        model: 'gpt-4o-mini',
+        model: 'gpt-5',
         messages: [
           { role: 'system', content: systemPrompt },
           ...history,
@@ -158,6 +162,7 @@ export const ChatSection = () => {
         tool_choice: 'auto',
         temperature: 0.7,
         stream: false,
+        signal: (abortRef.current as any)?.signal,
       });
 
       const preChoice = pre.choices?.[0];
@@ -174,7 +179,7 @@ export const ChatSection = () => {
         for (const call of toolCalls) {
           if (call.type === 'function' && call.function?.name === 'web_search') {
             let args: any = {};
-            try { args = JSON.parse(call.function.arguments || '{}'); } catch {}
+            try { args = JSON.parse(call.function.arguments || '{}'); } catch { }
             const q = String(args.query || userText);
             const num = Number(args.num || 5);
             const results = await webSearch(q, num);
@@ -197,11 +202,14 @@ export const ChatSection = () => {
       }
 
       // 2) Final streaming answer with tool results in context (if any)
+      abortRef.current?.abort();
+      abortRef.current = new AbortController();
       const finalStream = await (openAiClient as any).chat.completions.create({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4o',
         messages: workingMessages,
         temperature: 0.7,
         stream: true,
+        signal: (abortRef.current as any)?.signal,
       });
 
       let assembled = '';
@@ -252,6 +260,12 @@ export const ChatSection = () => {
     }
   }
 
+  function handleStop() {
+    try { abortRef.current?.abort(); } catch { }
+    setIsStreaming(false);
+    setSending(false);
+  }
+
 
   useEffect(() => {
     if (!conversationId) return;
@@ -279,9 +293,10 @@ export const ChatSection = () => {
 
   return (
     <>
-      <ChatSwitch />
+
 
       <View className='flex-1 bg-gray-900'>
+        <ChatSwitch />
         {/* Header Section - Fixed at top */}
         <View className='bg-gray-900/95 backdrop-blur-xl border-b border-gray-800 px-4 py-3 z-10'>
 
@@ -306,25 +321,28 @@ export const ChatSection = () => {
 
         {/* Conversations List - Overlay */}
         {conversationList.length > 0 && (
-          <View className='absolute top-32 left-4 right-4 z-50 bg-gray-800/95 backdrop-blur-xl border border-gray-700 rounded-2xl p-4 shadow-2xl'>
-            <Text className='text-white text-sm font-medium mb-3'>Recent Conversations</Text>
-            {conversationList.map((c) => (
-              <Button key={c.id} variant='link' action='primary' size='sm' className='justify-start mb-2' onPress={async () => {
-                setConversationId(c.id);
-                try {
-                  const { data } = await (supabase as any)
-                    .from('ai_messages')
-                    .select('id,role,content,created_at')
-                    .eq('conversation_id', c.id)
-                    .order('created_at', { ascending: true });
-                  const mapped = (data || []).map((m: any) => ({ id: m.id, role: m.role, content: m.content, created_at: m.created_at }));
-                  setMessages(mapped);
-                } catch { }
-                setConversationList([]);
-              }}>
-                <ButtonText className='text-gray-300 text-left'>{c.title || c.id}</ButtonText>
-              </Button>
-            ))}
+          <View className='absolute inset-0 z-50'>
+            <Pressable className='absolute inset-0 bg-black/40' onPress={() => setConversationList([])} />
+            <View className='absolute top-32 left-4 right-4 bg-gray-800/95 backdrop-blur-xl border border-gray-700 rounded-2xl p-4 shadow-2xl'>
+              <Text className='text-white text-sm font-medium mb-3'>Recent Conversations</Text>
+              {conversationList.map((c) => (
+                <Button key={c.id} variant='link' action='primary' size='sm' className='justify-start mb-2' onPress={async () => {
+                  setConversationId(c.id);
+                  try {
+                    const { data } = await (supabase as any)
+                      .from('ai_messages')
+                      .select('id,role,content,created_at')
+                      .eq('conversation_id', c.id)
+                      .order('created_at', { ascending: true });
+                    const mapped = (data || []).map((m: any) => ({ id: m.id, role: m.role, content: m.content, created_at: m.created_at }));
+                    setMessages(mapped);
+                  } catch { }
+                  setConversationList([]);
+                }}>
+                  <ButtonText className='text-gray-300 text-left'>{c.title || c.id}</ButtonText>
+                </Button>
+              ))}
+            </View>
           </View>
         )}
 
@@ -345,6 +363,7 @@ export const ChatSection = () => {
             value={searchQuery}
             onChange={setSearchQuery}
             onSend={handleSend}
+            onStop={handleStop}
             sending={sending}
             placeholder={t('chatSection.placeholders.outfitDescription')}
           />

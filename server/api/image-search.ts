@@ -1,9 +1,12 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+// Minimal types to avoid external type deps in serverless runtime
+type VercelRequest = any;
+type VercelResponse = any;
 
 type SearchedImage = { url: string; title?: string; source?: string; pageUrl?: string };
 type Body = { queries: string[]; gl?: string; hl?: string };
 
-const SERPER_API_KEY = process.env.SERPER_API_KEY || '';
+// Accept either server-only or client-exposed var names
+const SERPER_API_KEY = process.env.SERPER_API_KEY || process.env.EXPO_PUBLIC_SERPER_API_KEY || '';
 
 const ALLOWED = [/amazon\./, /asos\./, /uniqlo\./, /zara\./, /nike\./, /adidas\./, /hm\.com/];
 const PRODUCT_PATTERNS = [
@@ -54,7 +57,11 @@ async function searchSerper(q: string, gl='us', hl='en', num=10) {
     headers: { 'X-API-KEY': SERPER_API_KEY, 'Content-Type': 'application/json' },
     body: JSON.stringify({ q, gl, hl, num }),
   });
-  if (!r.ok) return [] as Array<any>;
+  if (!r.ok) {
+    const text = await r.text().catch(() => '');
+    console.error('Serper /search error', r.status, text);
+    return [] as Array<any>;
+  }
   const data = await r.json();
   return (data?.organic || []) as Array<any>;
 }
@@ -66,7 +73,11 @@ async function imagesSerper(q: string, gl='us', hl='en', num=10) {
     headers: { 'X-API-KEY': SERPER_API_KEY, 'Content-Type': 'application/json' },
     body: JSON.stringify({ q, gl, hl, num }),
   });
-  if (!r.ok) return [] as Array<any>;
+  if (!r.ok) {
+    const text = await r.text().catch(() => '');
+    console.error('Serper /images error', r.status, text);
+    return [] as Array<any>;
+  }
   const data = await r.json();
   return (data?.images || []) as Array<any>;
 }
@@ -102,34 +113,73 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
 
   try {
-    const body = (req.body || {}) as Body;
-    const queries = Array.isArray(body.queries) ? body.queries : [];
+    if (!SERPER_API_KEY) {
+      return res.status(401).json({ items: [], error: 'Missing SERPER_API_KEY' });
+    }
+    let body = (req.body || {}) as Body | string;
+    if (typeof body === 'string') {
+      try { body = JSON.parse(body) as Body; } catch { body = {} as Body; }
+    }
+    const b = (body || {}) as Body;
+    const queries = Array.isArray(b.queries) ? b.queries : [];
     if (!queries.length) return res.status(200).json({ items: [] });
 
-    const gl = body.gl ?? 'us';
-    const hl = body.hl ?? 'en';
+    const gl = b.gl ?? 'us';
+    const hl = b.hl ?? 'en';
 
     const results = await Promise.all(
       queries.map(async (q) => {
-        // 1) Try image search first for a quick, durable image URL
-        const imgResults = await imagesSerper(q, gl, hl, 10);
-        const firstImg = imgResults.find((it: any) => it?.imageUrl || it?.thumbnailUrl);
-        if (firstImg) {
-          return {
-            url: firstImg.imageUrl || firstImg.thumbnailUrl,
-            title: firstImg.title,
-            source: firstImg.source,
-            pageUrl: firstImg.link,
-          } as SearchedImage;
+        try {
+          // 1) Try image search first for a quick, durable image URL
+          const imgResults = await imagesSerper(q, gl, hl, 10);
+          console.log(`Image search results for "${q}":`, imgResults.length);
+          
+          const firstImg = imgResults.find((it: any) => it?.imageUrl || it?.thumbnailUrl);
+          if (firstImg) {
+            console.log(`Found image for "${q}":`, firstImg.imageUrl || firstImg.thumbnailUrl);
+            return {
+              url: firstImg.imageUrl || firstImg.thumbnailUrl,
+              title: firstImg.title || q,
+              source: firstImg.source || 'Web',
+              pageUrl: firstImg.link || firstImg.imageUrl || firstImg.thumbnailUrl,
+            } as SearchedImage;
+          }
+          
+          // 2) Fallback to product-page search with OG extraction
+          console.log(`Trying product search for "${q}"`);
+          const productResult = await findProductImageForQuery(q, gl, hl);
+          if (productResult) {
+            console.log(`Found product for "${q}":`, productResult.url);
+            return productResult;
+          }
+          
+          // 3) Last resort: return a generic image search result
+          if (imgResults.length > 0) {
+            const anyImg = imgResults[0];
+            console.log(`Using any image for "${q}":`, anyImg.imageUrl || anyImg.thumbnailUrl);
+            return {
+              url: anyImg.imageUrl || anyImg.thumbnailUrl || anyImg.url,
+              title: anyImg.title || q,
+              source: anyImg.source || 'Web',
+              pageUrl: anyImg.link || anyImg.imageUrl || anyImg.thumbnailUrl || anyImg.url,
+            } as SearchedImage;
+          }
+          
+          console.log(`No images found for "${q}"`);
+          return null;
+        } catch (error) {
+          console.error(`Error searching for "${q}":`, error);
+          return null;
         }
-        // 2) Fallback to product-page search with OG extraction
-        return await findProductImageForQuery(q, gl, hl);
       })
     );
 
     // Never return null entries
-    const filtered = results.filter((x): x is SearchedImage => !!(x && x.url));
-    
+    const filtered = results.filter((x): x is SearchedImage => !!(x && (x as any).url));
+    if (!filtered.length) {
+      // Return explicit empty array rather than [null]
+      return res.status(200).json({ items: [] });
+    }
     return res.status(200).json({ items: filtered });
   } catch {
     return res.status(200).json({ items: [] });

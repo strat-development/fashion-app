@@ -3,7 +3,7 @@ import { Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragI
 import { Currencies, OutfitColors, OutfitElements, OutfitFit, OutfitGender, OutfitStylesTags } from '@/consts/chatFilterConsts';
 import { CheckBox } from '@rneui/themed';
 import { ChevronDown, ChevronUp } from 'lucide-react-native';
-import { Text, TextInput, View } from 'react-native';
+import { ScrollView, Text, TextInput, View } from 'react-native';
 
 type FiltersOverlayProps = {
   visible: boolean;
@@ -32,8 +32,9 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
   if (!visible) return null;
   return (
     <View className='absolute inset-0 bg-black/50 backdrop-blur-md z-30 items-center'>
-      <View className='w-[95vw] mt-32 mb-24'>
-        <Accordion variant='filled' type='multiple' className='w-full bg-transparent'>
+      <View className='w-[95vw] mt-32 mb-4 flex-1'>
+        <ScrollView className='flex-1' contentContainerStyle={{ paddingBottom: 16 }} showsVerticalScrollIndicator={false}>
+          <Accordion variant='filled' type='multiple' className='w-full bg-transparent'>
           <AccordionItem className='w-full' value='gender'>
             <AccordionTrigger>
               {({ isExpanded }: { isExpanded: boolean }) => (
@@ -226,9 +227,10 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
               </Select>
             </AccordionContent>
           </AccordionItem>
-        </Accordion>
+          </Accordion>
+        </ScrollView>
       </View>
-      <View className='w-[95vw] mb-4'>
+      <View className='w-[95vw] mb-24'>
         <View className='bg-white/10 border border-white/10 rounded-xl p-3 items-center'>
           <Text className='text-white' onPress={onClose}>Close</Text>
         </View>
