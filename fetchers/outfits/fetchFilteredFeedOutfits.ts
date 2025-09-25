@@ -31,9 +31,8 @@ export const useFetchFilteredFeedOutfits = (
       } else if (filters.search.trim()) {
         query = query.or(`outfit_name.ilike.%${filters.search}%,description.ilike.%${filters.search}%`);
       } else if (filters.tags.length > 0) {
-        console.log('Filtering by tags only:', filters.tags);
         const tagConditions = filters.tags.map(tag => `outfit_tags.cs.["${tag}"]`);
-        console.log('Tag conditions:', tagConditions);
+        
         query = query.or(tagConditions.join(','));
       }
 

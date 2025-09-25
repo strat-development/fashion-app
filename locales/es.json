@@ -471,6 +471,7 @@
     }
   },
   "chatSection": {
+    "promptPrefix": "Quiero que me ayudes a crear un conjunto con los siguientes criterios:",
     "selectGender": "Seleccionar género",
     "selectOutfitStyles": "Seleccionar estilos de conjunto",
     "selectFit": "Seleccionar ajuste",
@@ -508,7 +509,21 @@
       "gothic": "Gótico",
       "preppy": "Preppy",
       "punk": "Punk",
-      "grunge": "Grunge"
+      "grunge": "Grunge",
+      "smart casual": "Smart casual",
+      "business casual": "Negocios casual",
+      "chic": "Chic",
+      "resort": "Resort",
+      "cottagecore": "Cottagecore",
+      "normcore": "Normcore",
+      "techwear": "Techwear",
+      "avant-garde": "Avant-garde",
+      "monochrome": "Monocromo",
+      "color blocking": "Bloques de color",
+      "safari": "Safari",
+      "retro": "Retro",
+      "y2k": "Y2K",
+      "maximalist": "Maximalista"
     },
     "fits": {
       "slim": "Ajustado",
@@ -520,7 +535,12 @@
       "regular fit": "Ajuste regular",
       "relaxed fit": "Ajuste relajado",
       "loose fit": "Ajuste suelto",
-      "oversized fit": "Ajuste extragrande"
+      "oversized fit": "Ajuste extragrande",
+      "tailored fit": "Corte sastre",
+      "athletic fit": "Ajuste atlético",
+      "tapered fit": "Corte entallado",
+      "boxy fit": "Corte squadrato",
+      "straight fit": "Corte recto"
     },
     "colors": {
       "black": "Negro",
@@ -532,7 +552,21 @@
       "purple": "Púrpura",
       "pink": "Rosa",
       "gray": "Gris",
-      "brown": "Marrón"
+      "brown": "Marrón",
+      "orange": "Naranja",
+      "navy": "Azul marino",
+      "beige": "Beige",
+      "olive": "Oliva",
+      "teal": "Verde azulado",
+      "burgundy": "Burdeos",
+      "cream": "Crema",
+      "camel": "Camello",
+      "charcoal": "Carbón",
+      "off white": "Blanco roto",
+      "pastel pink": "Rosa pastel",
+      "pastel blue": "Azul pastel",
+      "pastel green": "Verde pastel",
+      "pastel yellow": "Amarillo pastel"
     },
     "elements": {
       "shirt": "Camisa",
@@ -550,7 +584,12 @@
       "footwear": "Calzado",
       "accessories": "Accesorios",
       "outerwear": "Prendas exteriores",
-      "headwear": "Sombrerería"
+      "headwear": "Sombrerería",
+      "eyewear": "Gafas",
+      "jewelry": "Joyería",
+      "scarf": "Bufanda",
+      "gloves": "Guantes",
+      "socks": "Calcetines"
     },
     "currencies": {
       "usd": "USD ($)",

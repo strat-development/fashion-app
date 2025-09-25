@@ -43,9 +43,7 @@ export const useEditProfileMutation = (userId: string) => {
                 throw error;
             }
 
-            console.log('Profile updated successfully:', data);
             return data;
-
         },
         onSuccess: () => {
             queryClient.invalidateQueries({

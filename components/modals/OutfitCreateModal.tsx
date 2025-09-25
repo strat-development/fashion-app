@@ -378,19 +378,22 @@ export const OutfitCreateModal = ({
               <View className="mb-6">
                 <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>{t('outfitCreateModal.styleTags')}</Text>
                 <View className="flex-row flex-wrap">
-                  {OutfitStylesTags.map((style) => (
-                    <Pressable
-                      key={style.name}
-                      onPress={() => toggleTag(style.name)}
-                      className={`px-3 py-2 rounded-full mr-2 mb-2 border overflow-hidden`}
-                      style={{ backgroundColor: outfitTags.includes(style.name) ? 'transparent' : colors.surfaceVariant, borderColor: outfitTags.includes(style.name) ? 'transparent' : colors.borderVariant }}
-                    >
-                      {outfitTags.includes(style.name) && (
-                        <ThemedGradient style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
-                      )}
-                      <Text className="text-sm" style={{ color: outfitTags.includes(style.name) ? colors.white : colors.text }}>{style.name}</Text>
-                    </Pressable>
-                  ))}
+                  {OutfitStylesTags.map((style) => {
+                    const selected = outfitTags.includes(style.name);
+                    return (
+                      <Pressable
+                        key={style.name}
+                        onPress={() => toggleTag(style.name)}
+                        className={`px-3 py-1.5 rounded-full mr-2 mb-2 border`}
+                        style={{
+                          backgroundColor: selected ? 'rgba(168,85,247,0.15)' : 'rgba(255,255,255,0.05)',
+                          borderColor: selected ? '#A855F7' : colors.borderVariant,
+                        }}
+                      >
+                        <Text className="text-xs" style={{ color: selected ? colors.white : '#D1D5DB' }}>{style.name}</Text>
+                      </Pressable>
+                    );
+                  })}
                   {errors.outfit_tags && (
                     <Text className="text-xs w-full" style={{ color: colors.error }}>
                       {t('outfitCreateModal.errors.styleTagsRequired')}
@@ -410,7 +413,7 @@ export const OutfitCreateModal = ({
         animationType="fade"
         transparent={true}
       >
-        <View className="flex-1 justify-center items-center px-4" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+        <View className="flex-1 justify-center items-center px-4 backdrop-blur-lg" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <View className="rounded-2xl p-4 w-full" style={{ backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border }}>
             <View className="flex-row items-center justify-between mb-4">
               <Pressable onPress={() => {

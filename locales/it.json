@@ -471,6 +471,7 @@
     }
   },
   "chatSection": {
+    "promptPrefix": "Vorrei che mi aiutassi a creare un outfit secondo questi criteri:",
     "selectGender": "Seleziona genere",
     "selectOutfitStyles": "Seleziona stili outfit",
     "selectFit": "Seleziona vestibilità",
@@ -508,7 +509,21 @@
       "gothic": "Gotico",
       "preppy": "Preppy",
       "punk": "Punk",
-      "grunge": "Grunge"
+      "grunge": "Grunge",
+      "smart casual": "Smart Casual",
+      "business casual": "Business Casual",
+      "chic": "Chic",
+      "resort": "Resort",
+      "cottagecore": "Cottagecore",
+      "normcore": "Normcore",
+      "techwear": "Techwear",
+      "avant-garde": "Avanguardia",
+      "monochrome": "Monocromatico",
+      "color blocking": "Color Blocking",
+      "safari": "Safari",
+      "retro": "Retrò",
+      "y2k": "Y2K",
+      "maximalist": "Massimalista"
     },
     "fits": {
       "slim": "Slim",
@@ -520,7 +535,12 @@
       "regular fit": "Regular Fit",
       "relaxed fit": "Relaxed Fit",
       "loose fit": "Loose Fit",
-      "oversized fit": "Oversized Fit"
+      "oversized fit": "Oversized Fit",
+      "tailored fit": "Tailored Fit",
+      "athletic fit": "Athletic Fit",
+      "tapered fit": "Tapered Fit",
+      "boxy fit": "Boxy Fit",
+      "straight fit": "Straight Fit"
     },
     "colors": {
       "black": "Nero",
@@ -532,7 +552,21 @@
       "purple": "Viola",
       "pink": "Rosa",
       "gray": "Grigio",
-      "brown": "Marrone"
+      "brown": "Marrone",
+      "orange": "Arancione",
+      "navy": "Blu navy",
+      "beige": "Beige",
+      "olive": "Oliva",
+      "teal": "Verde acqua",
+      "burgundy": "Borgogna",
+      "cream": "Crema",
+      "camel": "Cammello",
+      "charcoal": "Antracite",
+      "off white": "Bianco sporco",
+      "pastel pink": "Rosa pastello",
+      "pastel blue": "Azzurro pastello",
+      "pastel green": "Verde pastello",
+      "pastel yellow": "Giallo pastello"
     },
     "elements": {
       "shirt": "Camicia",
@@ -550,7 +584,12 @@
       "footwear": "Calzature",
       "accessories": "Accessori",
       "outerwear": "Capi spalla",
-      "headwear": "Copricapo"
+      "headwear": "Copricapo",
+      "eyewear": "Occhiali",
+      "jewelry": "Gioielli",
+      "scarf": "Sciarpa",
+      "gloves": "Guanti",
+      "socks": "Calzini"
     },
     "currencies": {
       "usd": "USD ($)",

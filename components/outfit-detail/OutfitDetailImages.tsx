@@ -39,9 +39,6 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
         return;
       }
 
-      console.log("Preferred currency:", preferredCurrency);
-      console.log("Elements data:", JSON.stringify(elementsData));
-
       const newConvertedPrices = await Promise.all(
         elementsData.map(async (element, index) => {
           if (!element.price || !element.currency || element.currency.toUpperCase() === preferredCurrency.toUpperCase()) {
@@ -62,16 +59,12 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
           if (exchangeRateCache[cacheKey]) {
             const converted = element.price * exchangeRateCache[cacheKey];
 
-            console.log(`Cache hit for ${cacheKey}: rate=${exchangeRateCache[cacheKey]}, original=${element.price}, converted=${converted}`);
-
             return Number(converted.toFixed(2));
           }
 
           try {
             const fromCurrencyLower = elementCurrency.toLowerCase();
             const toCurrencyLower = preferredCurrencyUpper.toLowerCase();
-
-            console.log(`Fetching conversion rate: ${elementCurrency} to ${preferredCurrencyUpper}`);
 
             const response = await fetch(
               `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${fromCurrencyLower}.min.json`
@@ -83,8 +76,6 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
               exchangeRateCache[cacheKey] = rate;
 
               const converted = element.price * rate;
-
-              console.log(`Conversion success: ${cacheKey}, rate=${rate}, converted=${converted}`);
 
               return Number(converted.toFixed(2));
             } else {
@@ -100,7 +91,6 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
         })
       );
 
-      console.log("Converted prices:", newConvertedPrices);
       setConvertedPrices(newConvertedPrices);
     };
 
