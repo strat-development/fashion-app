@@ -1,4 +1,3 @@
-import { Button, ButtonText } from '@/components/ui/button';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { Send, Square } from 'lucide-react-native';
 import { Pressable, TextInput, View } from 'react-native';
