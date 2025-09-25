@@ -1,6 +1,7 @@
 import { ParticleLoader } from '@/components/ui/ParticleLoader';
 import { TypingEffect } from '@/components/ui/TypingEffect';
 import { ImageResult, searchImages } from '@/fetchers/searchImages';
+import { useTheme } from '@/providers/themeContext';
 import { useEffect, useRef, useState } from 'react';
 import { Image, Linking, Pressable, ScrollView, Text, View } from 'react-native';
 
@@ -149,6 +150,8 @@ function WebImageCard({ query, id }: { query: string; id: string }) {
 }
 
 export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, scrollRef }: ChatMessagesProps) => {
+  const { colors } = useTheme();
+  
   return (
     <ScrollView 
       ref={scrollRef} 
@@ -158,11 +161,11 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
     >
       {messages.length === 0 && (
         <View className='flex-1 items-center justify-center py-20'>
-          <View className='bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 max-w-sm'>
-            <Text className='text-gray-300 text-center text-lg font-medium mb-2'>
+          <View className='rounded-2xl p-8 max-w-sm' style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: colors.border }}>
+            <Text className='text-center text-lg font-medium mb-2' style={{ color: colors.text }}>
               Welcome to your Personal Stylist
             </Text>
-            <Text className='text-gray-400 text-center text-sm'>
+            <Text className='text-center text-sm' style={{ color: colors.textMuted }}>
               Describe your outfit needs and I'll provide professional styling advice with visual references.
             </Text>
           </View>
