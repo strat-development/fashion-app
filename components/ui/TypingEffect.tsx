@@ -45,10 +45,10 @@ export const TypingEffect = ({ text, speed = 30, onComplete, style, isStreaming 
 
   useEffect(() => {
     if (isAnimating && currentIndex < text.length) {
-      animationRef.current = setTimeout(() => {
+      animationRef.current = (setTimeout(() => {
         setDisplayedText(prev => prev + text[currentIndex]);
         setCurrentIndex(prev => prev + 1);
-      }, speed);
+      }, speed)) as unknown as NodeJS.Timeout;
 
       return () => {
         if (animationRef.current) {

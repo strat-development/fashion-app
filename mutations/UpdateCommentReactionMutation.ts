@@ -14,15 +14,12 @@ interface UpdateCommentReactionParams {
 }
 
 const updateCommentReaction = async ({ commentId, userId, reactionType }: UpdateCommentReactionParams) => {
-  console.log('Updating reaction:', { commentId, userId, reactionType });
   
   const { data: existingComment, error: checkError } = await supabase
     .from('comments')
     .select('id, reactions, user_id')
     .eq('id', commentId)
     .maybeSingle();
-
-  console.log('Existing comment check:', { existingComment, checkError });
 
   if (checkError) {
     console.error('Check error:', checkError);
@@ -48,8 +45,6 @@ const updateCommentReaction = async ({ commentId, userId, reactionType }: Update
     throw new Error('Comment not found');
   }
 
-  console.log('Current reactions:', comment.reactions);
-
   let reactions: ReactionData = {};
   
   if (comment.reactions && typeof comment.reactions === 'object') {
@@ -67,18 +62,12 @@ const updateCommentReaction = async ({ commentId, userId, reactionType }: Update
   if (!reactions[reactionType].includes(userId)) {
     reactions[reactionType].push(userId);
   }
-
-  console.log('Updated reactions:', reactions);
-
-  console.log('Attempting direct update...');
   
   const { data: updateData, error, count } = await supabase
     .from('comments')
     .update({ reactions })
     .eq('id', commentId)
     .select('id, reactions');
-
-  console.log('Update result:', { updateData, error, count });
 
   if (error) {
     console.error('Update error:', error);
@@ -93,8 +82,6 @@ const updateCommentReaction = async ({ commentId, userId, reactionType }: Update
       .select('id, user_id, reactions')
       .eq('id', commentId)
       .maybeSingle();
-    
-    console.log('Test read after update:', { testRead, readError });
     
     throw new Error('No rows were updated - check RLS policies or user permissions');
   }
@@ -111,7 +98,6 @@ const updateCommentReaction = async ({ commentId, userId, reactionType }: Update
     console.log('Verified updated comment reactions:', updatedComment?.reactions);
   }
 
-  console.log('Reaction updated successfully');
   return { commentId, reactions };
 };
 
@@ -140,7 +126,6 @@ export const useUpdateCommentReactionMutation = () => {
               newReactions[reactionType].push(userId);
             }
             
-            console.log('Optimistic update:', { commentId, newReactions });
             return { ...comment, reactions: newReactions };
           }
           return comment;
@@ -157,7 +142,6 @@ export const useUpdateCommentReactionMutation = () => {
       }
     },
     onSuccess: (data) => {
-      console.log('Mutation success, invalidating queries...');
       queryClient.invalidateQueries({ queryKey: ['comments'] });
       queryClient.invalidateQueries({ queryKey: ['comments-replies'] });
     },

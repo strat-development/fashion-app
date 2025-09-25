@@ -34,6 +34,48 @@ export const OutfitStylesTags = [
     },
     {
         name: "Grunge",
+    },
+    {
+        name: "Smart Casual",
+    },
+    {
+        name: "Business Casual",
+    },
+    {
+        name: "Chic",
+    },
+    {
+        name: "Resort",
+    },
+    {
+        name: "Cottagecore",
+    },
+    {
+        name: "Normcore",
+    },
+    {
+        name: "Techwear",
+    },
+    {
+        name: "Avant-garde",
+    },
+    {
+        name: "Monochrome",
+    },
+    {
+        name: "Color Blocking",
+    },
+    {
+        name: "Safari",
+    },
+    {
+        name: "Retro",
+    },
+    {
+        name: "Y2K",
+    },
+    {
+        name: "Maximalist",
     }
 ]
 
@@ -61,6 +103,66 @@ export const OutfitColors = [
     {
         "name": "White",
         "hex": "#FFFFFF"
+    },
+    {
+        "name": "Orange",
+        "hex": "#FFA500"
+    },
+    {
+        "name": "Purple",
+        "hex": "#800080"
+    },
+    {
+        "name": "Navy",
+        "hex": "#001F3F"
+    },
+    {
+        "name": "Beige",
+        "hex": "#F5F5DC"
+    },
+    {
+        "name": "Olive",
+        "hex": "#556B2F"
+    },
+    {
+        "name": "Teal",
+        "hex": "#008080"
+    },
+    {
+        "name": "Burgundy",
+        "hex": "#800020"
+    },
+    {
+        "name": "Cream",
+        "hex": "#FFFDD0"
+    },
+    {
+        "name": "Camel",
+        "hex": "#C19A6B"
+    },
+    {
+        "name": "Charcoal",
+        "hex": "#36454F"
+    },
+    {
+        "name": "Off White",
+        "hex": "#FAF9F6"
+    },
+    {
+        "name": "Pastel Pink",
+        "hex": "#FFD1DC"
+    },
+    {
+        "name": "Pastel Blue",
+        "hex": "#AEC6CF"
+    },
+    {
+        "name": "Pastel Green",
+        "hex": "#C1E1C1"
+    },
+    {
+        "name": "Pastel Yellow",
+        "hex": "#FDFD96"
     }
 ]
 
@@ -82,6 +184,21 @@ export const OutfitElements = [
     },
     {
         name: "Headwear",
+    },
+    {
+        name: "Eyewear",
+    },
+    {
+        name: "Jewelry",
+    },
+    {
+        name: "Scarf",
+    },
+    {
+        name: "Gloves",
+    },
+    {
+        name: "Socks",
     }
 ]
 
@@ -112,6 +229,21 @@ export const OutfitFit = [
     },
     {
         name: "Oversized Fit",
+    },
+    {
+        name: "Tailored Fit",
+    },
+    {
+        name: "Athletic Fit",
+    },
+    {
+        name: "Tapered Fit",
+    },
+    {
+        name: "Boxy Fit",
+    },
+    {
+        name: "Straight Fit",
     }
 ]
 

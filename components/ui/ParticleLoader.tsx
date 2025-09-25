@@ -22,23 +22,23 @@ export const ParticleLoader = () => {
     if (isInitialized.current) return;
     isInitialized.current = true;
 
-    // Initialize particles with more particles for better effect
-    particles.current = Array.from({ length: 12 }, (_, i) => ({
+    // Initialize subtle particles for a minimal look
+    particles.current = Array.from({ length: 10 }, (_, i) => ({
       id: i,
       x: new Animated.Value(Math.random() * width),
       y: new Animated.Value(Math.random() * height),
-      opacity: new Animated.Value(0.1 + Math.random() * 0.3),
-      scale: new Animated.Value(0.3 + Math.random() * 0.4),
+      opacity: new Animated.Value(0.12 + Math.random() * 0.18),
+      scale: new Animated.Value(0.9 + Math.random() * 0.2),
     }));
 
-    // Animate text fade in
+    // Text fade in animation
     Animated.timing(textOpacity, {
       toValue: 1,
       duration: 1000,
       useNativeDriver: true,
     }).start();
 
-    // Smooth particle animation with easing
+    // Smooth particle animation
     particles.current.forEach((particle, index) => {
       setTimeout(() => {
         // Continuous smooth movement with easing
@@ -46,12 +46,12 @@ export const ParticleLoader = () => {
           Animated.parallel([
             Animated.timing(particle.x, {
               toValue: Math.random() * width,
-              duration: 4000 + Math.random() * 3000,
+              duration: 5000 + Math.random() * 2000,
               useNativeDriver: true,
             }),
             Animated.timing(particle.y, {
               toValue: Math.random() * height,
-              duration: 4000 + Math.random() * 3000,
+              duration: 5000 + Math.random() * 2000,
               useNativeDriver: true,
             }),
           ]).start(() => {
@@ -62,59 +62,21 @@ export const ParticleLoader = () => {
           });
         };
 
-        // Smooth pulsing effect with different patterns
-        const pulsePattern = index % 3;
-        let pulseSequence;
-        
-        if (pulsePattern === 0) {
-          // Slow, gentle pulse
-          pulseSequence = Animated.loop(
-            Animated.sequence([
-              Animated.timing(particle.opacity, {
-                toValue: 0.8,
-                duration: 2000,
-                useNativeDriver: true,
-              }),
-              Animated.timing(particle.opacity, {
-                toValue: 0.2,
-                duration: 2000,
-                useNativeDriver: true,
-              }),
-            ])
-          );
-        } else if (pulsePattern === 1) {
-          // Medium pulse
-          pulseSequence = Animated.loop(
-            Animated.sequence([
-              Animated.timing(particle.opacity, {
-                toValue: 0.6,
-                duration: 1500,
-                useNativeDriver: true,
-              }),
-              Animated.timing(particle.opacity, {
-                toValue: 0.1,
-                duration: 1500,
-                useNativeDriver: true,
-              }),
-            ])
-          );
-        } else {
-          // Fast pulse
-          pulseSequence = Animated.loop(
-            Animated.sequence([
-                Animated.timing(particle.opacity, {
-                  toValue: 0.9,
-                  duration: 1000,
-                  useNativeDriver: true,
-                }),
-                Animated.timing(particle.opacity, {
-                  toValue: 0.3,
-                  duration: 1000,
-                  useNativeDriver: true,
-                }),
-            ])
-          );
-        }
+        // Subtle opacity breathing
+        const pulseSequence = Animated.loop(
+          Animated.sequence([
+            Animated.timing(particle.opacity, {
+              toValue: 0.25,
+              duration: 2200,
+              useNativeDriver: true,
+            }),
+            Animated.timing(particle.opacity, {
+              toValue: 0.12,
+              duration: 2200,
+              useNativeDriver: true,
+            }),
+          ])
+        );
 
         // Scale animation for breathing effect
         Animated.loop(
@@ -137,20 +99,11 @@ export const ParticleLoader = () => {
       }, index * 150); // Staggered start
     });
 
-    // Ultra smooth light beam animation
+    // Subtle sweep animation (no glow)
     Animated.loop(
       Animated.sequence([
-        Animated.timing(lightBeam, {
-          toValue: 1,
-          duration: 5000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(lightBeam, {
-          toValue: 0,
-          duration: 2000,
-          useNativeDriver: true,
-        }),
-        Animated.delay(3000),
+        Animated.timing(lightBeam, { toValue: 1, duration: 6000, useNativeDriver: true }),
+        Animated.timing(lightBeam, { toValue: 0, duration: 6000, useNativeDriver: true }),
       ])
     ).start();
 
@@ -180,90 +133,52 @@ export const ParticleLoader = () => {
   });
 
   return (
-    <View className="absolute inset-0 bg-gradient-to-br from-gray-900/60 via-purple-900/20 to-gray-900/60 backdrop-blur-md items-center justify-center">
-      {/* Light beam with enhanced glow */}
+    <View className="absolute inset-0 bg-gradient-to-b from-gray-900/60 via-gray-900/40 to-gray-900/60 backdrop-blur-md items-center justify-center">
+      {/* Minimal diagonal sweep, no glow */}
       <Animated.View
         style={{
           position: 'absolute',
-          width: 3,
+          width: 2,
           height: Math.sqrt(width * width + height * height),
-          backgroundColor: '#A855F7',
+          backgroundColor: 'rgba(148,163,184,0.25)', // slate-400/25
           transform: [
             { translateX: lightBeamTranslateX },
             { translateY: lightBeamTranslateY },
             { rotate: '45deg' },
           ],
-          shadowColor: '#A855F7',
-          shadowOffset: { width: 0, height: 0 },
-          shadowOpacity: 1,
-          shadowRadius: 20,
-          elevation: 20,
         }}
       />
       
-      {/* Secondary light beam for depth */}
-      <Animated.View
-        style={{
-          position: 'absolute',
-          width: 1,
-          height: Math.sqrt(width * width + height * height),
-          backgroundColor: '#C084FC',
-          transform: [
-            { translateX: lightBeamTranslateX },
-            { translateY: lightBeamTranslateY },
-            { rotate: '45deg' },
-          ],
-          shadowColor: '#C084FC',
-          shadowOffset: { width: 0, height: 0 },
-          shadowOpacity: 0.8,
-          shadowRadius: 15,
-          elevation: 15,
-        }}
-      />
-      
-      {/* Particles with enhanced effects */}
+      {/* Subtle particles */}
       {particles.current.map((particle) => (
         <Animated.View
           key={particle.id}
           style={{
             position: 'absolute',
-            width: 6,
-            height: 6,
-            backgroundColor: '#A855F7',
-            borderRadius: 3,
+            width: 4,
+            height: 4,
+            backgroundColor: 'rgba(148,163,184,0.6)',
+            borderRadius: 2,
             transform: [
               { translateX: particle.x },
               { translateY: particle.y },
               { scale: particle.scale },
             ],
             opacity: particle.opacity,
-            shadowColor: '#A855F7',
-            shadowOffset: { width: 0, height: 0 },
-            shadowOpacity: 0.8,
-            shadowRadius: 8,
-            elevation: 8,
           }}
         />
       ))}
       
-      {/* Simple center text without glow */}
-      <View className="bg-gray-900/80 backdrop-blur-md rounded-2xl px-6 py-4 border border-gray-700">
+      {/* Minimal center text, no emoji, no glow */}
+      <View className="bg-gray-900/70 rounded-xl px-4 py-3 border border-gray-800">
         <Animated.Text 
-          className="text-gray-200 text-base font-medium text-center"
+          className="text-gray-300 text-sm font-medium text-center"
           style={{
             opacity: textOpacity,
           }}
         >
-          ✨ Generating fashion images...
+          Searching for images…
         </Animated.Text>
-        <Animated.View 
-          className="mt-2 flex-row justify-center space-x-1"
-          style={{ opacity: textOpacity }}
-        >
-          <View className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" />
-          <View className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{ animationDelay: '200ms' }} />
-          <View className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{ animationDelay: '400ms' }} />
-        </Animated.View>
       </View>
     </View>
   );

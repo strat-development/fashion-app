@@ -23,7 +23,7 @@ export const ChatComposer = ({ value, onChange, onSend, onStop, sending, placeho
             placeholder={placeholder}
             placeholderTextColor='#9CA3AF'
             onSubmitEditing={onSend}
-            className='px-4 py-3 text-gray-100 text-base'
+            className='px-4 py-3 h-24 text-gray-100 text-base'
             style={{ minHeight: 48, maxHeight: 120 }}
           />
         </View>

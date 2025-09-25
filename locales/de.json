@@ -471,6 +471,7 @@
     }
   },
   "chatSection": {
+    "promptPrefix": "Bitte hilf mir, ein Outfit nach folgenden Kriterien zu erstellen:",
     "selectGender": "Geschlecht auswählen",
     "selectOutfitStyles": "Outfit-Stile auswählen",
     "selectFit": "Passform auswählen",
@@ -508,7 +509,21 @@
       "gothic": "Gothic",
       "preppy": "Preppy",
       "punk": "Punk",
-      "grunge": "Grunge"
+      "grunge": "Grunge",
+      "smart casual": "Smart Casual",
+      "business casual": "Business Casual",
+      "chic": "Chic",
+      "resort": "Resort",
+      "cottagecore": "Cottagecore",
+      "normcore": "Normcore",
+      "techwear": "Techwear",
+      "avant-garde": "Avantgarde",
+      "monochrome": "Monochrom",
+      "color blocking": "Color Blocking",
+      "safari": "Safari",
+      "retro": "Retro",
+      "y2k": "Y2K",
+      "maximalist": "Maximalistisch"
     },
     "fits": {
       "slim": "Schlank",
@@ -520,7 +535,12 @@
       "regular fit": "Regular Fit",
       "relaxed fit": "Relaxed Fit",
       "loose fit": "Loose Fit",
-      "oversized fit": "Oversized Fit"
+      "oversized fit": "Oversized Fit",
+      "tailored fit": "Tailored Fit",
+      "athletic fit": "Athletic Fit",
+      "tapered fit": "Tapered Fit",
+      "boxy fit": "Boxy Fit",
+      "straight fit": "Straight Fit"
     },
     "colors": {
       "black": "Schwarz",
@@ -532,7 +552,21 @@
       "purple": "Lila",
       "pink": "Rosa",
       "gray": "Grau",
-      "brown": "Braun"
+      "brown": "Braun",
+      "orange": "Orange",
+      "navy": "Marineblau",
+      "beige": "Beige",
+      "olive": "Oliv",
+      "teal": "Blaugrün",
+      "burgundy": "Burgunder",
+      "cream": "Creme",
+      "camel": "Kamel",
+      "charcoal": "Anthrazit",
+      "off white": "Altweiß",
+      "pastel pink": "Pastellrosa",
+      "pastel blue": "Pastellblau",
+      "pastel green": "Pastellgrün",
+      "pastel yellow": "Pastellgelb"
     },
     "elements": {
       "shirt": "Hemd",
@@ -550,7 +584,12 @@
       "footwear": "Schuhe",
       "accessories": "Accessoires",
       "outerwear": "Oberbekleidung",
-      "headwear": "Kopfbedeckung"
+      "headwear": "Kopfbedeckung",
+      "eyewear": "Brillen",
+      "jewelry": "Schmuck",
+      "scarf": "Schal",
+      "gloves": "Handschuhe",
+      "socks": "Socken"
     },
     "currencies": {
       "usd": "USD ($)",

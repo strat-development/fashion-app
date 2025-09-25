@@ -3,6 +3,7 @@ import { webSearch } from '@/fetchers/webSearch';
 import { openAiClient } from '@/lib/openAiClient';
 import { supabase } from '@/lib/supabase';
 import { useUserContext } from '@/providers/userContext';
+import { buildSystemPrompt as buildSystemPromptUtil, generateUserLikePrompt } from '@/utils/chatPrompt';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View } from 'react-native';
@@ -32,6 +33,7 @@ export const ChatSection = () => {
   const [filtersExpanded, setFiltersExpanded] = useState<boolean>(false);
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const abortRef = useRef<AbortController | null>(null);
+  const lastAutoPromptRef = useRef<string>('');
 
   function getCleanAssistantText(text: string) {
     let cleaned = text.replace(/```[\s\S]*?```/g, '').trim();
@@ -45,35 +47,43 @@ export const ChatSection = () => {
 
   const effectiveCurrency = useMemo(() => currency || preferredCurrency || 'USD', [currency, preferredCurrency]);
 
-  function buildSystemPrompt() {
-    const gender = outfitGender.filter(Boolean).join(', ');
-    const styles = outfitTag.filter(Boolean).join(', ');
-    const colors = outfitColor.filter(Boolean).join(', ');
-    const elements = outfitElement.filter(Boolean).join(', ');
-    const fit = outfitFit.filter(Boolean).join(', ');
+  function generatePromptFromFilters(): string {
+    return generateUserLikePrompt({
+      t,
+      genders: outfitGender,
+      styles: outfitTag,
+      fits: outfitFit,
+      colors: outfitColor,
+      elements: outfitElement,
+      lowestPrice,
+      highestPrice,
+      currency: effectiveCurrency,
+    });
+  }
 
-    return [
-      `You are a professional fashion stylist and image consultant.`,
-      `User language: ${preferredLanguage || 'en'}. Always respond in this language.`,
-      gender && `Target audience: ${gender}.`,
-      styles && `Style preferences: ${styles}.`,
-      fit && `Fit preferences: ${fit}.`,
-      colors && `Color palette: ${colors}.`,
-      elements && `Key elements to include: ${elements}.`,
-      (lowestPrice || highestPrice) && `Budget range: ${lowestPrice || 0} to ${highestPrice || '∞'} ${effectiveCurrency}.`,
-      `Provide professional styling advice with these components:`,
-      `1. A brief outfit concept and overall styling philosophy`,
-      `2. Detailed breakdown of each clothing item with styling tips`,
-      `3. Color coordination advice and why these combinations work`,
-      `4. Accessory suggestions and finishing touches`,
-      `5. Occasion-appropriate styling notes`,
-      `6. Provide concise, readable tips without extra JSON or code blocks.`,
-      `For each clothing item you recommend, append a bracketed marker like [IMAGE: concise search query] that captures the item (brand-neutral). Keep it short and specific (e.g., "white canvas slip-on sneakers minimal" or "beige linen shorts tailored").`,
-      `End with a short section titled "Helpful links" listing 3-6 reputable brand or style-guide URLs relevant to your advice. Use real URLs from major retailers like Amazon, ASOS, Uniqlo, Zara, Nike, Adidas, H&M, etc. Format as: Brand Name - https://real-url.com.`,
-      `Focus on timeless principles, versatility, and helping users understand the "why" behind each choice.`,
-      `Be encouraging and educational in your tone.`,
-      `Do not explain the [IMAGE: ...] markers; they are for internal use and will not be shown to the user.`,
-    ].filter(Boolean).join(' ');
+  useEffect(() => {
+    const auto = generatePromptFromFilters();
+    const current = searchQuery.trim();
+    const last = lastAutoPromptRef.current.trim();
+    const shouldReplace = current.length === 0 || current === last;
+    if (shouldReplace) {
+      setSearchQuery(auto);
+      lastAutoPromptRef.current = auto;
+    }
+  }, [outfitGender, outfitTag, outfitFit, outfitColor, outfitElement, lowestPrice, highestPrice, effectiveCurrency, preferredLanguage]);
+
+  function buildSystemPrompt() {
+    return buildSystemPromptUtil({
+      preferredLanguage,
+      outfitGender,
+      outfitTag,
+      outfitColor,
+      outfitElement,
+      outfitFit,
+      lowestPrice,
+      highestPrice,
+      currency: effectiveCurrency,
+    });
   }
 
   async function ensureConversation() {
@@ -152,7 +162,7 @@ export const ChatSection = () => {
       abortRef.current?.abort();
       abortRef.current = new AbortController();
       const pre = await (openAiClient as any).chat.completions.create({
-        model: 'gpt-5',
+        model: 'gpt-4o',
         messages: [
           { role: 'system', content: systemPrompt },
           ...history,
@@ -161,14 +171,12 @@ export const ChatSection = () => {
         tools,
         tool_choice: 'auto',
         temperature: 0.7,
-        stream: false,
-        signal: (abortRef.current as any)?.signal,
+        stream: false
       });
 
       const preChoice = pre.choices?.[0];
       const toolCalls = preChoice?.message?.tool_calls as Array<any> | undefined;
 
-      // Build the message list we'll stream from
       const workingMessages: Array<any> = [
         { role: 'system', content: systemPrompt },
         ...history,
@@ -183,7 +191,7 @@ export const ChatSection = () => {
             const q = String(args.query || userText);
             const num = Number(args.num || 5);
             const results = await webSearch(q, num);
-            // Append assistant tool-call and tool result
+            
             workingMessages.push({
               role: 'assistant',
               tool_calls: [call],
@@ -197,19 +205,16 @@ export const ChatSection = () => {
           }
         }
       } else if (preChoice?.message?.content) {
-        // If the model already produced a direct answer in pre-pass, include it as context
         workingMessages.push({ role: 'assistant', content: preChoice.message.content });
       }
 
-      // 2) Final streaming answer with tool results in context (if any)
       abortRef.current?.abort();
       abortRef.current = new AbortController();
       const finalStream = await (openAiClient as any).chat.completions.create({
         model: 'gpt-4o',
         messages: workingMessages,
         temperature: 0.7,
-        stream: true,
-        signal: (abortRef.current as any)?.signal,
+        stream: true
       });
 
       let assembled = '';
@@ -269,13 +274,12 @@ export const ChatSection = () => {
 
   useEffect(() => {
     if (!conversationId) return;
-    // Subscribe to realtime message inserts for this conversation (if configured)
+
     const channel = (supabase as any)
       .channel(`ai_messages_${conversationId}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'ai_messages', filter: `conversation_id=eq.${conversationId}` }, (payload: any) => {
         const { role, content, id, created_at } = payload.new || {};
         setMessages((prev) => {
-          // Skip if we already have an assistant placeholder being filled locally
           const exists = prev.some((m) => m.id === id);
           if (exists) return prev;
           return [...prev, { id: id || `srv-${Date.now()}`, role, content, created_at }];
@@ -291,8 +295,8 @@ export const ChatSection = () => {
     };
   }, [conversationId]);
 
-  return (
-    <>
+                return (
+                  <>
 
 
       <View className='flex-1 bg-gray-900'>
@@ -341,8 +345,8 @@ export const ChatSection = () => {
                 }}>
                   <ButtonText className='text-gray-300 text-left'>{c.title || c.id}</ButtonText>
                 </Button>
-              ))}
-            </View>
+                ))}
+              </View>
           </View>
         )}
 
@@ -360,14 +364,14 @@ export const ChatSection = () => {
         {/* Input Section - Fixed at bottom with proper z-index */}
         <View className='absolute bottom-0 left-0 right-0 bg-gray-900/95 backdrop-blur-xl border-t border-gray-800 px-4 py-3 z-20' style={{ paddingBottom: 34 }}>
           <ChatComposer
-            value={searchQuery}
+          value={searchQuery}
             onChange={setSearchQuery}
             onSend={handleSend}
             onStop={handleStop}
             sending={sending}
-            placeholder={t('chatSection.placeholders.outfitDescription')}
-          />
-        </View>
+          placeholder={t('chatSection.placeholders.outfitDescription')}
+        />
+      </View>
 
         {/* Filters Overlay */}
         <FiltersOverlay
@@ -391,7 +395,7 @@ export const ChatSection = () => {
           currency={currency}
           setCurrency={setCurrency}
         />
-      </View>
+    </View>
     </>
   );
 }

@@ -1,9 +1,8 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectInput, SelectItem, SelectPortal, SelectTrigger } from '@/components/ui/select';
 import { Currencies, OutfitColors, OutfitElements, OutfitFit, OutfitGender, OutfitStylesTags } from '@/consts/chatFilterConsts';
-import { CheckBox } from '@rneui/themed';
-import { ChevronDown, ChevronUp } from 'lucide-react-native';
-import { ScrollView, Text, TextInput, View } from 'react-native';
+import { ChevronDown, ChevronUp, DollarSign, Layers, Palette, Ruler, Tags, User } from 'lucide-react-native';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 
 type FiltersOverlayProps = {
   visible: boolean;
@@ -31,36 +30,36 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
   const { visible, onClose, t } = props;
   if (!visible) return null;
   return (
-    <View className='absolute inset-0 bg-black/50 backdrop-blur-md z-30 items-center'>
-      <View className='w-[95vw] mt-32 mb-4 flex-1'>
+    <View className='absolute inset-0 bg-black/60 backdrop-blur-xl z-30 items-center'>
+      <View className='w-[95vw] mt-28 mb-4 flex-1'>
         <ScrollView className='flex-1' contentContainerStyle={{ paddingBottom: 16 }} showsVerticalScrollIndicator={false}>
           <Accordion variant='filled' type='multiple' className='w-full bg-transparent'>
           <AccordionItem className='w-full' value='gender'>
             <AccordionTrigger>
               {({ isExpanded }: { isExpanded: boolean }) => (
                 <>
-                  <Text className='text-2xl text-white font-bold'>{t('chatSection.selectGender')}</Text>
+                  <View className='flex-row items-center gap-2'>
+                    <User size={16} color='white' />
+                    <Text className='text-white text-sm font-semibold'>{t('chatSection.selectGender')}</Text>
+                  </View>
                   {isExpanded ? <ChevronDown size={24} color='white' /> : <ChevronUp size={24} color='white' />}
                 </>
               )}
             </AccordionTrigger>
             <AccordionContent>
-              <View className='flex flex-row items-center w-full flex-wrap'>
-                {OutfitGender.map((gender) => (
-                  <CheckBox
-                    key={gender.name}
-                    title={t(`chatSection.genders.${gender.name.toLowerCase()}`)}
-                    checked={props.outfitGender.includes(gender.name)}
-                    onPress={() => {
-                      props.setOutfitGender((prev) => (prev.includes(gender.name) ? prev.filter((t) => t !== gender.name) : [...prev, gender.name]));
-                    }}
-                    checkedIcon='check-square'
-                    uncheckedIcon='square-o'
-                    containerStyle={{ backgroundColor: 'transparent' }}
-                    textStyle={{ color: 'white' }}
-                    checkedColor='white'
-                  />
-                ))}
+              <View className='flex-row flex-wrap gap-2'>
+                {OutfitGender.map((gender) => {
+                  const selected = props.outfitGender.includes(gender.name);
+                  return (
+                    <Pressable
+                      key={gender.name}
+                      onPress={() => props.setOutfitGender((prev) => (selected ? prev.filter((t) => t !== gender.name) : [...prev, gender.name]))}
+                      className={`px-3 py-1.5 rounded-full border ${selected ? 'bg-purple-500/20 border-purple-500' : 'bg-white/5 border-white/10'}`}
+                    >
+                      <Text className={`text-xs ${selected ? 'text-white' : 'text-gray-300'}`}>{t(`chatSection.genders.${gender.name.toLowerCase()}`)}</Text>
+                    </Pressable>
+                  );
+                })}
               </View>
             </AccordionContent>
           </AccordionItem>
@@ -68,28 +67,28 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
             <AccordionTrigger>
               {({ isExpanded }: { isExpanded: boolean }) => (
                 <>
-                  <Text className='text-2xl text-white font-bold'>{t('chatSection.selectOutfitStyles')}</Text>
+                  <View className='flex-row items-center gap-2'>
+                    <Tags size={16} color='white' />
+                    <Text className='text-white text-sm font-semibold'>{t('chatSection.selectOutfitStyles')}</Text>
+                  </View>
                   {isExpanded ? <ChevronDown size={24} color='white' /> : <ChevronUp size={24} color='white' />}
                 </>
               )}
             </AccordionTrigger>
             <AccordionContent>
-              <View className='flex flex-row items-center w-full flex-wrap'>
-                {OutfitStylesTags.map((tag) => (
-                  <CheckBox
-                    key={tag.name}
-                    title={t(`chatSection.styles.${tag.name.toLowerCase()}`)}
-                    checked={props.outfitTag.includes(tag.name)}
-                    onPress={() => {
-                      props.setOutfitTag((prev) => (prev.includes(tag.name) ? prev.filter((t) => t !== tag.name) : [...prev, tag.name]));
-                    }}
-                    checkedIcon='check-square'
-                    uncheckedIcon='square-o'
-                    containerStyle={{ backgroundColor: 'transparent' }}
-                    textStyle={{ color: 'white' }}
-                    checkedColor='white'
-                  />
-                ))}
+              <View className='flex-row flex-wrap gap-2'>
+                {OutfitStylesTags.map((tag) => {
+                  const selected = props.outfitTag.includes(tag.name);
+                  return (
+                    <Pressable
+                      key={tag.name}
+                      onPress={() => props.setOutfitTag((prev) => (selected ? prev.filter((t) => t !== tag.name) : [...prev, tag.name]))}
+                      className={`px-3 py-1.5 rounded-full border ${selected ? 'bg-purple-500/20 border-purple-500' : 'bg-white/5 border-white/10'}`}
+                    >
+                      <Text className={`text-xs ${selected ? 'text-white' : 'text-gray-300'}`}>{t(`chatSection.styles.${tag.name.toLowerCase()}`)}</Text>
+                    </Pressable>
+                  );
+                })}
               </View>
             </AccordionContent>
           </AccordionItem>
@@ -97,28 +96,28 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
             <AccordionTrigger>
               {({ isExpanded }: { isExpanded: boolean }) => (
                 <>
-                  <Text className='text-2xl text-white font-bold'>{t('chatSection.selectFit')}</Text>
+                  <View className='flex-row items-center gap-2'>
+                    <Ruler size={16} color='white' />
+                    <Text className='text-white text-sm font-semibold'>{t('chatSection.selectFit')}</Text>
+                  </View>
                   {isExpanded ? <ChevronDown size={24} color='white' /> : <ChevronUp size={24} color='white' />}
                 </>
               )}
             </AccordionTrigger>
             <AccordionContent>
-              <View className='flex flex-row items-center w-full flex-wrap'>
-                {OutfitFit.map((fit) => (
-                  <CheckBox
-                    key={fit.name}
-                    title={t(`chatSection.fits.${fit.name.toLowerCase()}`)}
-                    checked={props.outfitFit.includes(fit.name)}
-                    onPress={() => {
-                      props.setOutfitFit((prev) => (prev.includes(fit.name) ? prev.filter((t) => t !== fit.name) : [...prev, fit.name]));
-                    }}
-                    checkedIcon='check-square'
-                    uncheckedIcon='square-o'
-                    containerStyle={{ backgroundColor: 'transparent' }}
-                    textStyle={{ color: 'white' }}
-                    checkedColor='white'
-                  />
-                ))}
+              <View className='flex-row flex-wrap gap-2'>
+                {OutfitFit.map((fit) => {
+                  const selected = props.outfitFit.includes(fit.name);
+                  return (
+                    <Pressable
+                      key={fit.name}
+                      onPress={() => props.setOutfitFit((prev) => (selected ? prev.filter((t) => t !== fit.name) : [...prev, fit.name]))}
+                      className={`px-3 py-1.5 rounded-full border ${selected ? 'bg-purple-500/20 border-purple-500' : 'bg-white/5 border-white/10'}`}
+                    >
+                      <Text className={`text-xs ${selected ? 'text-white' : 'text-gray-300'}`}>{t(`chatSection.fits.${fit.name.toLowerCase()}`)}</Text>
+                    </Pressable>
+                  );
+                })}
               </View>
             </AccordionContent>
           </AccordionItem>
@@ -126,28 +125,29 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
             <AccordionTrigger>
               {({ isExpanded }: { isExpanded: boolean }) => (
                 <>
-                  <Text className='text-2xl text-white font-bold'>{t('chatSection.selectDominantColors')}</Text>
+                  <View className='flex-row items-center gap-2'>
+                    <Palette size={16} color='white' />
+                    <Text className='text-white text-sm font-semibold'>{t('chatSection.selectDominantColors')}</Text>
+                  </View>
                   {isExpanded ? <ChevronDown size={24} color='white' /> : <ChevronUp size={24} color='white' />}
                 </>
               )}
             </AccordionTrigger>
             <AccordionContent>
-              <View className='flex flex-row items-center w-full flex-wrap'>
-                {OutfitColors.map((color) => (
-                  <CheckBox
-                    key={color.name}
-                    title={t(`chatSection.colors.${color.name.toLowerCase()}`)}
-                    checked={props.outfitColor.includes(color.name)}
-                    onPress={() => {
-                      props.setOutfitColor((prev) => (prev.includes(color.name) ? prev.filter((t) => t !== color.name) : [...prev, color.name]));
-                    }}
-                    checkedIcon={<View style={{ backgroundColor: color.hex, width: 24, height: 24, borderRadius: 12 }} />}
-                    uncheckedIcon={<View style={{ backgroundColor: '#ccc', width: 24, height: 24, borderRadius: 12 }} />}
-                    containerStyle={{ backgroundColor: 'transparent' }}
-                    textStyle={{ color: 'white' }}
-                    checkedColor='white'
-                  />
-                ))}
+              <View className='flex-row flex-wrap gap-2'>
+                {OutfitColors.map((color) => {
+                  const selected = props.outfitColor.includes(color.name);
+                  return (
+                    <Pressable
+                      key={color.name}
+                      onPress={() => props.setOutfitColor((prev) => (selected ? prev.filter((t) => t !== color.name) : [...prev, color.name]))}
+                      className={`flex-row items-center gap-2 px-3 py-1.5 rounded-full border ${selected ? 'bg-purple-500/20 border-purple-500' : 'bg-white/5 border-white/10'}`}
+                    >
+                      <View style={{ backgroundColor: color.hex, width: 14, height: 14, borderRadius: 7 }} />
+                      <Text className={`text-xs ${selected ? 'text-white' : 'text-gray-300'}`}>{t(`chatSection.colors.${color.name.toLowerCase()}`)}</Text>
+                    </Pressable>
+                  );
+                })}
               </View>
             </AccordionContent>
           </AccordionItem>
@@ -155,28 +155,28 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
             <AccordionTrigger>
               {({ isExpanded }: { isExpanded: boolean }) => (
                 <>
-                  <Text className='text-2xl text-white font-bold'>{t('chatSection.selectOutfitElements')}</Text>
+                  <View className='flex-row items-center gap-2'>
+                    <Layers size={16} color='white' />
+                    <Text className='text-white text-sm font-semibold'>{t('chatSection.selectOutfitElements')}</Text>
+                  </View>
                   {isExpanded ? <ChevronDown size={24} color='white' /> : <ChevronUp size={24} color='white' />}
                 </>
               )}
             </AccordionTrigger>
             <AccordionContent>
-              <View className='flex flex-row items-center w-full flex-wrap'>
-                {OutfitElements.map((element) => (
-                  <CheckBox
-                    key={element.name}
-                    title={t(`chatSection.elements.${element.name.toLowerCase()}`)}
-                    checked={props.outfitElement.includes(element.name)}
-                    onPress={() => {
-                      props.setOutfitElement((prev) => (prev.includes(element.name) ? prev.filter((t) => t !== element.name) : [...prev, element.name]));
-                    }}
-                    checkedIcon='check-square'
-                    uncheckedIcon='square-o'
-                    containerStyle={{ backgroundColor: 'transparent' }}
-                    textStyle={{ color: 'white' }}
-                    checkedColor='white'
-                  />
-                ))}
+              <View className='flex-row flex-wrap gap-2'>
+                {OutfitElements.map((element) => {
+                  const selected = props.outfitElement.includes(element.name);
+                  return (
+                    <Pressable
+                      key={element.name}
+                      onPress={() => props.setOutfitElement((prev) => (selected ? prev.filter((t) => t !== element.name) : [...prev, element.name]))}
+                      className={`px-3 py-1.5 rounded-full border ${selected ? 'bg-purple-500/20 border-purple-500' : 'bg-white/5 border-white/10'}`}
+                    >
+                      <Text className={`text-xs ${selected ? 'text-white' : 'text-gray-300'}`}>{t(`chatSection.elements.${element.name.toLowerCase()}`)}</Text>
+                    </Pressable>
+                  );
+                })}
               </View>
             </AccordionContent>
           </AccordionItem>
@@ -184,42 +184,51 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
             <AccordionTrigger>
               {({ isExpanded }: { isExpanded: boolean }) => (
                 <>
-                  <Text className='text-2xl text-white font-bold'>{t('chatSection.selectPriceRange')}</Text>
+                  <View className='flex-row items-center gap-2'>
+                    <DollarSign size={16} color='white' />
+                    <Text className='text-white text-sm font-semibold'>{t('chatSection.selectPriceRange')}</Text>
+                  </View>
                   {isExpanded ? <ChevronDown size={24} color='white' /> : <ChevronUp size={24} color='white' />}
                 </>
               )}
             </AccordionTrigger>
             <AccordionContent className='flex flex-col items-start gap-2'>
-              <Text className='text-white'>{t('chatSection.from')}</Text>
-              <TextInput
-                value={`${props.lowestPrice}`}
-                onChangeText={(text) => props.setLowestPrice(Number(text))}
-                placeholder={t('chatSection.placeholders.lowestPrice')}
-                keyboardType='numeric'
-                className='p-4 bg-white/5 border-[1px] border-white/10 backdrop-blur-xl text-white/80 rounded-lg mb-2'
-              />
-              <Text className='text-white'>{t('chatSection.to')}</Text>
-              <TextInput
-                value={`${props.highestPrice}`}
-                onChangeText={(text) => props.setHighestPrice(Number(text))}
-                placeholder={t('chatSection.placeholders.highestPrice')}
-                keyboardType='numeric'
-                className='p-4 bg-white/5 border-[1px] border-white/10 backdrop-blur-xl text-white/80 rounded-lg'
-              />
-              <Text className='text-white text-sm mt-2'>{t('chatSection.currency')}</Text>
+              <View className='flex-row items-center gap-3 w-full'>
+                <View className='flex-1'>
+                  <Text className='text-gray-300 text-xs mb-1'>{t('chatSection.from')}</Text>
+                  <TextInput
+                    value={`${props.lowestPrice}`}
+                    onChangeText={(text) => props.setLowestPrice(Number(text))}
+                    placeholder={t('chatSection.placeholders.lowestPrice')}
+                    keyboardType='numeric'
+                    className='px-3 py-2 bg-white/5 border border-white/10 text-white/80 rounded-lg'
+                  />
+                </View>
+                <View className='flex-1'>
+                  <Text className='text-gray-300 text-xs mb-1'>{t('chatSection.to')}</Text>
+                  <TextInput
+                    value={`${props.highestPrice}`}
+                    onChangeText={(text) => props.setHighestPrice(Number(text))}
+                    placeholder={t('chatSection.placeholders.highestPrice')}
+                    keyboardType='numeric'
+                    className='px-3 py-2 bg-white/5 border border-white/10 text-white/80 rounded-lg'
+                  />
+                </View>
+              </View>
+              <Text className='text-gray-300 text-xs mt-3 mb-1'>{t('chatSection.currency')}</Text>
               <Select selectedValue={props.currency} onValueChange={(value: string) => props.setCurrency(value)}>
-                <SelectTrigger className='bg-white/5 border border-white/10 backdrop-blur-xl text-white/80 rounded-lg'>
-                  <SelectInput placeholder={t('chatSection.placeholders.currency')} className='text-white/80' value={props.currency} />
+                <SelectTrigger className='bg-white/5 border border-white/10 text-white/80 rounded-lg h-10'>
+                  <SelectInput placeholder={t('chatSection.placeholders.currency')} className='text-white/80 text-xs' value={props.currency} />
                 </SelectTrigger>
                 <SelectPortal>
                   <SelectBackdrop className='bg-black/50 backdrop-blur-sm' />
-                  <SelectContent className='bg-gray-800 border border-white/10 rounded-lg overflow-hidden'>
+                  <SelectContent className='bg-gray-900/95 border border-white/10 rounded-lg overflow-hidden'>
                     <SelectDragIndicatorWrapper>
                       <SelectDragIndicator className='bg-white/20' />
                     </SelectDragIndicatorWrapper>
                     {Currencies.map((currencyItem: any) => (
-                      <SelectItem key={currencyItem.name} value={currencyItem.name} label={t(`chatSection.currencies.${currencyItem.name.toLowerCase()}`)} className='px-4 py-3 border-b border-white/10 last:border-b-0 active:bg-gray-700'>
-                        <Text className='text-white'>{t(`chatSection.currencies.${currencyItem.name.toLowerCase()}`)}</Text>
+                      <SelectItem key={currencyItem.name} value={currencyItem.name} label={t(`chatSection.currencies.${currencyItem.name.toLowerCase()}`)} className='px-4 py-3 border-b border-white/10 last:border-b-0 active:bg-gray-800'>
+                        <Text className='text-white text-sm'>{t(`chatSection.currencies.${currencyItem.name.toLowerCase()}`)}</Text>
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -232,7 +241,7 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
       </View>
       <View className='w-[95vw] mb-24'>
         <View className='bg-white/10 border border-white/10 rounded-xl p-3 items-center'>
-          <Text className='text-white' onPress={onClose}>Close</Text>
+          <Text className='text-white text-sm' onPress={onClose}>Close</Text>
         </View>
       </View>
     </View>

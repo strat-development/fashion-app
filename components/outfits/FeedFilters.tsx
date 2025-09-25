@@ -2,8 +2,8 @@ import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { Filter, Search, X } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from "react-i18next";
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export interface FilterOptions {
   search: string;
@@ -25,6 +25,17 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
   const { t } = useTranslation();
   const { colors } = useTheme();
   const [showFilters, setShowFilters] = useState(false);
+
+  const hexToRgba = (hex: string, alpha: number) => {
+    const cleanHex = hex.replace('#', '');
+    const bigint = parseInt(cleanHex.length === 3
+      ? cleanHex.split('').map((c) => c + c).join('')
+      : cleanHex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
 
   const updateFilter = (key: keyof FilterOptions, value: any) => {
     onFiltersChange({
@@ -70,22 +81,11 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
                 paddingVertical: 8,
                 borderRadius: 999,
                 borderWidth: 1,
-                backgroundColor: isSelected ? 'transparent' : colors.surface,
-                borderColor: isSelected ? 'transparent' : colors.border,
+                backgroundColor: isSelected ? hexToRgba(colors.accent, 0.2) : colors.surface,
+                borderColor: isSelected ? colors.accent : colors.border,
                 overflow: 'hidden'
               }}
             >
-              {isSelected && (
-                <ThemedGradient
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                  }}
-                />
-              )}
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {isColor && (
                   <View 

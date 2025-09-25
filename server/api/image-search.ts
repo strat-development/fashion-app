@@ -132,11 +132,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         try {
           // 1) Try image search first for a quick, durable image URL
           const imgResults = await imagesSerper(q, gl, hl, 10);
-          console.log(`Image search results for "${q}":`, imgResults.length);
           
           const firstImg = imgResults.find((it: any) => it?.imageUrl || it?.thumbnailUrl);
           if (firstImg) {
-            console.log(`Found image for "${q}":`, firstImg.imageUrl || firstImg.thumbnailUrl);
             return {
               url: firstImg.imageUrl || firstImg.thumbnailUrl,
               title: firstImg.title || q,
@@ -146,7 +144,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }
           
           // 2) Fallback to product-page search with OG extraction
-          console.log(`Trying product search for "${q}"`);
           const productResult = await findProductImageForQuery(q, gl, hl);
           if (productResult) {
             console.log(`Found product for "${q}":`, productResult.url);
@@ -156,7 +153,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           // 3) Last resort: return a generic image search result
           if (imgResults.length > 0) {
             const anyImg = imgResults[0];
-            console.log(`Using any image for "${q}":`, anyImg.imageUrl || anyImg.thumbnailUrl);
+            
             return {
               url: anyImg.imageUrl || anyImg.thumbnailUrl || anyImg.url,
               title: anyImg.title || q,
@@ -165,7 +162,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             } as SearchedImage;
           }
           
-          console.log(`No images found for "${q}"`);
           return null;
         } catch (error) {
           console.error(`Error searching for "${q}":`, error);
