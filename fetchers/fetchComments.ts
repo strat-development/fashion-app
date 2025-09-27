@@ -28,10 +28,6 @@ export const useFetchComments = (outfitId: string) => {
         .order('created_at', { ascending: false });
       if (error) throw error;
       
-      data?.forEach(comment => {
-        console.log(`Comment ${comment.id} reactions:`, comment.reactions);
-      });
-      
       return data as CommentData[];
     },
     enabled: !!outfitId

@@ -15,7 +15,8 @@
       "title": "Noch keine Outfits",
       "description": "Erstelle dein erstes Outfit oder folge anderen, um ihre Kreationen zu sehen",
       "actionText": "Outfit erstellen"
-    }
+    },
+    "loadingOutfits": "Werden geladen..."
   },
   "rankingScreen": {
     "title": "Rangliste",
@@ -472,12 +473,12 @@
   },
   "chatSection": {
     "promptPrefix": "Bitte hilf mir, ein Outfit nach folgenden Kriterien zu erstellen:",
-    "selectGender": "Geschlecht auswählen",
-    "selectOutfitStyles": "Outfit-Stile auswählen",
-    "selectFit": "Passform auswählen",
-    "selectDominantColors": "Dominante Farben auswählen",
-    "selectOutfitElements": "Outfit-Elemente auswählen",
-    "selectPriceRange": "Preisspanne auswählen",
+    "selectGender": "Geschlecht",
+    "selectOutfitStyles": "Outfit-Stile",
+    "selectFit": "Passform",
+    "selectDominantColors": "Dominante Farben",
+    "selectOutfitElements": "Outfit-Elemente",
+    "selectPriceRange": "Preisspanne",
     "from": "Von",
     "to": "Bis",
     "currency": "Währung",

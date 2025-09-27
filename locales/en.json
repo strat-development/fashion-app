@@ -15,7 +15,8 @@
       "title": "No outfits yet",
       "description": "Create your first outfit or follow others to see their creations",
       "actionText": "Create Outfit"
-    }
+    },
+    "loadingOutfits": "Loading..."
   },
   "rankingScreen": {
     "title": "Ranking",
@@ -472,12 +473,12 @@
   },
   "chatSection": {
     "promptPrefix": "I want you to help me create an outfit by the following criteria:",
-    "selectGender": "Select gender",
-    "selectOutfitStyles": "Select outfit styles",
-    "selectFit": "Select fit",
-    "selectDominantColors": "Select dominant colors",
-    "selectOutfitElements": "Select outfit elements",
-    "selectPriceRange": "Select price range",
+    "selectGender": "Gender",
+    "selectOutfitStyles": "Outfit styles",
+    "selectFit": "Fit",
+    "selectDominantColors": "Dominant colors",
+    "selectOutfitElements": "Outfit elements",
+    "selectPriceRange": "Price range",
     "from": "From",
     "to": "To",
     "currency": "Currency",

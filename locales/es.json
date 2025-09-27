@@ -15,7 +15,8 @@
       "title": "Aún no hay conjuntos",
       "description": "Crea tu primer conjunto o sigue a otros para ver sus creaciones",
       "actionText": "Crear conjunto"
-    }
+    },
+    "loadingOutfits": "Cargando..."
   },
   "rankingScreen": {
     "title": "Clasificación",
@@ -472,12 +473,12 @@
   },
   "chatSection": {
     "promptPrefix": "Quiero que me ayudes a crear un conjunto con los siguientes criterios:",
-    "selectGender": "Seleccionar género",
-    "selectOutfitStyles": "Seleccionar estilos de conjunto",
-    "selectFit": "Seleccionar ajuste",
-    "selectDominantColors": "Seleccionar colores dominantes",
-    "selectOutfitElements": "Seleccionar elementos del conjunto",
-    "selectPriceRange": "Seleccionar rango de precios",
+    "selectGender": "Género",
+    "selectOutfitStyles": "Estilos de conjunto",
+    "selectFit": "Ajuste",
+    "selectDominantColors": "Colores dominantes",
+    "selectOutfitElements": "Elementos del conjunto",
+    "selectPriceRange": "Rango de precios",
     "from": "Desde",
     "to": "Hasta",
     "currency": "Moneda",
