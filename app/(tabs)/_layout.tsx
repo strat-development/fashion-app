@@ -94,7 +94,7 @@ export default function TabLayout() {
             borderColor: colors.border,
             backgroundColor: colors.surface,
             padding: 4,
-            height: 60,
+            height: 60
           },
           tabBarBackground: () => (
             <LinearGradient

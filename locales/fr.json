@@ -15,7 +15,8 @@
       "title": "Aucune tenue pour l'instant",
       "description": "Créez votre première tenue ou suivez d'autres utilisateurs pour voir leurs créations",
       "actionText": "Créer une tenue"
-    }
+    },
+    "loadingOutfits": "Chargement..."
   },
   "rankingScreen": {
     "title": "Classement",
@@ -472,12 +473,12 @@
   },
   "chatSection": {
     "promptPrefix": "Aidez-moi à créer une tenue selon les critères suivants :",
-    "selectGender": "Sélectionner le genre",
-    "selectOutfitStyles": "Sélectionner les styles de tenue",
-    "selectFit": "Sélectionner l’ajustement",
-    "selectDominantColors": "Sélectionner les couleurs dominantes",
-    "selectOutfitElements": "Sélectionner les éléments de la tenue",
-    "selectPriceRange": "Sélectionner la gamme de prix",
+    "selectGender": "Le genre",
+    "selectOutfitStyles": "Les styles de tenue",
+    "selectFit": "L’ajustement",
+    "selectDominantColors": "Les couleurs dominantes",
+    "selectOutfitElements": "Les éléments de la tenue",
+    "selectPriceRange": "La gamme de prix",
     "from": "De",
     "to": "À",
     "currency": "Devise",
