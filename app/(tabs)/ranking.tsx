@@ -1,4 +1,5 @@
 import { ThemedView } from '@/components/ThemedView';
+import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
 import { CreatorRankItem, getTopCreators, getTopOutfits, OutfitRankItem } from '@/fetchers/ranking';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { useQuery } from '@tanstack/react-query';
@@ -6,7 +7,7 @@ import { useRouter } from 'expo-router';
 import { Trophy, User2 } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, Image, Pressable, SafeAreaView, Text, View } from 'react-native';
+import { FlatList, Image, Pressable, SafeAreaView, Text, View } from 'react-native';
 
 export default function RankingScreen() {
   const { t } = useTranslation();
@@ -63,12 +64,7 @@ export default function RankingScreen() {
         </View>
 
         {loading ? (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <ActivityIndicator size="large" color="#ec4899" />
-            <Text style={{ color: colors.textMuted, marginTop: 8 }}>
-              {t('rankingScreen.loading', { tab: t(`rankingScreen.tabs.${tab}`) })}
-            </Text>
-          </View>
+          <FullScreenLoader message={t('rankingScreen.loading', { tab: t(`rankingScreen.tabs.${tab}`) })} />
         ) : error ? (
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
             <Text style={{ color: colors.error, fontWeight: '600' }}>

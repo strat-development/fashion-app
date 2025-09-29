@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Caricamento…"
+  },
   "homeScreen": {
     "welcomeMessage": "Benvenuto, come vuoi creare un outfit?",
     "aiConstructorButton": "Costruttore IA",
@@ -50,6 +53,9 @@
       "free": "Gratuito",
       "noImages": "Nessuna immagine"
     },
+      "loading": "Caricamento dell'outfit…",
+      "notFound": "Non abbiamo trovato questo outfit.",
+      "goBack": "Torna indietro",
     "info": {
       "anonymous": "Anonimo",
       "tags": "Tag",
