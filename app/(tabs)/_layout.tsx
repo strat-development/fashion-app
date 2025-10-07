@@ -5,16 +5,21 @@ import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Tabs } from 'expo-router';
+import { Tabs, usePathname } from 'expo-router';
 import { Bot, Compass, Trophy, User2 } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
-import { Alert, Pressable, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, Pressable, View, Animated } from 'react-native';
 
 export default function TabLayout() {
   const { colors, isDark } = useTheme();
   const { userId, loading: userContextLoading } = useUserContext();
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
+  const pathname = usePathname();
+  const indicatorPosition = useRef(new Animated.Value(0)).current;
+  
+  const tabs = ['index', 'chat', 'ranking', 'userProfile'];
+  
   const tabGradients: Record<string, [string, string]> = {
     index: ['#5F94FF', '#6F31FF'],
     chat: ['#A45FFF', '#7C31FF'],
@@ -32,32 +37,26 @@ export default function TabLayout() {
       elevation: focused ? 6 : 0,
     };
 
-    if (focused && gradient) {
-      return (
-        <LinearGradient
-          colors={gradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 999,
-            paddingHorizontal: 16,
-            paddingVertical: 12,
-            ...baseShadow,
-          }}
-        >
-          <Icon size={24} color={colors.white} />
-        </LinearGradient>
-      );
-    }
-
     return (
       <View style={{ alignItems: 'center', justifyContent: 'center', borderRadius: 999, padding: 8 }}>
-        <Icon size={24} color={colors.textSecondary} />
+        <Icon size={24} color={focused ? colors.white : colors.textSecondary} />
       </View>
     );
   };
+
+  useEffect(() => {
+    const currentPath = pathname.replace('/(tabs)/', '').replace('/', '') || 'index';
+    const tabIndex = tabs.indexOf(currentPath);
+    
+    if (tabIndex !== -1) {
+      Animated.spring(indicatorPosition, {
+        toValue: tabIndex,
+        useNativeDriver: false,
+        friction: 8,
+        tension: 40,
+      }).start();
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const checkUserProfile = async () => {
@@ -133,19 +132,51 @@ export default function TabLayout() {
             shadowRadius: 2,
             shadowOffset: { width: 2, height: 2 },
           },
-          tabBarBackground: () => (
-            <BlurView
-              intensity={40}
-              tint={isDark ? 'dark' : 'light'}
-              style={{
-                flex: 1,
-                borderRadius: 999,
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-              }}
-            />
-          ),
+          tabBarBackground: () => {
+            const currentPath = pathname.replace('/(tabs)/', '').replace('/', '') || 'index';
+            const tabIndex = tabs.indexOf(currentPath);
+            const gradient = tabIndex !== -1 ? tabGradients[tabs[tabIndex] as keyof typeof tabGradients] : tabGradients.index;
+            
+            const translateX = indicatorPosition.interpolate({
+              inputRange: [0, 1, 2, 3],
+              outputRange: ['0%', '100%', '200%', '300%'],
+            });
+
+            return (
+              <>
+                <BlurView
+                  intensity={40}
+                  tint={isDark ? 'dark' : 'light'}
+                  style={{
+                    flex: 1,
+                    borderRadius: 999,
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                  }}
+                />
+                <Animated.View
+                  style={{
+                    position: 'absolute',
+                    width: '25%',
+                    height: '100%',
+                    transform: [{ translateX }],
+                  }}
+                >
+                  <LinearGradient
+                    colors={gradient || tabGradients.index}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={{
+                      flex: 1,
+                      borderRadius: 999,
+                      opacity: 0.9,
+                    }}
+                  />
+                </Animated.View>
+              </>
+            );
+          },
           tabBarButton: ({ children, onPress, accessibilityLabel }) => (
             <Pressable
               onPress={onPress}
