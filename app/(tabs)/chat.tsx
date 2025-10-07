@@ -302,25 +302,22 @@ export default function HomeScreen() {
 
       <View className='flex-1' style={{ backgroundColor: colors.background }}>
         {/* Header Section - Fixed at top */}
-        <View className='px-4 py-3 z-10' style={{ backgroundColor: colors.background, borderBottomWidth: 1, borderBottomColor: colors.border }}>
-
-          <View className='mt-3'>
-            <ChatHeader
-              onShowConversations={async () => {
-                try {
-                  const { data } = await (supabase as any)
-                    .from('ai_conversations')
-                    .select('id,title,created_at')
-                    .order('created_at', { ascending: false });
-                  setConversationList(data || []);
-                } catch { }
-              }}
-              onNewChat={() => { setConversationId(null); setMessages([]); }}
-              filtersExpanded={filtersExpanded}
-              onToggleFilters={() => setFiltersExpanded((v) => !v)}
-              t={(k) => t(k)}
-            />
-          </View>
+        <View style={{ backgroundColor: colors.background, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+          <ChatHeader
+            onShowConversations={async () => {
+              try {
+                const { data } = await (supabase as any)
+                  .from('ai_conversations')
+                  .select('id,title,created_at')
+                  .order('created_at', { ascending: false });
+                setConversationList(data || []);
+              } catch { }
+            }}
+            onNewChat={() => { setConversationId(null); setMessages([]); }}
+            filtersExpanded={filtersExpanded}
+            onToggleFilters={() => setFiltersExpanded((v) => !v)}
+            t={(k) => t(k)}
+          />
         </View>
 
         {/* Conversations List - Overlay */}
