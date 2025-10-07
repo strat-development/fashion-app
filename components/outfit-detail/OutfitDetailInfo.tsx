@@ -1,10 +1,10 @@
 import { formatDate } from "@/helpers/helpers";
+import { useTheme } from "@/providers/themeContext";
 import { Database, Json } from "@/types/supabase";
-import { LinearGradient } from "expo-linear-gradient";
 import { Calendar, User } from "lucide-react-native";
-import React from "react";
-import { Image, Text, View, useWindowDimensions } from "react-native";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Image, Text, View, useWindowDimensions } from "react-native";
 
 type UserData = {
   nickname?: string | null;
@@ -27,10 +27,12 @@ interface OutfitDetailInfoProps {
 export default function OutfitDetailInfo({ outfit, userData, tags }: OutfitDetailInfoProps) {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
+  const { colors } = useTheme();
   const scale = Math.min(1.25, Math.max(0.85, width / 390));
   const titleSize = Math.round(24 * scale);
   const nameSize = Math.round(16 * scale);
   const metaSize = Math.max(12, Math.round(13 * scale));
+  const [avatarOk, setAvatarOk] = useState<boolean>(!!userData?.user_avatar);
 
   return (
     <>
@@ -40,35 +42,36 @@ export default function OutfitDetailInfo({ outfit, userData, tags }: OutfitDetai
       }}>
         {/* Creator Info */}
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-          {userData?.user_avatar ? (
+          {avatarOk && userData?.user_avatar ? (
             <Image
               source={{ uri: userData.user_avatar }}
-              style={{ width: 48, height: 48, borderRadius: 24, marginRight: 12 }}
+              onError={() => setAvatarOk(false)}
+              style={{ width: 48, height: 48, borderRadius: 24, marginRight: 12, backgroundColor: colors.surfaceVariant }}
             />
           ) : (
-            <LinearGradient
-              colors={['#7e22ce', '#db2777']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
+            <View
               style={{
                 width: 48,
                 height: 48,
                 borderRadius: 24,
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginRight: 12
+                marginRight: 12,
+                backgroundColor: colors.surfaceVariant,
+                borderWidth: 1,
+                borderColor: colors.border,
               }}
             >
-              <User size={20} color="#FFFFFF" />
-            </LinearGradient>
+              <User size={20} color={colors.textMuted} />
+            </View>
           )}
           <View style={{ flex: 1 }}>
-            <Text style={{ color: '#fff', fontWeight: '600', fontSize: nameSize }}>
+            <Text style={{ color: colors.text, fontWeight: '600', fontSize: nameSize }}>
               {userData?.nickname || t('outfitDetail.info.anonymous')}
             </Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 2 }}>
               <Calendar size={14} color="#9CA3AF" />
-              <Text style={{ color: '#9CA3AF', marginLeft: 4, fontSize: metaSize }}>
+              <Text style={{ color: colors.textMuted, marginLeft: 4, fontSize: metaSize }}>
                 {formatDate(outfit.created_at || "")}
               </Text>
             </View>
@@ -79,7 +82,7 @@ export default function OutfitDetailInfo({ outfit, userData, tags }: OutfitDetai
         {outfit.outfit_name && (
           <Text
             style={{
-              color: '#fff',
+              color: colors.text,
               fontWeight: '700',
               fontSize: titleSize,
               lineHeight: titleSize + 6

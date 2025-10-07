@@ -36,7 +36,7 @@ const lightColors = {
   primary: '#7e22ce',
   secondary: '#db2777',
   tertiary: '#059669',
-  background: '#ffffff',
+  background: '#F8FBFF',
   surface: '#f8fafc',
   surfaceVariant: '#f1f5f9',
   text: '#0f172a',
@@ -57,7 +57,7 @@ const darkColors = {
   primary: '#a855f7',
   secondary: '#ec4899',
   tertiary: '#10b981',
-  background: '#000000',
+  background: '#121212',
   surface: '#1f1f1fcc',
   surfaceVariant: '#2a2a2a',
   text: '#ffffff',
@@ -96,7 +96,6 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const colors = isDark ? darkColors : lightColors;
 
   useEffect(() => {
-    // Load saved theme mode from storage
     AsyncStorage.getItem('themeMode').then((savedMode) => {
       if (savedMode && ['light', 'dark', 'system'].includes(savedMode)) {
         setModeState(savedMode as ThemeMode);
@@ -138,9 +137,14 @@ export function ThemedGradient({
   start = { x: 0, y: 0 }, 
   end = { x: 1, y: 1 } 
 }: ThemedGradientProps) {
+  const { isDark } = useTheme();
+  const darkFrom = '#A75FFF99';
+  const darkTo = '#64399999';
+  const lightFrom = '#5F87FFCC';
+  const lightTo = '#6F31FFCC';
   return (
     <LinearGradient
-      colors={active ? ['#7e22ce', '#db2777'] : ['#00000000', '#00000000']}
+      colors={active ? (isDark ? [darkFrom, darkTo] : [lightFrom, lightTo]) : ['#00000000', '#00000000']}
       start={start}
       end={end}
       style={style}

@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import { useTheme } from '@/providers/themeContext'
+import { ThemedGradient, useTheme } from '@/providers/themeContext'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Lock, Mail, User } from 'lucide-react-native'
 import { useEffect, useRef, useState } from 'react'
@@ -117,15 +117,11 @@ const AnimatedGradientOverlay = () => {
   }, [fade])
   return (
     <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-      <LinearGradient
-        colors={[ 'rgba(126,34,206,0.08)', 'rgba(219,39,119,0.06)' ]}
-        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+      <ThemedGradient
         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
       />
       <Animated.View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: fade }}>
-        <LinearGradient
-          colors={[ 'rgba(219,39,119,0.08)', 'rgba(126,34,206,0.06)' ]}
-          start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
+        <ThemedGradient
           style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
         />
       </Animated.View>
@@ -189,7 +185,7 @@ export default function Auth() {
                 <View>
                   <View style={{ alignItems: 'center', marginBottom: 28 }}>
                     <View style={{ width: 64, height: 64, borderRadius: 18, overflow: 'hidden', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-                      <LinearGradient colors={["#7e22ce", "#db2777"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+                      <ThemedGradient style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
                       <User size={32} color="#fff" />
                     </View>
                     <Text style={{ color: colors.text, fontSize: 28, fontWeight: '800', letterSpacing: -0.5 }}>{t('auth.welcome')}</Text>
@@ -220,9 +216,7 @@ export default function Auth() {
                       onPress={mode === 'signin' ? signInWithEmail : signUpWithEmail}
                       style={{ marginTop: 18, borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center', opacity: loading ? 0.6 : 1, overflow: 'hidden' }}
                     >
-                      <LinearGradient
-                        colors={["#7e22ce", "#db2777"]}
-                        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                      <ThemedGradient
                         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 12 }}
                       />
                       {loading ? <ActivityIndicator color="#fff" /> : (

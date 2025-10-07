@@ -1,7 +1,8 @@
 import { ParticleLoader } from '@/components/ui/ParticleLoader';
 import { TypingEffect } from '@/components/ui/TypingEffect';
 import { ImageResult, searchImages } from '@/fetchers/searchImages';
-import { useTheme } from '@/providers/themeContext';
+import { ThemedGradient, useTheme } from '@/providers/themeContext';
+import { Stars } from 'lucide-react-native';
 import { useEffect, useRef, useState } from 'react';
 import { Image, Linking, Pressable, ScrollView, Text, View } from 'react-native';
 
@@ -17,7 +18,7 @@ type ChatMessagesProps = {
 
 function extractImageDescriptions(raw: string): string[] {
   const matches = raw.match(/\[IMAGE:\s*([^\]]+)\]/gi);
-  
+
   return matches ? matches.map(m => m.replace(/\[IMAGE:\s*|\]/gi, '').trim()) : [];
 }
 
@@ -25,7 +26,7 @@ function extractLinks(text: string): Array<{ text: string; url: string; start: n
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   const links: Array<{ text: string; url: string; start: number; end: number }> = [];
   let match;
-  
+
   while ((match = urlRegex.exec(text)) !== null) {
     links.push({
       text: match[1],
@@ -34,7 +35,7 @@ function extractLinks(text: string): Array<{ text: string; url: string; start: n
       end: match.index + match[0].length
     });
   }
-  
+
   return links;
 }
 
@@ -63,7 +64,7 @@ function LinkText({ text, links }: { text: string; links: Array<{ text: string; 
 
   return (
     <Text className='text-gray-100 leading-6'>
-      {parts.map((part, index) => 
+      {parts.map((part, index) =>
         part.isLink ? (
           <Text
             key={index}
@@ -114,15 +115,15 @@ function WebImageCard({ query, id }: { query: string; id: string }) {
     </View>
   );
   return (
-    <Pressable 
-      onPress={() => { if (img?.pageUrl) Linking.openURL(img.pageUrl); }} 
+    <Pressable
+      onPress={() => { if (img?.pageUrl) Linking.openURL(img.pageUrl); }}
       className='bg-gray-800/30 border border-gray-700 rounded-xl p-3 w-[180px] h-[240px] active:bg-gray-700/30'
     >
       <View className='relative flex-1'>
-        <Image 
-          source={{ uri: img.url as string }} 
-          className='w-full h-36 rounded-lg mb-2' 
-          resizeMode='cover' 
+        <Image
+          source={{ uri: img.url as string }}
+          className='w-full h-36 rounded-lg mb-2'
+          resizeMode='cover'
         />
         {!!img?.source && (
           <View className='absolute top-1 right-1 bg-black/70 px-2 py-1 rounded-full border border-white/20'>
@@ -130,12 +131,12 @@ function WebImageCard({ query, id }: { query: string; id: string }) {
           </View>
         )}
       </View>
-      
+
       <View className='flex-1 justify-between'>
         <Text className='text-gray-200 text-xs font-medium mb-1' numberOfLines={2}>
           {img?.title || query}
         </Text>
-        
+
         {img?.pageUrl && (
           <View className='flex-row items-center justify-between'>
             <Text className='text-blue-400 text-[10px] font-medium' numberOfLines={1}>
@@ -151,17 +152,17 @@ function WebImageCard({ query, id }: { query: string; id: string }) {
 
 export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, scrollRef }: ChatMessagesProps) => {
   const { colors } = useTheme();
-  
+
   return (
-    <ScrollView 
-      ref={scrollRef} 
-      className='flex-1 px-4 py-2 mb-16' 
+    <ScrollView
+      ref={scrollRef}
+      className='flex-1 px-4 py-2 mb-16'
       contentContainerStyle={{ paddingBottom: 10 }}
       showsVerticalScrollIndicator={false}
     >
       {messages.length === 0 && (
         <View className='flex-1 items-center justify-center py-20'>
-          <View className='rounded-2xl p-8 max-w-sm' style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: colors.border }}>
+          <View className='rounded-2xl p-8 max-w-sm overflow-hidden' >
             <Text className='text-center text-lg font-medium mb-2' style={{ color: colors.text }}>
               Welcome to your Personal Stylist
             </Text>
@@ -171,11 +172,11 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
           </View>
         </View>
       )}
-      
+
       {messages.map((m) => {
         const cleanContent = getCleanAssistantText(m.content);
         const imageQueries = m.role === 'assistant' ? extractImageDescriptions(m.content) : [];
-        
+
         return (
           <View key={m.id} className={`mb-6 ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
             <View className={`max-w-[85%] ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
@@ -190,13 +191,13 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
                   {m.role === 'user' ? 'You' : 'Stylist'}
                 </Text>
               </View>
-              
+
               {/* Message Content */}
               <View className={`${m.role === 'user' ? 'bg-blue-500/15' : 'bg-gray-800/60'} border ${m.role === 'user' ? 'border-blue-500/30' : 'border-gray-700'} backdrop-blur-sm px-4 py-3 rounded-2xl`}>
                 {m.role === 'assistant' ? (
                   <View>
                     {isStreaming ? (
-                      <TypingEffect 
+                      <TypingEffect
                         text={getCleanAssistantText(cleanContent)}
                         speed={18}
                         isStreaming={isStreaming}
@@ -222,7 +223,7 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
                   <LinkText text={cleanContent} links={extractLinks(cleanContent)} />
                 )}
               </View>
-              
+
               {/* Web image gallery (no generation) */}
               {m.role === 'assistant' && imageQueries.length > 0 && (
                 <View className='mt-3 flex-row flex-wrap gap-3'>
@@ -237,7 +238,7 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
           </View>
         );
       })}
-      
+
       {isStreaming && (
         <View className='items-start mb-6'>
           <View className='flex-row items-center mb-2'>

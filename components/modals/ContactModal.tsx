@@ -1,3 +1,4 @@
+import { useTheme } from "@/providers/themeContext";
 import { MessageCircleWarning, X } from "lucide-react-native";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -17,6 +18,7 @@ interface FormData {
 
 export const ContactModal = ({ expanded }: ContactModalProps) => {
     const { t } = useTranslation();
+    const { colors } = useTheme();
     const {
         control,
         handleSubmit,
@@ -113,10 +115,11 @@ export const ContactModal = ({ expanded }: ContactModalProps) => {
                         <Pressable
                             onPress={handleSubmit(onSubmit)}
                             disabled={!isValid || isSubmitting}
-                            className={`px-4 py-2 rounded-full ${isValid && !isSubmitting
-                                    ? "bg-gradient-to-r from-purple-600 to-pink-600"
-                                    : "bg-gray-600"
-                                }`}
+                            className={`px-4 py-2 rounded-full`}
+                            style={{
+                                opacity: isValid && !isSubmitting ? 1 : 0.5,
+                                backgroundColor: isValid && !isSubmitting ? colors.primary : colors.borderVariant,
+                            }}
                         >
                             <Text className="text-white font-medium text-sm">
                                 {isSubmitting ? t('contactModal.sending') : t('contactModal.sendMessage')}
@@ -157,7 +160,7 @@ export const ContactModal = ({ expanded }: ContactModalProps) => {
                                         <Text className="text-pink-600 text-xs">{errors.name.message}</Text>
                                     ) : (
                                         <Text className="text-gray-400 text-xs">
-                                            {watch("name")?.length || 0}/80 
+                                            {watch("name")?.length || 0}/80
                                         </Text>
                                     )}
                                 </View>
@@ -223,7 +226,7 @@ export const ContactModal = ({ expanded }: ContactModalProps) => {
                                         <Text className="text-pink-600 text-xs">{errors.message.message}</Text>
                                     ) : (
                                         <Text className="text-gray-400 text-xs">
-                                            { message?.length || 0 }/200
+                                            {message?.length || 0}/200
                                         </Text>
                                     )}
                                 </View>
