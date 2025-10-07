@@ -158,7 +158,8 @@ export const FeedFilters = ({
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: 16,
-          paddingVertical: 16,
+          paddingTop: 16,
+          paddingBottom: 12,
           gap: 12,
         }}>
           {/* Search Field */}

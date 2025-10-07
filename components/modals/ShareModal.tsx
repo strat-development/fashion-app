@@ -180,43 +180,30 @@ export const ShareModal = ({
             borderColor: colors.border
            }}>
           {/* Header */}
-          <View className="flex-row items-center justify-between px-6 py-4 border-b"
+          <View className="flex-row items-center justify-between px-5 py-3 border-b"
             style={{ borderColor: colors.border }}>
-            <Text className="text-xl font-semibold" style={{ color: colors.text }}>{t('shareModal.title')}</Text>
+            <Text className="text-lg font-semibold" style={{ color: colors.text }}>{t('shareModal.title')}</Text>
             <Pressable onPress={onClose}>
-              <X size={24} color={colors.text} />
+              <X size={22} color={colors.text} />
             </Pressable>
           </View>
 
-          {/* Outfit Preview */}
-          <View className="px-6 py-4 border-b"
-            style={{ borderColor: colors.border }}>
-            <View className="flex-row items-center">
-              <View className="w-12 h-12 rounded-xl mr-4"
-                style={{ backgroundColor: colors.surface }} />
-              <View className="flex-1">
-                <Text className="font-medium text-lg" numberOfLines={1} style={{ color: colors.text }}>{outfit.outfit_name || t('shareModal.untitledOutfit')}</Text>
-                <Text className="text-sm" numberOfLines={1} style={{ color: colors.textSecondary }}>{outfit.description || t('shareModal.defaultDescription')}</Text>
-              </View>
-            </View>
-          </View>
-
           {/* Share Options */}
-          <View className="px-6 py-6">
+          <View className="px-5 py-4">
             <View className="flex-row flex-wrap justify-between">
               {shareOptions.map((option) => (
                 <Pressable
                   key={option.id}
                   onPress={option.onPress}
-                  className="items-center mb-6 w-20"
+                  className="items-center mb-3 w-16"
                 >
                   <View
-                    className="w-16 h-16 rounded-2xl items-center justify-center mb-2"
+                    className="w-12 h-12 rounded-xl items-center justify-center mb-1.5"
                     style={{ backgroundColor: `${option.color}20` }}
                   >
-                    <option.icon size={24} color={option.color} />
+                    <option.icon size={20} color={option.color} />
                   </View>
-                  <Text className="text-gray-300 text-xs text-center font-medium">
+                  <Text className="text-xs text-center font-medium" numberOfLines={1} style={{ color: colors.textSecondary }}>
                     {option.label}
                   </Text>
                 </Pressable>
@@ -225,16 +212,16 @@ export const ShareModal = ({
           </View>
 
           {/* Cancel Button */}
-          <View className="px-6 pb-8">
+          <View className="px-5 pb-6">
             <Pressable
               onPress={onClose}
-              className="py-4 rounded-2xl border"
+              className="py-3 rounded-xl border"
               style={{
                 borderColor: colors.border,
                 backgroundColor: colors.surface
               }}
             >
-              <Text className="text-white font-medium text-center text-lg">
+              <Text className="font-medium text-center" style={{ color: colors.text }}>
                 {t('shareModal.cancel')}
               </Text>
             </Pressable>

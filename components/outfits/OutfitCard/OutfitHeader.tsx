@@ -98,8 +98,6 @@ export const OutfitHeader = ({
               paddingHorizontal: 12,
               paddingVertical: 4,
               borderRadius: 999,
-              borderWidth: 1,
-              borderColor: `${colors.accent}4D`
             }}
           >
             <Text style={{ 
