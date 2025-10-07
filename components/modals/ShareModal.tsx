@@ -22,6 +22,7 @@ import {
   View,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@/providers/themeContext';
 
 interface ShareModalProps {
   isVisible: boolean;
@@ -37,6 +38,7 @@ export const ShareModal = ({
   isAnimated = true,
 }: ShareModalProps) => {
   const { t } = useTranslation();
+  const { colors } = useTheme();
 
   if (!outfit) return null;
 
@@ -100,10 +102,10 @@ export const ShareModal = ({
         await Linking.openURL(url);
         onClose();
       } else {
-        Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform ));
+        Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform));
       }
     } catch (error) {
-      Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform ));
+      Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform));
     }
   };
 
@@ -169,30 +171,32 @@ export const ShareModal = ({
   return (
     <Modal
       visible={isVisible}
-      animationType={isAnimated ? 'slide' : 'none'}
+      animationType={isAnimated ? 'none' : 'none'}
       transparent={true}
     >
-      <View className="flex-1 justify-end bg-black/50">
-        <View className="bg-gray-900 rounded-t-3xl border-t border-gray-700">
+      <View className="flex-1 justify-end bg-black/0 backdrop-blur-sm">
+        <View className="rounded-t-3xl border-t"
+          style={{ backgroundColor: colors.background,
+            borderColor: colors.border
+           }}>
           {/* Header */}
-          <View className="flex-row items-center justify-between px-6 py-4 border-b border-gray-800">
-            <Text className="text-white text-xl font-semibold">{t('shareModal.title')}</Text>
-            <Pressable onPress={onClose} className="p-2">
-              <X size={24} color="#9CA3AF" />
+          <View className="flex-row items-center justify-between px-6 py-4 border-b"
+            style={{ borderColor: colors.border }}>
+            <Text className="text-xl font-semibold" style={{ color: colors.text }}>{t('shareModal.title')}</Text>
+            <Pressable onPress={onClose}>
+              <X size={24} color={colors.text} />
             </Pressable>
           </View>
 
           {/* Outfit Preview */}
-          <View className="px-6 py-4 border-b border-gray-800">
+          <View className="px-6 py-4 border-b"
+            style={{ borderColor: colors.border }}>
             <View className="flex-row items-center">
-              <View className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl mr-4" />
+              <View className="w-12 h-12 rounded-xl mr-4"
+                style={{ backgroundColor: colors.surface }} />
               <View className="flex-1">
-                <Text className="text-white font-medium text-lg" numberOfLines={1}>
-                  {outfit.outfit_name || t('shareModal.untitledOutfit')}
-                </Text>
-                <Text className="text-gray-400 text-sm" numberOfLines={1}>
-                  {outfit.description || t('shareModal.defaultDescription')}
-                </Text>
+                <Text className="font-medium text-lg" numberOfLines={1} style={{ color: colors.text }}>{outfit.outfit_name || t('shareModal.untitledOutfit')}</Text>
+                <Text className="text-sm" numberOfLines={1} style={{ color: colors.textSecondary }}>{outfit.description || t('shareModal.defaultDescription')}</Text>
               </View>
             </View>
           </View>
@@ -224,7 +228,11 @@ export const ShareModal = ({
           <View className="px-6 pb-8">
             <Pressable
               onPress={onClose}
-              className="bg-gray-800 py-4 rounded-2xl border border-gray-700"
+              className="py-4 rounded-2xl border"
+              style={{
+                borderColor: colors.border,
+                backgroundColor: colors.surface
+              }}
             >
               <Text className="text-white font-medium text-center text-lg">
                 {t('shareModal.cancel')}

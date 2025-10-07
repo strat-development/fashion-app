@@ -1,7 +1,7 @@
 import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { supabaseAdmin } from '@/lib/admin';
 import { useEditProfileMutation } from '@/mutations/dashboard/EditProfileMutation';
-import { useTheme } from '@/providers/themeContext';
+import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { DevTool } from '@hookform/devtools';
 import { Camera, User, X } from 'lucide-react-native';
@@ -86,7 +86,7 @@ export const ProfileEdit = ({
             console.log('User cancelled image picker');
           } else if (response.errorCode) {
             console.error('Image picker error:', response.errorMessage);
-            Alert.alert(t('profileEdit.alerts.imagePickerErrorMessage.title'), t('profileEdit.alerts.imagePickerErrorMessage.message' + response.errorMessage ));
+            Alert.alert(t('profileEdit.alerts.imagePickerErrorMessage.title'), t('profileEdit.alerts.imagePickerErrorMessage.message' + response.errorMessage));
           } else if (response.assets && response.assets[0]) {
             const { uri, fileName, type } = response.assets[0];
             if (uri) {
@@ -209,12 +209,14 @@ export const ProfileEdit = ({
           <Text style={{ color: colors.text, fontWeight: '600', fontSize: 18 }}>{t('profileEdit.title')}</Text>
           <Pressable
             onPress={handleSubmit(onSubmit)}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full"
+            className="px-4 py-2 rounded-full overflow-hidden"
+            style={{
+              opacity: isValid && !isPending ? 1 : 0.5,
+            }}
             disabled={isPending || !isValid}
           >
-            <Text className="text-white font-medium text-sm">
-              {isPending ? t('profileEdit.saving') : t('profileEdit.save')}
-            </Text>
+            <ThemedGradient active={isValid && !isPending} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+            <Text className="font-medium text-sm" style={{ color: colors.white }}>{isPending ? t('profileEdit.saving') : t('profileEdit.save')}</Text>
           </Pressable>
         </View>
 
@@ -223,7 +225,11 @@ export const ProfileEdit = ({
             {/* Avatar Section */}
             <View className="items-center mb-8">
               <View className="relative">
-                <View className="w-24 h-24 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-gray-700/50 rounded-full items-center justify-center">
+                <View className="w-24 h-24 border border-gray-700/50 rounded-full items-center justify-center"
+                  style={{
+                    
+                  }}
+                >
                   {selectedImage?.uri || currentUserData?.avatar ? (
                     <Image
                       source={{ uri: selectedImage?.uri || currentUserData?.avatar }}
@@ -236,9 +242,12 @@ export const ProfileEdit = ({
                 </View>
                 <Pressable
                   onPress={handleImageSelect}
-                  className="absolute -bottom-2 -right-2 bg-gradient-to-r from-purple-600 to-pink-600 p-2 rounded-full border-2 border-black"
+                  className="absolute -bottom-2 -right-2 p-2 rounded-full overflow-hidden"
                 >
-                  <Camera size={14} color="white" />
+                  <ThemedGradient active={true} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+                  <Camera className='z-10' 
+                  size={14} 
+                  color="white" />
                 </Pressable>
               </View>
               <Text className="text-gray-400 text-sm mt-2">{t('profileEdit.changePhoto')}</Text>
@@ -378,9 +387,14 @@ export const ProfileEdit = ({
 
             <Pressable
               onPress={handleSubmit(onSubmit)}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 py-4 rounded-lg"
+              className="py-4 rounded-lg overflow-hidden"
+              style={{
+                opacity: isValid && !isPending ? 1 : 0.5,
+                backgroundColor: isValid && !isPending ? colors.primary : colors.borderVariant,
+              }}
               disabled={isPending || !isValid}
             >
+              <ThemedGradient active={isValid && !isPending} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
               <Text className="text-white font-semibold text-base text-center">
                 {isPending ? t('profileEdit.saving') : t('profileEdit.save')}
               </Text>

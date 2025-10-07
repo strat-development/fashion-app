@@ -1,4 +1,4 @@
-import SparkleBurst from "@/components/ui/SparkleBurst";
+import { SparkleBurst } from "@/components/ui/SparkleBurst";
 import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { Bookmark, MessageCircle, Share, ThumbsDown, ThumbsUp } from "lucide-react-native";
 import { useState } from "react";
@@ -196,7 +196,7 @@ export const OutfitFooter = ({
                     color={isNegativeRated ? colors.textSecondary : colors.textMuted}
                     fill={isNegativeRated ? colors.textSecondary : "transparent"}
                   />
-                  <SparkleBurst show={dislikeSparkle} color={colors.textSecondary} />
+                  <SparkleBurst show={dislikeSparkle} color={colors.textSecondary} size={24} />
                 </Animated.View>
               </Pressable>
             </View>

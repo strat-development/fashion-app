@@ -1,16 +1,19 @@
 import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation";
+import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
-import { router } from "expo-router";
-import { Bookmark } from "lucide-react-native";
+import { Bookmark, X } from "lucide-react-native";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, FlatList, Modal, Pressable, RefreshControl, ScrollView, Text, View } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { ShareModal } from "../modals/ShareModal";
+import OutfitDetailImages from "../outfit-detail/OutfitDetailImages";
+import OutfitDetailInfo from "../outfit-detail/OutfitDetailInfo";
+import OutfitDetailSections from "../outfit-detail/OutfitDetailSections";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
 import { EmptyState } from "./EmptyState";
-import { useTranslation } from 'react-i18next';
 
 interface SavedOutfitsSectionProps {
     refreshing: boolean;
@@ -20,6 +23,7 @@ interface SavedOutfitsSectionProps {
 
 export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSectionProps) => {
     const { t } = useTranslation();
+    const { colors } = useTheme();
     const { userId } = useUserContext();
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
 
@@ -59,6 +63,8 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
     }, [savedOutfits, isLoading, page, savedOutfitIds]);
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
+    const [selectedMeta, setSelectedMeta] = useState<{ positive: number; negative: number; isLiked: boolean; isDisliked: boolean; isSaved?: boolean; comments: number } | null>(null);
+    const [selectedUserData, setSelectedUserData] = useState<{ nickname?: string | null; user_avatar?: string | null } | undefined>(undefined);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [selectedOutfitForShare, setSelectedOutfitForShare] = useState<OutfitData | null>(null);
@@ -82,10 +88,13 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
     };
 
     const handleOutfitPress = (outfit: OutfitData) => {
-        router.push({
-            pathname: "/outfit/[id]",
-            params: { id: outfit.outfit_id }
-        });
+        setSelectedOutfit(outfit);
+    };
+
+    const handleOpenDetailInline = (args: { outfit: OutfitData; userData?: { nickname?: string | null; user_avatar?: string | null }; rating: { positive: number; negative: number; isLiked: boolean; isDisliked: boolean; isSaved?: boolean; comments: number } }) => {
+        setSelectedOutfit(args.outfit);
+        setSelectedMeta(args.rating);
+        setSelectedUserData(args.userData);
     };
 
     const handleCommentPress = (outfitId: string) => {
@@ -176,6 +185,45 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
                 outfit={selectedOutfitForShare}
                 isAnimated={true}
             />
+
+            {/* Inline outfit detail modal - full screen with close icon */}
+            <Modal visible={!!selectedOutfit} transparent={false} animationType="slide" onRequestClose={() => setSelectedOutfit(null)}>
+                <View style={{ flex: 1, backgroundColor: colors.background }}>
+                    <Pressable
+                        onPress={() => setSelectedOutfit(null)}
+                        style={{ position: 'absolute', top: 16, right: 16, zIndex: 10, width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: `${colors.surface}CC`, borderWidth: 1, borderColor: colors.border }}
+                    >
+                        <X size={20} color={colors.text} />
+                    </Pressable>
+                    {selectedOutfit && (
+                        <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+                            <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+                                    <OutfitDetailInfo
+                                        outfit={selectedOutfit}
+                                        userData={selectedUserData}
+                                        tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])}
+                                    />
+                            </View>
+                            <View style={{ paddingHorizontal: 16 }}>
+                                <OutfitDetailImages
+                                    imageUrls={Array.isArray(selectedOutfit.outfit_elements_data)
+                                        ? (selectedOutfit.outfit_elements_data as any[])
+                                            .map((el) => (typeof el === 'string' ? el : el?.imageUrl))
+                                            .filter((u): u is string => typeof u === 'string' && !!u)
+                                        : []}
+                                    elementsData={Array.isArray(selectedOutfit.outfit_elements_data)
+                                        ? (selectedOutfit.outfit_elements_data as any[]).filter((el) => el && typeof el === 'object' && (el as any).imageUrl)
+                                        : [] as any}
+                                />
+                            </View>
+                            <OutfitDetailSections
+                                description={selectedOutfit.description}
+                                tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])}
+                            />
+                        </ScrollView>
+                    )}
+                </View>
+            </Modal>
         </View>
     );
 }

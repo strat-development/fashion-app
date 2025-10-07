@@ -1,7 +1,9 @@
 import { supabase } from '@/lib/supabase'
-import { useTheme } from '@/providers/themeContext'
+import { ThemedGradient, useTheme } from '@/providers/themeContext'
+import { AntDesign } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Lock, Mail, User } from 'lucide-react-native'
+import * as Linking from 'expo-linking'
+import { Lock, Mail } from 'lucide-react-native'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from "react-i18next"
 import { ActivityIndicator, Alert, Animated, AppState, Easing, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native'
@@ -108,8 +110,8 @@ const AnimatedGradientOverlay = () => {
   useEffect(() => {
     const anim = Animated.loop(
       Animated.sequence([
-        Animated.timing(fade, { toValue: 1, duration: 8000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-        Animated.timing(fade, { toValue: 0, duration: 8000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(fade, { toValue: 0.6, duration: 4000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(fade, { toValue: 0.2, duration: 4000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
       ])
     )
     anim.start()
@@ -117,19 +119,12 @@ const AnimatedGradientOverlay = () => {
   }, [fade])
   return (
     <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-      <LinearGradient
-        colors={[ 'rgba(126,34,206,0.08)', 'rgba(219,39,119,0.06)' ]}
-        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-      />
       <Animated.View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: fade }}>
-        <LinearGradient
-          colors={[ 'rgba(219,39,119,0.08)', 'rgba(126,34,206,0.06)' ]}
-          start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
+        {/* <ThemedGradient
           style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-        />
+        /> */}
       </Animated.View>
-      <LinearGradient colors={[ 'rgba(0,0,0,0.04)', 'rgba(0,0,0,0.1)' ]} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+      <LinearGradient colors={['rgba(0,0,0,0.04)', 'rgba(0,0,0,0.1)']} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
     </View>
   )
 }
@@ -141,6 +136,7 @@ export default function Auth() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [mode, setMode] = useState<'signin' | 'signup'>('signin')
+  const [showMenu, setShowMenu] = useState(true)
 
   async function signInWithEmail() {
     setLoading(true)
@@ -178,8 +174,28 @@ export default function Auth() {
     setLoading(false)
   }
 
+  async function signInWithGoogle() {
+    setLoading(true)
+    if (!supabase) {
+      Alert.alert(t('auth.alerts.supabaseNotInitialized.title'), t('auth.alerts.supabaseNotInitialized.message'))
+      setLoading(false)
+      return
+    }
+    try {
+      await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: Linking.createURL('/')
+        }
+      })
+    } catch (error: any) {
+      Alert.alert(t('auth.alerts.signInError.title'), error?.message || 'Google sign-in failed')
+      setLoading(false)
+    }
+  }
+
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background }}>
+    <View style={{ flex: 1, backgroundColor: colors.background, overflow: 'hidden' }}>
       <View style={{ flex: 1, position: 'relative' }}>
         <AnimatedGradientOverlay />
         <SafeAreaView style={{ flex: 1 }}>
@@ -188,63 +204,115 @@ export default function Auth() {
               <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28, paddingBottom: 28, justifyContent: 'space-between' }}>
                 <View>
                   <View style={{ alignItems: 'center', marginBottom: 28 }}>
-                    <View style={{ width: 64, height: 64, borderRadius: 18, overflow: 'hidden', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-                      <LinearGradient colors={["#7e22ce", "#db2777"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
-                      <User size={32} color="#fff" />
+                    <View style={{ borderWidth: 1, borderColor: colors.border, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 6, backgroundColor: colors.surface }}>
+                      <Text style={{ color: colors.textSecondary, fontSize: 11, letterSpacing: 1, fontWeight: '600', textTransform: 'uppercase' }}>{t('auth.hero.badge')}</Text>
                     </View>
-                    <Text style={{ color: colors.text, fontSize: 28, fontWeight: '800', letterSpacing: -0.5 }}>{t('auth.welcome')}</Text>
-                    <Text style={{ color: colors.textSecondary, marginTop: 6, fontSize: 13 }}>{t(mode === 'signin' ? 'auth.signInSubtitle' : 'auth.signUpSubtitle')}</Text>
+                    <Text style={{ color: colors.text, fontSize: 34, fontWeight: '800', letterSpacing: -0.8, textAlign: 'center', marginTop: 14 }}>{t('auth.hero.title')}</Text>
+                    <Text style={{ color: colors.textSecondary, marginTop: 8, fontSize: 14, textAlign: 'center' }}>{t('auth.hero.slogan')}</Text>
                   </View>
 
-                  <View style={{ backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, borderRadius: 18, padding: 18 }}>
-                    <FocusInput
-                      icon={<Mail size={18} color={colors.textSecondary} />}
-                      label="auth.labels.email"
-                      value={email}
-                      onChange={setEmail}
-                      placeholder="auth.placeholders.email"
-                      keyboardType="email-address"
-                    />
-                    <View style={{ height: 16 }} />
-                    <FocusInput
-                      icon={<Lock size={18} color={colors.textSecondary} />}
-                      label="auth.labels.password"
-                      value={password}
-                      onChange={setPassword}
-                      placeholder="auth.placeholders.password"
-                      secure
-                    />
+                  {!showMenu && (
+                    <View style={{ borderWidth: 1, borderColor: colors.border, borderRadius: 18, padding: 18 }}>
 
-                    <Pressable
-                      disabled={loading}
-                      onPress={mode === 'signin' ? signInWithEmail : signUpWithEmail}
-                      style={{ marginTop: 18, borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center', opacity: loading ? 0.6 : 1, overflow: 'hidden' }}
-                    >
-                      <LinearGradient
-                        colors={["#7e22ce", "#db2777"]}
-                        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 12 }}
-                      />
-                      {loading ? <ActivityIndicator color="#fff" /> : (
-                        <Text style={{ color: '#fff', fontWeight: '600', letterSpacing: 0.3 }}>
-                          {t(mode === 'signin' ? 'auth.buttons.signIn' : 'auth.buttons.signUp')}
-                        </Text>
-                      )}
-                    </Pressable>
+                      <>
+                        <FocusInput
+                          icon={<Mail size={18} color={colors.textSecondary} />}
+                          label="auth.labels.email"
+                          value={email}
+                          onChange={setEmail}
+                          placeholder="auth.placeholders.email"
+                          keyboardType="email-address"
+                        />
+                        <View style={{ height: 16 }} />
+                        <FocusInput
+                          icon={<Lock size={18} color={colors.textSecondary} />}
+                          label="auth.labels.password"
+                          value={password}
+                          onChange={setPassword}
+                          placeholder="auth.placeholders.password"
+                          secure
+                        />
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
-                      <Text style={{ color: colors.textSecondary, fontSize: 12 }}>{t(mode === 'signin' ? 'auth.switch.signUpPrompt' : 'auth.switch.signInPrompt')}</Text>
-                      <Pressable onPress={() => setMode(mode === 'signin' ? 'signup' : 'signin')}>
-                        <Text style={{ color: colors.accent, fontSize: 12, fontWeight: '600' }}>
-                          {t(mode === 'signin' ? 'auth.switch.signUp' : 'auth.switch.signIn')}
-                        </Text>
-                      </Pressable>
+                        <Pressable
+                          disabled={loading}
+                          onPress={mode === 'signin' ? signInWithEmail : signUpWithEmail}
+                          style={{ marginTop: 18, borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center', opacity: loading ? 0.6 : 1, overflow: 'hidden' }}
+                        >
+                          <ThemedGradient
+                            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 12 }}
+                          />
+                          {loading ? <ActivityIndicator color="#fff" /> : (
+                            <Text style={{ color: '#fff', fontWeight: '600', letterSpacing: 0.3 }}>
+                              {t(mode === 'signin' ? 'auth.buttons.signIn' : 'auth.buttons.signUp')}
+                            </Text>
+                          )}
+                        </Pressable>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                          <Text style={{ color: colors.textSecondary, fontSize: 12 }}>{t(mode === 'signin' ? 'auth.switch.signUpPrompt' : 'auth.switch.signInPrompt')}</Text>
+                          <Pressable onPress={() => setMode(mode === 'signin' ? 'signup' : 'signin')}>
+                            <Text style={{ color: colors.accent, fontSize: 12, fontWeight: '600' }}>
+                              {t(mode === 'signin' ? 'auth.switch.signUp' : 'auth.switch.signIn')}
+                            </Text>
+                          </Pressable>
+                        </View>
+
+                        <Pressable onPress={() => setShowMenu(true)} style={{ marginTop: 12, alignItems: 'center' }}>
+                          <Text style={{ color: colors.textSecondary, fontSize: 12 }}>Back</Text>
+                        </Pressable>
+                      </>
                     </View>
-                  </View>
+                  )}
                 </View>
 
-                <View style={{ alignItems: 'center', marginTop: 24 }}>
-                  <Text style={{ color: colors.textMuted, fontSize: 10 }}>{t('auth.termsAndPrivacy')}</Text>
+                <View>
+                  {showMenu && (
+                    <>
+                      <Pressable
+                        disabled={loading}
+                        onPress={() => { setMode('signin'); setShowMenu(false) }}
+                        style={{ borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center', opacity: loading ? 0.6 : 1, overflow: 'hidden' }}
+                      >
+                        <ThemedGradient
+                          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 12 }}
+                        />
+                        {loading ? <ActivityIndicator color="#fff" /> : (
+                          <Text style={{ color: '#fff', fontWeight: '600', letterSpacing: 0.3 }}>
+                            {t('auth.buttons.signIn')}
+                          </Text>
+                        )}
+                      </Pressable>
+
+                      <View style={{ height: 12 }} />
+
+                      <Pressable
+                        disabled={loading}
+                        onPress={() => { setMode('signup'); setShowMenu(false) }}
+                        style={{ borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center', opacity: loading ? 0.6 : 1, overflow: 'hidden', borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface }}
+                      >
+                        <Text style={{ color: colors.text, fontWeight: '600', letterSpacing: 0.3 }}>
+                          {t('auth.buttons.signUp')}
+                        </Text>
+                      </Pressable>
+
+                      <View style={{ height: 12 }} />
+
+                      <Pressable
+                        disabled={loading}
+                        onPress={signInWithGoogle}
+                        style={{ borderRadius: 12, paddingVertical: 14, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', opacity: loading ? 0.6 : 1, overflow: 'hidden', borderWidth: 1, borderColor: '#E5E7EB', backgroundColor: '#FFFFFF' }}
+                      >
+                        <AntDesign name="google" size={16} color="#4285F4" />
+                        <View style={{ width: 8 }} />
+                        <Text style={{ color: '#1F2937', fontWeight: '600', letterSpacing: 0.3 }}>
+                          {t('auth.buttons.google')}
+                        </Text>
+                      </Pressable>
+                    </>
+                  )}
+                  <View style={{ alignItems: 'center', marginTop: 16 }}>
+                    <Text style={{ color: colors.textMuted, fontSize: 10 }}>{t('auth.termsAndPrivacy')}</Text>
+                  </View>
                 </View>
               </View>
             </ScrollView>

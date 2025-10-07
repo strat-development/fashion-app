@@ -69,7 +69,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                 )}
             </View>
             <View className="flex-1">
-                <View style={{ borderWidth: 1, borderColor: colors.borderVariant, borderRadius: 16, paddingHorizontal: 14, paddingVertical: 12, backgroundColor: colors.surfaceVariant }}>
+                <View style={{ borderWidth: 1, borderColor: colors.borderVariant, borderRadius: 16, paddingHorizontal: 14, paddingVertical: 12, backgroundColor: colors.surface }}>
                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                         <View style={{ flex: 1, paddingRight: 8 }}>
                             <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 4 }}>
@@ -129,7 +129,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
 
                 {isSetToReply && (
                     <View style={{ marginTop: 8 }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', borderWidth: 1, borderColor: colors.borderVariant, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 8, backgroundColor: colors.surfaceVariant }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', borderWidth: 1, borderColor: colors.borderVariant, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 8, backgroundColor: colors.surface }}>
                             <TextInput
                                 value={text}
                                 onChangeText={setText}
