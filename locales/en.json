@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Loading…"
+  },
   "homeScreen": {
     "welcomeMessage": "Welcome, how would you like to create an outfit?",
     "aiConstructorButton": "AI Constructor",
@@ -46,6 +49,9 @@
       "title": "Outfit Details",
       "yourCreation": "Your creation"
     },
+    "loading": "Loading outfit…",
+    "notFound": "We couldn't find this outfit.",
+    "goBack": "Go back",
     "images": {
       "free": "Free",
       "noImages": "No images"

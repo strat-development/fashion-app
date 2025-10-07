@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Chargement…"
+  },
   "homeScreen": {
     "welcomeMessage": "Bienvenue, comment souhaitez-vous créer une tenue ?",
     "aiConstructorButton": "Constructeur IA",
@@ -50,6 +53,9 @@
       "free": "Gratuit",
       "noImages": "Aucune image"
     },
+      "loading": "Chargement de la tenue…",
+      "notFound": "Nous n'avons pas trouvé cette tenue.",
+      "goBack": "Retour",
     "info": {
       "anonymous": "Anonyme",
       "tags": "Étiquettes",

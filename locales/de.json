@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Wird geladen…"
+  },
   "homeScreen": {
     "welcomeMessage": "Willkommen, wie möchtest du ein Outfit erstellen?",
     "aiConstructorButton": "KI-Konstruktor",
@@ -46,6 +49,9 @@
       "title": "Outfit-Details",
       "yourCreation": "Deine Kreation"
     },
+    "loading": "Outfit wird geladen…",
+    "notFound": "Wir konnten dieses Outfit nicht finden.",
+    "goBack": "Zurück",
     "images": {
       "free": "Kostenlos",
       "noImages": "Keine Bilder"

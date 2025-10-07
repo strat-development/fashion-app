@@ -1,6 +1,7 @@
 import OutfitInteractionButtons from '@/components/outfit-detail/OutfitInteractionButtons';
 import CommentSection from '@/components/outfits/CommentSection';
 import { ThemedView } from '@/components/ThemedView';
+import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
 import { useFetchUser } from '@/fetchers/fetchUser';
 import { CreatorRankItem, getTopCreators, getTopOutfits, OutfitRankItem } from '@/fetchers/ranking';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
@@ -14,7 +15,7 @@ import { OutfitData } from '@/components/outfits/OutfitCard';
 import { Trophy, User2 } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, Image, Modal, Pressable, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { FlatList, Image, Modal, Pressable, SafeAreaView, ScrollView, Text, View } from 'react-native';
 
 export default function RankingScreen() {
   const { t } = useTranslation();
@@ -82,12 +83,7 @@ export default function RankingScreen() {
         </View>
 
         {loading ? (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <ActivityIndicator size="large" color="#ec4899" />
-            <Text style={{ color: colors.textMuted, marginTop: 8 }}>
-              {t('rankingScreen.loading', { tab: t(`rankingScreen.tabs.${tab}`) })}
-            </Text>
-          </View>
+          <FullScreenLoader message={t('rankingScreen.loading', { tab: t(`rankingScreen.tabs.${tab}`) })} />
         ) : error ? (
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
             <Text style={{ color: colors.error, fontWeight: '600' }}>

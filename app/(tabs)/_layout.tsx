@@ -1,4 +1,5 @@
 import RegistrationModal from '@/components/modals/RegistrationModal';
+import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
 import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
@@ -7,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs } from 'expo-router';
 import { Bot, Compass, Trophy, User2 } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, Text, View } from 'react-native';
+import { Alert, Pressable, View } from 'react-native';
 
 export default function TabLayout() {
   const { colors, isDark } = useTheme();
@@ -102,21 +103,7 @@ export default function TabLayout() {
 
 
   if (userContextLoading || isCheckingProfile) {
-    return (
-      <View style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: colors.background
-      }}>
-        <ActivityIndicator size="large" color={colors.accent} />
-        <Text style={{
-          color: colors.textSecondary,
-          fontSize: 14,
-          marginTop: 16
-        }}>Loading...</Text>
-      </View>
-    );
+    return <FullScreenLoader />;
   }
 
   return (

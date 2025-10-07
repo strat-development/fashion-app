@@ -3,6 +3,7 @@ import { ProfileHeader } from '@/components/dashboard/ProfileHeader';
 import { ProfileUserInfoContent } from '@/components/dashboard/ProfileUserInfoContent';
 import { SavedOutfitsSection } from '@/components/dashboard/SavedOutfitsSection';
 import { ProfileEdit } from '@/components/modals/ProfileEditModal';
+import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
 import { useFetchUser } from '@/fetchers/fetchUser';
 import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
@@ -32,11 +33,7 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
   };
 
   if (isLoading || !userData) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
-        <Text>{t('userProfile.loading')}</Text>
-      </View>
-    );
+    return <FullScreenLoader message={t('userProfile.loading')} />;
   }
 
   const { full_name, bio, user_avatar, email, socials, user_id, is_public } = userData;
