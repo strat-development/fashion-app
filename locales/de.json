@@ -208,6 +208,11 @@
   },
   "auth": {
     "welcome": "Willkommen",
+    "hero": {
+      "badge": "Fashion-Assistent",
+      "title": "Stil, kuratiert mit Intelligenz.",
+      "slogan": "Minimal wie Apple. Leistungsstark wie Vercel. Persönlich für dich."
+    },
     "signInSubtitle": "Melde dich an, um fortzufahren",
     "signUpSubtitle": "Konto erstellen",
     "labels": {
@@ -220,7 +225,8 @@
     },
     "buttons": {
       "signIn": "Anmelden",
-      "signUp": "Konto erstellen"
+      "signUp": "Konto erstellen",
+      "google": "Mit Google anmelden"
     },
     "switch": {
       "signUpPrompt": "Kein Konto? ",

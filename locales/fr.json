@@ -208,6 +208,11 @@
   },
   "auth": {
     "welcome": "Bienvenue",
+    "hero": {
+      "badge": "Assistant mode",
+      "title": "Le style, pensé avec intelligence.",
+      "slogan": "Minimal comme Apple. Puissant comme Vercel. Personnalisé pour vous."
+    },
     "signInSubtitle": "Connectez-vous pour continuer",
     "signUpSubtitle": "Créer un compte",
     "labels": {
@@ -220,7 +225,8 @@
     },
     "buttons": {
       "signIn": "Se connecter",
-      "signUp": "Créer un compte"
+      "signUp": "Créer un compte",
+      "google": "Se connecter avec Google"
     },
     "switch": {
       "signUpPrompt": "Vous n’avez pas de compte ? ",

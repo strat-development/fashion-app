@@ -66,7 +66,7 @@ export default function TabLayout() {
       }
 
       if (!userId) {
-        setShowRegistrationModal(true);
+        setShowRegistrationModal(false);
         setIsCheckingProfile(false);
         return;
       }
@@ -88,7 +88,7 @@ export default function TabLayout() {
         if (data) {
           setShowRegistrationModal(false);
         } else {
-          setShowRegistrationModal(true);
+          setShowRegistrationModal(false);
         }
       } catch (error) {
         console.error('Error checking user profile:', error);
