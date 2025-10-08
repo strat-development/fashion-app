@@ -1,0 +1,656 @@
+{
+    "common": {
+      "loading": "読み込み中…"
+    },
+    "homeScreen": {
+      "welcomeMessage": "ようこそ、どのように服を作成しますか？",
+      "aiConstructorButton": "AIコンストラクタ",
+      "createOwnOutfitButton": "自分で服を作成する"
+    },
+    "feedSection": {
+      "alerts": {
+        "notLoggedIn": {
+          "title": "ログインしていません",
+          "message": "服を保存するにはログインする必要があります。"
+        }
+      },
+      "emptyState": {
+        "title": "まだ服がありません",
+        "description": "最初の服を作成するか、他の人をフォローして彼らの作品を見てください",
+        "actionText": "服を作成"
+      },
+      "loadingOutfits": "読み込み中..."
+    },
+    "rankingScreen": {
+      "title": "ランキング",
+      "subtitle": "トップの服とクリエイター",
+      "tabs": {
+        "outfits": "服",
+        "creators": "クリエイター"
+      },
+      "loading": "読み込み中…",
+      "error": "読み込みに失敗しました",
+      "tryAgain": "もう一度試す",
+      "rankRow": {
+        "untitledOutfit": "タイトルなしの服",
+        "unknownCreator": "不明",
+        "outfitStats": "いいね · 保存 · 評価",
+        "creatorStats": "服 · いいね",
+        "rank": "#"
+      }
+    },
+    "userProfile": {
+      "loading": "読み込み中...",
+      "about": "概要",
+      "privateProfile": "このプロフィールは非公開です。"
+    },
+    "outfitDetail": {
+      "header": {
+        "title": "服の詳細",
+        "yourCreation": "あなたの作品"
+      },
+      "loading": "服を読み込み中…",
+      "notFound": "この服が見つかりませんでした。",
+      "goBack": "戻る",
+      "images": {
+        "free": "無料",
+        "noImages": "画像なし"
+      },
+      "info": {
+        "anonymous": "匿名",
+        "tags": "タグ",
+        "description": "説明"
+      },
+      "sections": {
+        "description": "説明",
+        "tags": "タグ"
+      },
+      "interactions": {
+        "comments": " コメント",
+        "likes": " いいね"
+      },
+      "defaultOutfitName": "タイトルなしの服"
+    },
+    "commentItem": {
+      "reply": "返信",
+      "viewReplies": "返信を表示",
+      "hideReplies": "返信を非表示",
+      "replyPlaceholder": " に返信",
+      "cancel": "キャンセル",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "ログインしていません",
+          "message": "コメントするにはログインする必要があります。"
+        },
+        "error": {
+          "title": "エラー",
+          "message": "コメントの追加に失敗しました"
+        }
+      }
+    },
+    "commentReactions": {
+      "reacted": "反応済み",
+      "react": "反応",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "ログインしていません",
+          "message": "コメントに反応するにはログインする必要があります。"
+        }
+      }
+    },
+    "commentSection": {
+      "header": "コメント • ",
+      "headerDefault": "コメント",
+      "loading": "読み込み中…",
+      "empty": "まだコメントがありません。最初にコメントしてください！",
+      "placeholder": "コメントを追加…",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "ログインしていません",
+          "message": "コメントするにはログインする必要があります。"
+        },
+        "error": {
+          "title": "エラー",
+          "message": "コメントの追加に失敗しました"
+        }
+      }
+    },
+    "feedFilters": {
+      "searchPlaceholder": "服を検索...",
+      "sections": {
+        "styleTags": "スタイルタグ",
+        "elements": "要素"
+      },
+      "clearFilters": "すべてのフィルターをクリア"
+    },
+    "notFoundScreen": {
+      "title": "おっと！",
+      "message": "この画面は存在しません。",
+      "link": "ホーム画面へ！"
+    },
+    "themeSettings": {
+      "title": "テーマ設定",
+      "appearance": {
+        "title": "外観",
+        "description": "ファッションアプリの見た目を選択してください。単一のテーマを選ぶか、システム設定と同期してください。",
+        "options": {
+          "light": {
+            "label": "ライト",
+            "description": "常にライトテーマを使用"
+          },
+          "dark": {
+            "label": "ダーク",
+            "description": "常にダークテーマを使用"
+          },
+          "system": {
+            "label": "システム",
+            "description": "システム設定に従う"
+          }
+        }
+      },
+      "preview": {
+        "title": "プレビュー",
+        "appName": "ファッションアプリ",
+        "themePreview": " テーマプレビュー",
+        "description": "選択したテーマでの服のフィードやその他のコンテンツの表示例です。",
+        "primaryButton": "プライマリ",
+        "secondaryButton": "セカンダリ"
+      },
+      "languageCurrency": {
+        "title": "言語と通貨",
+        "description": "アプリで使用する優先言語と通貨を選択してください。",
+        "languagePlaceholder": "言語を選択",
+        "currencyPlaceholder": "通貨を選択"
+      }
+    },
+    "createdOutfitsSection": {
+      "loading": "服を読み込み中...",
+      "header": "あなたの作品",
+      "createButton": "作成",
+      "emptyState": {
+        "title": "まだ作成された服がありません",
+        "description": "最初の服の作成を始めましょう！",
+        "actionText": "服を作成"
+      }
+    },
+    "followButton": {
+      "follow": "フォロー",
+      "unfollow": "フォロー解除",
+      "pending": "フォローリクエスト保留中"
+    },
+    "profileBioSection": {
+      "title": "概要",
+      "noBio": "まだ自己紹介がありません。プロフィールを編集して追加してください！"
+    },
+    "profileHeader": {
+      "anonymousUser": "匿名ユーザー",
+      "defaultRole": "ファッション愛好家",
+      "editProfile": "プロフィールを編集",
+      "tabs": {
+        "user-info": "プロフィール",
+        "created-outfits": "作成済み",
+        "saved-outfits": "保存済み"
+      }
+    },
+    "profileRecentActivitySection": {
+      "title": "最近の活動",
+      "activities": [
+        {
+          "text": "あなたの服が50以上のいいねを獲得しました！"
+        },
+        {
+          "text": "5つの新しい服にいいねしました"
+        },
+        {
+          "text": "「サマーカジュアルルック」を作成"
+        }
+      ]
+    },
+    "auth": {
+      "welcome": "ようこそ",
+      "hero": {
+        "badge": "ファッションアシスタント",
+        "title": "知的にキュレーションされたスタイル。",
+        "slogan": "Appleのミニマリズム。Vercelの強力さ。あなたのためにパーソナライズ。"
+      },
+      "signInSubtitle": "続行するにはログインしてください",
+      "signUpSubtitle": "アカウントを作成",
+      "labels": {
+        "email": "メール",
+        "password": "パスワード"
+      },
+      "placeholders": {
+        "email": "あなた@例.com",
+        "password": "••••••••"
+      },
+      "buttons": {
+        "signIn": "ログイン",
+        "signUp": "アカウントを作成",
+        "google": "Googleでログイン"
+      },
+      "switch": {
+        "signUpPrompt": "アカウントがありませんか？ ",
+        "signInPrompt": "すでにアカウントがありますか？ ",
+        "signUp": "登録",
+        "signIn": "ログイン"
+      },
+      "termsAndPrivacy": "続行することで、利用規約とプライバシーポリシーに同意したものとみなされます。",
+      "alerts": {
+        "supabaseNotInitialized": {
+          "title": "エラー",
+          "message": "Supabaseクライアントが初期化されていません。"
+        },
+        "signInError": {
+          "title": "ログインエラー"
+        },
+        "signUpError": {
+          "title": "登録エラー"
+        },
+        "emailVerification": {
+          "title": "メール認証",
+          "message": "メール認証のために受信トレイを確認してください！"
+        }
+      }
+    },
+    "profileSettingsButtons": {
+      "themeSettings": "テーマ設定",
+      "logout": "ログアウト"
+    },
+    "savedOutfitsSection": {
+      "loading": "保存された服を読み込み中...",
+      "emptyState": {
+        "title": "まだ保存された服がありません",
+        "description": "好きな服を保存し始めましょう！"
+      }
+    },
+    "userStatistics": {
+      "title": "統計",
+      "created": "作成済み",
+      "saved": "保存済み",
+      "likes": "いいね",
+      "loading": "..."
+    },
+    "contactModal": {
+      "title": "お問い合わせ",
+      "sendMessage": "メッセージを送信",
+      "sending": "送信中...",
+      "fullName": "フルネーム",
+      "email": "メール",
+      "message": "メッセージ",
+      "placeholders": {
+        "fullName": "フルネームを入力",
+        "email": "メールを入力",
+        "message": "メッセージを記述..."
+      },
+      "errors": {
+        "fullNameRequired": "フルネームは必須です",
+        "fullNameMaxLength": "名前は80文字を超えることはできません",
+        "emailRequired": "メールを入力してください",
+        "emailInvalid": "有効なメールアドレスを入力してください",
+        "messageRequired": "メッセージは必須です"
+      },
+      "alerts": {
+        "apiKeyMissing": "APIキーがありません。サポートに連絡してください。",
+        "success": "メッセージが正常に送信されました！",
+        "error": "メッセージの送信に失敗しました。後でもう一度試してください。"
+      }
+    },
+    "deleteModalOutfit": {
+      "title": "服を削除",
+      "message": "この服を削除してもよろしいですか？この操作は元に戻せません。",
+      "cancel": "キャンセル",
+      "delete": "削除",
+      "deleting": "削除中...",
+      "error": "削除にはユーザーIDが必要です"
+    },
+    "outfitCreateModal": {
+      "title": "服を作成",
+      "save": "保存",
+      "saving": "保存中...",
+      "addElement": "要素を追加",
+      "outfitElements": "服の要素",
+      "name": "名前",
+      "description": "説明",
+      "styleTags": "スタイルタグ",
+      "elementType": "要素の種類",
+      "elementCategory": "要素のカテゴリ",
+      "selectFromOptions": "以下のオプションから選択",
+      "elementImage": "要素の画像",
+      "imageReady": "アップロード準備完了",
+      "tapToSelectImage": "画像を選択するにはタップ",
+      "price": "価格",
+      "shopUrl": "ショップURL",
+      "optional": "任意",
+      "siteUrl": "サイトURL",
+      "image": "画像",
+      "placeholders": {
+        "name": "服の名前を入力",
+        "description": "服を説明...",
+        "elementType": "要素の種類を選択",
+        "price": "価格を入力（任意）",
+        "siteUrl": "サイトURLを入力",
+        "image": "画像を選択",
+        "shopUrl": "例: https://example.com/product"
+      },
+      "errors": {
+        "nameRequired": "服の名前は必須です",
+        "descriptionRequired": "説明は必須です",
+        "elementRequired": "少なくとも1つの服の要素が必要です",
+        "elementTypeRequired": "要素の種類は必須です",
+        "priceInvalid": "価格は数値でなければなりません",
+        "priceNegative": "価格は負の値にできません",
+        "siteUrlRequired": "サイトURLは必須です",
+        "siteUrlInvalid": "有効なURLを入力してください",
+        "imageRequired": "画像は必須です",
+        "styleTagsRequired": "少なくとも1つのスタイルタグを選択してください",
+        "priceRequired": "価格は必須です",
+        "priceMin": "価格はゼロ以上でなければなりません",
+        "invalidUrl": "有効なURLを入力してください"
+      },
+      "elementCount": {
+        "zero": "少なくとも1つの要素を追加",
+        "one": " 要素が追加されました",
+        "multiple": "要素が追加されました"
+      },
+      "totalPrice": "合計価格：",
+      "imageFormat": "JPG、PNG（最大5MB）",
+      "imageSelected": "画像が正常に選択されました",
+      "addElementToOutfit": "服に要素を追加",
+      "alerts": {
+        "permissionDenied": "画像を選択するにはストレージの許可が必要です。",
+        "imagePickerError": "画像ピッカーを開けませんでした",
+        "imageSelectError": "画像を選択できませんでした",
+        "noImageSelected": "画像が選択されていません",
+        "imagePickerErrorMessage": "画像ピッカーのエラー：",
+        "success": {
+          "title": "成功",
+          "message": "服が正常に保存されました！"
+        },
+        "error": {
+          "title": "エラー",
+          "message": "服の作成に失敗しました"
+        },
+        "unknownError": "不明なエラーが発生しました"
+      }
+    },
+    "profileEdit": {
+      "title": "プロフィールを編集",
+      "save": "保存",
+      "saving": "保存中...",
+      "displayName": "表示名",
+      "bio": "自己紹介",
+      "stylePreferences": "スタイルの好み",
+      "privacy": "プライバシー",
+      "publicProfile": "公開プロフィール",
+      "publicProfileDescription": "他の人があなたのプロフィールと作成した服を見ることができます",
+      "privateProfileDescription": "ニックネームとアバターのみが表示されます",
+      "privateAccount": "プライベートアカウント",
+      "privateAccountDescription": "プライベートの場合、ユーザー名とプロフィール写真のみが他の人に表示されます。自己紹介と服は非表示になります。",
+      "changePhoto": "写真を変更するにはタップ",
+      "stylePreferencesComingSoon": "近日公開！お気に入りのスタイル、色、ブランドを設定。",
+      "placeholders": {
+        "name": "名前を入力",
+        "bio": "あなたのスタイルについて教えてください..."
+      },
+      "errors": {
+        "nameRequired": "名前は必須です",
+        "bioMaxLength": "自己紹介は200文字を超えることはできません"
+      },
+      "alerts": {
+        "permissionDenied": "画像を選択するにはストレージの許可が必要です。",
+        "imagePickerError": "画像ピッカーを開けませんでした",
+        "imageSelectError": "画像を選択できませんでした",
+        "noImageSelected": "画像が選択されていません",
+        "imagePickerErrorMessage": "画像ピッカーのエラー：",
+        "imageUploadError": "画像のアップロードに失敗しました",
+        "imageUrlError": "画像URLの取得に失敗しました",
+        "success": "プロフィールが正常に更新されました",
+        "error": "プロフィールの更新に失敗しました"
+      }
+    },
+    "registrationModal": {
+      "welcome": "アプリへようこそ！",
+      "welcomeDescription": "アプリを使用するには、登録プロセスを完了する必要があります。",
+      "provideDetails": "次のステップでプロフィールの詳細を入力してください。",
+      "logout": "ログアウト",
+      "proceed": "続行",
+      "previous": "前へ",
+      "next": "次へ",
+      "complete": "完了",
+      "saving": "保存中...",
+      "username": "ユーザー名",
+      "fullName": "フルネーム",
+      "bio": "自己紹介",
+      "profilePicture": "プロフィール写真",
+      "setPhoto": "写真を設定するにはタップ（任意）",
+      "reviewInfo": "情報を確認",
+      "notProvided": "未提供",
+      "placeholders": {
+        "username": "ユーザー名を入力",
+        "fullName": "フルネームを入力",
+        "bio": "あなたのスタイルについて教えてください...（任意）"
+      },
+      "errors": {
+        "usernameRequired": "ユーザー名は必須です",
+        "usernameMinLength": "ユーザー名は3文字以上である必要があります",
+        "usernameMaxLength": "ユーザー名は20文字を超えることはできません",
+        "usernamePattern": "ユーザー名には文字、数字、アンダースコアのみを含めることができます",
+        "fullNameRequired": "フルネームは必須です",
+        "fullNameMaxLength": "フルネームは50文字を超えることはできません",
+        "bioMaxLength": "自己紹介は200文字を超えることはできません",
+        "userIdMissing": "ユーザーIDがありません。もう一度ログインしてください。"
+      },
+      "alerts": {
+        "permissionDenied": "画像を選択するにはストレージの許可が必要です。",
+        "imagePickerError": "画像ピッカーを開けませんでした",
+        "imageSelectError": "画像を選択できませんでした",
+        "noImageSelected": "画像が選択されていません",
+        "imagePickerErrorMessage": "画像ピッカーのエラー：",
+        "imageUploadError": "画像のアップロードに失敗しました",
+        "imageUrlError": "画像URLの取得に失敗しました",
+        "registrationError": "登録を完了できませんでした。もう一度試してください。",
+        "logoutError": "ログアウトに失敗しました。もう一度試してください。"
+      }
+    },
+    "reportModal": {
+      "report": "報告",
+      "sendReport": "報告を送信",
+      "sending": "送信中...",
+      "email": "メール",
+      "reason": "理由",
+      "description": "説明",
+      "placeholders": {
+        "email": "メールを入力",
+        "reason": "理由を選択",
+        "description": "問題を記述..."
+      },
+      "errors": {
+        "userIdRequired": "ユーザーIDは必須です",
+        "emailRequired": "返信するためにメールを入力してください",
+        "emailInvalid": "有効なメールアドレスを入力してください",
+        "reasonRequired": "理由は必須です",
+        "descriptionRequired": "説明は必須です"
+      },
+      "alerts": {
+        "apiKeyMissing": "APIキーがありません。サポートに連絡してください。",
+        "success": "報告が正常に送信されました！",
+        "error": "報告の送信に失敗しました。後でもう一度試してください。"
+      }
+    },
+    "shareModal": {
+      "title": "服を共有",
+      "cancel": "キャンセル",
+      "shareOptions": {
+        "native": "共有...",
+        "copy": "リンクをコピー",
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "instagram": "Instagram",
+        "email": "メール",
+        "sms": "メッセージ",
+        "more": "その他"
+      },
+      "untitledOutfit": "タイトルなしの服",
+      "defaultDescription": "共有するファッションの服",
+      "shareText": "ファッションアプリでこの素晴らしい服をチェック！",
+      "alerts": {
+        "shareError": "この服を共有できませんでした",
+        "copySuccess": "リンクがクリップボードにコピーされました！",
+        "copyError": "リンクのコピーに失敗しました",
+        "platformError": "開けませんでした ",
+        "instagramShare": "リンクがコピーされました！Instagramのストーリーまたは投稿に貼り付けられます。"
+      }
+    },
+    "chatSection": {
+      "promptPrefix": "以下の基準で服を作成するのを手伝ってほしい：",
+      "selectGender": "性別",
+      "selectOutfitStyles": "服のスタイル",
+      "selectFit": "フィット",
+      "selectDominantColors": "主要な色",
+      "selectOutfitElements": "服の要素",
+      "selectPriceRange": "価格帯",
+      "from": "から",
+      "to": "まで",
+      "currency": "通貨",
+      "placeholders": {
+        "lowestPrice": "最低価格",
+        "highestPrice": "最高価格",
+        "currency": "通貨を選択",
+        "outfitDescription": "服の説明...（任意）"
+      },
+      "genders": {
+        "male": "男性",
+        "female": "女性",
+        "unisex": "ユニセックス"
+      },
+      "styles": {
+        "casual": "カジュアル",
+        "formal": "フォーマル",
+        "sporty": "スポーティ",
+        "bohemian": "ボヘミアン",
+        "vintage": "ヴィンテージ",
+        "streetwear": "ストリートウェア",
+        "business": "ビジネス",
+        "party": "パーティ",
+        "beach": "ビーチ",
+        "office": "オフィス",
+        "old money": "オールドマネー",
+        "athleisure": "アスレジャー",
+        "minimalist": "ミニマリスト",
+        "gothic": "ゴシック",
+        "preppy": "プレッピー",
+        "punk": "パンク",
+        "grunge": "グランジ",
+        "smart casual": "スマートカジュアル",
+        "business casual": "ビジネスカジュアル",
+        "chic": "シック",
+        "resort": "リゾート",
+        "cottagecore": "コテージコア",
+        "normcore": "ノームコア",
+        "techwear": "テックウェア",
+        "avant-garde": "アヴァンギャルド",
+        "monochrome": "モノクローム",
+        "color blocking": "カラーブロッキング",
+        "safari": "サファリ",
+        "retro": "レトロ",
+        "y2k": "Y2K",
+        "maximalist": "マキシマリスト"
+      },
+      "fits": {
+        "slim": "スリム",
+        "regular": "レギュラー",
+        "relaxed": "リラックス",
+        "oversized": "オーバーサイズ",
+        "tailored": "テーラード",
+        "slim fit": "スリムフィット",
+        "regular fit": "レギュラーフィット",
+        "relaxed fit": "リラックスフィット",
+        "loose fit": "ルーズフィット",
+        "oversized fit": "オーバーサイズフィット",
+        "tailored fit": "テーラードフィット",
+        "athletic fit": "アスレチックフィット",
+        "tapered fit": "テーパードフィット",
+        "boxy fit": "ボクシーフィット",
+        "straight fit": "ストレートフィット"
+      },
+      "colors": {
+        "black": "黒",
+        "white": "白",
+        "red": "赤",
+        "blue": "青",
+        "green": "緑",
+        "yellow": "黄",
+        "purple": "紫",
+        "pink": "ピンク",
+        "gray": "灰",
+        "brown": "茶",
+        "orange": "オレンジ",
+        "navy": "ネイビー",
+        "beige": "ベージュ",
+        "olive": "オリーブ",
+        "teal": "ティール",
+        "burgundy": "バーガンディ",
+        "cream": "クリーム",
+        "camel": "キャメル",
+        "charcoal": "チャコール",
+        "off white": "オフホワイト",
+        "pastel pink": "パステルピンク",
+        "pastel blue": "パステルブルー",
+        "pastel green": "パステルグリーン",
+        "pastel yellow": "パステルイエロー"
+      },
+      "elements": {
+        "shirt": "シャツ",
+        "pants": "パンツ",
+        "shoes": "靴",
+        "jacket": "ジャケット",
+        "dress": "ドレス",
+        "skirt": "スカート",
+        "hat": "帽子",
+        "belt": "ベルト",
+        "watch": "時計",
+        "bag": "バッグ",
+        "top": "トップ",
+        "bottom": "ボトム",
+        "footwear": "履物",
+        "accessories": "アクセサリー",
+        "outerwear": "アウターウェア",
+        "headwear": "ヘッドウェア",
+        "eyewear": "アイウェア",
+        "jewelry": "ジュエリー",
+        "scarf": "スカーフ",
+        "gloves": "手袋",
+        "socks": "靴下"
+      },
+      "currencies": {
+        "usd": "USD ($)",
+        "eur": "EUR (€)",
+        "gbp": "GBP (£)",
+        "jpy": "JPY (¥)",
+        "aud": "AUD (A$)",
+        "cad": "CAD (C$)",
+        "pln": "PLN (zł)",
+        "chf": "CHF (CHF)",
+        "rub": "RUB (₽)",
+        "cny": "CNY (¥)",
+        "inr": "INR (₹)",
+        "krw": "KRW (₩)",
+        "mxn": "MXN (MXN)",
+        "nzd": "NZD (NZD)",
+        "sek": "SEK (SEK)",
+        "sgd": "SGD (SGD)",
+        "thb": "THB (฿)",
+        "zar": "ZAR (R)",
+        "try": "TRY (₺)",
+        "uah": "UAH (₴)"
+      },
+      "conversations": "会話",
+      "newChat": "新しいチャット",
+      "showFilters": "フィルターを表示",
+      "hideFilters": "フィルターを非表示"
+    },
+    "chatSwitch": {
+      "ai": "AI",
+      "creator": "クリエイター"
+    }
+  }

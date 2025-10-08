@@ -22,6 +22,62 @@ export const Currencies = [
     {
         name: "CAD",
         symbol: "C$",
+    },
+    {
+        name: "PLN",
+        symbol: "zł",
+    },
+    {
+        name: "CHF",
+        symbol: "CHF",
+    },
+    {
+        name: "RUB",
+        symbol: "₽",
+    },
+    {
+        name: "CNY",
+        symbol: "¥",
+    },
+    {
+        name: "INR",
+        symbol: "₹",
+    },
+    {
+        name: "KRW",
+        symbol: "₩",
+    },
+    {
+        name: "MXN",
+        symbol: "MXN",
+    },
+    {
+        name: "NZD",
+        symbol: "NZD",
+    },
+    {
+        name: "SEK",
+        symbol: "SEK",
+    },
+    {
+        name: "SGD",
+        symbol: "SGD",
+    },
+    {
+        name: "THB",
+        symbol: "฿",
+    },
+    {
+        name: "ZAR",
+        symbol: "R",
+    },
+    {
+        name: "TRY",
+        symbol: "₺",
+    },
+    {
+        name: "UAH",
+        symbol: "₴",
     }
 ]
 
@@ -37,7 +93,7 @@ export const Languages = [
     {
         name: "French",
         code: "fr",
-    },
+    },  
     {
         name: "German",
         code: "de",

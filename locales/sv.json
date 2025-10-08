@@ -1,0 +1,656 @@
+{
+    "common": {
+      "loading": "Laddar..."
+    },
+    "homeScreen": {
+      "welcomeMessage": "Välkommen, hur vill du skapa en outfit?",
+      "aiConstructorButton": "AI-konstruktör",
+      "createOwnOutfitButton": "Skapa din egen outfit"
+    },
+    "feedSection": {
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Inte inloggad",
+          "message": "Du måste vara inloggad för att spara outfits."
+        }
+      },
+      "emptyState": {
+        "title": "Inga outfits än",
+        "description": "Skapa din första outfit eller följ andra för att se deras kreationer",
+        "actionText": "Skapa Outfit"
+      },
+      "loadingOutfits": "Laddar..."
+    },
+    "rankingScreen": {
+      "title": "Rankning",
+      "subtitle": "Topp outfits och skapare",
+      "tabs": {
+        "outfits": "Outfits",
+        "creators": "Skapare"
+      },
+      "loading": "Laddar...",
+      "error": "Laddning misslyckades",
+      "tryAgain": "Försök igen",
+      "rankRow": {
+        "untitledOutfit": "Outfit utan titel",
+        "unknownCreator": "Okänd",
+        "outfitStats": "Gilla-markeringar · Sparade · Betyg",
+        "creatorStats": "Outfits · Gilla-markeringar",
+        "rank": "#"
+      }
+    },
+    "userProfile": {
+      "loading": "Laddar...",
+      "about": "Om",
+      "privateProfile": "Denna profil är privat."
+    },
+    "outfitDetail": {
+      "header": {
+        "title": "Outfitdetaljer",
+        "yourCreation": "Din kreation"
+      },
+      "loading": "Laddar outfit...",
+      "notFound": "Vi kunde inte hitta denna outfit.",
+      "goBack": "Gå tillbaka",
+      "images": {
+        "free": "Gratis",
+        "noImages": "Inga bilder"
+      },
+      "info": {
+        "anonymous": "Anonym",
+        "tags": "Taggar",
+        "description": "Beskrivning"
+      },
+      "sections": {
+        "description": "Beskrivning",
+        "tags": "Taggar"
+      },
+      "interactions": {
+        "comments": " Kommentarer",
+        "likes": " Gilla-markeringar"
+      },
+      "defaultOutfitName": "Outfit utan titel"
+    },
+    "commentItem": {
+      "reply": "Svara",
+      "viewReplies": "Visa svar",
+      "hideReplies": "Dölj svar",
+      "replyPlaceholder": "Svara på ",
+      "cancel": "Avbryt",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Inte inloggad",
+          "message": "Du måste vara inloggad för att kommentera."
+        },
+        "error": {
+          "title": "Fel",
+          "message": "Kunde inte lägga till kommentar"
+        }
+      }
+    },
+    "commentReactions": {
+      "reacted": "Reagerat",
+      "react": "Reagera",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Inte inloggad",
+          "message": "Du måste vara inloggad för att reagera på kommentarer."
+        }
+      }
+    },
+    "commentSection": {
+      "header": "Kommentarer • ",
+      "headerDefault": "Kommentarer",
+      "loading": "Laddar...",
+      "empty": "Inga kommentarer än. Bli den första!",
+      "placeholder": "Lägg till en kommentar...",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Inte inloggad",
+          "message": "Du måste vara inloggad för att kommentera."
+        },
+        "error": {
+          "title": "Fel",
+          "message": "Kunde inte lägga till kommentar"
+        }
+      }
+    },
+    "feedFilters": {
+      "searchPlaceholder": "Sök efter outfits...",
+      "sections": {
+        "styleTags": "Stiltaggar",
+        "elements": "Element"
+      },
+      "clearFilters": "Rensa alla filter"
+    },
+    "notFoundScreen": {
+      "title": "Hoppsan!",
+      "message": "Denna skärm finns inte.",
+      "link": "Gå till startsidan!"
+    },
+    "themeSettings": {
+      "title": "Temainställningar",
+      "appearance": {
+        "title": "Utseende",
+        "description": "Välj hur Modeappen ska se ut för dig. Välj ett tema eller synkronisera med dina systeminställningar.",
+        "options": {
+          "light": {
+            "label": "Ljus",
+            "description": "Använd alltid det ljusa temat"
+          },
+          "dark": {
+            "label": "Mörk",
+            "description": "Använd alltid det mörka temat"
+          },
+          "system": {
+            "label": "System",
+            "description": "Följ systeminställningarna"
+          }
+        }
+      },
+      "preview": {
+        "title": "Förhandsvisning",
+        "appName": "Modeappen",
+        "themePreview": " temaförhandsvisning",
+        "description": "Så här kommer ditt outfitflöde och annat innehåll att se ut med det valda temat.",
+        "primaryButton": "Primär",
+        "secondaryButton": "Sekundär"
+      },
+      "languageCurrency": {
+        "title": "Språk och Valuta",
+        "description": "Välj ditt föredragna språk och valuta för appen.",
+        "languagePlaceholder": "Välj Språk",
+        "currencyPlaceholder": "Välj Valuta"
+      }
+    },
+    "createdOutfitsSection": {
+      "loading": "Laddar outfits...",
+      "header": "Dina Kreationer",
+      "createButton": "Skapa",
+      "emptyState": {
+        "title": "Inga outfits skapade än",
+        "description": "Börja skapa din första outfit!",
+        "actionText": "Skapa Outfit"
+      }
+    },
+    "followButton": {
+      "follow": "Följ",
+      "unfollow": "Sluta följa",
+      "pending": "Följförfrågan väntar"
+    },
+    "profileBioSection": {
+      "title": "Om",
+      "noBio": "Ingen bio tillgänglig än. Lägg till en genom att redigera din profil!"
+    },
+    "profileHeader": {
+      "anonymousUser": "Anonym Användare",
+      "defaultRole": "Modeentusiast",
+      "editProfile": "Redigera Profil",
+      "tabs": {
+        "user-info": "Profil",
+        "created-outfits": "Skapade",
+        "saved-outfits": "Sparade"
+      }
+    },
+    "profileRecentActivitySection": {
+      "title": "Senaste Aktivitet",
+      "activities": [
+        {
+          "text": "Din outfit fick över 50 gilla-markeringar!"
+        },
+        {
+          "text": "Gillade 5 nya outfits"
+        },
+        {
+          "text": "Skapade \"Sommar Casual Look\""
+        }
+      ]
+    },
+    "auth": {
+      "welcome": "Välkommen",
+      "hero": {
+        "badge": "Modeassistent",
+        "title": "Stil, noggrant kurerad.",
+        "slogan": "Minimalistisk som Apple. Kraftfull som Vercel. Anpassad för dig."
+      },
+      "signInSubtitle": "Logga in för att fortsätta",
+      "signUpSubtitle": "Skapa konto",
+      "labels": {
+        "email": "E-post",
+        "password": "Lösenord"
+      },
+      "placeholders": {
+        "email": "du@exempel.com",
+        "password": "••••••••"
+      },
+      "buttons": {
+        "signIn": "Logga in",
+        "signUp": "Skapa konto",
+        "google": "Logga in med Google"
+      },
+      "switch": {
+        "signUpPrompt": "Har du inget konto? ",
+        "signInPrompt": "Har du redan ett konto? ",
+        "signUp": "Registrera dig",
+        "signIn": "Logga in"
+      },
+      "termsAndPrivacy": "Genom att fortsätta godkänner du våra Villkor och Sekretesspolicy.",
+      "alerts": {
+        "supabaseNotInitialized": {
+          "title": "Fel",
+          "message": "Supabase-klienten är inte initierad."
+        },
+        "signInError": {
+          "title": "Inloggningsfel"
+        },
+        "signUpError": {
+          "title": "Registreringsfel"
+        },
+        "emailVerification": {
+          "title": "E-postverifiering",
+          "message": "Kontrollera din inkorg för e-postverifiering!"
+        }
+      }
+    },
+    "profileSettingsButtons": {
+      "themeSettings": "Temainställningar",
+      "logout": "Logga ut"
+    },
+    "savedOutfitsSection": {
+      "loading": "Laddar sparade outfits...",
+      "emptyState": {
+        "title": "Inga sparade outfits än",
+        "description": "Börja spara outfits du gillar!"
+      }
+    },
+    "userStatistics": {
+      "title": "Statistik",
+      "created": "Skapade",
+      "saved": "Sparade",
+      "likes": "Gilla-markeringar",
+      "loading": "..."
+    },
+    "contactModal": {
+      "title": "Kontakta oss",
+      "sendMessage": "Skicka Meddelande",
+      "sending": "Skickar...",
+      "fullName": "Fullständigt namn",
+      "email": "E-post",
+      "message": "Meddelande",
+      "placeholders": {
+        "fullName": "Ange ditt fullständiga namn",
+        "email": "Ange din e-post",
+        "message": "Beskriv ditt meddelande..."
+      },
+      "errors": {
+        "fullNameRequired": "Fullständigt namn krävs",
+        "fullNameMaxLength": "Namnet får inte överstiga 80 tecken",
+        "emailRequired": "Ange din e-post",
+        "emailInvalid": "Ange en giltig e-postadress",
+        "messageRequired": "Meddelande krävs"
+      },
+      "alerts": {
+        "apiKeyMissing": "API-nyckel saknas. Kontakta supporten.",
+        "success": "Meddelande skickat framgångsrikt!",
+        "error": "Kunde inte skicka meddelande. Försök igen senare."
+      }
+    },
+    "deleteModalOutfit": {
+      "title": "Ta bort outfit",
+      "message": "Är du säker på att du vill ta bort denna outfit? Denna åtgärd kan inte ångras.",
+      "cancel": "Avbryt",
+      "delete": "Ta bort",
+      "deleting": "Tar bort...",
+      "error": "Användar-ID krävs för borttagning"
+    },
+    "outfitCreateModal": {
+      "title": "Skapa Outfit",
+      "save": "Spara",
+      "saving": "Sparar...",
+      "addElement": "Lägg till element",
+      "outfitElements": "Outfitelement",
+      "name": "Namn",
+      "description": "Beskrivning",
+      "styleTags": "Stiltaggar",
+      "elementType": "Elementtyp",
+      "elementCategory": "Elementkategori",
+      "selectFromOptions": "Välj från alternativen nedan",
+      "elementImage": "Elementbild",
+      "imageReady": "Klar att ladda upp",
+      "tapToSelectImage": "Tryck för att välja bild",
+      "price": "Pris",
+      "shopUrl": "Butiks-URL",
+      "optional": "valfritt",
+      "siteUrl": "Webbplats-URL",
+      "image": "Bild",
+      "placeholders": {
+        "name": "Ange outfitens namn",
+        "description": "Beskriv din outfit...",
+        "elementType": "Välj elementtyp",
+        "price": "Ange pris (valfritt)",
+        "siteUrl": "Ange webbplats-URL",
+        "image": "Välj Bild",
+        "shopUrl": "t.ex. https://exempel.com/produkt"
+      },
+      "errors": {
+        "nameRequired": "Outfitens namn krävs",
+        "descriptionRequired": "Beskrivning krävs",
+        "elementRequired": "Minst ett outfitelement krävs",
+        "elementTypeRequired": "Elementtyp krävs",
+        "priceInvalid": "Priset måste vara ett nummer",
+        "priceNegative": "Priset kan inte vara negativt",
+        "siteUrlRequired": "Webbplats-URL krävs",
+        "siteUrlInvalid": "Ange en giltig URL",
+        "imageRequired": "Bild krävs",
+        "styleTagsRequired": "Välj minst en stiltagg",
+        "priceRequired": "Pris krävs",
+        "priceMin": "Priset måste vara noll eller mer",
+        "invalidUrl": "Ange en giltig URL"
+      },
+      "elementCount": {
+        "zero": "Lägg till minst 1 element",
+        "one": " element tillagt",
+        "multiple": "element tillagda"
+      },
+      "totalPrice": "Totalt pris: ",
+      "imageFormat": "JPG, PNG (max 5MB)",
+      "imageSelected": "Bild vald framgångsrikt",
+      "addElementToOutfit": "Lägg till element till outfit",
+      "alerts": {
+        "permissionDenied": "Lagringstillstånd krävs för att välja bilder.",
+        "imagePickerError": "Kunde inte öppna bildväljaren",
+        "imageSelectError": "Kunde inte välja bild",
+        "noImageSelected": "Ingen bild vald",
+        "imagePickerErrorMessage": "Fel i bildväljaren: ",
+        "success": {
+          "title": "Lyckades",
+          "message": "Outfit sparad framgångsrikt!"
+        },
+        "error": {
+          "title": "Fel",
+          "message": "Kunde inte skapa outfit"
+        },
+        "unknownError": "Ett okänt fel uppstod"
+      }
+    },
+    "profileEdit": {
+      "title": "Redigera Profil",
+      "save": "Spara",
+      "saving": "Sparar...",
+      "displayName": "Visningsnamn",
+      "bio": "Bio",
+      "stylePreferences": "Stilpreferenser",
+      "privacy": "Sekretess",
+      "publicProfile": "Offentlig Profil",
+      "publicProfileDescription": "Andra kan se din profil och skapade outfits",
+      "privateProfileDescription": "Endast ditt smeknamn och avatar är synliga",
+      "privateAccount": "Privat Konto",
+      "privateAccountDescription": "När kontot är privat är endast ditt användarnamn och profilbild synliga för andra. Din bio och outfits döljs.",
+      "changePhoto": "Tryck för att ändra foto",
+      "stylePreferencesComingSoon": "Kommer snart! Ställ in dina favoritstilar, färger och märken.",
+      "placeholders": {
+        "name": "Ange ditt namn",
+        "bio": "Berätta om din stil..."
+      },
+      "errors": {
+        "nameRequired": "Namn krävs",
+        "bioMaxLength": "Bio får inte överstiga 200 tecken"
+      },
+      "alerts": {
+        "permissionDenied": "Lagringstillstånd krävs för att välja bilder.",
+        "imagePickerError": "Kunde inte öppna bildväljaren",
+        "imageSelectError": "Kunde inte välja bild",
+        "noImageSelected": "Ingen bild vald",
+        "imagePickerErrorMessage": "Fel i bildväljaren: ",
+        "imageUploadError": "Kunde inte ladda upp bild",
+        "imageUrlError": "Kunde inte hämta bild-URL",
+        "success": "Profil uppdaterad framgångsrikt",
+        "error": "Kunde inte uppdatera profil"
+      }
+    },
+    "registrationModal": {
+      "welcome": "Välkommen till Appen!",
+      "welcomeDescription": "För att använda appen måste du slutföra registreringsprocessen.",
+      "provideDetails": "Ange dina profildetaljer i nästa steg.",
+      "logout": "Logga ut",
+      "proceed": "Fortsätt",
+      "previous": "Föregående",
+      "next": "Nästa",
+      "complete": "Slutför",
+      "saving": "Sparar...",
+      "username": "Användarnamn",
+      "fullName": "Fullständigt namn",
+      "bio": "Bio",
+      "profilePicture": "Profilbild",
+      "setPhoto": "Tryck för att ställa in foto (valfritt)",
+      "reviewInfo": "Granska dina uppgifter",
+      "notProvided": "Ej angivet",
+      "placeholders": {
+        "username": "Ange ditt användarnamn",
+        "fullName": "Ange ditt fullständiga namn",
+        "bio": "Berätta om din stil... (valfritt)"
+      },
+      "errors": {
+        "usernameRequired": "Användarnamn krävs",
+        "usernameMinLength": "Användarnamnet måste vara minst 3 tecken",
+        "usernameMaxLength": "Användarnamnet får inte överstiga 20 tecken",
+        "usernamePattern": "Användarnamnet får endast innehålla bokstäver, siffror och understreck",
+        "fullNameRequired": "Fullständigt namn krävs",
+        "fullNameMaxLength": "Fullständigt namn får inte överstiga 50 tecken",
+        "bioMaxLength": "Bio får inte överstiga 200 tecken",
+        "userIdMissing": "Användar-ID saknas. Logga in igen."
+      },
+      "alerts": {
+        "permissionDenied": "Lagringstillstånd krävs för att välja bilder.",
+        "imagePickerError": "Kunde inte öppna bildväljaren",
+        "imageSelectError": "Kunde inte välja bild",
+        "noImageSelected": "Ingen bild vald",
+        "imagePickerErrorMessage": "Fel i bildväljaren: ",
+        "imageUploadError": "Kunde inte ladda upp bild",
+        "imageUrlError": "Kunde inte hämta bild-URL",
+        "registrationError": "Kunde inte slutföra registreringen. Försök igen.",
+        "logoutError": "Kunde inte logga ut. Försök igen."
+      }
+    },
+    "reportModal": {
+      "report": "Rapportera",
+      "sendReport": "Skicka Rapport",
+      "sending": "Skickar...",
+      "email": "E-post",
+      "reason": "Anledning",
+      "description": "Beskrivning",
+      "placeholders": {
+        "email": "Ange din e-post",
+        "reason": "Välj anledning",
+        "description": "Beskriv problemet..."
+      },
+      "errors": {
+        "userIdRequired": "Användar-ID krävs",
+        "emailRequired": "Ange din e-post så att vi kan svara",
+        "emailInvalid": "Ange en giltig e-postadress",
+        "reasonRequired": "Anledning krävs",
+        "descriptionRequired": "Beskrivning krävs"
+      },
+      "alerts": {
+        "apiKeyMissing": "API-nyckel saknas. Kontakta supporten.",
+        "success": "Rapport skickad framgångsrikt!",
+        "error": "Kunde inte skicka rapport. Försök igen senare."
+      }
+    },
+    "shareModal": {
+      "title": "Dela Outfit",
+      "cancel": "Avbryt",
+      "shareOptions": {
+        "native": "Dela...",
+        "copy": "Kopiera länk",
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "instagram": "Instagram",
+        "email": "E-post",
+        "sms": "Meddelande",
+        "more": "Mer"
+      },
+      "untitledOutfit": "Outfit utan titel",
+      "defaultDescription": "Modeoutfit att dela",
+      "shareText": "Kolla in denna fantastiska outfit på Modeappen!",
+      "alerts": {
+        "shareError": "Kunde inte dela denna outfit",
+        "copySuccess": "Länk kopierad till urklipp!",
+        "copyError": "Kunde inte kopiera länk",
+        "platformError": "Kan inte öppna ",
+        "instagramShare": "Länk kopierad! Du kan nu klistra in den i din Instagram-story eller inlägg."
+      }
+    },
+    "chatSection": {
+      "promptPrefix": "Jag vill att du hjälper mig att skapa en outfit enligt följande kriterier:",
+      "selectGender": "Kön",
+      "selectOutfitStyles": "Outfitstilar",
+      "selectFit": "Passform",
+      "selectDominantColors": "Dominerande färger",
+      "selectOutfitElements": "Outfitelement",
+      "selectPriceRange": "Prisintervall",
+      "from": "Från",
+      "to": "Till",
+      "currency": "Valuta",
+      "placeholders": {
+        "lowestPrice": "Lägsta pris",
+        "highestPrice": "Högsta pris",
+        "currency": "Välj valuta",
+        "outfitDescription": "Outfitbeskrivning... (valfritt)"
+      },
+      "genders": {
+        "male": "Man",
+        "female": "Kvinna",
+        "unisex": "Unisex"
+      },
+      "styles": {
+        "casual": "Vardaglig",
+        "formal": "Formell",
+        "sporty": "Sportig",
+        "bohemian": "Bohemisk",
+        "vintage": "Vintage",
+        "streetwear": "Streetwear",
+        "business": "Affärsmässig",
+        "party": "Fest",
+        "beach": "Strand",
+        "office": "Kontor",
+        "old money": "Gammalt pengar",
+        "athleisure": "Athleisure",
+        "minimalist": "Minimalistisk",
+        "gothic": "Gotisk",
+        "preppy": "Preppy",
+        "punk": "Punk",
+        "grunge": "Grunge",
+        "smart casual": "Smart Casual",
+        "business casual": "Affärsmässig Vardaglig",
+        "chic": "Chic",
+        "resort": "Resort",
+        "cottagecore": "Cottagecore",
+        "normcore": "Normcore",
+        "techwear": "Techwear",
+        "avant-garde": "Avantgarde",
+        "monochrome": "Monokrom",
+        "color blocking": "Färgblockering",
+        "safari": "Safari",
+        "retro": "Retro",
+        "y2k": "Y2K",
+        "maximalist": "Maximalistisk"
+      },
+      "fits": {
+        "slim": "Smal",
+        "regular": "Normal",
+        "relaxed": "Avslappnad",
+        "oversized": "Oversized",
+        "tailored": "Skräddarsydd",
+        "slim fit": "Smal Passform",
+        "regular fit": "Normal Passform",
+        "relaxed fit": "Avslappnad Passform",
+        "loose fit": "Lös Passform",
+        "oversized fit": "Oversized Passform",
+        "tailored fit": "Skräddarsydd Passform",
+        "athletic fit": "Atletisk Passform",
+        "tapered fit": "Avsmalnande Passform",
+        "boxy fit": "Boxig Passform",
+        "straight fit": "Rak Passform"
+      },
+      "colors": {
+        "black": "Svart",
+        "white": "Vit",
+        "red": "Röd",
+        "blue": "Blå",
+        "green": "Grön",
+        "yellow": "Gul",
+        "purple": "Lila",
+        "pink": "Rosa",
+        "gray": "Grå",
+        "brown": "Brun",
+        "orange": "Orange",
+        "navy": "Marinblå",
+        "beige": "Beige",
+        "olive": "Oliv",
+        "teal": "Blågrön",
+        "burgundy": "Vinröd",
+        "cream": "Kräm",
+        "camel": "Kamel",
+        "charcoal": "Kol",
+        "off white": "Off-white",
+        "pastel pink": "Pastellrosa",
+        "pastel blue": "Pastellblå",
+        "pastel green": "Pastellgrön",
+        "pastel yellow": "Pastellgul"
+      },
+      "elements": {
+        "shirt": "Skjorta",
+        "pants": "Byxor",
+        "shoes": "Skor",
+        "jacket": "Jacka",
+        "dress": "Klänning",
+        "skirt": "Kjol",
+        "hat": "Hatt",
+        "belt": "Skärp",
+        "watch": "Klocka",
+        "bag": "Väska",
+        "top": "Topp",
+        "bottom": "Underdel",
+        "footwear": "Skodon",
+        "accessories": "Tillbehör",
+        "outerwear": "Ytterkläder",
+        "headwear": "Huvudbonader",
+        "eyewear": "Glasögon",
+        "jewelry": "Smycken",
+        "scarf": "Scarf",
+        "gloves": "Handskar",
+        "socks": "Strumpor"
+      },
+      "currencies": {
+        "usd": "USD ($)",
+        "eur": "EUR (€)",
+        "gbp": "GBP (£)",
+        "jpy": "JPY (¥)",
+        "aud": "AUD (A$)",
+        "cad": "CAD (C$)",
+        "pln": "PLN (zł)",
+        "chf": "CHF (CHF)",
+        "rub": "RUB (₽)",
+        "cny": "CNY (¥)",
+        "inr": "INR (₹)",
+        "krw": "KRW (₩)",
+        "mxn": "MXN (MXN)",
+        "nzd": "NZD (NZD)",
+        "sek": "SEK (SEK)",
+        "sgd": "SGD (SGD)",
+        "thb": "THB (฿)",
+        "zar": "ZAR (R)",
+        "try": "TRY (₺)",
+        "uah": "UAH (₴)"
+      },
+      "conversations": "Samtal",
+      "newChat": "Ny chatt",
+      "showFilters": "Visa filter",
+      "hideFilters": "Dölj filter"
+    },
+    "chatSwitch": {
+      "ai": "AI",
+      "creator": "Skapare"
+    }
+  }

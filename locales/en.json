@@ -313,7 +313,14 @@
     "description": "Description",
     "styleTags": "Style Tags",
     "elementType": "Element Type",
+    "elementCategory": "Element Category",
+    "selectFromOptions": "Select from options below",
+    "elementImage": "Element Image",
+    "imageReady": "Ready to upload",
+    "tapToSelectImage": "Tap to select image",
     "price": "Price",
+    "shopUrl": "Shop URL",
+    "optional": "optional",
     "siteUrl": "Site URL",
     "image": "Image",
     "placeholders": {
@@ -322,7 +329,8 @@
       "elementType": "Select element type",
       "price": "Enter price (optional)",
       "siteUrl": "Enter site URL",
-      "image": "Select Image"
+      "image": "Select Image",
+      "shopUrl": "e.g. https://example.com/product"
     },
     "errors": {
       "nameRequired": "Outfit name is required",
@@ -334,7 +342,10 @@
       "siteUrlRequired": "Site URL is required",
       "siteUrlInvalid": "Please enter a valid URL",
       "imageRequired": "Image is required",
-      "styleTagsRequired": "Please select at least one style tag"
+      "styleTagsRequired": "Please select at least one style tag",
+      "priceRequired": "Price is required",
+      "priceMin": "Price must be zero or more",
+      "invalidUrl": "Please enter a valid URL"
     },
     "elementCount": {
       "zero": "Add at least 1 element",
@@ -344,14 +355,21 @@
     "totalPrice": "Total price: ",
     "imageFormat": "JPG, PNG (max 5MB)",
     "imageSelected": "Image selected successfully",
+    "addElementToOutfit": "Add element to outfit",
     "alerts": {
       "permissionDenied": "Storage permission is required to select images.",
       "imagePickerError": "Failed to open image picker",
       "imageSelectError": "Failed to select image",
       "noImageSelected": "No image selected",
       "imagePickerErrorMessage": "Image picker error: ",
-      "success": "Outfit saved successfully!",
-      "error": "Failed to create outfit",
+      "success": {
+        "title": "Success",
+        "message": "Outfit saved successfully!"
+      },
+      "error": {
+        "title": "Error",
+        "message": "Failed to create outfit"
+      },
       "unknownError": "An unknown error occurred"
     }
   },
@@ -610,7 +628,21 @@
       "gbp": "GBP (£)",
       "jpy": "JPY (¥)",
       "aud": "AUD (A$)",
-      "cad": "CAD (C$)"
+      "cad": "CAD (C$)",
+      "pln": "PLN (zł)",
+      "chf": "CHF (CHF)",
+      "rub": "RUB (₽)",
+      "cny": "CNY (¥)",
+      "inr": "INR (₹)",
+      "krw": "KRW (₩)",
+      "mxn": "MXN (MXN)",
+      "nzd": "NZD (NZD)",
+      "sek": "SEK (SEK)",
+      "sgd": "SGD (SGD)",
+      "thb": "THB (฿)",
+      "zar": "ZAR (R)",
+      "try": "TRY (₺)",
+      "uah": "UAH (₴)"
     },
     "conversations": "Conversations",
     "newChat": "New chat",

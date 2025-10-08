@@ -1,0 +1,656 @@
+{
+    "common": {
+      "loading": "Yükleniyor..."
+    },
+    "homeScreen": {
+      "welcomeMessage": "Hoş geldiniz, kıyafet oluşturmak ister misiniz?",
+      "aiConstructorButton": "Yapay Zeka Oluşturucu",
+      "createOwnOutfitButton": "Kendi Kıyafetinizi Oluşturun"
+    },
+    "feedSection": {
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Giriş Yapılmadı",
+          "message": "Kıyafetleri kaydetmek için giriş yapmalısınız."
+        }
+      },
+      "emptyState": {
+        "title": "Henüz Kıyafet Yok",
+        "description": "İlk kıyafetinizi oluşturun veya başkalarını takip ederek onların kreasyonlarını görün",
+        "actionText": "Kıyafet Oluştur"
+      },
+      "loadingOutfits": "Yükleniyor..."
+    },
+    "rankingScreen": {
+      "title": "Sıralama",
+      "subtitle": "En İyi Kıyafetler ve Yaratıcılar",
+      "tabs": {
+        "outfits": "Kıyafetler",
+        "creators": "Yaratıcılar"
+      },
+      "loading": "Yükleniyor...",
+      "error": "Yükleme Başarısız",
+      "tryAgain": "Tekrar Dene",
+      "rankRow": {
+        "untitledOutfit": "Başlıksız Kıyafet",
+        "unknownCreator": "Bilinmiyor",
+        "outfitStats": "Beğeniler · Kaydetmeler · Puanlamalar",
+        "creatorStats": "Kıyafetler · Beğeniler",
+        "rank": "#"
+      }
+    },
+    "userProfile": {
+      "loading": "Yükleniyor...",
+      "about": "Hakkında",
+      "privateProfile": "Bu profil özel."
+    },
+    "outfitDetail": {
+      "header": {
+        "title": "Kıyafet Detayları",
+        "yourCreation": "Sizin Yaratımınız"
+      },
+      "loading": "Kıyafet yükleniyor...",
+      "notFound": "Bu kıyafeti bulamadık.",
+      "goBack": "Geri Dön",
+      "images": {
+        "free": "Ücretsiz",
+        "noImages": "Görüntü Yok"
+      },
+      "info": {
+        "anonymous": "Anonim",
+        "tags": "Etiketler",
+        "description": "Açıklama"
+      },
+      "sections": {
+        "description": "Açıklama",
+        "tags": "Etiketler"
+      },
+      "interactions": {
+        "comments": " Yorumlar",
+        "likes": " Beğeniler"
+      },
+      "defaultOutfitName": "Başlıksız Kıyafet"
+    },
+    "commentItem": {
+      "reply": "Yanıtla",
+      "viewReplies": "Yanıtları Gör",
+      "hideReplies": "Yanıtları Gizle",
+      "replyPlaceholder": "Yanıtla: ",
+      "cancel": "İptal",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Giriş Yapılmadı",
+          "message": "Yorum yapmak için giriş yapmalısınız."
+        },
+        "error": {
+          "title": "Hata",
+          "message": "Yorum eklenemedi"
+        }
+      }
+    },
+    "commentReactions": {
+      "reacted": "Tepki Verildi",
+      "react": "Tepki Ver",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Giriş Yapılmadı",
+          "message": "Yorumlara tepki vermek için giriş yapmalısınız."
+        }
+      }
+    },
+    "commentSection": {
+      "header": "Yorumlar • ",
+      "headerDefault": "Yorumlar",
+      "loading": "Yükleniyor...",
+      "empty": "Henüz yorum yok. İlk yorumu yap!",
+      "placeholder": "Yorum ekle...",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Giriş Yapılmadı",
+          "message": "Yorum yapmak için giriş yapmalısınız."
+        },
+        "error": {
+          "title": "Hata",
+          "message": "Yorum eklenemedi"
+        }
+      }
+    },
+    "feedFilters": {
+      "searchPlaceholder": "Kıyafet ara...",
+      "sections": {
+        "styleTags": "Stil Etiketleri",
+        "elements": "Elementler"
+      },
+      "clearFilters": "Tüm Filtreleri Temizle"
+    },
+    "notFoundScreen": {
+      "title": "Hata!",
+      "message": "Bu ekran mevcut değil.",
+      "link": "Ana ekrana git!"
+    },
+    "themeSettings": {
+      "title": "Tema Ayarları",
+      "appearance": {
+        "title": "Görünüm",
+        "description": "Moda Uygulamasının nasıl görüneceğini seçin. Tek bir tema seçin veya sistem ayarlarıyla senkronize edin.",
+        "options": {
+          "light": {
+            "label": "Açık",
+            "description": "Her zaman açık tema kullan"
+          },
+          "dark": {
+            "label": "Koyu",
+            "description": "Her zaman koyu tema kullan"
+          },
+          "system": {
+            "label": "Sistem",
+            "description": "Sistem ayarlarını takip et"
+          }
+        }
+      },
+      "preview": {
+        "title": "Önizleme",
+        "appName": "Moda Uygulaması",
+        "themePreview": " tema önizlemesi",
+        "description": "Seçilen tema ile kıyafet akışınız ve diğer içerikler böyle görünecek.",
+        "primaryButton": "Birincil",
+        "secondaryButton": "İkincil"
+      },
+      "languageCurrency": {
+        "title": "Dil ve Para Birimi",
+        "description": "Uygulama için tercih ettiğiniz dili ve para birimini seçin.",
+        "languagePlaceholder": "Dil Seç",
+        "currencyPlaceholder": "Para Birimi Seç"
+      }
+    },
+    "createdOutfitsSection": {
+      "loading": "Kıyafetler yükleniyor...",
+      "header": "Sizin Yaratımlarınız",
+      "createButton": "Oluştur",
+      "emptyState": {
+        "title": "Henüz oluşturulmuş kıyafet yok",
+        "description": "İlk kıyafetinizi oluşturmaya başlayın!",
+        "actionText": "Kıyafet Oluştur"
+      }
+    },
+    "followButton": {
+      "follow": "Takip Et",
+      "unfollow": "Takibi Bırak",
+      "pending": "Takip Talebi Beklemede"
+    },
+    "profileBioSection": {
+      "title": "Hakkında",
+      "noBio": "Henüz biyografi yok. Profilinizi düzenleyerek ekleyin!"
+    },
+    "profileHeader": {
+      "anonymousUser": "Anonim Kullanıcı",
+      "defaultRole": "Moda Meraklısı",
+      "editProfile": "Profili Düzenle",
+      "tabs": {
+        "user-info": "Profil",
+        "created-outfits": "Oluşturulanlar",
+        "saved-outfits": "Kaydedilenler"
+      }
+    },
+    "profileRecentActivitySection": {
+      "title": "Son Aktiviteler",
+      "activities": [
+        {
+          "text": "Kıyafetiniz 50'den fazla beğeni aldı!"
+        },
+        {
+          "text": "5 yeni kıyafeti beğendiniz"
+        },
+        {
+          "text": "\"Yazlık Gündelik Görünüm\" oluşturdu"
+        }
+      ]
+    },
+    "auth": {
+      "welcome": "Hoş Geldiniz",
+      "hero": {
+        "badge": "Moda Asistanı",
+        "title": "Zekice küratörlüğünü yapılmış stil.",
+        "slogan": "Apple gibi minimal. Vercel gibi güçlü. Sizin için kişiselleştirilmiş."
+      },
+      "signInSubtitle": "Devam etmek için giriş yapın",
+      "signUpSubtitle": "Hesap oluştur",
+      "labels": {
+        "email": "E-posta",
+        "password": "Şifre"
+      },
+      "placeholders": {
+        "email": "siz@ornek.com",
+        "password": "••••••••"
+      },
+      "buttons": {
+        "signIn": "Giriş Yap",
+        "signUp": "Hesap Oluştur",
+        "google": "Google ile Giriş Yap"
+      },
+      "switch": {
+        "signUpPrompt": "Hesabınız yok mu? ",
+        "signInPrompt": "Zaten hesabınız var mı? ",
+        "signUp": "Kaydol",
+        "signIn": "Giriş Yap"
+      },
+      "termsAndPrivacy": "Devam ederek Şartlar ve Gizlilik politikamızı kabul etmiş olursunuz.",
+      "alerts": {
+        "supabaseNotInitialized": {
+          "title": "Hata",
+          "message": "Supabase istemcisi başlatılmadı."
+        },
+        "signInError": {
+          "title": "Giriş Hatası"
+        },
+        "signUpError": {
+          "title": "Kayıt Hatası"
+        },
+        "emailVerification": {
+          "title": "E-posta Doğrulama",
+          "message": "Lütfen e-posta doğrulaması için gelen kutunuzu kontrol edin!"
+        }
+      }
+    },
+    "profileSettingsButtons": {
+      "themeSettings": "Tema Ayarları",
+      "logout": "Çıkış Yap"
+    },
+    "savedOutfitsSection": {
+      "loading": "Kaydedilmiş kıyafetler yükleniyor...",
+      "emptyState": {
+        "title": "Henüz kaydedilmiş kıyafet yok",
+        "description": "Sevdiğiniz kıyafetleri kaydetmeye başlayın!"
+      }
+    },
+    "userStatistics": {
+      "title": "İstatistikler",
+      "created": "Oluşturulan",
+      "saved": "Kaydedilen",
+      "likes": "Beğeniler",
+      "loading": "..."
+    },
+    "contactModal": {
+      "title": "Bize Ulaşın",
+      "sendMessage": "Mesaj Gönder",
+      "sending": "Gönderiliyor...",
+      "fullName": "Tam Ad",
+      "email": "E-posta",
+      "message": "Mesaj",
+      "placeholders": {
+        "fullName": "Tam adınızı girin",
+        "email": "E-postanızı girin",
+        "message": "Mesajınızı tarif edin..."
+      },
+      "errors": {
+        "fullNameRequired": "Tam ad gerekli",
+        "fullNameMaxLength": "Ad 80 karakteri aşamaz",
+        "emailRequired": "E-postanızı girin",
+        "emailInvalid": "Lütfen geçerli bir e-posta girin",
+        "messageRequired": "Mesaj gerekli"
+      },
+      "alerts": {
+        "apiKeyMissing": "API anahtarı eksik. Lütfen destek ile iletişime geçin.",
+        "success": "Mesaj başarıyla gönderildi!",
+        "error": "Mesaj gönderilemedi. Lütfen daha sonra tekrar deneyin."
+      }
+    },
+    "deleteModalOutfit": {
+      "title": "Kıyafeti Sil",
+      "message": "Bu kıyafeti silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+      "cancel": "İptal",
+      "delete": "Sil",
+      "deleting": "Siliniyor...",
+      "error": "Silme için kullanıcı kimliği gerekli"
+    },
+    "outfitCreateModal": {
+      "title": "Kıyafet Oluştur",
+      "save": "Kaydet",
+      "saving": "Kaydediliyor...",
+      "addElement": "Element Ekle",
+      "outfitElements": "Kıyafet Elementleri",
+      "name": "Ad",
+      "description": "Açıklama",
+      "styleTags": "Stil Etiketleri",
+      "elementType": "Element Türü",
+      "elementCategory": "Element Kategorisi",
+      "selectFromOptions": "Aşağıdaki seçeneklerden seçin",
+      "elementImage": "Element Görseli",
+      "imageReady": "Yüklenmeye hazır",
+      "tapToSelectImage": "Görsel seçmek için dokunun",
+      "price": "Fiyat",
+      "shopUrl": "Mağaza URL'si",
+      "optional": "isteğe bağlı",
+      "siteUrl": "Site URL'si",
+      "image": "Görsel",
+      "placeholders": {
+        "name": "Kıyafet adını girin",
+        "description": "Kıyafetinizi tarif edin...",
+        "elementType": "Element türünü seçin",
+        "price": "Fiyatı girin (isteğe bağlı)",
+        "siteUrl": "Site URL'sini girin",
+        "image": "Görsel Seç",
+        "shopUrl": "ör. https://ornek.com/urun"
+      },
+      "errors": {
+        "nameRequired": "Kıyafet adı gerekli",
+        "descriptionRequired": "Açıklama gerekli",
+        "elementRequired": "En az bir kıyafet elementi gerekli",
+        "elementTypeRequired": "Element türü gerekli",
+        "priceInvalid": "Fiyat bir sayı olmalı",
+        "priceNegative": "Fiyat negatif olamaz",
+        "siteUrlRequired": "Site URL'si gerekli",
+        "siteUrlInvalid": "Lütfen geçerli bir URL girin",
+        "imageRequired": "Görsel gerekli",
+        "styleTagsRequired": "Lütfen en az bir stil etiketi seçin",
+        "priceRequired": "Fiyat gerekli",
+        "priceMin": "Fiyat sıfır veya daha fazla olmalı",
+        "invalidUrl": "Lütfen geçerli bir URL girin"
+      },
+      "elementCount": {
+        "zero": "En az 1 element ekleyin",
+        "one": " element eklendi",
+        "multiple": "element eklendi"
+      },
+      "totalPrice": "Toplam fiyat: ",
+      "imageFormat": "JPG, PNG (maks 5MB)",
+      "imageSelected": "Görsel başarıyla seçildi",
+      "addElementToOutfit": "Kıyafete element ekle",
+      "alerts": {
+        "permissionDenied": "Görsel seçmek için depolama izni gerekli.",
+        "imagePickerError": "Görsel seçici açılamadı",
+        "imageSelectError": "Görsel seçilemedi",
+        "noImageSelected": "Görsel seçilmedi",
+        "imagePickerErrorMessage": "Görsel seçici hatası: ",
+        "success": {
+          "title": "Başarılı",
+          "message": "Kıyafet başarıyla kaydedildi!"
+        },
+        "error": {
+          "title": "Hata",
+          "message": "Kıyafet oluşturulamadı"
+        },
+        "unknownError": "Bilinmeyen bir hata oluştu"
+      }
+    },
+    "profileEdit": {
+      "title": "Profili Düzenle",
+      "save": "Kaydet",
+      "saving": "Kaydediliyor...",
+      "displayName": "Görünen Ad",
+      "bio": "Biyografi",
+      "stylePreferences": "Stil Tercihleri",
+      "privacy": "Gizlilik",
+      "publicProfile": "Herkese Açık Profil",
+      "publicProfileDescription": "Diğerleri profilinizi ve oluşturduğunuz kıyafetleri görebilir",
+      "privateProfileDescription": "Yalnızca takma adınız ve avatarınız görünecek",
+      "privateAccount": "Özel Hesap",
+      "privateAccountDescription": "Özel olduğunda, yalnızca kullanıcı adınız ve profil resminiz başkalarına görünecek. Biyografiniz ve kıyafetleriniz gizlenecek.",
+      "changePhoto": "Fotoğrafı değiştirmek için dokunun",
+      "stylePreferencesComingSoon": "Yakında! Favori stillerinizi, renklerinizi ve markalarınızı ayarlayın.",
+      "placeholders": {
+        "name": "Adınızı girin",
+        "bio": "Stiliniz hakkında bize bilgi verin..."
+      },
+      "errors": {
+        "nameRequired": "Ad gerekli",
+        "bioMaxLength": "Biyografi 200 karakteri aşmamalı"
+      },
+      "alerts": {
+        "permissionDenied": "Görsel seçmek için depolama izni gerekli.",
+        "imagePickerError": "Görsel seçici açılamadı",
+        "imageSelectError": "Görsel seçilemedi",
+        "noImageSelected": "Görsel seçilmedi",
+        "imagePickerErrorMessage": "Görsel seçici hatası: ",
+        "imageUploadError": "Görsel yüklenemedi",
+        "imageUrlError": "Görsel URL'si alınamadı",
+        "success": "Profil başarıyla güncellendi",
+        "error": "Profil güncellenemedi"
+      }
+    },
+    "registrationModal": {
+      "welcome": "Uygulamaya Hoş Geldiniz!",
+      "welcomeDescription": "Uygulamayı kullanmak için kayıt işlemini tamamlamanız gerekiyor.",
+      "provideDetails": "Lütfen bir sonraki adımlarda profil detaylarınızı sağlayın.",
+      "logout": "Çıkış Yap",
+      "proceed": "İlerle",
+      "previous": "Önceki",
+      "next": "Sonraki",
+      "complete": "Tamamla",
+      "saving": "Kaydediliyor...",
+      "username": "Kullanıcı Adı",
+      "fullName": "Tam Ad",
+      "bio": "Biyografi",
+      "profilePicture": "Profil Resmi",
+      "setPhoto": "Fotoğraf ayarlamak için dokunun (isteğe bağlı)",
+      "reviewInfo": "Bilgilerinizi Gözden Geçirin",
+      "notProvided": "Sağlanmadı",
+      "placeholders": {
+        "username": "Kullanıcı adınızı girin",
+        "fullName": "Tam adınızı girin",
+        "bio": "Stiliniz hakkında bize bilgi verin... (isteğe bağlı)"
+      },
+      "errors": {
+        "usernameRequired": "Kullanıcı adı gerekli",
+        "usernameMinLength": "Kullanıcı adı en az 3 karakter olmalı",
+        "usernameMaxLength": "Kullanıcı adı 20 karakteri aşamaz",
+        "usernamePattern": "Kullanıcı adı yalnızca harf, rakam ve alt çizgi içerebilir",
+        "fullNameRequired": "Tam ad gerekli",
+        "fullNameMaxLength": "Tam ad 50 karakteri aşamaz",
+        "bioMaxLength": "Biyografi 200 karakteri aşamaz",
+        "userIdMissing": "Kullanıcı kimliği eksik. Lütfen tekrar giriş yapın."
+      },
+      "alerts": {
+        "permissionDenied": "Görsel seçmek için depolama izni gerekli.",
+        "imagePickerError": "Görsel seçici açılamadı",
+        "imageSelectError": "Görsel seçilemedi",
+        "noImageSelected": "Görsel seçilmedi",
+        "imagePickerErrorMessage": "Görsel seçici hatası: ",
+        "imageUploadError": "Görsel yüklenemedi",
+        "imageUrlError": "Görsel URL'si alınamadı",
+        "registrationError": "Kayıt tamamlanamadı. Lütfen tekrar deneyin.",
+        "logoutError": "Çıkış yapılamadı. Lütfen tekrar deneyin."
+      }
+    },
+    "reportModal": {
+      "report": "Rapor Et",
+      "sendReport": "Rapor Gönder",
+      "sending": "Gönderiliyor...",
+      "email": "E-posta",
+      "reason": "Sebep",
+      "description": "Açıklama",
+      "placeholders": {
+        "email": "E-postanızı girin",
+        "reason": "Sebep seçin",
+        "description": "Sorunu tarif edin..."
+      },
+      "errors": {
+        "userIdRequired": "Kullanıcı kimliği gerekli",
+        "emailRequired": "Size yanıt verebilmemiz için e-postanızı girin",
+        "emailInvalid": "Lütfen geçerli bir e-posta girin",
+        "reasonRequired": "Sebep gerekli",
+        "descriptionRequired": "Açıklama gerekli"
+      },
+      "alerts": {
+        "apiKeyMissing": "API anahtarı eksik. Lütfen destek ile iletişime geçin.",
+        "success": "Rapor başarıyla gönderildi!",
+        "error": "Rapor gönderilemedi. Lütfen daha sonra tekrar deneyin."
+      }
+    },
+    "shareModal": {
+      "title": "Kıyafeti Paylaş",
+      "cancel": "İptal",
+      "shareOptions": {
+        "native": "Paylaş...",
+        "copy": "Linki Kopyala",
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "instagram": "Instagram",
+        "email": "E-posta",
+        "sms": "Mesaj",
+        "more": "Daha Fazla"
+      },
+      "untitledOutfit": "Başlıksız Kıyafet",
+      "defaultDescription": "Paylaşılacak moda kıyafeti",
+      "shareText": "Moda Uygulamasında bu harika kıyafeti keşfedin!",
+      "alerts": {
+        "shareError": "Bu kıyafet paylaşılamadı",
+        "copySuccess": "Link panoya kopyalandı!",
+        "copyError": "Link kopyalanamadı",
+        "platformError": "Açılamadı ",
+        "instagramShare": "Link kopyalandı! Şimdi Instagram hikayenize veya gönderinize yapıştırabilirsiniz."
+      }
+    },
+    "chatSection": {
+      "promptPrefix": "Aşağıdaki kriterlere göre bir kıyafet oluşturmama yardım etmenizi istiyorum:",
+      "selectGender": "Cinsiyet",
+      "selectOutfitStyles": "Kıyafet Stilleri",
+      "selectFit": "Kalıp",
+      "selectDominantColors": "Baskın Renkler",
+      "selectOutfitElements": "Kıyafet Elementleri",
+      "selectPriceRange": "Fiyat Aralığı",
+      "from": "Başlangıç",
+      "to": "Bitiş",
+      "currency": "Para Birimi",
+      "placeholders": {
+        "lowestPrice": "En düşük fiyat",
+        "highestPrice": "En yüksek fiyat",
+        "currency": "Para birimi seç",
+        "outfitDescription": "Kıyafet açıklaması... (isteğe bağlı)"
+      },
+      "genders": {
+        "male": "Erkek",
+        "female": "Kadın",
+        "unisex": "Unisex"
+      },
+      "styles": {
+        "casual": "Gündelik",
+        "formal": "Resmi",
+        "sporty": "Spor",
+        "bohemian": "Bohem",
+        "vintage": "Vintage",
+        "streetwear": "Sokak Modası",
+        "business": "İş",
+        "party": "Parti",
+        "beach": "Plaj",
+        "office": "Ofis",
+        "old money": "Eski Para",
+        "athleisure": "Athleisure",
+        "minimalist": "Minimalist",
+        "gothic": "Gotik",
+        "preppy": "Preppy",
+        "punk": "Punk",
+        "grunge": "Grunge",
+        "smart casual": "Akıllı Gündelik",
+        "business casual": "İş Gündelik",
+        "chic": "Şık",
+        "resort": "Tatil",
+        "cottagecore": "Cottagecore",
+        "normcore": "Normcore",
+        "techwear": "Techwear",
+        "avant-garde": "Avangart",
+        "monochrome": "Monokrom",
+        "color blocking": "Renk Bloklama",
+        "safari": "Safari",
+        "retro": "Retro",
+        "y2k": "Y2K",
+        "maximalist": "Maksimalist"
+      },
+      "fits": {
+        "slim": "İnce",
+        "regular": "Normal",
+        "relaxed": "Rahat",
+        "oversized": "Büyük Beden",
+        "tailored": "Terzi İşi",
+        "slim fit": "İnce Kalıp",
+        "regular fit": "Normal Kalıp",
+        "relaxed fit": "Rahat Kalıp",
+        "loose fit": "Bol Kalıp",
+        "oversized fit": "Büyük Beden Kalıp",
+        "tailored fit": "Terzi İşi Kalıp",
+        "athletic fit": "Atletik Kalıp",
+        "tapered fit": "Daralan Kalıp",
+        "boxy fit": "Kutu Kalıp",
+        "straight fit": "Düz Kalıp"
+      },
+      "colors": {
+        "black": "Siyah",
+        "white": "Beyaz",
+        "red": "Kırmızı",
+        "blue": "Mavi",
+        "green": "Yeşil",
+        "yellow": "Sarı",
+        "purple": "Mor",
+        "pink": "Pembe",
+        "gray": "Gri",
+        "brown": "Kahverengi",
+        "orange": "Turuncu",
+        "navy": "Lacivert",
+        "beige": "Bej",
+        "olive": "Zeytin Yeşili",
+        "teal": "Teal",
+        "burgundy": "Bordo",
+        "cream": "Krem",
+        "camel": "Deve Tüyü",
+        "charcoal": "Kömür",
+        "off white": "Kirli Beyaz",
+        "pastel pink": "Pastel Pembe",
+        "pastel blue": "Pastel Mavi",
+        "pastel green": "Pastel Yeşil",
+        "pastel yellow": "Pastel Sarı"
+      },
+      "elements": {
+        "shirt": "Gömlek",
+        "pants": "Pantalon",
+        "shoes": "Ayakkabı",
+        "jacket": "Ceket",
+        "dress": "Elbise",
+        "skirt": "Etek",
+        "hat": "Şapka",
+        "belt": "Kemer",
+        "watch": "Saat",
+        "bag": "Çanta",
+        "top": "Üst",
+        "bottom": "Alt",
+        "footwear": "Ayakkabı",
+        "accessories": "Aksesuarlar",
+        "outerwear": "Dış Giyim",
+        "headwear": "Başlık",
+        "eyewear": "Gözlük",
+        "jewelry": "Takı",
+        "scarf": "Fular",
+        "gloves": "Eldiven",
+        "socks": "Çorap"
+      },
+      "currencies": {
+        "usd": "USD ($)",
+        "eur": "EUR (€)",
+        "gbp": "GBP (£)",
+        "jpy": "JPY (¥)",
+        "aud": "AUD (A$)",
+        "cad": "CAD (C$)",
+        "pln": "PLN (zł)",
+        "chf": "CHF (CHF)",
+        "rub": "RUB (₽)",
+        "cny": "CNY (¥)",
+        "inr": "INR (₹)",
+        "krw": "KRW (₩)",
+        "mxn": "MXN (MXN)",
+        "nzd": "NZD (NZD)",
+        "sek": "SEK (SEK)",
+        "sgd": "SGD (SGD)",
+        "thb": "THB (฿)",
+        "zar": "ZAR (R)",
+        "try": "TRY (₺)",
+        "uah": "UAH (₴)"
+      },
+      "conversations": "Sohbetler",
+      "newChat": "Yeni Sohbet",
+      "showFilters": "Filtreleri Göster",
+      "hideFilters": "Filtreleri Gizle"
+    },
+    "chatSwitch": {
+      "ai": "Yapay Zeka",
+      "creator": "Yaratıcı"
+    }
+  }

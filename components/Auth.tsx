@@ -1,7 +1,7 @@
+import SilkBackground from '@/components/ui/SilkBackground'
 import { supabase } from '@/lib/supabase'
 import { ThemedGradient, useTheme } from '@/providers/themeContext'
 import { AntDesign } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
 import * as Linking from 'expo-linking'
 import { Lock, Mail } from 'lucide-react-native'
 import { useEffect, useRef, useState } from 'react'
@@ -21,7 +21,7 @@ interface FocusInputProps {
 
 const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboardType = 'default' }: FocusInputProps) => {
   const { t } = useTranslation();
-  const { colors } = useTheme()
+  const { colors, isDark } = useTheme()
   const focusAnim = useRef(new Animated.Value(0)).current;
   const [focused, setFocused] = useState(false);
 
@@ -40,7 +40,7 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
   });
 
   const glowOpacity = focusAnim.interpolate({
-    inputRange: [0, 1],
+    inputRange: [0, 3],
     outputRange: [0, 0.55]
   });
 
@@ -48,6 +48,10 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
     inputRange: [0, 1],
     outputRange: [4, 0]
   });
+
+  const backgroundColor = focused
+    ? (isDark ? 'rgba(255,255,255,0.10)' : '#FFFFFF')
+    : (isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)')
 
   return (
     <View style={{ width: '100%' }}>
@@ -65,7 +69,7 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
         borderWidth: 1,
         borderColor,
         borderRadius: 14,
-        backgroundColor: colors.surface,
+        backgroundColor,
         overflow: 'hidden'
       }}>
         <Animated.View style={{
@@ -82,7 +86,7 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
           <TextInput
             value={value}
             placeholder={t(placeholder)}
-            placeholderTextColor={colors.textSecondary}
+            placeholderTextColor={isDark ? colors.textSecondary : '#6B7280'}
             secureTextEntry={secure}
             autoCapitalize='none'
             keyboardType={keyboardType}
@@ -105,33 +109,9 @@ AppState.addEventListener('change', (state) => {
   }
 })
 
-const AnimatedGradientOverlay = () => {
-  const fade = useRef(new Animated.Value(0)).current
-  useEffect(() => {
-    const anim = Animated.loop(
-      Animated.sequence([
-        Animated.timing(fade, { toValue: 0.6, duration: 4000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-        Animated.timing(fade, { toValue: 0.2, duration: 4000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-      ])
-    )
-    anim.start()
-    return () => anim.stop()
-  }, [fade])
-  return (
-    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-      <Animated.View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: fade }}>
-        {/* <ThemedGradient
-          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-        /> */}
-      </Animated.View>
-      <LinearGradient colors={['rgba(0,0,0,0.04)', 'rgba(0,0,0,0.1)']} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
-    </View>
-  )
-}
-
 export default function Auth() {
   const { t } = useTranslation();
-  const { colors } = useTheme()
+  const { colors, isDark } = useTheme()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -197,77 +177,85 @@ export default function Auth() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.background, overflow: 'hidden' }}>
       <View style={{ flex: 1, position: 'relative' }}>
-        <AnimatedGradientOverlay />
+        <SilkBackground />
         <SafeAreaView style={{ flex: 1 }}>
           <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-              <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28, paddingBottom: 28, justifyContent: 'space-between' }}>
-                <View>
-                  <View style={{ alignItems: 'center', marginBottom: 28 }}>
-                    <View style={{ borderWidth: 1, borderColor: colors.border, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 6, backgroundColor: colors.surface }}>
-                      <Text style={{ color: colors.textSecondary, fontSize: 11, letterSpacing: 1, fontWeight: '600', textTransform: 'uppercase' }}>{t('auth.hero.badge')}</Text>
-                    </View>
-                    <Text style={{ color: colors.text, fontSize: 34, fontWeight: '800', letterSpacing: -0.8, textAlign: 'center', marginTop: 14 }}>{t('auth.hero.title')}</Text>
-                    <Text style={{ color: colors.textSecondary, marginTop: 8, fontSize: 14, textAlign: 'center' }}>{t('auth.hero.slogan')}</Text>
-                  </View>
-
-                  {!showMenu && (
-                    <View style={{ borderWidth: 1, borderColor: colors.border, borderRadius: 18, padding: 18 }}>
-
-                      <>
-                        <FocusInput
-                          icon={<Mail size={18} color={colors.textSecondary} />}
-                          label="auth.labels.email"
-                          value={email}
-                          onChange={setEmail}
-                          placeholder="auth.placeholders.email"
-                          keyboardType="email-address"
-                        />
-                        <View style={{ height: 16 }} />
-                        <FocusInput
-                          icon={<Lock size={18} color={colors.textSecondary} />}
-                          label="auth.labels.password"
-                          value={password}
-                          onChange={setPassword}
-                          placeholder="auth.placeholders.password"
-                          secure
-                        />
-
-                        <Pressable
-                          disabled={loading}
-                          onPress={mode === 'signin' ? signInWithEmail : signUpWithEmail}
-                          style={{ marginTop: 18, borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center', opacity: loading ? 0.6 : 1, overflow: 'hidden' }}
-                        >
-                          <ThemedGradient
-                            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 12 }}
-                          />
-                          {loading ? <ActivityIndicator color="#fff" /> : (
-                            <Text style={{ color: '#fff', fontWeight: '600', letterSpacing: 0.3 }}>
-                              {t(mode === 'signin' ? 'auth.buttons.signIn' : 'auth.buttons.signUp')}
-                            </Text>
-                          )}
-                        </Pressable>
-
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
-                          <Text style={{ color: colors.textSecondary, fontSize: 12 }}>{t(mode === 'signin' ? 'auth.switch.signUpPrompt' : 'auth.switch.signInPrompt')}</Text>
-                          <Pressable onPress={() => setMode(mode === 'signin' ? 'signup' : 'signin')}>
-                            <Text style={{ color: colors.accent, fontSize: 12, fontWeight: '600' }}>
-                              {t(mode === 'signin' ? 'auth.switch.signUp' : 'auth.switch.signIn')}
-                            </Text>
-                          </Pressable>
-                        </View>
-
-                        <Pressable onPress={() => setShowMenu(true)} style={{ marginTop: 12, alignItems: 'center' }}>
-                          <Text style={{ color: colors.textSecondary, fontSize: 12 }}>Back</Text>
-                        </Pressable>
-                      </>
-                    </View>
-                  )}
+              <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 100, paddingBottom: 28, justifyContent: 'space-between' }}>
+                <View style={{ alignItems: 'center', marginBottom: 60 }}>
+                  <Text style={{ color: colors.text + 'dd', fontSize: 84, fontWeight: '900', letterSpacing: 1, textAlign: 'center', fontFamily: 'InstrumentSans' }}>Versa</Text>
+                  <Text style={{ color: colors.textSecondary + 'aa', fontSize: 16, fontWeight: '600', letterSpacing: 2, textAlign: 'center' }}>DISCOVER YOUR STYLE</Text>
                 </View>
 
-                <View>
-                  {showMenu && (
+                {!showMenu && (
+                  <View className='backdrop-blur-xl'
+                    style={{
+                      position: 'relative',
+                      borderWidth: 1,
+                      borderColor: colors.border,
+                      borderRadius: 18,
+                      padding: 18,
+                      overflow: 'hidden',
+                      backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)'
+                    }}>
+                    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+
                     <>
+                      <FocusInput
+                        icon={<Mail size={18} color={colors.textSecondary} />}
+                        label="auth.labels.email"
+                        value={email}
+                        onChange={setEmail}
+                        placeholder="auth.placeholders.email"
+                        keyboardType="email-address"
+                      />
+                      <View style={{ height: 16 }} />
+                      <FocusInput
+                        icon={<Lock size={18} color={colors.textSecondary} />}
+                        label="auth.labels.password"
+                        value={password}
+                        onChange={setPassword}
+                        placeholder="auth.placeholders.password"
+                        secure
+                      />
+
+                      <Pressable
+                        disabled={loading}
+                        onPress={mode === 'signin' ? signInWithEmail : signUpWithEmail}
+                        style={{ marginTop: 18, borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center', opacity: loading ? 0.6 : 1, overflow: 'hidden' }}
+                      >
+                        <ThemedGradient
+                          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 12 }}
+                        />
+                        {loading ? <ActivityIndicator color="#fff" /> : (
+                          <Text style={{ color: '#fff', fontWeight: '600', letterSpacing: 0.3 }}>
+                            {t(mode === 'signin' ? 'auth.buttons.signIn' : 'auth.buttons.signUp')}
+                          </Text>
+                        )}
+                      </Pressable>
+
+                      <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                        <Text style={{ color: colors.textSecondary, fontSize: 12 }}>{t(mode === 'signin' ? 'auth.switch.signUpPrompt' : 'auth.switch.signInPrompt')}</Text>
+                        <Pressable onPress={() => setMode(mode === 'signin' ? 'signup' : 'signin')}>
+                          <Text style={{ color: colors.accent, fontSize: 12, fontWeight: '600' }}>
+                            {t(mode === 'signin' ? 'auth.switch.signUp' : 'auth.switch.signIn')}
+                          </Text>
+                        </Pressable>
+                      </View>
+
+                      <Pressable onPress={() => setShowMenu(true)} style={{ marginTop: 12, alignItems: 'center' }}>
+                        <Text style={{ color: colors.textSecondary, fontSize: 12 }}>Back</Text>
+                      </Pressable>
+                    </>
+                  </View>
+                )}
+              </View>
+
+              <View style={{ padding: 24 }}>
+                {showMenu && (
+                  <>
+                    <View style={{ position: 'relative', overflow: 'hidden' }}>
+                      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
                       <Pressable
                         disabled={loading}
                         onPress={() => { setMode('signin'); setShowMenu(false) }}
@@ -308,17 +296,17 @@ export default function Auth() {
                           {t('auth.buttons.google')}
                         </Text>
                       </Pressable>
-                    </>
-                  )}
-                  <View style={{ alignItems: 'center', marginTop: 16 }}>
-                    <Text style={{ color: colors.textMuted, fontSize: 10 }}>{t('auth.termsAndPrivacy')}</Text>
-                  </View>
+                    </View>
+                  </>
+                )}
+                <View style={{ alignItems: 'center', marginTop: 16 }}>
+                  <Text style={{ color: colors.textMuted, fontSize: 10 }}>{t('auth.termsAndPrivacy')}</Text>
                 </View>
               </View>
             </ScrollView>
           </KeyboardAvoidingView>
         </SafeAreaView>
-      </View>
-    </View>
+      </View >
+    </View >
   )
 }

@@ -1,0 +1,656 @@
+{
+    "common": {
+      "loading": "Ładowanie..."
+    },
+    "homeScreen": {
+      "welcomeMessage": "Witaj, jak chcesz stworzyć stylizację?",
+      "aiConstructorButton": "Konstruktor AI",
+      "createOwnOutfitButton": "Stwórz własną stylizację"
+    },
+    "feedSection": {
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Nie zalogowano",
+          "message": "Musisz być zalogowany, aby zapisywać stylizacje."
+        }
+      },
+      "emptyState": {
+        "title": "Brak stylizacji",
+        "description": "Stwórz swoją pierwszą stylizację lub obserwuj innych, aby zobaczyć ich kreacje",
+        "actionText": "Stwórz Stylizację"
+      },
+      "loadingOutfits": "Ładowanie..."
+    },
+    "rankingScreen": {
+      "title": "Ranking",
+      "subtitle": "Najlepsze stylizacje i twórcy",
+      "tabs": {
+        "outfits": "Stylizacje",
+        "creators": "Twórcy"
+      },
+      "loading": "Ładowanie...",
+      "error": "Błąd ładowania",
+      "tryAgain": "Spróbuj ponownie",
+      "rankRow": {
+        "untitledOutfit": "Stylizacja bez tytułu",
+        "unknownCreator": "Nieznany",
+        "outfitStats": "Polubienia · Zapisania · Oceny",
+        "creatorStats": "Stylizacje · Polubienia",
+        "rank": "#"
+      }
+    },
+    "userProfile": {
+      "loading": "Ładowanie...",
+      "about": "O mnie",
+      "privateProfile": "Ten profil jest prywatny."
+    },
+    "outfitDetail": {
+      "header": {
+        "title": "Szczegóły Stylizacji",
+        "yourCreation": "Twoja Kreacja"
+      },
+      "loading": "Ładowanie stylizacji...",
+      "notFound": "Nie mogliśmy znaleźć tej stylizacji.",
+      "goBack": "Wróć",
+      "images": {
+        "free": "Darmowe",
+        "noImages": "Brak obrazów"
+      },
+      "info": {
+        "anonymous": "Anonimowy",
+        "tags": "Tagi",
+        "description": "Opis"
+      },
+      "sections": {
+        "description": "Opis",
+        "tags": "Tagi"
+      },
+      "interactions": {
+        "comments": " Komentarze",
+        "likes": " Polubienia"
+      },
+      "defaultOutfitName": "Stylizacja bez tytułu"
+    },
+    "commentItem": {
+      "reply": "Odpowiedz",
+      "viewReplies": "Pokaż odpowiedzi",
+      "hideReplies": "Ukryj odpowiedzi",
+      "replyPlaceholder": "Odpowiedz na ",
+      "cancel": "Anuluj",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Nie zalogowano",
+          "message": "Musisz być zalogowany, aby komentować."
+        },
+        "error": {
+          "title": "Błąd",
+          "message": "Nie udało się dodać komentarza"
+        }
+      }
+    },
+    "commentReactions": {
+      "reacted": "Zareagowano",
+      "react": "Zareaguj",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Nie zalogowano",
+          "message": "Musisz być zalogowany, aby reagować na komentarze."
+        }
+      }
+    },
+    "commentSection": {
+      "header": "Komentarze • ",
+      "headerDefault": "Komentarze",
+      "loading": "Ładowanie...",
+      "empty": "Brak komentarzy. Bądź pierwszym!",
+      "placeholder": "Dodaj komentarz...",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Nie zalogowano",
+          "message": "Musisz być zalogowany, aby komentować."
+        },
+        "error": {
+          "title": "Błąd",
+          "message": "Nie udało się dodać komentarza"
+        }
+      }
+    },
+    "feedFilters": {
+      "searchPlaceholder": "Szukaj stylizacji...",
+      "sections": {
+        "styleTags": "Tagi stylu",
+        "elements": "Elementy"
+      },
+      "clearFilters": "Wyczyść wszystkie filtry"
+    },
+    "notFoundScreen": {
+      "title": "Ups!",
+      "message": "Ten ekran nie istnieje.",
+      "link": "Przejdź do ekranu głównego!"
+    },
+    "themeSettings": {
+      "title": "Ustawienia Motywu",
+      "appearance": {
+        "title": "Wygląd",
+        "description": "Wybierz, jak ma wyglądać aplikacja Moda. Wybierz jeden motyw lub zsynchronizuj z ustawieniami systemowymi.",
+        "options": {
+          "light": {
+            "label": "Jasny",
+            "description": "Zawsze używaj jasnego motywu"
+          },
+          "dark": {
+            "label": "Ciemny",
+            "description": "Zawsze używaj ciemnego motywu"
+          },
+          "system": {
+            "label": "System",
+            "description": "Podążaj za ustawieniami systemowymi"
+          }
+        }
+      },
+      "preview": {
+        "title": "Podgląd",
+        "appName": "Aplikacja Moda",
+        "themePreview": " podgląd motywu",
+        "description": "Tak będzie wyglądać Twój kanał stylizacji i inne treści z wybranym motywem.",
+        "primaryButton": "Główny",
+        "secondaryButton": "Drugorzędny"
+      },
+      "languageCurrency": {
+        "title": "Język i Waluta",
+        "description": "Wybierz preferowany język i walutę dla aplikacji.",
+        "languagePlaceholder": "Wybierz Język",
+        "currencyPlaceholder": "Wybierz Walutę"
+      }
+    },
+    "createdOutfitsSection": {
+      "loading": "Ładowanie stylizacji...",
+      "header": "Twoje Kreacje",
+      "createButton": "Stwórz",
+      "emptyState": {
+        "title": "Nie stworzono jeszcze stylizacji",
+        "description": "Zacznij tworzyć swoją pierwszą stylizację!",
+        "actionText": "Stwórz Stylizację"
+      }
+    },
+    "followButton": {
+      "follow": "Obserwuj",
+      "unfollow": "Przestań obserwować",
+      "pending": "Prośba o obserwację w toku"
+    },
+    "profileBioSection": {
+      "title": "O mnie",
+      "noBio": "Brak biografii. Dodaj ją, edytując swój profil!"
+    },
+    "profileHeader": {
+      "anonymousUser": "Anonimowy Użytkownik",
+      "defaultRole": "Entuzjasta Mody",
+      "editProfile": "Edytuj Profil",
+      "tabs": {
+        "user-info": "Profil",
+        "created-outfits": "Stworzone",
+        "saved-outfits": "Zapisane"
+      }
+    },
+    "profileRecentActivitySection": {
+      "title": "Ostatnia Aktywność",
+      "activities": [
+        {
+          "text": "Twoja stylizacja zdobyła ponad 50 polubień!"
+        },
+        {
+          "text": "Polubiono 5 nowych stylizacji"
+        },
+        {
+          "text": "Stworzono \"Letni Casualowy Look\""
+        }
+      ]
+    },
+    "auth": {
+      "welcome": "Witaj",
+      "hero": {
+        "badge": "Asystent Mody",
+        "title": "Styl, starannie wyselekcjonowany.",
+        "slogan": "Minimalistyczny jak Apple. Potężny jak Vercel. Spersonalizowany dla Ciebie."
+      },
+      "signInSubtitle": "Zaloguj się, aby kontynuować",
+      "signUpSubtitle": "Utwórz konto",
+      "labels": {
+        "email": "E-mail",
+        "password": "Hasło"
+      },
+      "placeholders": {
+        "email": "ty@przyklad.com",
+        "password": "••••••••"
+      },
+      "buttons": {
+        "signIn": "Zaloguj się",
+        "signUp": "Utwórz Konto",
+        "google": "Zaloguj się przez Google"
+      },
+      "switch": {
+        "signUpPrompt": "Nie masz konta? ",
+        "signInPrompt": "Masz już konto? ",
+        "signUp": "Zarejestruj się",
+        "signIn": "Zaloguj się"
+      },
+      "termsAndPrivacy": "Kontynuując, zgadzasz się z naszymi Warunkami i Polityką Prywatności.",
+      "alerts": {
+        "supabaseNotInitialized": {
+          "title": "Błąd",
+          "message": "Klient Supabase nie został zainicjowany."
+        },
+        "signInError": {
+          "title": "Błąd logowania"
+        },
+        "signUpError": {
+          "title": "Błąd rejestracji"
+        },
+        "emailVerification": {
+          "title": "Weryfikacja e-mail",
+          "message": "Sprawdź swoją skrzynkę odbiorczą w celu weryfikacji e-mail!"
+        }
+      }
+    },
+    "profileSettingsButtons": {
+      "themeSettings": "Ustawienia Motywu",
+      "logout": "Wyloguj się"
+    },
+    "savedOutfitsSection": {
+      "loading": "Ładowanie zapisanych stylizacji...",
+      "emptyState": {
+        "title": "Brak zapisanych stylizacji",
+        "description": "Zacznij zapisywać stylizacje, które Ci się podobają!"
+      }
+    },
+    "userStatistics": {
+      "title": "Statystyki",
+      "created": "Stworzone",
+      "saved": "Zapisane",
+      "likes": "Polubienia",
+      "loading": "..."
+    },
+    "contactModal": {
+      "title": "Skontaktuj się z nami",
+      "sendMessage": "Wyślij Wiadomość",
+      "sending": "Wysyłanie...",
+      "fullName": "Pełne Imię",
+      "email": "E-mail",
+      "message": "Wiadomość",
+      "placeholders": {
+        "fullName": "Wpisz swoje pełne imię",
+        "email": "Wpisz swój e-mail",
+        "message": "Opisz swoją wiadomość..."
+      },
+      "errors": {
+        "fullNameRequired": "Pełne imię jest wymagane",
+        "fullNameMaxLength": "Imię nie może przekraczać 80 znaków",
+        "emailRequired": "Wpisz swój e-mail",
+        "emailInvalid": "Proszę wpisać poprawny adres e-mail",
+        "messageRequired": "Wiadomość jest wymagana"
+      },
+      "alerts": {
+        "apiKeyMissing": "Brak klucza API. Skontaktuj się z pomocą techniczną.",
+        "success": "Wiadomość wysłana pomyślnie!",
+        "error": "Nie udało się wysłać wiadomości. Spróbuj ponownie później."
+      }
+    },
+    "deleteModalOutfit": {
+      "title": "Usuń Stylizację",
+      "message": "Czy na pewno chcesz usunąć tę stylizację? Tej akcji nie można cofnąć.",
+      "cancel": "Anuluj",
+      "delete": "Usuń",
+      "deleting": "Usuwanie...",
+      "error": "Identyfikator użytkownika jest wymagany do usunięcia"
+    },
+    "outfitCreateModal": {
+      "title": "Stwórz Stylizację",
+      "save": "Zapisz",
+      "saving": "Zapisywanie...",
+      "addElement": "Dodaj Element",
+      "outfitElements": "Elementy Stylizacji",
+      "name": "Nazwa",
+      "description": "Opis",
+      "styleTags": "Tagi Stylu",
+      "elementType": "Typ Elementu",
+      "elementCategory": "Kategoria Elementu",
+      "selectFromOptions": "Wybierz z poniższych opcji",
+      "elementImage": "Obraz Elementu",
+      "imageReady": "Gotowy do przesłania",
+      "tapToSelectImage": "Dotknij, aby wybrać obraz",
+      "price": "Cena",
+      "shopUrl": "URL Sklepu",
+      "optional": "opcjonalne",
+      "siteUrl": "URL Strony",
+      "image": "Obraz",
+      "placeholders": {
+        "name": "Wpisz nazwę stylizacji",
+        "description": "Opisz swoją stylizację...",
+        "elementType": "Wybierz typ elementu",
+        "price": "Wpisz cenę (opcjonalne)",
+        "siteUrl": "Wpisz URL strony",
+        "image": "Wybierz Obraz",
+        "shopUrl": "np. https://przyklad.com/produkt"
+      },
+      "errors": {
+        "nameRequired": "Nazwa stylizacji jest wymagana",
+        "descriptionRequired": "Opis jest wymagany",
+        "elementRequired": "Wymagany jest co najmniej jeden element stylizacji",
+        "elementTypeRequired": "Typ elementu jest wymagany",
+        "priceInvalid": "Cena musi być liczbą",
+        "priceNegative": "Cena nie może być ujemna",
+        "siteUrlRequired": "URL strony jest wymagany",
+        "siteUrlInvalid": "Proszę wpisać poprawny URL",
+        "imageRequired": "Obraz jest wymagany",
+        "styleTagsRequired": "Wybierz co najmniej jeden tag stylu",
+        "priceRequired": "Cena jest wymagana",
+        "priceMin": "Cena musi wynosić zero lub więcej",
+        "invalidUrl": "Proszę wpisać poprawny URL"
+      },
+      "elementCount": {
+        "zero": "Dodaj co najmniej 1 element",
+        "one": " element dodany",
+        "multiple": "elementy dodane"
+      },
+      "totalPrice": "Całkowita cena: ",
+      "imageFormat": "JPG, PNG (maks. 5MB)",
+      "imageSelected": "Obraz wybrany pomyślnie",
+      "addElementToOutfit": "Dodaj element do stylizacji",
+      "alerts": {
+        "permissionDenied": "Wymagane jest zezwolenie na dostęp do pamięci, aby wybrać obrazy.",
+        "imagePickerError": "Nie udało się otworzyć wybieraka obrazów",
+        "imageSelectError": "Nie udało się wybrać obrazu",
+        "noImageSelected": "Nie wybrano obrazu",
+        "imagePickerErrorMessage": "Błąd wybieraka obrazów: ",
+        "success": {
+          "title": "Sukces",
+          "message": "Stylizacja zapisana pomyślnie!"
+        },
+        "error": {
+          "title": "Błąd",
+          "message": "Nie udało się stworzyć stylizacji"
+        },
+        "unknownError": "Wystąpił nieznany błąd"
+      }
+    },
+    "profileEdit": {
+      "title": "Edytuj Profil",
+      "save": "Zapisz",
+      "saving": "Zapisywanie...",
+      "displayName": "Nazwa Wyświetlana",
+      "bio": "Biografia",
+      "stylePreferences": "Preferencje Stylu",
+      "privacy": "Prywatność",
+      "publicProfile": "Profil Publiczny",
+      "publicProfileDescription": "Inni mogą zobaczyć Twój profil i stworzone stylizacje",
+      "privateProfileDescription": "Tylko Twoja nazwa użytkownika i awatar będą widoczne",
+      "privateAccount": "Konto Prywatne",
+      "privateAccountDescription": "Gdy konto jest prywatne, tylko Twoja nazwa użytkownika i zdjęcie profilowe będą widoczne dla innych. Twoja biografia i stylizacje będą ukryte.",
+      "changePhoto": "Dotknij, aby zmienić zdjęcie",
+      "stylePreferencesComingSoon": "Wkrótce! Ustaw swoje ulubione style, kolory i marki.",
+      "placeholders": {
+        "name": "Wpisz swoje imię",
+        "bio": "Opowiedz nam o swoim stylu..."
+      },
+      "errors": {
+        "nameRequired": "Imię jest wymagane",
+        "bioMaxLength": "Biografia nie może przekraczać 200 znaków"
+      },
+      "alerts": {
+        "permissionDenied": "Wymagane jest zezwolenie na dostęp do pamięci, aby wybrać obrazy.",
+        "imagePickerError": "Nie udało się otworzyć wybieraka obrazów",
+        "imageSelectError": "Nie udało się wybrać obrazu",
+        "noImageSelected": "Nie wybrano obrazu",
+        "imagePickerErrorMessage": "Błąd wybieraka obrazów: ",
+        "imageUploadError": "Nie udało się przesłać obrazu",
+        "imageUrlError": "Nie udało się pobrać adresu URL obrazu",
+        "success": "Profil zaktualizowany pomyślnie",
+        "error": "Nie udało się zaktualizować profilu"
+      }
+    },
+    "registrationModal": {
+      "welcome": "Witaj w Aplikacji!",
+      "welcomeDescription": "Aby korzystać z aplikacji, musisz ukończyć proces rejestracji.",
+      "provideDetails": "Podaj szczegóły swojego profilu w kolejnych krokach.",
+      "logout": "Wyloguj się",
+      "proceed": "Kontynuuj",
+      "previous": "Poprzedni",
+      "next": "Dalej",
+      "complete": "Ukończ",
+      "saving": "Zapisywanie...",
+      "username": "Nazwa Użytkownika",
+      "fullName": "Pełne Imię",
+      "bio": "Biografia",
+      "profilePicture": "Zdjęcie Profilowe",
+      "setPhoto": "Dotknij, aby ustawić zdjęcie (opcjonalne)",
+      "reviewInfo": "Przejrzyj Swoje Informacje",
+      "notProvided": "Nie podano",
+      "placeholders": {
+        "username": "Wpisz swoją nazwę użytkownika",
+        "fullName": "Wpisz swoje pełne imię",
+        "bio": "Opowiedz nam o swoim stylu... (opcjonalne)"
+      },
+      "errors": {
+        "usernameRequired": "Nazwa użytkownika jest wymagana",
+        "usernameMinLength": "Nazwa użytkownika musi mieć co najmniej 3 znaki",
+        "usernameMaxLength": "Nazwa użytkownika nie może przekraczać 20 znaków",
+        "usernamePattern": "Nazwa użytkownika może zawierać tylko litery, cyfry i podkreślenia",
+        "fullNameRequired": "Pełne imię jest wymagane",
+        "fullNameMaxLength": "Pełne imię nie może przekraczać 50 znaków",
+        "bioMaxLength": "Biografia nie może przekraczać 200 znaków",
+        "userIdMissing": "Brak identyfikatora użytkownika. Zaloguj się ponownie."
+      },
+      "alerts": {
+        "permissionDenied": "Wymagane jest zezwolenie na dostęp do pamięci, aby wybrać obrazy.",
+        "imagePickerError": "Nie udało się otworzyć wybieraka obrazów",
+        "imageSelectError": "Nie udało się wybrać obrazu",
+        "noImageSelected": "Nie wybrano obrazu",
+        "imagePickerErrorMessage": "Błąd wybieraka obrazów: ",
+        "imageUploadError": "Nie udało się przesłać obrazu",
+        "imageUrlError": "Nie udało się pobrać adresu URL obrazu",
+        "registrationError": "Nie udało się ukończyć rejestracji. Spróbuj ponownie.",
+        "logoutError": "Nie udało się wylogować. Spróbuj ponownie."
+      }
+    },
+    "reportModal": {
+      "report": "Zgłoś",
+      "sendReport": "Wyślij Zgłoszenie",
+      "sending": "Wysyłanie...",
+      "email": "E-mail",
+      "reason": "Powód",
+      "description": "Opis",
+      "placeholders": {
+        "email": "Wpisz swój e-mail",
+        "reason": "Wybierz powód",
+        "description": "Opisz problem..."
+      },
+      "errors": {
+        "userIdRequired": "Identyfikator użytkownika jest wymagany",
+        "emailRequired": "Wpisz swój e-mail, abyśmy mogli odpowiedzieć",
+        "emailInvalid": "Proszę wpisać poprawny adres e-mail",
+        "reasonRequired": "Powód jest wymagany",
+        "descriptionRequired": "Opis jest wymagany"
+      },
+      "alerts": {
+        "apiKeyMissing": "Brak klucza API. Skontaktuj się z pomocą techniczną.",
+        "success": "Zgłoszenie wysłane pomyślnie!",
+        "error": "Nie udało się wysłać zgłoszenia. Spróbuj ponownie później."
+      }
+    },
+    "shareModal": {
+      "title": "Udostępnij Stylizację",
+      "cancel": "Anuluj",
+      "shareOptions": {
+        "native": "Udostępnij...",
+        "copy": "Kopiuj Link",
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "instagram": "Instagram",
+        "email": "E-mail",
+        "sms": "Wiadomość",
+        "more": "Więcej"
+      },
+      "untitledOutfit": "Stylizacja bez tytułu",
+      "defaultDescription": "Stylizacja modowa do udostępnienia",
+      "shareText": "Sprawdź tę niesamowitą stylizację w aplikacji Moda!",
+      "alerts": {
+        "shareError": "Nie można udostępnić tej stylizacji",
+        "copySuccess": "Link skopiowany do schowka!",
+        "copyError": "Nie udało się skopiować linku",
+        "platformError": "Nie można otworzyć ",
+        "instagramShare": "Link skopiowany! Możesz teraz wkleić go do swojej relacji lub posta na Instagramie."
+      }
+    },
+    "chatSection": {
+      "promptPrefix": "Chcę, abyś pomógł mi stworzyć stylizację według następujących kryteriów:",
+      "selectGender": "Płeć",
+      "selectOutfitStyles": "Style Stylizacji",
+      "selectFit": "Krój",
+      "selectDominantColors": "Dominujące kolory",
+      "selectOutfitElements": "Elementy Stylizacji",
+      "selectPriceRange": "Zakres cen",
+      "from": "Od",
+      "to": "Do",
+      "currency": "Waluta",
+      "placeholders": {
+        "lowestPrice": "Najniższa cena",
+        "highestPrice": "Najwyższa cena",
+        "currency": "Wybierz walutę",
+        "outfitDescription": "Opis stylizacji... (opcjonalne)"
+      },
+      "genders": {
+        "male": "Mężczyzna",
+        "female": "Kobieta",
+        "unisex": "Uniseks"
+      },
+      "styles": {
+        "casual": "Casual",
+        "formal": "Formalny",
+        "sporty": "Sportowy",
+        "bohemian": "Boho",
+        "vintage": "Vintage",
+        "streetwear": "Streetwear",
+        "business": "Biznesowy",
+        "party": "Imprezowy",
+        "beach": "Plażowy",
+        "office": "Biurowy",
+        "old money": "Stary Pieniądz",
+        "athleisure": "Athleisure",
+        "minimalist": "Minimalistyczny",
+        "gothic": "Gotyk",
+        "preppy": "Preppy",
+        "punk": "Punk",
+        "grunge": "Grunge",
+        "smart casual": "Smart Casual",
+        "business casual": "Biznesowy Casual",
+        "chic": "Szykowny",
+        "resort": "Kurortowy",
+        "cottagecore": "Cottagecore",
+        "normcore": "Normcore",
+        "techwear": "Techwear",
+        "avant-garde": "Awangardowy",
+        "monochrome": "Monochromatyczny",
+        "color blocking": "Blokowanie Kolorów",
+        "safari": "Safari",
+        "retro": "Retro",
+        "y2k": "Y2K",
+        "maximalist": "Maksymalistyczny"
+      },
+      "fits": {
+        "slim": "Wąski",
+        "regular": "Regularny",
+        "relaxed": "Luźny",
+        "oversized": "Oversized",
+        "tailored": "Szyty na miarę",
+        "slim fit": "Wąski Krój",
+        "regular fit": "Regularny Krój",
+        "relaxed fit": "Luźny Krój",
+        "loose fit": "Swobodny Krój",
+        "oversized fit": "Oversized Krój",
+        "tailored fit": "Szyty na miarę Krój",
+        "athletic fit": "Atletyczny Krój",
+        "tapered fit": "Zwężany Krój",
+        "boxy fit": "Prostokątny Krój",
+        "straight fit": "Prosty Krój"
+      },
+      "colors": {
+        "black": "Czarny",
+        "white": "Biały",
+        "red": "Czerwony",
+        "blue": "Niebieski",
+        "green": "Zielony",
+        "yellow": "Żółty",
+        "purple": "Fioletowy",
+        "pink": "Różowy",
+        "gray": "Szary",
+        "brown": "Brązowy",
+        "orange": "Pomarańczowy",
+        "navy": "Granatowy",
+        "beige": "Beżowy",
+        "olive": "Oliwkowy",
+        "teal": "Morski",
+        "burgundy": "Bordowy",
+        "cream": "Kremowy",
+        "camel": "Camel",
+        "charcoal": "Węglowy",
+        "off white": "Złamana Biel",
+        "pastel pink": "Pastelowy Róż",
+        "pastel blue": "Pastelowy Niebieski",
+        "pastel green": "Pastelowy Zielony",
+        "pastel yellow": "Pastelowy Żółty"
+      },
+      "elements": {
+        "shirt": "Koszula",
+        "pants": "Spodnie",
+        "shoes": "Buty",
+        "jacket": "Kurtka",
+        "dress": "Sukienka",
+        "skirt": "Spódnica",
+        "hat": "Kapelusz",
+        "belt": "Pasek",
+        "watch": "Zegarek",
+        "bag": "Torba",
+        "top": "Góra",
+        "bottom": "Dół",
+        "footwear": "Obuwie",
+        "accessories": "Akcesoria",
+        "outerwear": "Odzież wierzchnia",
+        "headwear": "Nakrycia głowy",
+        "eyewear": "Okulary",
+        "jewelry": "Biżuteria",
+        "scarf": "Szal",
+        "gloves": "Rękawiczki",
+        "socks": "Skarpety"
+      },
+      "currencies": {
+        "usd": "USD ($)",
+        "eur": "EUR (€)",
+        "gbp": "GBP (£)",
+        "jpy": "JPY (¥)",
+        "aud": "AUD (A$)",
+        "cad": "CAD (C$)",
+        "pln": "PLN (zł)",
+        "chf": "CHF (CHF)",
+        "rub": "RUB (₽)",
+        "cny": "CNY (¥)",
+        "inr": "INR (₹)",
+        "krw": "KRW (₩)",
+        "mxn": "MXN (MXN)",
+        "nzd": "NZD (NZD)",
+        "sek": "SEK (SEK)",
+        "sgd": "SGD (SGD)",
+        "thb": "THB (฿)",
+        "zar": "ZAR (R)",
+        "try": "TRY (₺)",
+        "uah": "UAH (₴)"
+      },
+      "conversations": "Rozmowy",
+      "newChat": "Nowy czat",
+      "showFilters": "Pokaż filtry",
+      "hideFilters": "Ukryj filtry"
+    },
+    "chatSwitch": {
+      "ai": "AI",
+      "creator": "Twórca"
+    }
+  }

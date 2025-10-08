@@ -1,15 +1,15 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Alert, Modal, Pressable, ScrollView, Text, View } from 'react-native';
-import { Controller, useForm } from 'react-hook-form';
-import { X } from 'lucide-react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { useTheme } from '@/providers/themeContext';
 import { OutfitElementData } from '@/types/createOutfitTypes';
-import { PendingImage } from './types';
+import { X } from 'lucide-react-native';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { Alert, Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ElementFormFields } from './ElementFormFields';
-import { useRequestPermission } from '@/hooks/useRequestPermission';
+import { PendingImage } from './types';
 
 interface ElementModalProps {
   elementModalVisible: boolean;
@@ -57,7 +57,7 @@ export const ElementModal: React.FC<ElementModalProps> = ({
     const hasPermission = await useRequestPermission();
     if (!hasPermission) {
       Alert.alert(
-        t('outfitCreateModal.alerts.permissionDenied.title'), 
+        t('outfitCreateModal.alerts.permissionDenied.title'),
         t('outfitCreateModal.alerts.permissionDenied.message')
       );
       return;
@@ -80,15 +80,24 @@ export const ElementModal: React.FC<ElementModalProps> = ({
             Alert.alert(t('outfitCreateModal.alerts.error.title'), response.errorMessage);
           } else if (response.assets && response.assets[0]) {
             const asset = response.assets[0];
-            if (asset.uri && asset.fileName) {
-              const tempKey = `temp://${Date.now()}-${asset.fileName}`;
+            if (asset?.uri) {
+              // Build a safe filename fallback when picker doesn't provide one
+              const inferredExt = (asset.type?.split('/')?.[1] || 'jpg').replace(/[^a-zA-Z0-9]/g, '');
+              const fallbackName = `image.${inferredExt || 'jpg'}`;
+              const safeFileName = asset.fileName || fallbackName;
+
+              const tempKey = `temp://${Date.now()}-${safeFileName}`;
               pendingImagesRef.current[tempKey] = {
                 uri: asset.uri,
-                type: asset.type,
-                fileName: asset.fileName
+                type: asset.type || 'image/jpeg',
+                fileName: safeFileName
               };
-              setElementValue('imageUrl', tempKey);
-              setSelectedImageName(asset.fileName);
+              setElementValue('imageUrl', tempKey, { shouldDirty: true, shouldValidate: true });
+
+              setElementValue('_localUri' as any, asset.uri as any, { shouldDirty: true });
+              setElementValue('_fileName' as any, safeFileName as any, { shouldDirty: true });
+              setElementValue('_type' as any, (asset as any).type as any, { shouldDirty: true });
+              setSelectedImageName(safeFileName);
             }
           }
         }
@@ -97,6 +106,15 @@ export const ElementModal: React.FC<ElementModalProps> = ({
       console.error('Error launching image library:', error);
       Alert.alert(t('outfitCreateModal.alerts.error.title'), t('outfitCreateModal.alerts.error.message'));
     }
+  };
+
+  const handleRemoveSelectedImage = () => {
+    const key = getElementValues('imageUrl');
+    if (key && key.startsWith('temp://')) {
+      delete pendingImagesRef.current[key];
+    }
+    setElementValue('imageUrl', '');
+    setSelectedImageName(null);
   };
 
   const handleCloseElementModal = () => {
@@ -132,13 +150,22 @@ export const ElementModal: React.FC<ElementModalProps> = ({
               handleImageSelect={handleImageSelect}
               URL_PATTERN={URL_PATTERN}
               setElementValue={setElementValue}
+              imagePreviewUri={((): string | undefined => {
+                const key = watchElement('imageUrl');
+                if (key && key.startsWith('temp://')) {
+                  return pendingImagesRef.current[key]?.uri;
+                }
+                return key || undefined;
+              })()}
+              onRemoveSelectedImage={handleRemoveSelectedImage}
+              key={watchElement('imageUrl')}
             />
           </ScrollView>
 
           <View className="p-4 border-t" style={{ borderTopColor: colors.border }}>
             <Pressable
               onPress={handleElementSubmit(onElementSubmit)}
-              disabled={!isElementValid}
+              disabled={!isElementValid || !watchElement('imageUrl')}
               className={`py-4 rounded-lg items-center justify-center ${!isElementValid ? 'opacity-50' : ''}`}
               style={{ backgroundColor: colors.primary }}
             >

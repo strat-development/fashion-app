@@ -58,12 +58,12 @@ export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, on
           variant='solid'
           action='primary'
           size='sm'
-          className='flex-row items-center gap-2 text-white/70'
+          className='flex-row items-center gap-2'
           style={{ borderRadius: 999, overflow: 'hidden', paddingHorizontal: 14, paddingVertical: 10 }}
           onPress={onShowConversations}
         >
-          <MessageSquare size={16} color={colors.white+'aa'} />
-          <ButtonText style={{ color: colors.white }}>{t('chatSection.conversations') || 'Chat'}</ButtonText>
+          <MessageSquare size={16} color={isDark ? colors.white : colors.text} />
+          <ButtonText style={{ color: isDark ? colors.white : colors.text }}>{t('chatSection.conversations') || 'Chat'}</ButtonText>
         </Button>
         <Button
           variant='solid'
@@ -74,7 +74,7 @@ export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, on
           onPress={onNewChat}
         >
           <Plus size={20}
-            color={colors.white+'aa'} />
+            color={isDark ? colors.white : colors.text  } />
         </Button>
       </View>
       

@@ -1,9 +1,9 @@
+import { ThemedGradient, useTheme } from '@/providers/themeContext';
+import { OutfitElementData } from '@/types/createOutfitTypes';
+import { Plus, Trash2 } from 'lucide-react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Pressable, Text, View } from 'react-native';
-import { Plus, Trash2 } from 'lucide-react-native';
-import { useTheme, ThemedGradient } from '@/providers/themeContext';
-import { OutfitElementData } from '@/types/createOutfitTypes';
 
 interface ElementsListSectionProps {
   outfitElements: OutfitElementData[];
@@ -19,7 +19,7 @@ export const ElementsListSection: React.FC<ElementsListSectionProps> = ({
   setElementModalVisible
 }) => {
   const { t } = useTranslation();
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
 
   return (
     <View className="mb-6">
@@ -47,9 +47,10 @@ export const ElementsListSection: React.FC<ElementsListSectionProps> = ({
           {outfitElements.map((element, index) => (
             <View key={index} className="flex-row items-center p-3 rounded-lg border" style={{ backgroundColor: colors.surfaceVariant, borderColor: colors.border }}>
               <Image
-                source={{ uri: element.imageUrl.startsWith('temp://') 
-                  ? element.imageUrl.replace('temp://', 'file://') 
-                  : element.imageUrl 
+                source={{
+                  uri: element.imageUrl?.startsWith('temp://')
+                    ? ((element as any)._localUri as string) || element.imageUrl.replace('temp://', 'file://')
+                    : element.imageUrl,
                 }}
                 className="w-12 h-12 rounded-lg mr-3"
                 style={{ backgroundColor: colors.surfaceVariant }}

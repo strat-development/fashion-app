@@ -1,4 +1,5 @@
 import { reportTopics } from "@/consts/reportTopics";
+import { useTheme } from "@/providers/themeContext";
 import { ChevronDown, MessageCircleWarning, X } from "lucide-react-native";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -27,6 +28,7 @@ interface FormData {
 }
 
 export const ReportModal = ({ expanded, userId }: UserReportProps) => {
+    const { colors } = useTheme();
     const {
         control,
         handleSubmit,
@@ -102,7 +104,7 @@ export const ReportModal = ({ expanded, userId }: UserReportProps) => {
                     if (expanded) expanded(true);
                 }}
                 className="px-4">
-                <MessageCircleWarning size={24} color="#9CA3AF" />
+                <MessageCircleWarning size={24} color={colors.textMuted} />
             </Pressable>
 
             <Modal
@@ -110,8 +112,8 @@ export const ReportModal = ({ expanded, userId }: UserReportProps) => {
                 animationType="slide"
                 presentationStyle="pageSheet"
             >
-                <SafeAreaView className="flex-1 bg-gradient-to-b from-black to-gray-900">
-                    <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-800/50">
+                <SafeAreaView className="flex-1" style={{ backgroundColor: colors.background }}>
+                    <View className="flex-row items-center justify-between px-4 py-3 border-b" style={{ borderColor: colors.border }}>
                         <Pressable
                             onPress={() => {
                                 setIsOpen(false);
@@ -119,7 +121,7 @@ export const ReportModal = ({ expanded, userId }: UserReportProps) => {
                             }}
                             className="p-2"
                         >
-                            <X size={24} color="#9CA3AF" />
+                            <X size={24} color={colors.textMuted} />
                         </Pressable>
                     </View>
 
@@ -144,7 +146,7 @@ export const ReportModal = ({ expanded, userId }: UserReportProps) => {
 
                             {/* Email Field */}
                             <View className="mb-6">
-                                <Text className="text-gray-300 font-medium text-base mb-3">Email</Text>
+                                <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>Email</Text>
                                 <Controller
                                     control={control}
                                     name="email"
@@ -161,22 +163,22 @@ export const ReportModal = ({ expanded, userId }: UserReportProps) => {
                                             onChangeText={onChange}
                                             onBlur={onBlur}
                                             placeholder="Enter your email"
-                                            placeholderTextColor="#6B7280"
+                                            placeholderTextColor={colors.textMuted}
                                             keyboardType="email-address"
                                             autoComplete="off"
-                                            className={`bg-gray-800/50 border ${errors.email ? "border-pink-600" : "border-gray-700/50"
-                                                } text-white px-4 py-3 rounded-lg text-base`}
+                                            className="px-4 py-3 rounded-lg text-base"
+                                            style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: errors.email ? colors.accentSecondary : colors.border, color: colors.text }}
                                         />
                                     )}
                                 />
                                 {errors.email && (
-                                    <Text className="text-pink-600 text-xs mt-1">{errors.email.message}</Text>
+                                    <Text className="text-xs mt-1" style={{ color: colors.accentSecondary }}>{errors.email.message}</Text>
                                 )}
                             </View>
 
                             {/* Reason Field */}
                             <View className="mb-6">
-                                <Text className="text-gray-300 font-medium text-base mb-3">Reason</Text>
+                                <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>Reason</Text>
                                 <Controller
                                     control={control}
                                     name="reason"
@@ -190,26 +192,27 @@ export const ReportModal = ({ expanded, userId }: UserReportProps) => {
                                             }}
                                         >
                                             <SelectTrigger
-                                                className={`bg-gray-800/50 border ${errors.reason ? "border-pink-600" : "border-gray-700/50"
-                                                    } rounded-lg flex-row items-center justify-between px-4 py-3`}
+                                                className="rounded-lg flex-row items-center justify-between px-4 py-3"
+                                                style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: errors.reason ? colors.accentSecondary : colors.border }}
                                             >
                                                 <SelectInput
                                                     placeholder="Select reason"
-                                                    placeholderTextColor="#6B7280"
+                                                    placeholderTextColor={colors.textMuted}
                                                     value={value}
-                                                    className="flex-1 text-white"
+                                                    className="flex-1"
+                                                    style={{ color: colors.text }}
                                                 />
-                                                <ChevronDown size={24} color="#9CA3AF" />
+                                                <ChevronDown size={24} color={colors.textMuted} />
                                             </SelectTrigger>
                                             <SelectPortal>
-                                                <SelectBackdrop className="bg-black/50 backdrop-blur-sm" />
-                                                <SelectContent className="bg-gray-800/50 border border-gray-700/50 rounded-lg">
+                                                <SelectBackdrop />
+                                                <SelectContent>
                                                     {reportTopics.map((topic, index) => (
                                                         <SelectItem
                                                             key={index}
                                                             label={topic}
                                                             value={topic}
-                                                            className="px-4 py-3 text-white hover:bg-gradient-to-r hover:from-purple-600/50 hover:to-pink-600/50 active:bg-gradient-to-r active:from-purple-600 active:to-pink-600 border-b border-gray-700/30 last:border-b-0"
+                                                            className="px-4 py-3"
                                                         />
                                                     ))}
                                                 </SelectContent>
@@ -218,13 +221,13 @@ export const ReportModal = ({ expanded, userId }: UserReportProps) => {
                                     )}
                                 />
                                 {errors.reason && (
-                                    <Text className="text-pink-600 text-xs mt-1">{errors.reason.message}</Text>
+                                    <Text className="text-xs mt-1" style={{ color: colors.accentSecondary }}>{errors.reason.message}</Text>
                                 )}
                             </View>
 
                             {/* Message Field */}
                             <View className="mb-6">
-                                <Text className="text-gray-300 font-medium text-base mb-3">Description</Text>
+                                <Text className="font-medium text-base mb-3" style={{ color: colors.text }}>Description</Text>
                                 <Controller
                                     control={control}
                                     name="message"
@@ -235,33 +238,31 @@ export const ReportModal = ({ expanded, userId }: UserReportProps) => {
                                             onChangeText={onChange}
                                             onBlur={onBlur}
                                             placeholder="Describe the issue..."
-                                            placeholderTextColor="#6B7280"
+                                            placeholderTextColor={colors.textMuted}
                                             multiline
                                             numberOfLines={3}
                                             textAlignVertical="top"
                                             maxLength={200}
-                                            className={`bg-gray-800/50 border ${errors.message ? "border-pink-600" : "border-gray-700/50"
-                                                } text-white px-4 py-3 rounded-lg text-base`}
+                                            className="px-4 py-3 rounded-lg text-base"
+                                            style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: errors.message ? colors.accentSecondary : colors.border, color: colors.text }}
                                         />
                                     )}
                                 />
                                 <View className="flex-row items-center justify-between mt-1">
                                     {errors.message ? (
-                                        <Text className="text-pink-600 text-xs">{errors.message.message}</Text>
+                                        <Text className="text-xs" style={{ color: colors.accentSecondary }}>{errors.message.message}</Text>
                                     ) : (
-                                        <Text className="text-gray-400 text-xs">{message?.length || 0} / 200</Text>
+                                        <Text className="text-xs" style={{ color: colors.textMuted }}>{message?.length || 0} / 200</Text>
                                     )}
                                 </View>
                             </View>
                             <Pressable
                                 onPress={handleSubmit(onSubmit)}
                                 disabled={!isValid || isSubmitting}
-                                className={`px-4 py-2 rounded-full w-fit self-end ${isValid && !isSubmitting
-                                    ? "bg-gradient-to-r from-purple-600 to-pink-600"
-                                    : "bg-gray-600"
-                                    }`}
+                                className={`px-4 py-2 rounded-full w-fit self-end ${isValid && !isSubmitting ? '' : 'opacity-50'}`}
+                                style={{ backgroundColor: colors.accent }}
                             >
-                                <Text className="text-white font-medium text-sm">
+                                <Text className="font-medium text-sm" style={{ color: colors.white }}>
                                     {isSubmitting ? "Sending..." : "Send Report"}
                                 </Text>
                             </Pressable>
