@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import { Text } from 'react-native';
 import 'react-native-reanimated';
 
 import Auth from '@/components/Auth';
@@ -36,23 +37,42 @@ const queryClient = new QueryClient({
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [session, setSession] = useState<Session | null>(null);
+  const [sessionChecked, setSessionChecked] = useState(false);
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    InstrumentSans: require('../assets/fonts/InstrumentSans-VariableFont.ttf'),
+    InriaSans: require('../assets/fonts/InriaSans-Regular.ttf'),
   });
+
+  useEffect(() => {
+    if (loaded) {
+      (Text as any).defaultProps = (Text as any).defaultProps || {};
+      const prev = (Text as any).defaultProps.style;
+      (Text as any).defaultProps.style = Array.isArray(prev)
+        ? [{ fontFamily: 'InriaSans' }, ...prev]
+        : [{ fontFamily: 'InriaSans' }, prev].filter(Boolean);
+    }
+  }, [loaded]);
 
   useEffect(() => {
     supabase?.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      setSessionChecked(true);
     });
 
     const subscription = supabase?.auth.onAuthStateChange?.((_event, session) => {
       setSession(session);
+      setSessionChecked(true);
     })?.data?.subscription;
 
     return () => subscription?.unsubscribe();
   }, []);
 
   if (!loaded) {
+    return null;
+  }
+
+  if (!sessionChecked) {
     return null;
   }
 

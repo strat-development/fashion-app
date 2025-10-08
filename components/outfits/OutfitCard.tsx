@@ -1,3 +1,9 @@
+import { ShareModal } from "@/components/modals/ShareModal";
+import OutfitDetailImages from "@/components/outfit-detail/OutfitDetailImages";
+import OutfitDetailInfo from "@/components/outfit-detail/OutfitDetailInfo";
+import OutfitDetailSections from "@/components/outfit-detail/OutfitDetailSections";
+import OutfitInteractionButtons from "@/components/outfit-detail/OutfitInteractionButtons";
+import CommentSection from "@/components/outfits/CommentSection";
 import { useFetchUser } from "@/fetchers/fetchUser";
 import { useFetchRatingStats } from "@/fetchers/outfits/fetchRatedOutfits";
 import { useRateOutfitMutation } from "@/mutations/outfits/RateOutfitMutation";
@@ -6,8 +12,10 @@ import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+import { Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
 import { OutfitFooter, OutfitHeader, OutfitImageCarousel } from "./OutfitCard/index";
+import { X } from "lucide-react-native";
 
 export type OutfitData = Database["public"]["Tables"]["created-outfits"]["Row"] & {
   likes: number;
@@ -155,6 +163,19 @@ export const OutfitCard = ({
     ? [outfit.outfit_tags]
     : [];
 
+  // Inline detail modal state and animations
+  const [showDetail, setShowDetail] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const likeScale = useSharedValue(1);
+  const dislikeScale = useSharedValue(1);
+  const commentScale = useSharedValue(1);
+  const shareScale = useSharedValue(1);
+  const saveScale = useSharedValue(1);
+
+  const handleImagePress = () => {
+    setShowDetail(true);
+  };
+
   return (
     <View style={{ backgroundColor: colors.background, marginBottom: 16 }}>
       <OutfitHeader
@@ -169,7 +190,7 @@ export const OutfitCard = ({
 
       <OutfitImageCarousel
         imageUrls={imageUrls}
-        onPress={onPress}
+        onPress={() => handleImagePress()}
         outfit={outfit}
       />
 
@@ -183,10 +204,75 @@ export const OutfitCard = ({
         optimisticPercentage={calculateOptimisticPercentage()}
         onPositiveRate={handlePositiveRate}
         onNegativeRate={handleNegativeRate}
-        onComment={() => onComment?.(outfit.outfit_id)}
-        onShare={() => onShare?.(outfit.outfit_id)}
+        onComment={() => setShowDetail(true)}
+        onShare={() => setShowShareModal(true)}
         onToggleSave={handleSave}
       />
+
+      {/* Inline Outfit Detail Modal */}
+      <Modal visible={showDetail} transparent={false} animationType="slide" onRequestClose={() => setShowDetail(false)}>
+        <View style={{ flex: 1, backgroundColor: colors.background }}>
+          <Pressable
+            onPress={() => setShowDetail(false)}
+            style={{ position: 'absolute', top: 16, right: 16, zIndex: 10, width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: `${colors.surface}`, borderWidth: 1, borderColor: colors.border }}
+          >
+            <X size={20} color={colors.text} />
+          </Pressable>
+          <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+            <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+              <OutfitDetailInfo
+                outfit={outfit}
+                userData={userData as any}
+                tags={Array.isArray(outfit.outfit_tags) ? outfit.outfit_tags : (outfit.outfit_tags ? [outfit.outfit_tags] : [])}
+              />
+            </View>
+            <View style={{ paddingHorizontal: 16 }}>
+              <OutfitDetailImages
+                imageUrls={imageUrls}
+                elementsData={Array.isArray(outfit.outfit_elements_data)
+                  ? (outfit.outfit_elements_data as any[]).filter((el) => el && typeof el === 'object' && (el as any).imageUrl)
+                  : [] as any}
+              />
+            </View>
+            <OutfitDetailSections
+              description={outfit.description}
+              tags={Array.isArray(outfit.outfit_tags) ? outfit.outfit_tags : (outfit.outfit_tags ? [outfit.outfit_tags] : [])}
+            />
+
+            <OutfitInteractionButtons
+              isLiked={!!optimisticLiked}
+              isDisliked={!!optimisticDisliked}
+              isSaved={!!optimisticSaved}
+              positiveRatings={ratingStats?.positiveRatings || 0}
+              negativeRatings={(ratingStats?.totalRatings || 0) - (ratingStats?.positiveRatings || 0)}
+              commentsCount={outfit.comments}
+              onPositiveRate={handlePositiveRate}
+              onNegativeRate={handleNegativeRate}
+              onComments={() => {}}
+              onShare={() => setShowShareModal(true)}
+              onSave={handleSave}
+              likeScale={likeScale}
+              dislikeScale={dislikeScale}
+              commentScale={commentScale}
+              shareScale={shareScale}
+              saveScale={saveScale}
+              showCommentsButton={false}
+            />
+
+            <View style={{ paddingHorizontal: 16, paddingTop: 8 }}>
+              <CommentSection
+                isVisible={true}
+                onClose={() => {}}
+                outfitId={outfit.outfit_id}
+                outfitTitle={outfit.outfit_name || ''}
+                asInline
+              />
+            </View>
+          </ScrollView>
+        </View>
+      </Modal>
+
+      <ShareModal isVisible={showShareModal} onClose={() => setShowShareModal(false)} outfit={outfit} isAnimated />
     </View>
   );
 };

@@ -1,7 +1,9 @@
 import { OutfitElements, OutfitStylesTags } from '@/consts/chatFilterConsts';
-import { ThemedGradient, useTheme } from '@/providers/themeContext';
+import { useTheme } from '@/providers/themeContext';
+import { BlurView } from 'expo-blur';
 import { Filter, Search, X } from 'lucide-react-native';
 import React, { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export interface FilterOptions {
@@ -16,13 +18,37 @@ interface FeedFiltersProps {
   onClearFilters: () => void;
 }
 
-export const FeedFilters: React.FC<FeedFiltersProps> = ({
+export const FeedFilters = ({
   filters,
   onFiltersChange,
   onClearFilters
-}) => {
-  const { colors } = useTheme();
+}: FeedFiltersProps) => {
+  const { t } = useTranslation();
+  const { colors, isDark } = useTheme();
   const [showFilters, setShowFilters] = useState(false);
+
+  const hexToRgba = (hex: string, alpha: number) => {
+    let cleanHex = hex.replace('#', '');
+    
+    if (cleanHex.length === 4) {
+      cleanHex = cleanHex
+        .split('')
+        .map((c) => c + c)
+        .join('')
+        .slice(0, 6);
+    } else if (cleanHex.length === 8) {
+      cleanHex = cleanHex.slice(0, 6);
+    } else if (cleanHex.length === 3) {
+      cleanHex = cleanHex.split('').map((c) => c + c).join('');
+    }
+
+    const bigint = parseInt(cleanHex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
 
   const updateFilter = (key: keyof FilterOptions, value: any) => {
     onFiltersChange({
@@ -36,25 +62,27 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
     const newArray = currentArray.includes(value)
       ? currentArray.filter(item => item !== value)
       : [...currentArray, value];
-    
     updateFilter(key, newArray);
   };
 
   const hasActiveFilters = () => {
     return filters.search.length > 0 ||
-           filters.tags.length > 0 ||
-           filters.elements.length > 0;
+      filters.tags.length > 0 ||
+      filters.elements.length > 0;
   };
 
   const renderFilterSection = (title: string, items: any[], filterKey: keyof FilterOptions, isColor = false) => (
     <View style={{ marginBottom: 24 }}>
-      <Text style={{ 
-        color: colors.text, 
-        fontSize: 18, 
-        fontWeight: '600', 
-        marginBottom: 12 
+      <Text style={{
+        color: colors.text,
+        fontSize: 16,
+        fontWeight: '600',
+        marginBottom: 12
       }}>{title}</Text>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+      <View style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+      }}>
         {items.map((item) => {
           const isSelected = (filters[filterKey] as string[]).includes(item.name);
           return (
@@ -68,25 +96,15 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
                 paddingVertical: 8,
                 borderRadius: 999,
                 borderWidth: 1,
-                backgroundColor: isSelected ? 'transparent' : colors.surface,
-                borderColor: isSelected ? 'transparent' : colors.border,
-                overflow: 'hidden'
+                borderColor: isSelected ? colors.accent : colors.border,
+                backgroundColor: isSelected
+                  ? hexToRgba(colors.accent, 0.15)
+                  : hexToRgba(colors.surface, 0.6),
               }}
             >
-              {isSelected && (
-                <ThemedGradient
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                  }}
-                />
-              )}
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {isColor && (
-                  <View 
+                  <View
                     style={{
                       width: 12,
                       height: 12,
@@ -99,7 +117,7 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
                 <Text style={{
                   fontSize: 14,
                   fontWeight: '500',
-                  color: isSelected ? colors.white : colors.textSecondary
+                  color: isSelected ? colors.text : colors.textSecondary
                 }}>
                   {item.name}
                 </Text>
@@ -112,30 +130,59 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
   );
 
   return (
-    <View style={{ 
-      backgroundColor: colors.background, 
-      borderBottomWidth: 1, 
-      borderBottomColor: colors.border 
-    }}>
-      {/* Search Bar with Filter Button */}
-      <View style={{ paddingHorizontal: 16, paddingVertical: 16 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-          <View 
+    <>
+      {/* Top Search + Filter Bar */}
+      <View
+        style={{
+          position: 'relative',
+          backgroundColor: isDark ? 'transparent' : colors.surface,
+          borderBottomWidth: 0,
+        }}
+      >
+        <BlurView
+          intensity={70}
+          tint={isDark ? 'dark' : 'light'}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 72,
+            zIndex: -1,
+            borderBottomWidth: 1,
+            borderBottomColor: colors.border,
+          }}
+        />
+
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 16,
+          paddingTop: 16,
+          paddingBottom: 12,
+          gap: 12,
+        }}>
+          {/* Search Field */}
+          <View
             style={{
-              backgroundColor: colors.surface,
+              backgroundColor: 'transparent',
               flex: 1,
               flexDirection: 'row',
               alignItems: 'center',
-              borderRadius: 999,
+              borderRadius: 100,
               paddingHorizontal: 16,
-              paddingVertical: 12,
+              height: 44,
               borderWidth: 1,
-              borderColor: colors.border
+              borderColor: colors.border,
+              shadowColor: '#000',
+              shadowOpacity: 0.05,
+              shadowRadius: 6,
+              shadowOffset: { width: 0, height: 2 },
             }}
           >
             <Search size={18} color={colors.textSecondary} />
             <TextInput
-              placeholder="Search outfits..."
+              placeholder={t('feedFilters.searchPlaceholder')}
               placeholderTextColor={colors.textMuted}
               value={filters.search}
               onChangeText={(text) => updateFilter('search', text)}
@@ -143,7 +190,7 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
                 flex: 1,
                 color: colors.text,
                 fontSize: 16,
-                marginLeft: 12
+                marginLeft: 8,
               }}
             />
             {filters.search.length > 0 && (
@@ -152,98 +199,94 @@ export const FeedFilters: React.FC<FeedFiltersProps> = ({
               </TouchableOpacity>
             )}
           </View>
-          
+
           {/* Filter Button */}
           <TouchableOpacity
             onPress={() => setShowFilters(!showFilters)}
             style={{
-              padding: 12,
-              borderRadius: 999,
-              backgroundColor: (hasActiveFilters() || showFilters) ? 'transparent' : colors.surface,
-              borderWidth: 1,
-              borderColor: (hasActiveFilters() || showFilters) ? 'transparent' : colors.border,
-              overflow: 'hidden'
+              width: 44,
+              height: 44,
+              borderRadius: 100,
+              backgroundColor: hasActiveFilters() || showFilters ? colors.accent : 'transparent',
+              alignItems: 'center',
+              justifyContent: 'center',
+              shadowColor: '#000',
+              shadowOpacity: hasActiveFilters() ? 0.1 : 0,
+              shadowRadius: 8,
+              shadowOffset: { width: 0, height: 3 },
+              borderWidth: hasActiveFilters() || showFilters ? 0 : 1,
+              borderColor: hasActiveFilters() || showFilters ? 'transparent' : colors.border,
             }}
           >
-            {(hasActiveFilters() || showFilters) && (
-              <ThemedGradient
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                }}
-              />
-            )}
-            <View style={{ zIndex: 1 }}>
-              <Filter size={18} color={(hasActiveFilters() || showFilters) ? colors.white : colors.textSecondary} />
-            </View>
-            {hasActiveFilters() && (
-              <ThemedGradient
-                style={{
-                  position: 'absolute',
-                  top: -4,
-                  right: -4,
-                  borderRadius: 6,
-                  width: 12,
-                  height: 12,
-                  borderWidth: 2,
-                  borderColor: colors.background
-                }}
-              />
-            )}
+            <Filter 
+            size={18} 
+            color={hasActiveFilters() || showFilters ? colors.white : colors.textSecondary} />
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Expandable Filters */}
+      {/* Filters Overlay */}
       {showFilters && (
-        <View style={{ 
-          paddingHorizontal: 16, 
-          paddingBottom: 24, 
-          borderTopWidth: 1, 
-          borderTopColor: colors.border 
-        }}>
-          <ScrollView 
-            style={{ maxHeight: 320 }}
+        <View
+          style={{
+            position: 'absolute',
+            top: 72,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: hexToRgba(colors.background, 0.9),
+            zIndex: 50,
+            borderTopWidth: 1,
+            borderTopColor: colors.border,
+            shadowColor: '#000',
+            shadowOpacity: 0.1,
+            shadowRadius: 10,
+            shadowOffset: { width: 0, height: 5 },
+          }}
+        >
+          <ScrollView
+            className='backdrop-blur-2xl'
+            style={{ padding: 16 }}
+            contentContainerStyle={{ paddingBottom: 60 }}
             showsVerticalScrollIndicator={false}
           >
-            <View style={{ paddingTop: 24 }}>
-              {renderFilterSection('Style Tags', OutfitStylesTags, 'tags')}
-              {renderFilterSection('Elements', OutfitElements, 'elements')}
-              
-              {/* Clear Filters Button */}
-              {hasActiveFilters() && (
-                <TouchableOpacity
-                  onPress={() => {
-                    onClearFilters();
-                    setShowFilters(false);
-                  }}
-                  style={{
-                    backgroundColor: colors.surface,
-                    borderWidth: 1,
-                    borderColor: colors.border,
-                    borderRadius: 999,
-                    paddingVertical: 12,
-                    paddingHorizontal: 24,
-                    marginTop: 8
-                  }}
-                >
-                  <Text style={{
-                    color: colors.textSecondary,
-                    textAlign: 'center',
-                    fontSize: 16,
-                    fontWeight: '500'
-                  }}>
-                    Clear All Filters
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
+            {renderFilterSection(t('feedFilters.sections.styleTags'), OutfitStylesTags, 'tags')}
+            {renderFilterSection(t('feedFilters.sections.elements'), OutfitElements, 'elements')}
+
+            {hasActiveFilters() && (
+              <TouchableOpacity
+                onPress={() => {
+                  onClearFilters();
+                  setShowFilters(false);
+                }}
+                style={{
+                  alignSelf: 'center',
+                  backgroundColor: 'transparent',
+                  borderWidth: 1,
+                  borderColor: colors.border,
+                  borderRadius: 12,
+                  paddingVertical: 12,
+                  paddingHorizontal: 24,
+                  marginTop: 12,
+                  shadowColor: '#000',
+                  shadowOpacity: 0.05,
+                  shadowRadius: 4,
+                  shadowOffset: { width: 0, height: 2 },
+                }}
+              >
+                <Text style={{
+                  color: colors.textSecondary,
+                  textAlign: 'center',
+                  fontSize: 16,
+                  fontWeight: '500'
+                }}>
+                  {t('feedFilters.clearFilters')}
+                </Text>
+              </TouchableOpacity>
+            )}
           </ScrollView>
         </View>
       )}
-    </View>
+    </>
   );
 };

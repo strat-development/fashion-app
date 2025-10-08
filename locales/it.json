@@ -1,0 +1,656 @@
+{
+  "common": {
+    "loading": "Caricamento…"
+  },
+  "homeScreen": {
+    "welcomeMessage": "Benvenuto, come desideri creare un outfit?",
+    "aiConstructorButton": "Costruttore AI",
+    "createOwnOutfitButton": "Crea il tuo outfit"
+  },
+  "feedSection": {
+    "alerts": {
+      "notLoggedIn": {
+        "title": "Non sei connesso",
+        "message": "Devi essere connesso per salvare gli outfit."
+      }
+    },
+    "emptyState": {
+      "title": "Nessun outfit ancora",
+      "description": "Crea il tuo primo outfit o segui altri per vedere le loro creazioni",
+      "actionText": "Crea Outfit"
+    },
+    "loadingOutfits": "Caricamento..."
+  },
+  "rankingScreen": {
+    "title": "Classifica",
+    "subtitle": "I migliori outfit e creatori",
+    "tabs": {
+      "outfits": "Outfit",
+      "creators": "Creatori"
+    },
+    "loading": "Caricamento…",
+    "error": "Errore nel caricamento",
+    "tryAgain": "Riprova",
+    "rankRow": {
+      "untitledOutfit": "Outfit senza titolo",
+      "unknownCreator": "Sconosciuto",
+      "outfitStats": "Mi piace · Salvataggi · Valutazioni",
+      "creatorStats": "Outfit · Mi piace",
+      "rank": "#"
+    }
+  },
+  "userProfile": {
+    "loading": "Caricamento...",
+    "about": "Informazioni",
+    "privateProfile": "Questo profilo è privato."
+  },
+  "outfitDetail": {
+    "header": {
+      "title": "Dettagli dell'Outfit",
+      "yourCreation": "La tua creazione"
+    },
+    "loading": "Caricamento dell'outfit…",
+    "notFound": "Non siamo riusciti a trovare questo outfit.",
+    "goBack": "Torna indietro",
+    "images": {
+      "free": "Gratuito",
+      "noImages": "Nessuna immagine"
+    },
+    "info": {
+      "anonymous": "Anonimo",
+      "tags": "Tag",
+      "description": "Descrizione"
+    },
+    "sections": {
+      "description": "Descrizione",
+      "tags": "Tag"
+    },
+    "interactions": {
+      "comments": " commenti",
+      "likes": " mi piace"
+    },
+    "defaultOutfitName": "Outfit senza titolo"
+  },
+  "commentItem": {
+    "reply": "Rispondi",
+    "viewReplies": "Visualizza risposte",
+    "hideReplies": "Nascondi risposte",
+    "replyPlaceholder": "Rispondi a ",
+    "cancel": "Annulla",
+    "alerts": {
+      "notLoggedIn": {
+        "title": "Non sei connesso",
+        "message": "Devi essere connesso per commentare."
+      },
+      "error": {
+        "title": "Errore",
+        "message": "Impossibile aggiungere il commento"
+      }
+    }
+  },
+  "commentReactions": {
+    "reacted": "Reagito",
+    "react": "Reagisci",
+    "alerts": {
+      "notLoggedIn": {
+        "title": "Non sei connesso",
+        "message": "Devi essere connesso per reagire ai commenti."
+      }
+    }
+  },
+  "commentSection": {
+    "header": "Commenti • ",
+    "headerDefault": "Commenti",
+    "loading": "Caricamento…",
+    "empty": "Nessun commento ancora. Sii il primo!",
+    "placeholder": "Aggiungi un commento…",
+    "alerts": {
+      "notLoggedIn": {
+        "title": "Non sei connesso",
+        "message": "Devi essere connesso per commentare."
+      },
+      "error": {
+        "title": "Errore",
+        "message": "Impossibile aggiungere il commento"
+      }
+    }
+  },
+  "feedFilters": {
+    "searchPlaceholder": "Cerca outfit...",
+    "sections": {
+      "styleTags": "Tag di Stile",
+      "elements": "Elementi"
+    },
+    "clearFilters": "Cancella Tutti i Filtri"
+  },
+  "notFoundScreen": {
+    "title": "Ops!",
+    "message": "Questa schermata non esiste.",
+    "link": "Vai alla schermata iniziale!"
+  },
+  "themeSettings": {
+    "title": "Impostazioni del Tema",
+    "appearance": {
+      "title": "Aspetto",
+      "description": "Scegli come appare l'app di Moda. Seleziona un tema singolo o sincronizza con le impostazioni del tuo sistema.",
+      "options": {
+        "light": {
+          "label": "Chiaro",
+          "description": "Usa sempre il tema chiaro"
+        },
+        "dark": {
+          "label": "Scuro",
+          "description": "Usa sempre il tema scuro"
+        },
+        "system": {
+          "label": "Sistema",
+          "description": "Segui le impostazioni del sistema"
+        }
+      }
+    },
+    "preview": {
+      "title": "Anteprima",
+      "appName": "App di Moda",
+      "themePreview": " anteprima del tema",
+      "description": "Ecco come appariranno il tuo feed di outfit e altri contenuti con il tema selezionato.",
+      "primaryButton": "Primario",
+      "secondaryButton": "Secondario"
+    },
+    "languageCurrency": {
+      "title": "Lingua e Valuta",
+      "description": "Seleziona la lingua e la valuta preferite per l'app.",
+      "languagePlaceholder": "Seleziona Lingua",
+      "currencyPlaceholder": "Seleziona Valuta"
+    }
+  },
+  "createdOutfitsSection": {
+    "loading": "Caricamento degli outfit...",
+    "header": "Le tue Creazioni",
+    "createButton": "Crea",
+    "emptyState": {
+      "title": "Nessun outfit creato ancora",
+      "description": "Inizia a creare il tuo primo outfit!",
+      "actionText": "Crea Outfit"
+    }
+  },
+  "followButton": {
+    "follow": "Segui",
+    "unfollow": "Smetti di seguire",
+    "pending": "Richiesta di seguito in attesa"
+  },
+  "profileBioSection": {
+    "title": "Informazioni",
+    "noBio": "Nessuna biografia disponibile ancora. Aggiungine una modificando il tuo profilo!"
+  },
+  "profileHeader": {
+    "anonymousUser": "Utente Anonimo",
+    "defaultRole": "Appassionato di Moda",
+    "editProfile": "Modifica Profilo",
+    "tabs": {
+      "user-info": "Profilo",
+      "created-outfits": "Creati",
+      "saved-outfits": "Salvati"
+    }
+  },
+  "profileRecentActivitySection": {
+    "title": "Attività Recente",
+    "activities": [
+      {
+        "text": "Il tuo outfit ha ricevuto più di 50 mi piace!"
+      },
+      {
+        "text": "Hai messo mi piace a 5 nuovi outfit"
+      },
+      {
+        "text": "Creato \"Look Casual Estivo\""
+      }
+    ]
+  },
+  "auth": {
+    "welcome": "Benvenuto",
+    "hero": {
+      "badge": "Assistente di Moda",
+      "title": "Stile, curato con intelligenza.",
+      "slogan": "Minimalista come Apple. Potente come Vercel. Personalizzato per te."
+    },
+    "signInSubtitle": "Accedi per continuare",
+    "signUpSubtitle": "Crea un account",
+    "labels": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "placeholders": {
+      "email": "tu@esempio.com",
+      "password": "••••••••"
+    },
+    "buttons": {
+      "signIn": "Accedi",
+      "signUp": "Crea Account",
+      "google": "Accedi con Google"
+    },
+    "switch": {
+      "signUpPrompt": "Non hai un account? ",
+      "signInPrompt": "Hai già un account? ",
+      "signUp": "Registrati",
+      "signIn": "Accedi"
+    },
+    "termsAndPrivacy": "Continuando, accetti i nostri Termini e Privacy.",
+    "alerts": {
+      "supabaseNotInitialized": {
+        "title": "Errore",
+        "message": "Il client Supabase non è inizializzato."
+      },
+      "signInError": {
+        "title": "Errore di Accesso"
+      },
+      "signUpError": {
+        "title": "Errore di Registrazione"
+      },
+      "emailVerification": {
+        "title": "Verifica Email",
+        "message": "Controlla la tua casella di posta per la verifica dell'email!"
+      }
+    }
+  },
+  "profileSettingsButtons": {
+    "themeSettings": "Impostazioni del Tema",
+    "logout": "Esci"
+  },
+  "savedOutfitsSection": {
+    "loading": "Caricamento degli outfit salvati...",
+    "emptyState": {
+      "title": "Nessun outfit salvato ancora",
+      "description": "Inizia a salvare gli outfit che ami!"
+    }
+  },
+  "userStatistics": {
+    "title": "Statistiche",
+    "created": "Creati",
+    "saved": "Salvati",
+    "likes": "Mi piace",
+    "loading": "..."
+  },
+  "contactModal": {
+    "title": "Contattaci",
+    "sendMessage": "Invia Messaggio",
+    "sending": "Invio in corso...",
+    "fullName": "Nome Completo",
+    "email": "Email",
+    "message": "Messaggio",
+    "placeholders": {
+      "fullName": "Inserisci il tuo nome completo",
+      "email": "Inserisci la tua email",
+      "message": "Descrivi il tuo messaggio..."
+    },
+    "errors": {
+      "fullNameRequired": "Il nome completo è obbligatorio",
+      "fullNameMaxLength": "Il nome non può superare gli 80 caratteri",
+      "emailRequired": "Inserisci la tua email",
+      "emailInvalid": "Inserisci un'email valida",
+      "messageRequired": "Il messaggio è obbligatorio"
+    },
+    "alerts": {
+      "apiKeyMissing": "La chiave API è mancante. Contatta il supporto.",
+      "success": "Messaggio inviato con successo!",
+      "error": "Impossibile inviare il messaggio. Riprova più tardi."
+    }
+  },
+  "deleteModalOutfit": {
+    "title": "Elimina Outfit",
+    "message": "Sei sicuro di voler eliminare questo outfit? Questa azione non può essere annullata.",
+    "cancel": "Annulla",
+    "delete": "Elimina",
+    "deleting": "Eliminazione in corso...",
+    "error": "L'ID utente è necessario per l'eliminazione"
+  },
+  "outfitCreateModal": {
+    "title": "Crea Outfit",
+    "save": "Salva",
+    "saving": "Salvataggio...",
+    "addElement": "Aggiungi Elemento",
+    "outfitElements": "Elementi dell'Outfit",
+    "name": "Nome",
+    "description": "Descrizione",
+    "styleTags": "Tag di Stile",
+    "elementType": "Tipo di Elemento",
+    "elementCategory": "Categoria di Elemento",
+    "selectFromOptions": "Seleziona dalle opzioni qui sotto",
+    "elementImage": "Immagine dell'Elemento",
+    "imageReady": "Pronto per il caricamento",
+    "tapToSelectImage": "Tocca per selezionare l'immagine",
+    "price": "Prezzo",
+    "shopUrl": "URL del Negozio",
+    "optional": "opzionale",
+    "siteUrl": "URL del Sito",
+    "image": "Immagine",
+    "placeholders": {
+      "name": "Inserisci il nome dell'outfit",
+      "description": "Descrivi il tuo outfit...",
+      "elementType": "Seleziona il tipo di elemento",
+      "price": "Inserisci il prezzo (opzionale)",
+      "siteUrl": "Inserisci l'URL del sito",
+      "image": "Seleziona Immagine",
+      "shopUrl": "es. https://esempio.com/prodotto"
+    },
+    "errors": {
+      "nameRequired": "Il nome dell'outfit è obbligatorio",
+      "descriptionRequired": "La descrizione è obbligatoria",
+      "elementRequired": "È richiesto almeno un elemento dell'outfit",
+      "elementTypeRequired": "Il tipo di elemento è obbligatorio",
+      "priceInvalid": "Il prezzo deve essere un numero",
+      "priceNegative": "Il prezzo non può essere negativo",
+      "siteUrlRequired": "L'URL del sito è obbligatorio",
+      "siteUrlInvalid": "Inserisci un URL valido",
+      "imageRequired": "L'immagine è obbligatoria",
+      "styleTagsRequired": "Seleziona almeno un tag di stile",
+      "priceRequired": "Il prezzo è obbligatorio",
+      "priceMin": "Il prezzo deve essere zero o superiore",
+      "invalidUrl": "Inserisci un URL valido"
+    },
+    "elementCount": {
+      "zero": "Aggiungi almeno 1 elemento",
+      "one": " elemento aggiunto",
+      "multiple": "elementi aggiunti"
+    },
+    "totalPrice": "Prezzo totale: ",
+    "imageFormat": "JPG, PNG (max 5MB)",
+    "imageSelected": "Immagine selezionata con successo",
+    "addElementToOutfit": "Aggiungi elemento all'outfit",
+    "alerts": {
+      "permissionDenied": "È richiesta l'autorizzazione per l'archiviazione per selezionare le immagini.",
+      "imagePickerError": "Impossibile aprire il selettore di immagini",
+      "imageSelectError": "Impossibile selezionare l'immagine",
+      "noImageSelected": "Nessuna immagine selezionata",
+      "imagePickerErrorMessage": "Errore del selettore di immagini: ",
+      "success": {
+        "title": "Successo",
+        "message": "Outfit salvato con successo!"
+      },
+      "error": {
+        "title": "Errore",
+        "message": "Impossibile creare l'outfit"
+      },
+      "unknownError": "Si è verificato un errore sconosciuto"
+    }
+  },
+  "profileEdit": {
+    "title": "Modifica Profilo",
+    "save": "Salva",
+    "saving": "Salvataggio...",
+    "displayName": "Nome Visualizzato",
+    "bio": "Biografia",
+    "stylePreferences": "Preferenze di Stile",
+    "privacy": "Privacy",
+    "publicProfile": "Profilo Pubblico",
+    "publicProfileDescription": "Gli altri possono vedere il tuo profilo e gli outfit creati",
+    "privateProfileDescription": "Solo il tuo soprannome e avatar saranno visibili",
+    "privateAccount": "Account Privato",
+    "privateAccountDescription": "Quando è privato, solo il tuo nome utente e la foto del profilo saranno visibili agli altri. La tua biografia e gli outfit saranno nascosti.",
+    "changePhoto": "Tocca per cambiare foto",
+    "stylePreferencesComingSoon": "Prossimamente! Imposta i tuoi stili, colori e marchi preferiti.",
+    "placeholders": {
+      "name": "Inserisci il tuo nome",
+      "bio": "Raccontaci del tuo stile..."
+    },
+    "errors": {
+      "nameRequired": "Il nome è obbligatorio",
+      "bioMaxLength": "La biografia non deve superare i 200 caratteri"
+    },
+    "alerts": {
+      "permissionDenied": "È richiesta l'autorizzazione per l'archiviazione per selezionare le immagini.",
+      "imagePickerError": "Impossibile aprire il selettore di immagini",
+      "imageSelectError": "Impossibile selezionare l'immagine",
+      "noImageSelected": "Nessuna immagine selezionata",
+      "imagePickerErrorMessage": "Errore del selettore di immagini: ",
+      "imageUploadError": "Impossibile caricare l'immagine",
+      "imageUrlError": "Impossibile recuperare l'URL dell'immagine",
+      "success": "Profilo aggiornato con successo",
+      "error": "Impossibile aggiornare il profilo"
+    }
+  },
+  "registrationModal": {
+    "welcome": "Benvenuto nell'App!",
+    "welcomeDescription": "Per utilizzare l'app, devi completare il processo di registrazione.",
+    "provideDetails": "Fornisci i dettagli del tuo profilo nei passaggi successivi.",
+    "logout": "Esci",
+    "proceed": "Procedi",
+    "previous": "Precedente",
+    "next": "Successivo",
+    "complete": "Completa",
+    "saving": "Salvataggio...",
+    "username": "Nome Utente",
+    "fullName": "Nome Completo",
+    "bio": "Biografia",
+    "profilePicture": "Foto del Profilo",
+    "setPhoto": "Tocca per impostare la foto (opzionale)",
+    "reviewInfo": "Rivedi le tue Informazioni",
+    "notProvided": "Non fornito",
+    "placeholders": {
+      "username": "Inserisci il tuo nome utente",
+      "fullName": "Inserisci il tuo nome completo",
+      "bio": "Raccontaci del tuo stile... (opzionale)"
+    },
+    "errors": {
+      "usernameRequired": "Il nome utente è obbligatorio",
+      "usernameMinLength": "Il nome utente deve essere lungo almeno 3 caratteri",
+      "usernameMaxLength": "Il nome utente non può superare i 20 caratteri",
+      "usernamePattern": "Il nome utente può contenere solo lettere, numeri e trattini bassi",
+      "fullNameRequired": "Il nome completo è obbligatorio",
+      "fullNameMaxLength": "Il nome completo non può superare i 50 caratteri",
+      "bioMaxLength": "La biografia non può superare i 200 caratteri",
+      "userIdMissing": "L'ID utente è mancante. Accedi di nuovo."
+    },
+    "alerts": {
+      "permissionDenied": "È richiesta l'autorizzazione per l'archiviazione per selezionare le immagini.",
+      "imagePickerError": "Impossibile aprire il selettore di immagini",
+      "imageSelectError": "Impossibile selezionare l'immagine",
+      "noImageSelected": "Nessuna immagine selezionata",
+      "imagePickerErrorMessage": "Errore del selettore di immagini: ",
+      "imageUploadError": "Impossibile caricare l'immagine",
+      "imageUrlError": "Impossibile recuperare l'URL dell'immagine",
+      "registrationError": "Impossibile completare la registrazione. Riprova.",
+      "logoutError": "Impossibile effettuare il logout. Riprova."
+    }
+  },
+  "reportModal": {
+    "report": "Segnala",
+    "sendReport": "Invia Segnalazione",
+    "sending": "Invio in corso...",
+    "email": "Email",
+    "reason": "Motivo",
+    "description": "Descrizione",
+    "placeholders": {
+      "email": "Inserisci la tua email",
+      "reason": "Seleziona il motivo",
+      "description": "Descrivi il problema..."
+    },
+    "errors": {
+      "userIdRequired": "L'ID utente è obbligatorio",
+      "emailRequired": "Inserisci la tua email per poterti rispondere",
+      "emailInvalid": "Inserisci un'email valida",
+      "reasonRequired": "Il motivo è obbligatorio",
+      "descriptionRequired": "La descrizione è obbligatoria"
+    },
+    "alerts": {
+      "apiKeyMissing": "La chiave API è mancante. Contatta il supporto.",
+      "success": "Segnalazione inviata con successo!",
+      "error": "Impossibile inviare la segnalazione. Riprova più tardi."
+    }
+  },
+  "shareModal": {
+    "title": "Condividi Outfit",
+    "cancel": "Annulla",
+    "shareOptions": {
+      "native": "Condividi...",
+      "copy": "Copia Link",
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "email": "Email",
+      "sms": "Messaggio",
+      "more": "Altro"
+    },
+    "untitledOutfit": "Outfit senza titolo",
+    "defaultDescription": "Outfit di moda da condividere",
+    "shareText": "Scopri questo fantastico outfit sull'App di Moda!",
+    "alerts": {
+      "shareError": "Impossibile condividere questo outfit",
+      "copySuccess": "Link copiato negli appunti!",
+      "copyError": "Impossibile copiare il link",
+      "platformError": "Impossibile aprire ",
+      "instagramShare": "Link copiato! Ora puoi incollarlo nella tua storia o post di Instagram."
+    }
+  },
+  "chatSection": {
+    "promptPrefix": "Voglio che mi aiuti a creare un outfit secondo i seguenti criteri:",
+    "selectGender": "Genere",
+    "selectOutfitStyles": "Stili dell'outfit",
+    "selectFit": "Vestibilità",
+    "selectDominantColors": "Colori dominanti",
+    "selectOutfitElements": "Elementi dell'outfit",
+    "selectPriceRange": "Fascia di prezzo",
+    "from": "Da",
+    "to": "A",
+    "currency": "Valuta",
+    "placeholders": {
+      "lowestPrice": "Prezzo più basso",
+      "highestPrice": "Prezzo più alto",
+      "currency": "Seleziona valuta",
+      "outfitDescription": "Descrizione dell'outfit... (opzionale)"
+    },
+    "genders": {
+      "male": "Maschile",
+      "female": "Femminile",
+      "unisex": "Unisex"
+    },
+    "styles": {
+      "casual": "Casual",
+      "formal": "Formale",
+      "sporty": "Sportivo",
+      "bohemian": "Boemo",
+      "vintage": "Vintage",
+      "streetwear": "Streetwear",
+      "business": "Business",
+      "party": "Festa",
+      "beach": "Spiaggia",
+      "office": "Ufficio",
+      "old money": "Old Money",
+      "athleisure": "Athleisure",
+      "minimalist": "Minimalista",
+      "gothic": "Gotico",
+      "preppy": "Preppy",
+      "punk": "Punk",
+      "grunge": "Grunge",
+      "smart casual": "Smart Casual",
+      "business casual": "Business Casual",
+      "chic": "Chic",
+      "resort": "Resort",
+      "cottagecore": "Cottagecore",
+      "normcore": "Normcore",
+      "techwear": "Techwear",
+      "avant-garde": "Avanguardia",
+      "monochrome": "Monocromo",
+      "color blocking": "Blocco di colore",
+      "safari": "Safari",
+      "retro": "Retrò",
+      "y2k": "Y2K",
+      "maximalist": "Massimalista"
+    },
+    "fits": {
+      "slim": "Slim",
+      "regular": "Regolare",
+      "relaxed": "Rilassato",
+      "oversized": "Oversize",
+      "tailored": "Su misura",
+      "slim fit": "Vestibilità slim",
+      "regular fit": "Vestibilità regolare",
+      "relaxed fit": "Vestibilità rilassata",
+      "loose fit": "Vestibilità ampia",
+      "oversized fit": "Vestibilità oversize",
+      "tailored fit": "Vestibilità su misura",
+      "athletic fit": "Vestibilità atletica",
+      "tapered fit": "Vestibilità affusolata",
+      "boxy fit": "Vestibilità squadrata",
+      "straight fit": "Vestibilità dritta"
+    },
+    "colors": {
+      "black": "Nero",
+      "white": "Bianco",
+      "red": "Rosso",
+      "blue": "Blu",
+      "green": "Verde",
+      "yellow": "Giallo",
+      "purple": "Viola",
+      "pink": "Rosa",
+      "gray": "Grigio",
+      "brown": "Marrone",
+      "orange": "Arancione",
+      "navy": "Blu navy",
+      "beige": "Beige",
+      "olive": "Oliva",
+      "teal": "Teal",
+      "burgundy": "Bordeaux",
+      "cream": "Crema",
+      "camel": "Cammello",
+      "charcoal": "Carbone",
+      "off white": "Bianco sporco",
+      "pastel pink": "Rosa pastello",
+      "pastel blue": "Blu pastello",
+      "pastel green": "Verde pastello",
+      "pastel yellow": "Giallo pastello"
+    },
+    "elements": {
+      "shirt": "Camicia",
+      "pants": "Pantaloni",
+      "shoes": "Scarpe",
+      "jacket": "Giacca",
+      "dress": "Vestito",
+      "skirt": "Gonna",
+      "hat": "Cappello",
+      "belt": "Cintura",
+      "watch": "Orologio",
+      "bag": "Borsa",
+      "top": "Top",
+      "bottom": "Parte inferiore",
+      "footwear": "Calzature",
+      "accessories": "Accessori",
+      "outerwear": "Capispalla",
+      "headwear": "Copricapo",
+      "eyewear": "Occhiali",
+      "jewelry": "Gioielli",
+      "scarf": "Sciarpa",
+      "gloves": "Guanti",
+      "socks": "Calzini"
+    },
+    "currencies": {
+      "usd": "USD ($)",
+      "eur": "EUR (€)",
+      "gbp": "GBP (£)",
+      "jpy": "JPY (¥)",
+      "aud": "AUD (A$)",
+      "cad": "CAD (C$)",
+      "pln": "PLN (zł)",
+      "chf": "CHF (CHF)",
+      "rub": "RUB (₽)",
+      "cny": "CNY (¥)",
+      "inr": "INR (₹)",
+      "krw": "KRW (₩)",
+      "mxn": "MXN (MXN)",
+      "nzd": "NZD (NZD)",
+      "sek": "SEK (SEK)",
+      "sgd": "SGD (SGD)",
+      "thb": "THB (฿)",
+      "zar": "ZAR (R)",
+      "try": "TRY (₺)",
+      "uah": "UAH (₴)"
+    },
+    "conversations": "Conversazioni",
+    "newChat": "Nuova chat",
+    "showFilters": "Mostra filtri",
+    "hideFilters": "Nascondi filtri"
+  },
+  "chatSwitch": {
+    "ai": "AI",
+    "creator": "Creatore"
+  }
+}

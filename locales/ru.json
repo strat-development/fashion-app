@@ -1,0 +1,656 @@
+{
+    "common": {
+      "loading": "Загрузка…"
+    },
+    "homeScreen": {
+      "welcomeMessage": "Добро пожаловать, как вы хотите создать наряд?",
+      "aiConstructorButton": "Конструктор ИИ",
+      "createOwnOutfitButton": "Создать свой наряд"
+    },
+    "feedSection": {
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Не авторизован",
+          "message": "Вы должны быть авторизованы, чтобы сохранять наряды."
+        }
+      },
+      "emptyState": {
+        "title": "Пока нет нарядов",
+        "description": "Создайте свой первый наряд или подпишитесь на других, чтобы увидеть их творения",
+        "actionText": "Создать наряд"
+      },
+      "loadingOutfits": "Загрузка..."
+    },
+    "rankingScreen": {
+      "title": "Рейтинг",
+      "subtitle": "Лучшие наряды и создатели",
+      "tabs": {
+        "outfits": "Наряды",
+        "creators": "Создатели"
+      },
+      "loading": "Загрузка…",
+      "error": "Не удалось загрузить",
+      "tryAgain": "Попробовать снова",
+      "rankRow": {
+        "untitledOutfit": "Наряд без названия",
+        "unknownCreator": "Неизвестно",
+        "outfitStats": "Лайки · Сохранения · Оценки",
+        "creatorStats": "Наряды · Лайки",
+        "rank": "#"
+      }
+    },
+    "userProfile": {
+      "loading": "Загрузка...",
+      "about": "О себе",
+      "privateProfile": "Этот профиль приватный."
+    },
+    "outfitDetail": {
+      "header": {
+        "title": "Детали наряда",
+        "yourCreation": "Ваше творение"
+      },
+      "loading": "Загрузка наряда…",
+      "notFound": "Мы не смогли найти этот наряд.",
+      "goBack": "Назад",
+      "images": {
+        "free": "Бесплатно",
+        "noImages": "Нет изображений"
+      },
+      "info": {
+        "anonymous": "Аноним",
+        "tags": "Теги",
+        "description": "Описание"
+      },
+      "sections": {
+        "description": "Описание",
+        "tags": "Теги"
+      },
+      "interactions": {
+        "comments": " комментариев",
+        "likes": " лайков"
+      },
+      "defaultOutfitName": "Наряд без названия"
+    },
+    "commentItem": {
+      "reply": "Ответить",
+      "viewReplies": "Посмотреть ответы",
+      "hideReplies": "Скрыть ответы",
+      "replyPlaceholder": "Ответить на ",
+      "cancel": "Отмена",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Не авторизован",
+          "message": "Вы должны быть авторизованы, чтобы комментировать."
+        },
+        "error": {
+          "title": "Ошибка",
+          "message": "Не удалось добавить комментарий"
+        }
+      }
+    },
+    "commentReactions": {
+      "reacted": "Отреагировано",
+      "react": "Реагировать",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Не авторизован",
+          "message": "Вы должны быть авторизованы, чтобы реагировать на комментарии."
+        }
+      }
+    },
+    "commentSection": {
+      "header": "Комментарии • ",
+      "headerDefault": "Комментарии",
+      "loading": "Загрузка…",
+      "empty": "Пока нет комментариев. Будьте первым!",
+      "placeholder": "Добавить комментарий…",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Не авторизован",
+          "message": "Вы должны быть авторизованы, чтобы комментировать."
+        },
+        "error": {
+          "title": "Ошибка",
+          "message": "Не удалось добавить комментарий"
+        }
+      }
+    },
+    "feedFilters": {
+      "searchPlaceholder": "Поиск нарядов...",
+      "sections": {
+        "styleTags": "Теги стиля",
+        "elements": "Элементы"
+      },
+      "clearFilters": "Очистить все фильтры"
+    },
+    "notFoundScreen": {
+      "title": "Ой!",
+      "message": "Этот экран не существует.",
+      "link": "Перейти на главный экран!"
+    },
+    "themeSettings": {
+      "title": "Настройки темы",
+      "appearance": {
+        "title": "Внешний вид",
+        "description": "Выберите, как будет выглядеть приложение Fashion. Выберите одну тему или синхронизируйте с настройками системы.",
+        "options": {
+          "light": {
+            "label": "Светлая",
+            "description": "Всегда использовать светлую тему"
+          },
+          "dark": {
+            "label": "Тёмная",
+            "description": "Всегда использовать тёмную тему"
+          },
+          "system": {
+            "label": "Системная",
+            "description": "Следовать настройкам системы"
+          }
+        }
+      },
+      "preview": {
+        "title": "Предпросмотр",
+        "appName": "Приложение Fashion",
+        "themePreview": " предпросмотр темы",
+        "description": "Вот как будет выглядеть ваш лента нарядов и другой контент с выбранной темой.",
+        "primaryButton": "Основная",
+        "secondaryButton": "Вторичная"
+      },
+      "languageCurrency": {
+        "title": "Язык и валюта",
+        "description": "Выберите предпочтительный язык и валюту для приложения.",
+        "languagePlaceholder": "Выберите язык",
+        "currencyPlaceholder": "Выберите валюту"
+      }
+    },
+    "createdOutfitsSection": {
+      "loading": "Загрузка нарядов...",
+      "header": "Ваши творения",
+      "createButton": "Создать",
+      "emptyState": {
+        "title": "Пока нет созданных нарядов",
+        "description": "Начните создавать свой первый наряд!",
+        "actionText": "Создать наряд"
+      }
+    },
+    "followButton": {
+      "follow": "Подписаться",
+      "unfollow": "Отписаться",
+      "pending": "Запрос на подписку ожидает"
+    },
+    "profileBioSection": {
+      "title": "О себе",
+      "noBio": "Биография пока недоступна. Добавьте её, отредактировав профиль!"
+    },
+    "profileHeader": {
+      "anonymousUser": "Анонимный пользователь",
+      "defaultRole": "Любитель моды",
+      "editProfile": "Редактировать профиль",
+      "tabs": {
+        "user-info": "Профиль",
+        "created-outfits": "Создано",
+        "saved-outfits": "Сохранено"
+      }
+    },
+    "profileRecentActivitySection": {
+      "title": "Недавняя активность",
+      "activities": [
+        {
+          "text": "Ваш наряд получил более 50 лайков!"
+        },
+        {
+          "text": "Понравилось 5 новых нарядов"
+        },
+        {
+          "text": "Создан \"Летний повседневный образ\""
+        }
+      ]
+    },
+    "auth": {
+      "welcome": "Добро пожаловать",
+      "hero": {
+        "badge": "Ассистент моды",
+        "title": "Стиль, созданный с интеллектом.",
+        "slogan": "Минималистично, как Apple. Мощно, как Vercel. Персонализировано для вас."
+      },
+      "signInSubtitle": "Войдите, чтобы продолжить",
+      "signUpSubtitle": "Создать аккаунт",
+      "labels": {
+        "email": "Электронная почта",
+        "password": "Пароль"
+      },
+      "placeholders": {
+        "email": "вы@пример.ру",
+        "password": "••••••••"
+      },
+      "buttons": {
+        "signIn": "Войти",
+        "signUp": "Создать аккаунт",
+        "google": "Войти через Google"
+      },
+      "switch": {
+        "signUpPrompt": "Нет аккаунта? ",
+        "signInPrompt": "Уже есть аккаунт? ",
+        "signUp": "Зарегистрироваться",
+        "signIn": "Войти"
+      },
+      "termsAndPrivacy": "Продолжая, вы соглашаетесь с нашими Условиями и Политикой конфиденциальности.",
+      "alerts": {
+        "supabaseNotInitialized": {
+          "title": "Ошибка",
+          "message": "Клиент Supabase не инициализирован."
+        },
+        "signInError": {
+          "title": "Ошибка входа"
+        },
+        "signUpError": {
+          "title": "Ошибка регистрации"
+        },
+        "emailVerification": {
+          "title": "Подтверждение электронной почты",
+          "message": "Пожалуйста, проверьте вашу почту для подтверждения!"
+        }
+      }
+    },
+    "profileSettingsButtons": {
+      "themeSettings": "Настройки темы",
+      "logout": "Выйти"
+    },
+    "savedOutfitsSection": {
+      "loading": "Загрузка сохранённых нарядов...",
+      "emptyState": {
+        "title": "Пока нет сохранённых нарядов",
+        "description": "Начните сохранять наряды, которые вам нравятся!"
+      }
+    },
+    "userStatistics": {
+      "title": "Статистика",
+      "created": "Создано",
+      "saved": "Сохранено",
+      "likes": "Лайки",
+      "loading": "..."
+    },
+    "contactModal": {
+      "title": "Связаться с нами",
+      "sendMessage": "Отправить сообщение",
+      "sending": "Отправка...",
+      "fullName": "Полное имя",
+      "email": "Электронная почта",
+      "message": "Сообщение",
+      "placeholders": {
+        "fullName": "Введите ваше полное имя",
+        "email": "Введите вашу электронную почту",
+        "message": "Опишите ваше сообщение..."
+      },
+      "errors": {
+        "fullNameRequired": "Полное имя обязательно",
+        "fullNameMaxLength": "Имя не может превышать 80 символов",
+        "emailRequired": "Введите вашу электронную почту",
+        "emailInvalid": "Пожалуйста, введите действительный адрес электронной почты",
+        "messageRequired": "Сообщение обязательно"
+      },
+      "alerts": {
+        "apiKeyMissing": "Отсутствует API-ключ. Пожалуйста, свяжитесь с поддержкой.",
+        "success": "Сообщение успешно отправлено!",
+        "error": "Не удалось отправить сообщение. Попробуйте снова позже."
+      }
+    },
+    "deleteModalOutfit": {
+      "title": "Удалить наряд",
+      "message": "Вы уверены, что хотите удалить этот наряд? Это действие нельзя отменить.",
+      "cancel": "Отмена",
+      "delete": "Удалить",
+      "deleting": "Удаление...",
+      "error": "Для удаления требуется ID пользователя"
+    },
+    "outfitCreateModal": {
+      "title": "Создать наряд",
+      "save": "Сохранить",
+      "saving": "Сохранение...",
+      "addElement": "Добавить элемент",
+      "outfitElements": "Элементы наряда",
+      "name": "Название",
+      "description": "Описание",
+      "styleTags": "Теги стиля",
+      "elementType": "Тип элемента",
+      "elementCategory": "Категория элемента",
+      "selectFromOptions": "Выберите из вариантов ниже",
+      "elementImage": "Изображение элемента",
+      "imageReady": "Готово к загрузке",
+      "tapToSelectImage": "Нажмите, чтобы выбрать изображение",
+      "price": "Цена",
+      "shopUrl": "URL магазина",
+      "optional": "необязательно",
+      "siteUrl": "URL сайта",
+      "image": "Изображение",
+      "placeholders": {
+        "name": "Введите название наряда",
+        "description": "Опишите ваш наряд...",
+        "elementType": "Выберите тип элемента",
+        "price": "Введите цену (необязательно)",
+        "siteUrl": "Введите URL сайта",
+        "image": "Выберите изображение",
+        "shopUrl": "например, https://пример.ру/продукт"
+      },
+      "errors": {
+        "nameRequired": "Название наряда обязательно",
+        "descriptionRequired": "Описание обязательно",
+        "elementRequired": "Требуется хотя бы один элемент наряда",
+        "elementTypeRequired": "Тип элемента обязателен",
+        "priceInvalid": "Цена должна быть числом",
+        "priceNegative": "Цена не может быть отрицательной",
+        "siteUrlRequired": "URL сайта обязателен",
+        "siteUrlInvalid": "Пожалуйста, введите действительный URL",
+        "imageRequired": "Изображение обязательно",
+        "styleTagsRequired": "Выберите хотя бы один тег стиля",
+        "priceRequired": "Цена обязательна",
+        "priceMin": "Цена должна быть ноль или больше",
+        "invalidUrl": "Пожалуйста, введите действительный URL"
+      },
+      "elementCount": {
+        "zero": "Добавьте хотя бы 1 элемент",
+        "one": " элемент добавлен",
+        "multiple": "элементов добавлено"
+      },
+      "totalPrice": "Общая цена: ",
+      "imageFormat": "JPG, PNG (макс. 5 МБ)",
+      "imageSelected": "Изображение успешно выбрано",
+      "addElementToOutfit": "Добавить элемент к наряду",
+      "alerts": {
+        "permissionDenied": "Требуется разрешение на доступ к хранилищу для выбора изображений.",
+        "imagePickerError": "Не удалось открыть выбор изображения",
+        "imageSelectError": "Не удалось выбрать изображение",
+        "noImageSelected": "Изображение не выбрано",
+        "imagePickerErrorMessage": "Ошибка выбора изображения: ",
+        "success": {
+          "title": "Успех",
+          "message": "Наряд успешно сохранён!"
+        },
+        "error": {
+          "title": "Ошибка",
+          "message": "Не удалось создать наряд"
+        },
+        "unknownError": "Произошла неизвестная ошибка"
+      }
+    },
+    "profileEdit": {
+      "title": "Редактировать профиль",
+      "save": "Сохранить",
+      "saving": "Сохранение...",
+      "displayName": "Отображаемое имя",
+      "bio": "Биография",
+      "stylePreferences": "Предпочтения стиля",
+      "privacy": "Конфиденциальность",
+      "publicProfile": "Публичный профиль",
+      "publicProfileDescription": "Другие могут видеть ваш профиль и созданные наряды",
+      "privateProfileDescription": "Только ваше имя и аватар будут видны",
+      "privateAccount": "Приватный аккаунт",
+      "privateAccountDescription": "При приватном аккаунте только ваше имя пользователя и фото профиля будут видны другим. Ваша биография и наряды будут скрыты.",
+      "changePhoto": "Нажмите, чтобы изменить фото",
+      "stylePreferencesComingSoon": "Скоро будет! Настройте свои любимые стили, цвета и бренды.",
+      "placeholders": {
+        "name": "Введите ваше имя",
+        "bio": "Расскажите о вашем стиле..."
+      },
+      "errors": {
+        "nameRequired": "Имя обязательно",
+        "bioMaxLength": "Биография не должна превышать 200 символов"
+      },
+      "alerts": {
+        "permissionDenied": "Требуется разрешение на доступ к хранилищу для выбора изображений.",
+        "imagePickerError": "Не удалось открыть выбор изображения",
+        "imageSelectError": "Не удалось выбрать изображение",
+        "noImageSelected": "Изображение не выбрано",
+        "imagePickerErrorMessage": "Ошибка выбора изображения: ",
+        "imageUploadError": "Не удалось загрузить изображение",
+        "imageUrlError": "Не удалось получить URL изображения",
+        "success": "Профиль успешно обновлён",
+        "error": "Не удалось обновить профиль"
+      }
+    },
+    "registrationModal": {
+      "welcome": "Добро пожаловать в приложение!",
+      "welcomeDescription": "Чтобы использовать приложение, вам нужно завершить процесс регистрации.",
+      "provideDetails": "Пожалуйста, укажите данные вашего профиля на следующих шагах.",
+      "logout": "Выйти",
+      "proceed": "Продолжить",
+      "previous": "Назад",
+      "next": "Далее",
+      "complete": "Завершить",
+      "saving": "Сохранение...",
+      "username": "Имя пользователя",
+      "fullName": "Полное имя",
+      "bio": "Биография",
+      "profilePicture": "Фото профиля",
+      "setPhoto": "Нажмите, чтобы установить фото (необязательно)",
+      "reviewInfo": "Проверьте вашу информацию",
+      "notProvided": "Не указано",
+      "placeholders": {
+        "username": "Введите ваше имя пользователя",
+        "fullName": "Введите ваше полное имя",
+        "bio": "Расскажите о вашем стиле... (необязательно)"
+      },
+      "errors": {
+        "usernameRequired": "Имя пользователя обязательно",
+        "usernameMinLength": "Имя пользователя должно содержать не менее 3 символов",
+        "usernameMaxLength": "Имя пользователя не может превышать 20 символов",
+        "usernamePattern": "Имя пользователя может содержать только буквы, цифры и подчеркивания",
+        "fullNameRequired": "Полное имя обязательно",
+        "fullNameMaxLength": "Полное имя не может превышать 50 символов",
+        "bioMaxLength": "Биография не может превышать 200 символов",
+        "userIdMissing": "ID пользователя отсутствует. Пожалуйста, войдите снова."
+      },
+      "alerts": {
+        "permissionDenied": "Требуется разрешение на доступ к хранилищу для выбора изображений.",
+        "imagePickerError": "Не удалось открыть выбор изображения",
+        "imageSelectError": "Не удалось выбрать изображение",
+        "noImageSelected": "Изображение не выбрано",
+        "imagePickerErrorMessage": "Ошибка выбора изображения: ",
+        "imageUploadError": "Не удалось загрузить изображение",
+        "imageUrlError": "Не удалось получить URL изображения",
+        "registrationError": "Не удалось завершить регистрацию. Попробуйте снова.",
+        "logoutError": "Не удалось выйти. Попробуйте снова."
+      }
+    },
+    "reportModal": {
+      "report": "Пожаловаться",
+      "sendReport": "Отправить жалобу",
+      "sending": "Отправка...",
+      "email": "Электронная почта",
+      "reason": "Причина",
+      "description": "Описание",
+      "placeholders": {
+        "email": "Введите вашу электронную почту",
+        "reason": "Выберите причину",
+        "description": "Опишите проблему..."
+      },
+      "errors": {
+        "userIdRequired": "ID пользователя обязателен",
+        "emailRequired": "Введите вашу электронную почту, чтобы мы могли ответить",
+        "emailInvalid": "Пожалуйста, введите действительный адрес электронной почты",
+        "reasonRequired": "Причина обязательна",
+        "descriptionRequired": "Описание обязательно"
+      },
+      "alerts": {
+        "apiKeyMissing": "Отсутствует API-ключ. Пожалуйста, свяжитесь с поддержкой.",
+        "success": "Жалоба успешно отправлена!",
+        "error": "Не удалось отправить жалобу. Попробуйте снова позже."
+      }
+    },
+    "shareModal": {
+      "title": "Поделиться нарядом",
+      "cancel": "Отмена",
+      "shareOptions": {
+        "native": "Поделиться...",
+        "copy": "Копировать ссылку",
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "instagram": "Instagram",
+        "email": "Электронная почта",
+        "sms": "Сообщение",
+        "more": "Больше"
+      },
+      "untitledOutfit": "Наряд без названия",
+      "defaultDescription": "Модный наряд для分享",
+      "shareText": "Посмотрите этот потрясающий наряд в приложении Fashion!",
+      "alerts": {
+        "shareError": "Не удалось поделиться этим нарядом",
+        "copySuccess": "Ссылка скопирована в буфер обмена!",
+        "copyError": "Не удалось скопировать ссылку",
+        "platformError": "Не удалось открыть ",
+        "instagramShare": "Ссылка скопирована! Теперь вы можете вставить её в вашу историю или пост в Instagram."
+      }
+    },
+    "chatSection": {
+      "promptPrefix": "Я хочу, чтобы вы помогли мне создать наряд по следующим критериям:",
+      "selectGender": "Пол",
+      "selectOutfitStyles": "Стили наряда",
+      "selectFit": "Посадка",
+      "selectDominantColors": "Преобладающие цвета",
+      "selectOutfitElements": "Элементы наряда",
+      "selectPriceRange": "Диапазон цен",
+      "from": "От",
+      "to": "До",
+      "currency": "Валюта",
+      "placeholders": {
+        "lowestPrice": "Минимальная цена",
+        "highestPrice": "Максимальная цена",
+        "currency": "Выберите валюту",
+        "outfitDescription": "Описание наряда... (необязательно)"
+      },
+      "genders": {
+        "male": "Мужской",
+        "female": "Женский",
+        "unisex": "Унисекс"
+      },
+      "styles": {
+        "casual": "Повседневный",
+        "formal": "Формальный",
+        "sporty": "Спортивный",
+        "bohemian": "Богемный",
+        "vintage": "Винтаж",
+        "streetwear": "Уличная мода",
+        "business": "Деловой",
+        "party": "Вечеринка",
+        "beach": "Пляжный",
+        "office": "Офисный",
+        "old money": "Старые деньги",
+        "athleisure": "Атлеже",
+        "minimalist": "Минимализм",
+        "gothic": "Готический",
+        "preppy": "Преппи",
+        "punk": "Панк",
+        "grunge": "Гранж",
+        "smart casual": "Смарт-кэжуал",
+        "business casual": "Деловой кэжуал",
+        "chic": "Шик",
+        "resort": "Курортный",
+        "cottagecore": "Коттеджкор",
+        "normcore": "Нормкор",
+        "techwear": "Техно-одежда",
+        "avant-garde": "Авангард",
+        "monochrome": "Монохром",
+        "color blocking": "Цветовые блоки",
+        "safari": "Сафари",
+        "retro": "Ретро",
+        "y2k": "Y2K",
+        "maximalist": "Максимализм"
+      },
+      "fits": {
+        "slim": "Облегающий",
+        "regular": "Обычный",
+        "relaxed": "Свободный",
+        "oversized": "Оверсайз",
+        "tailored": "Приталенный",
+        "slim fit": "Облегающая посадка",
+        "regular fit": "Обычная посадка",
+        "relaxed fit": "Свободная посадка",
+        "loose fit": "Свободная посадка",
+        "oversized fit": "Оверсайз посадка",
+        "tailored fit": "Приталенная посадка",
+        "athletic fit": "Атлетическая посадка",
+        "tapered fit": "Зауженная посадка",
+        "boxy fit": "Квадратная посадка",
+        "straight fit": "Прямая посадка"
+      },
+      "colors": {
+        "black": "Чёрный",
+        "white": "Белый",
+        "red": "Красный",
+        "blue": "Синий",
+        "green": "Зелёный",
+        "yellow": "Жёлтый",
+        "purple": "Фиолетовый",
+        "pink": "Розовый",
+        "gray": "Серый",
+        "brown": "Коричневый",
+        "orange": "Оранжевый",
+        "navy": "Тёмно-синий",
+        "beige": "Бежевый",
+        "olive": "Оливковый",
+        "teal": "Бирюзовый",
+        "burgundy": "Бордовый",
+        "cream": "Кремовый",
+        "camel": "Камель",
+        "charcoal": "Угольный",
+        "off white": "Грязно-белый",
+        "pastel pink": "Пастельный розовый",
+        "pastel blue": "Пастельный синий",
+        "pastel green": "Пастельный зелёный",
+        "pastel yellow": "Пастельный жёлтый"
+      },
+      "elements": {
+        "shirt": "Рубашка",
+        "pants": "Брюки",
+        "shoes": "Обувь",
+        "jacket": "Куртка",
+        "dress": "Платье",
+        "skirt": "Юбка",
+        "hat": "Шляпа",
+        "belt": "Ремень",
+        "watch": "Часы",
+        "bag": "Сумка",
+        "top": "Топ",
+        "bottom": "Низ",
+        "footwear": "Обувь",
+        "accessories": "Аксессуары",
+        "outerwear": "Верхняя одежда",
+        "headwear": "Головные уборы",
+        "eyewear": "Очки",
+        "jewelry": "Украшения",
+        "scarf": "Шарф",
+        "gloves": "Перчатки",
+        "socks": "Носки"
+      },
+      "currencies": {
+        "usd": "USD ($)",
+        "eur": "EUR (€)",
+        "gbp": "GBP (£)",
+        "jpy": "JPY (¥)",
+        "aud": "AUD (A$)",
+        "cad": "CAD (C$)",
+        "pln": "PLN (zł)",
+        "chf": "CHF (CHF)",
+        "rub": "RUB (₽)",
+        "cny": "CNY (¥)",
+        "inr": "INR (₹)",
+        "krw": "KRW (₩)",
+        "mxn": "MXN (MXN)",
+        "nzd": "NZD (NZD)",
+        "sek": "SEK (SEK)",
+        "sgd": "SGD (SGD)",
+        "thb": "THB (฿)",
+        "zar": "ZAR (R)",
+        "try": "TRY (₺)",
+        "uah": "UAH (₴)"
+      },
+      "conversations": "Разговоры",
+      "newChat": "Новый чат",
+      "showFilters": "Показать фильтры",
+      "hideFilters": "Скрыть фильтры"
+    },
+    "chatSwitch": {
+      "ai": "ИИ",
+      "creator": "Создатель"
+    }
+  }

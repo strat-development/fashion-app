@@ -2,15 +2,19 @@ import { useFetchCreatedOutfitsByUser } from "@/fetchers/outfits/fetchCreatedOut
 import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { useDeleteOutfitMutation } from "@/mutations/outfits/DeleteOutfitMutation";
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
+import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
-import { router } from "expo-router";
-import { Plus } from "lucide-react-native";
+import { Plus, X } from "lucide-react-native";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, FlatList, Modal, Pressable, RefreshControl, ScrollView, Text, View } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { DeleteModalOutfit } from "../modals/DeleteOutfitModal";
 import { OutfitCreateModal } from "../modals/OutfitCreateModal";
 import { ShareModal } from "../modals/ShareModal";
+import OutfitDetailImages from "../outfit-detail/OutfitDetailImages";
+import OutfitDetailInfo from "../outfit-detail/OutfitDetailInfo";
+import OutfitDetailSections from "../outfit-detail/OutfitDetailSections";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
 import { Button } from "../ui/button";
@@ -23,7 +27,9 @@ interface CreatedOutfitsSectionProps {
 }
 
 export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsSectionProps) => {
+    const { t } = useTranslation();
     const { userId } = useUserContext();
+    const { colors } = useTheme();
     const { mutate: saveOutfit } = useSaveOutfitMutation();
     const { mutate: unsaveOutfit } = useDeleteOutfitMutation();
 
@@ -68,6 +74,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
     }, [fetchedOutfits, isLoading, page, savedOutfitIds]);
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
+    const [selectedUserData, setSelectedUserData] = useState<{ nickname?: string | null; user_avatar?: string | null } | undefined>(undefined);
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [selectedOutfitForShare, setSelectedOutfitForShare] = useState<OutfitData | null>(null);
     const [outfitToDelete, setOutfitToDelete] = useState<OutfitData | null>(null);
@@ -112,10 +119,12 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
     };
 
     const handleOutfitPress = (outfit: OutfitData) => {
-        router.push({
-            pathname: "/outfit/[id]",
-            params: { id: outfit.outfit_id }
-        });
+        setSelectedOutfit(outfit);
+    };
+
+    const handleOpenDetailInline = (args: { outfit: OutfitData; userData?: { nickname?: string | null; user_avatar?: string | null }; rating: { positive: number; negative: number; isLiked: boolean; isDisliked: boolean; isSaved?: boolean; comments: number } }) => {
+        setSelectedOutfit(args.outfit);
+        setSelectedUserData(args.userData);
     };
 
     const handleCommentPress = (outfitId: string) => {
@@ -184,16 +193,16 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                     isLoading ? (
                         <View className="py-16 items-center">
                             <ActivityIndicator size="large" color="#ffffff" />
-                            <Text className="text-gray-300 text-base mt-4">Loading outfits...</Text>
+                            <Text className="text-gray-300 text-base mt-4">{t('createdOutfitsSection.loading')}</Text>
                         </View>
                     ) : (
                         <View className="px-6">
                             {profileId === userId && (
                                 <EmptyState
                                     icon={Plus}
-                                    title="No outfits created yet"
-                                    description="Start creating your first outfit!"
-                                    actionText="Create Outfit"
+                                    title={t('createdOutfitsSection.emptyState.title')}
+                                    description={t('createdOutfitsSection.emptyState.description')}
+                                    actionText={t('createdOutfitsSection.emptyState.actionText')}
                                     onAction={handleCreateOutfit}
                                 />
                             )}
@@ -201,9 +210,9 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                             {!profileId && (
                                 <EmptyState
                                     icon={Plus}
-                                    title="No outfits created yet"
-                                    description="Start creating your first outfit!"
-                                    actionText="Create Outfit"
+                                    title={t('createdOutfitsSection.emptyState.title')}
+                                    description={t('createdOutfitsSection.emptyState.description')}
+                                    actionText={t('createdOutfitsSection.emptyState.actionText')}
                                     onAction={handleCreateOutfit}
                                 />
                             )}
@@ -214,14 +223,17 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                     <View className="flex-row items-center justify-between mb-6 px-6">
                         {profileId === userId && (
                             <View className="flex-row items-center justify-between w-full">
-                                <Text className="text-white text-xl font-semibold">Your Creations</Text>
+                                <Text className="text-white text-xl font-semibold">{t('createdOutfitsSection.header')}</Text>
                                 <Button
                                     onPress={handleCreateOutfit}
-                                    className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl px-4 py-2"
+                                    className="rounded-xl px-4 py-2"
                                 >
+                                    <ThemedGradient
+                                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 12 }}
+                                    />
                                     <View className="flex-row items-center">
                                         <Plus size={16} color="#FFFFFF" />
-                                        <Text className="text-white ml-2 font-medium text-sm">Create</Text>
+                                        <Text className="text-white ml-2 font-medium text-sm">{t('createdOutfitsSection.createButton')}</Text>
                                     </View>
                                 </Button>
                             </View>
@@ -270,6 +282,45 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                 outfit={selectedOutfitForShare}
                 isAnimated={true}
             />
+
+            {/* Inline outfit detail modal - full screen with close icon */}
+            <Modal visible={!!selectedOutfit} transparent={false} animationType="slide" onRequestClose={() => setSelectedOutfit(null)}>
+                <View style={{ flex: 1, backgroundColor: colors.background }}>
+                    <Pressable
+                        onPress={() => setSelectedOutfit(null)}
+                        style={{ position: 'absolute', top: 16, right: 16, zIndex: 10, width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: `${colors.surface}CC`, borderWidth: 1, borderColor: colors.border }}
+                    >
+                        <X size={20} color={colors.text} />
+                    </Pressable>
+                    {selectedOutfit && (
+                        <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+                            <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+                                <OutfitDetailInfo
+                                    outfit={selectedOutfit}
+                                    userData={selectedUserData}
+                                    tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])}
+                                />
+                            </View>
+                            <View style={{ paddingHorizontal: 16 }}>
+                                <OutfitDetailImages
+                                    imageUrls={Array.isArray(selectedOutfit.outfit_elements_data)
+                                        ? (selectedOutfit.outfit_elements_data as any[])
+                                            .map((el) => (typeof el === 'string' ? el : el?.imageUrl))
+                                            .filter((u): u is string => typeof u === 'string' && !!u)
+                                        : []}
+                                    elementsData={Array.isArray(selectedOutfit.outfit_elements_data)
+                                        ? (selectedOutfit.outfit_elements_data as any[]).filter((el) => el && typeof el === 'object' && (el as any).imageUrl)
+                                        : [] as any}
+                                />
+                            </View>
+                            <OutfitDetailSections
+                                description={selectedOutfit.description}
+                                tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])}
+                            />
+                        </ScrollView>
+                    )}
+                </View>
+            </Modal>
         </View>
     );
 };

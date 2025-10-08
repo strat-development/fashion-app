@@ -5,7 +5,7 @@ import OutfitDetailInfo from "@/components/outfit-detail/OutfitDetailInfo";
 import OutfitDetailSections from "@/components/outfit-detail/OutfitDetailSections";
 import OutfitInteractionButtons from "@/components/outfit-detail/OutfitInteractionButtons";
 import CommentSection from "@/components/outfits/CommentSection";
-import { useFetchComments } from "@/fetchers/fetchComments";
+import { FullScreenLoader } from "@/components/ui/FullScreenLoader";
 import { useFetchUser } from "@/fetchers/fetchUser";
 import { useFetchRatingStats } from "@/fetchers/outfits/fetchRatedOutfits";
 import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
@@ -14,12 +14,13 @@ import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOut
 import { useRateOutfitMutation } from "@/mutations/outfits/RateOutfitMutation";
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useUnrateOutfitMutation } from "@/mutations/outfits/UnrateOutfitMutation";
-import { useTheme } from "@/providers/themeContext";
+import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StatusBar, Text, View } from "react-native";
+import { useTranslation } from 'react-i18next';
+import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { useSharedValue, withSequence, withSpring } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -44,6 +45,7 @@ export default function OutfitDetail() {
 }
 
 function OutfitDetailContent() {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { userId } = useUserContext();
   const { colors, isDark } = useTheme();
@@ -88,7 +90,7 @@ function OutfitDetailContent() {
   useEffect(() => {
     const fetchOutfit = async () => {
       if (!id) return;
-      
+
       try {
         const { data, error } = await supabase
           .from('created-outfits')
@@ -98,15 +100,15 @@ function OutfitDetailContent() {
           `)
           .eq('outfit_id', id)
           .single();
-          
+
         if (error) throw error;
-        
+
         if (data) {
           setOutfit({
             ...data,
             comments: data.comments?.[0]?.count || 0,
             likes: ratingStats?.positiveRatings || 0,
-            isLiked: ratingStats?.data?.some(rating => rating.rated_by === userId && rating.top_rated === true),
+            isLiked: ratingStats?.data?.some((rating) => rating.rated_by === userId && rating.top_rated === true),
           });
         }
       } catch (error) {
@@ -117,15 +119,15 @@ function OutfitDetailContent() {
     };
 
     fetchOutfit();
-  }, [id, ratingStats]);
+  }, [id, ratingStats, userId]);
 
   const handlePositiveRate = () => {
     likeScale.value = withSequence(
       withSpring(1.2, { damping: 14, stiffness: 220 }),
       withSpring(1, { damping: 14, stiffness: 220 })
     );
-    
-    const currentUserRating = ratingStats?.data?.find(rating => rating.rated_by === userId);
+
+    const currentUserRating = ratingStats?.data?.find((rating) => rating.rated_by === userId);
     if (currentUserRating?.top_rated === true) {
       unrateOutfit();
     } else {
@@ -152,7 +154,7 @@ function OutfitDetailContent() {
       withSpring(1.2, { damping: 14, stiffness: 220 }),
       withSpring(1, { damping: 14, stiffness: 220 })
     );
-  setShowShareModal(true);
+    setShowShareModal(true);
   };
 
   const handleComments = () => {
@@ -179,30 +181,17 @@ function OutfitDetailContent() {
   };
 
   if (loading) {
-    return (
-      <View style={{ flex: 1, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator size="large" color="#ffffff" />
-        <Text style={{ color: '#fff', marginTop: 16, fontSize: 16 }}>Loading outfit...</Text>
-      </View>
-    );
+    return <FullScreenLoader message={t('outfitDetail.loading')} />;
   }
 
   if (!outfit) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
-        <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', marginBottom: 16 }}>Outfit not found</Text>
-        <Pressable 
-          onPress={() => router.back()}
-          style={{ 
-            backgroundColor: '#1f1f1fcc', 
-            paddingHorizontal: 24, 
-            paddingVertical: 12, 
-            borderRadius: 999,
-            borderWidth: 1,
-            borderColor: '#2a2a2a'
-          }}
-        >
-          <Text style={{ color: '#fff', fontWeight: '600' }}>Go Back</Text>
+      <View style={{ flex: 1, backgroundColor: colors.background, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
+        <Text style={{ color: colors.text, fontSize: 18, fontWeight: '600', marginBottom: 16 }}>{t('outfitDetail.notFound')}</Text>
+        <Pressable onPress={() => router.back()} style={{ borderRadius: 999, overflow: 'hidden' }}>
+          <ThemedGradient style={{ paddingHorizontal: 24, paddingVertical: 12, borderRadius: 999 }}>
+            <Text style={{ color: colors.white, fontWeight: '600', fontSize: 16 }}>{t('outfitDetail.goBack')}</Text>
+          </ThemedGradient>
         </Pressable>
       </View>
     );
@@ -260,23 +249,23 @@ function OutfitDetailContent() {
           />
 
           <OutfitInteractionButtons
-              isLiked={isLiked}
-              isDisliked={isDisliked}
-              isSaved={isSaved}
-              positiveRatings={ratingStats?.positiveRatings || 0}
-              negativeRatings={negativeRatings}
-              commentsCount={outfit.comments}
-              onPositiveRate={handlePositiveRate}
-              onNegativeRate={handleNegativeRate}
-              onComments={handleComments}
-              onShare={handleShare}
-              onSave={handleSave}
-              likeScale={likeScale}
-              dislikeScale={dislikeScale}
-              commentScale={commentScale}
-              shareScale={shareScale}
-              saveScale={saveScale}
-            />
+            isLiked={isLiked}
+            isDisliked={isDisliked}
+            isSaved={isSaved}
+            positiveRatings={ratingStats?.positiveRatings || 0}
+            negativeRatings={negativeRatings}
+            commentsCount={outfit.comments}
+            onPositiveRate={handlePositiveRate}
+            onNegativeRate={handleNegativeRate}
+            onComments={handleComments}
+            onShare={handleShare}
+            onSave={handleSave}
+            likeScale={likeScale}
+            dislikeScale={dislikeScale}
+            commentScale={commentScale}
+            shareScale={shareScale}
+            saveScale={saveScale}
+          />
         </ScrollView>
       </View>
 
@@ -285,7 +274,7 @@ function OutfitDetailContent() {
         isVisible={showComments}
         onClose={() => setShowComments(false)}
         outfitId={id || ''}
-        outfitTitle={outfit.outfit_name || 'Outfit'}
+        outfitTitle={outfit.outfit_name || t('outfitDetail.defaultOutfitName')}
       />
 
       <ShareModal

@@ -1,0 +1,656 @@
+{
+    "common": {
+      "loading": "Indlæser..."
+    },
+    "homeScreen": {
+      "welcomeMessage": "Velkommen, hvordan vil du skabe et outfit?",
+      "aiConstructorButton": "AI-konstruktør",
+      "createOwnOutfitButton": "Skab dit eget outfit"
+    },
+    "feedSection": {
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Ikke logget ind",
+          "message": "Du skal være logget ind for at gemme outfits."
+        }
+      },
+      "emptyState": {
+        "title": "Ingen outfits endnu",
+        "description": "Skab dit første outfit eller følg andre for at se deres kreationer",
+        "actionText": "Skab Outfit"
+      },
+      "loadingOutfits": "Indlæser..."
+    },
+    "rankingScreen": {
+      "title": "Rangering",
+      "subtitle": "Top outfits og skabere",
+      "tabs": {
+        "outfits": "Outfits",
+        "creators": "Skabere"
+      },
+      "loading": "Indlæser...",
+      "error": "Indlæsning mislykkedes",
+      "tryAgain": "Prøv igen",
+      "rankRow": {
+        "untitledOutfit": "Outfit uden titel",
+        "unknownCreator": "Ukendt",
+        "outfitStats": "Likes · Gemte · Bedømmelser",
+        "creatorStats": "Outfits · Likes",
+        "rank": "#"
+      }
+    },
+    "userProfile": {
+      "loading": "Indlæser...",
+      "about": "Om",
+      "privateProfile": "Denne profil er privat."
+    },
+    "outfitDetail": {
+      "header": {
+        "title": "Outfitdetaljer",
+        "yourCreation": "Din kreation"
+      },
+      "loading": "Indlæser outfit...",
+      "notFound": "Vi kunne ikke finde dette outfit.",
+      "goBack": "Gå tilbage",
+      "images": {
+        "free": "Gratis",
+        "noImages": "Ingen billeder"
+      },
+      "info": {
+        "anonymous": "Anonym",
+        "tags": "Tags",
+        "description": "Beskrivelse"
+      },
+      "sections": {
+        "description": "Beskrivelse",
+        "tags": "Tags"
+      },
+      "interactions": {
+        "comments": " Kommentarer",
+        "likes": " Likes"
+      },
+      "defaultOutfitName": "Outfit uden titel"
+    },
+    "commentItem": {
+      "reply": "Svar",
+      "viewReplies": "Vis svar",
+      "hideReplies": "Skjul svar",
+      "replyPlaceholder": "Svar på ",
+      "cancel": "Annuller",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Ikke logget ind",
+          "message": "Du skal være logget ind for at kommentere."
+        },
+        "error": {
+          "title": "Fejl",
+          "message": "Kunne ikke tilføje kommentar"
+        }
+      }
+    },
+    "commentReactions": {
+      "reacted": "Reageret",
+      "react": "Reager",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Ikke logget ind",
+          "message": "Du skal være logget ind for at reagere på kommentarer."
+        }
+      }
+    },
+    "commentSection": {
+      "header": "Kommentarer • ",
+      "headerDefault": "Kommentarer",
+      "loading": "Indlæser...",
+      "empty": "Ingen kommentarer endnu. Vær den første!",
+      "placeholder": "Tilføj en kommentar...",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Ikke logget ind",
+          "message": "Du skal være logget ind for at kommentere."
+        },
+        "error": {
+          "title": "Fejl",
+          "message": "Kunne ikke tilføje kommentar"
+        }
+      }
+    },
+    "feedFilters": {
+      "searchPlaceholder": "Søg efter outfits...",
+      "sections": {
+        "styleTags": "Stiltags",
+        "elements": "Elementer"
+      },
+      "clearFilters": "Ryd alle filtre"
+    },
+    "notFoundScreen": {
+      "title": "Ups!",
+      "message": "Denne skærm findes ikke.",
+      "link": "Gå til startsiden!"
+    },
+    "themeSettings": {
+      "title": "Temaindstillinger",
+      "appearance": {
+        "title": "Udseende",
+        "description": "Vælg, hvordan Modeappen skal se ud for dig. Vælg et tema eller synkroniser med dine systemindstillinger.",
+        "options": {
+          "light": {
+            "label": "Lyst",
+            "description": "Brug altid det lyse tema"
+          },
+          "dark": {
+            "label": "Mørkt",
+            "description": "Brug altid det mørke tema"
+          },
+          "system": {
+            "label": "System",
+            "description": "Følg systemindstillingerne"
+          }
+        }
+      },
+      "preview": {
+        "title": "Forhåndsvisning",
+        "appName": "Modeappen",
+        "themePreview": " temavisning",
+        "description": "Sådan vil dit outfitfeed og andet indhold se ud med det valgte tema.",
+        "primaryButton": "Primær",
+        "secondaryButton": "Sekundær"
+      },
+      "languageCurrency": {
+        "title": "Sprog og Valuta",
+        "description": "Vælg dit foretrukne sprog og valuta for appen.",
+        "languagePlaceholder": "Vælg Sprog",
+        "currencyPlaceholder": "Vælg Valuta"
+      }
+    },
+    "createdOutfitsSection": {
+      "loading": "Indlæser outfits...",
+      "header": "Dine Kreationer",
+      "createButton": "Skab",
+      "emptyState": {
+        "title": "Ingen outfits skabt endnu",
+        "description": "Begynd at skabe dit første outfit!",
+        "actionText": "Skab Outfit"
+      }
+    },
+    "followButton": {
+      "follow": "Følg",
+      "unfollow": "Ophør med at følge",
+      "pending": "Følgeanmodning afventer"
+    },
+    "profileBioSection": {
+      "title": "Om",
+      "noBio": "Ingen bio tilgængelig endnu. Tilføj en ved at redigere din profil!"
+    },
+    "profileHeader": {
+      "anonymousUser": "Anonym Bruger",
+      "defaultRole": "Modeentusiast",
+      "editProfile": "Rediger Profil",
+      "tabs": {
+        "user-info": "Profil",
+        "created-outfits": "Skabte",
+        "saved-outfits": "Gemte"
+      }
+    },
+    "profileRecentActivitySection": {
+      "title": "Seneste Aktivitet",
+      "activities": [
+        {
+          "text": "Dit outfit fik over 50 likes!"
+        },
+        {
+          "text": "Likede 5 nye outfits"
+        },
+        {
+          "text": "Skabte \"Sommerlig afslappet look\""
+        }
+      ]
+    },
+    "auth": {
+      "welcome": "Velkommen",
+      "hero": {
+        "badge": "Modeassistent",
+        "title": "Stil, omhyggeligt kurateret.",
+        "slogan": "Minimalistisk som Apple. Kraftfuld som Vercel. Tilpasset til dig."
+      },
+      "signInSubtitle": "Log ind for at fortsætte",
+      "signUpSubtitle": "Opret konto",
+      "labels": {
+        "email": "E-mail",
+        "password": "Adgangskode"
+      },
+      "placeholders": {
+        "email": "dig@eksempel.com",
+        "password": "••••••••"
+      },
+      "buttons": {
+        "signIn": "Log ind",
+        "signUp": "Opret konto",
+        "google": "Log ind med Google"
+      },
+      "switch": {
+        "signUpPrompt": "Har du ikke en konto? ",
+        "signInPrompt": "Har du allerede en konto? ",
+        "signUp": "Tilmeld dig",
+        "signIn": "Log ind"
+      },
+      "termsAndPrivacy": "Ved at fortsætte accepterer du vores Vilkår og Privatlivspolitik.",
+      "alerts": {
+        "supabaseNotInitialized": {
+          "title": "Fejl",
+          "message": "Supabase-klienten er ikke initialiseret."
+        },
+        "signInError": {
+          "title": "Fejl ved login"
+        },
+        "signUpError": {
+          "title": "Fejl ved tilmelding"
+        },
+        "emailVerification": {
+          "title": "E-mail-verifikation",
+          "message": "Tjek din indbakke for e-mail-verifikation!"
+        }
+      }
+    },
+    "profileSettingsButtons": {
+      "themeSettings": "Temaindstillinger",
+      "logout": "Log ud"
+    },
+    "savedOutfitsSection": {
+      "loading": "Indlæser gemte outfits...",
+      "emptyState": {
+        "title": "Ingen gemte outfits endnu",
+        "description": "Begynd at gemme outfits, du kan lide!"
+      }
+    },
+    "userStatistics": {
+      "title": "Statistik",
+      "created": "Skabte",
+      "saved": "Gemte",
+      "likes": "Likes",
+      "loading": "..."
+    },
+    "contactModal": {
+      "title": "Kontakt os",
+      "sendMessage": "Send Besked",
+      "sending": "Sender...",
+      "fullName": "Fulde navn",
+      "email": "E-mail",
+      "message": "Besked",
+      "placeholders": {
+        "fullName": "Indtast dit fulde navn",
+        "email": "Indtast din e-mail",
+        "message": "Beskriv din besked..."
+      },
+      "errors": {
+        "fullNameRequired": "Fulde navn er påkrævet",
+        "fullNameMaxLength": "Navnet må ikke overstige 80 tegn",
+        "emailRequired": "Indtast din e-mail",
+        "emailInvalid": "Indtast venligst en gyldig e-mailadresse",
+        "messageRequired": "Besked er påkrævet"
+      },
+      "alerts": {
+        "apiKeyMissing": "API-nøgle mangler. Kontakt support.",
+        "success": "Besked sendt med succes!",
+        "error": "Kunne ikke sende besked. Prøv igen senere."
+      }
+    },
+    "deleteModalOutfit": {
+      "title": "Slet Outfit",
+      "message": "Er du sikker på, at du vil slette dette outfit? Denne handling kan ikke fortrydes.",
+      "cancel": "Annuller",
+      "delete": "Slet",
+      "deleting": "Sletter...",
+      "error": "Bruger-ID er påkrævet for sletning"
+    },
+    "outfitCreateModal": {
+      "title": "Skab Outfit",
+      "save": "Gem",
+      "saving": "Gemmer...",
+      "addElement": "Tilføj element",
+      "outfitElements": "Outfitelementer",
+      "name": "Navn",
+      "description": "Beskrivelse",
+      "styleTags": "Stiltags",
+      "elementType": "Elementtype",
+      "elementCategory": "Elementkategori",
+      "selectFromOptions": "Vælg fra nedenstående muligheder",
+      "elementImage": "Elementbillede",
+      "imageReady": "Klar til upload",
+      "tapToSelectImage": "Tryk for at vælge billede",
+      "price": "Pris",
+      "shopUrl": "Butiks-URL",
+      "optional": "valgfri",
+      "siteUrl": "Websteds-URL",
+      "image": "Billede",
+      "placeholders": {
+        "name": "Indtast outfitnavn",
+        "description": "Beskriv dit outfit...",
+        "elementType": "Vælg elementtype",
+        "price": "Indtast pris (valgfri)",
+        "siteUrl": "Indtast websteds-URL",
+        "image": "Vælg Billede",
+        "shopUrl": "f.eks. https://eksempel.com/produkt"
+      },
+      "errors": {
+        "nameRequired": "Outfitnavn er påkrævet",
+        "descriptionRequired": "Beskrivelse er påkrævet",
+        "elementRequired": "Mindst ét outfitelement er påkrævet",
+        "elementTypeRequired": "Elementtype er påkrævet",
+        "priceInvalid": "Prisen skal være et tal",
+        "priceNegative": "Prisen kan ikke være negativ",
+        "siteUrlRequired": "Websteds-URL er påkrævet",
+        "siteUrlInvalid": "Indtast venligst en gyldig URL",
+        "imageRequired": "Billede er påkrævet",
+        "styleTagsRequired": "Vælg mindst ét stiltag",
+        "priceRequired": "Pris er påkrævet",
+        "priceMin": "Prisen skal være nul eller mere",
+        "invalidUrl": "Indtast venligst en gyldig URL"
+      },
+      "elementCount": {
+        "zero": "Tilføj mindst 1 element",
+        "one": " element tilføjet",
+        "multiple": "elementer tilføjet"
+      },
+      "totalPrice": "Samlet pris: ",
+      "imageFormat": "JPG, PNG (maks. 5MB)",
+      "imageSelected": "Billede valgt med succes",
+      "addElementToOutfit": "Tilføj element til outfit",
+      "alerts": {
+        "permissionDenied": "Lagringstilladelse er påkrævet for at vælge billeder.",
+        "imagePickerError": "Kunne ikke åbne billedvælgeren",
+        "imageSelectError": "Kunne ikke vælge billede",
+        "noImageSelected": "Intet billede valgt",
+        "imagePickerErrorMessage": "Fejl i billedvælgeren: ",
+        "success": {
+          "title": "Succes",
+          "message": "Outfit gemt med succes!"
+        },
+        "error": {
+          "title": "Fejl",
+          "message": "Kunne ikke oprette outfit"
+        },
+        "unknownError": "En ukendt fejl opstod"
+      }
+    },
+    "profileEdit": {
+      "title": "Rediger Profil",
+      "save": "Gem",
+      "saving": "Gemmer...",
+      "displayName": "Vist navn",
+      "bio": "Bio",
+      "stylePreferences": "Stilpræferencer",
+      "privacy": "Privatliv",
+      "publicProfile": "Offentlig Profil",
+      "publicProfileDescription": "Andre kan se din profil og dine skabte outfits",
+      "privateProfileDescription": "Kun dit kælenavn og avatar er synlige",
+      "privateAccount": "Privat Konto",
+      "privateAccountDescription": "Når kontoen er privat, er kun dit brugernavn og profilbillede synligt for andre. Din bio og outfits bliver skjult.",
+      "changePhoto": "Tryk for at ændre billede",
+      "stylePreferencesComingSoon": "Kommer snart! Indstil dine foretrukne stilarter, farver og mærker.",
+      "placeholders": {
+        "name": "Indtast dit navn",
+        "bio": "Fortæl os om din stil..."
+      },
+      "errors": {
+        "nameRequired": "Navn er påkrævet",
+        "bioMaxLength": "Bio må ikke overstige 200 tegn"
+      },
+      "alerts": {
+        "permissionDenied": "Lagringstilladelse er påkrævet for at vælge billeder.",
+        "imagePickerError": "Kunne ikke åbne billedvælgeren",
+        "imageSelectError": "Kunne ikke vælge billede",
+        "noImageSelected": "Intet billede valgt",
+        "imagePickerErrorMessage": "Fejl i billedvælgeren: ",
+        "imageUploadError": "Kunne ikke uploade billede",
+        "imageUrlError": "Kunne ikke hente billede-URL",
+        "success": "Profil opdateret med succes",
+        "error": "Kunne ikke opdatere profil"
+      }
+    },
+    "registrationModal": {
+      "welcome": "Velkommen til Appen!",
+      "welcomeDescription": "For at bruge appen skal du gennemføre registreringsprocessen.",
+      "provideDetails": "Angiv dine profildetaljer i næste trin.",
+      "logout": "Log ud",
+      "proceed": "Fortsæt",
+      "previous": "Forrige",
+      "next": "Næste",
+      "complete": "Udfør",
+      "saving": "Gemmer...",
+      "username": "Brugernavn",
+      "fullName": "Fulde navn",
+      "bio": "Bio",
+      "profilePicture": "Profilbillede",
+      "setPhoto": "Tryk for at indstille billede (valgfri)",
+      "reviewInfo": "Gennemgå dine oplysninger",
+      "notProvided": "Ikke angivet",
+      "placeholders": {
+        "username": "Indtast dit brugernavn",
+        "fullName": "Indtast dit fulde navn",
+        "bio": "Fortæl os om din stil... (valgfri)"
+      },
+      "errors": {
+        "usernameRequired": "Brugernavn er påkrævet",
+        "usernameMinLength": "Brugernavnet skal være mindst 3 tegn",
+        "usernameMaxLength": "Brugernavnet må ikke overstige 20 tegn",
+        "usernamePattern": "Brugernavnet må kun indeholde bogstaver, tal og understreg",
+        "fullNameRequired": "Fulde navn er påkrævet",
+        "fullNameMaxLength": "Fulde navn må ikke overstige 50 tegn",
+        "bioMaxLength": "Bio må ikke overstige 200 tegn",
+        "userIdMissing": "Bruger-ID mangler. Log ind igen."
+      },
+      "alerts": {
+        "permissionDenied": "Lagringstilladelse er påkrævet for at vælge billeder.",
+        "imagePickerError": "Kunne ikke åbne billedvælgeren",
+        "imageSelectError": "Kunne ikke vælge billede",
+        "noImageSelected": "Intet billede valgt",
+        "imagePickerErrorMessage": "Fejl i billedvælgeren: ",
+        "imageUploadError": "Kunne ikke uploade billede",
+        "imageUrlError": "Kunne ikke hente billede-URL",
+        "registrationError": "Kunne ikke gennemføre registreringen. Prøv igen.",
+        "logoutError": "Kunne ikke logge ud. Prøv igen."
+      }
+    },
+    "reportModal": {
+      "report": "Rapporter",
+      "sendReport": "Send Rapport",
+      "sending": "Sender...",
+      "email": "E-mail",
+      "reason": "Årsag",
+      "description": "Beskrivelse",
+      "placeholders": {
+        "email": "Indtast din e-mail",
+        "reason": "Vælg årsag",
+        "description": "Beskriv problemet..."
+      },
+      "errors": {
+        "userIdRequired": "Bruger-ID er påkrævet",
+        "emailRequired": "Indtast din e-mail, så vi kan svare",
+        "emailInvalid": "Indtast venligst en gyldig e-mailadresse",
+        "reasonRequired": "Årsag er påkrævet",
+        "descriptionRequired": "Beskrivelse er påkrævet"
+      },
+      "alerts": {
+        "apiKeyMissing": "API-nøgle mangler. Kontakt support.",
+        "success": "Rapport sendt med succes!",
+        "error": "Kunne ikke sende rapport. Prøv igen senere."
+      }
+    },
+    "shareModal": {
+      "title": "Del Outfit",
+      "cancel": "Annuller",
+      "shareOptions": {
+        "native": "Del...",
+        "copy": "Kopier link",
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "instagram": "Instagram",
+        "email": "E-mail",
+        "sms": "Besked",
+        "more": "Mere"
+      },
+      "untitledOutfit": "Outfit uden titel",
+      "defaultDescription": "Modeoutfit til deling",
+      "shareText": "Tjek dette fantastiske outfit på Modeappen!",
+      "alerts": {
+        "shareError": "Kunne ikke dele dette outfit",
+        "copySuccess": "Link kopieret til udklipsholderen!",
+        "copyError": "Kunne ikke kopiere link",
+        "platformError": "Kan ikke åbne ",
+        "instagramShare": "Link kopieret! Du kan nu indsætte det i din Instagram-story eller opslag."
+      }
+    },
+    "chatSection": {
+      "promptPrefix": "Jeg vil have, at du hjælper mig med at skabe et outfit baseret på følgende kriterier:",
+      "selectGender": "Køn",
+      "selectOutfitStyles": "Outfitstilarter",
+      "selectFit": "Pasform",
+      "selectDominantColors": "Dominerende farver",
+      "selectOutfitElements": "Outfitelementer",
+      "selectPriceRange": "Prisinterval",
+      "from": "Fra",
+      "to": "Til",
+      "currency": "Valuta",
+      "placeholders": {
+        "lowestPrice": "Laveste pris",
+        "highestPrice": "Højeste pris",
+        "currency": "Vælg valuta",
+        "outfitDescription": "Outfitbeskrivelse... (valgfri)"
+      },
+      "genders": {
+        "male": "Mand",
+        "female": "Kvinde",
+        "unisex": "Unisex"
+      },
+      "styles": {
+        "casual": "Afslappet",
+        "formal": "Formel",
+        "sporty": "Sporty",
+        "bohemian": "Boheme",
+        "vintage": "Vintage",
+        "streetwear": "Streetwear",
+        "business": "Forretningsmæssig",
+        "party": "Fest",
+        "beach": "Strand",
+        "office": "Kontor",
+        "old money": "Gammel rigdom",
+        "athleisure": "Athleisure",
+        "minimalist": "Minimalistisk",
+        "gothic": "Gotisk",
+        "preppy": "Preppy",
+        "punk": "Punk",
+        "grunge": "Grunge",
+        "smart casual": "Smart Afslappet",
+        "business casual": "Forretningsmæssig Afslappet",
+        "chic": "Chic",
+        "resort": "Feriested",
+        "cottagecore": "Cottagecore",
+        "normcore": "Normcore",
+        "techwear": "Techwear",
+        "avant-garde": "Avantgarde",
+        "monochrome": "Monokrom",
+        "color blocking": "Farveblokering",
+        "safari": "Safari",
+        "retro": "Retro",
+        "y2k": "Y2K",
+        "maximalist": "Maksimalistisk"
+      },
+      "fits": {
+        "slim": "Slank",
+        "regular": "Normal",
+        "relaxed": "Afslappet",
+        "oversized": "Oversized",
+        "tailored": "Skræddersyet",
+        "slim fit": "Slank Pasform",
+        "regular fit": "Normal Pasform",
+        "relaxed fit": "Afslappet Pasform",
+        "loose fit": "Løs Pasform",
+        "oversized fit": "Oversized Pasform",
+        "tailored fit": "Skræddersyet Pasform",
+        "athletic fit": "Atletisk Pasform",
+        "tapered fit": "Tilspidset Pasform",
+        "boxy fit": "Boksy Pasform",
+        "straight fit": "Lige Pasform"
+      },
+      "colors": {
+        "black": "Sort",
+        "white": "Hvid",
+        "red": "Rød",
+        "blue": "Blå",
+        "green": "Grøn",
+        "yellow": "Gul",
+        "purple": "Lilla",
+        "pink": "Rosa",
+        "gray": "Grå",
+        "brown": "Brun",
+        "orange": "Orange",
+        "navy": "Marineblå",
+        "beige": "Beige",
+        "olive": "Oliven",
+        "teal": "Blågrøn",
+        "burgundy": "Bordeaux",
+        "cream": "Creme",
+        "camel": "Kamel",
+        "charcoal": "Koksgrå",
+        "off white": "Råhvid",
+        "pastel pink": "Pastelrosa",
+        "pastel blue": "Pastelblå",
+        "pastel green": "Pastelgrøn",
+        "pastel yellow": "Pastelgul"
+      },
+      "elements": {
+        "shirt": "Skjorte",
+        "pants": "Bukser",
+        "shoes": "Sko",
+        "jacket": "Jakke",
+        "dress": "Kjole",
+        "skirt": "Nederdel",
+        "hat": "Hat",
+        "belt": "Bælte",
+        "watch": "Ur",
+        "bag": "Taske",
+        "top": "Top",
+        "bottom": "Underdel",
+        "footwear": "Fodtøj",
+        "accessories": "Tilbehør",
+        "outerwear": "Ydertøj",
+        "headwear": "Hovedbeklædning",
+        "eyewear": "Briller",
+        "jewelry": "Smykker",
+        "scarf": "Tørklæde",
+        "gloves": "Handsker",
+        "socks": "Strømper"
+      },
+      "currencies": {
+        "usd": "USD ($)",
+        "eur": "EUR (€)",
+        "gbp": "GBP (£)",
+        "jpy": "JPY (¥)",
+        "aud": "AUD (A$)",
+        "cad": "CAD (C$)",
+        "pln": "PLN (zł)",
+        "chf": "CHF (CHF)",
+        "rub": "RUB (₽)",
+        "cny": "CNY (¥)",
+        "inr": "INR (₹)",
+        "krw": "KRW (₩)",
+        "mxn": "MXN (MXN)",
+        "nzd": "NZD (NZD)",
+        "sek": "SEK (SEK)",
+        "sgd": "SGD (SGD)",
+        "thb": "THB (฿)",
+        "zar": "ZAR (R)",
+        "try": "TRY (₺)",
+        "uah": "UAH (₴)"
+      },
+      "conversations": "Samtaler",
+      "newChat": "Ny chat",
+      "showFilters": "Vis filtre",
+      "hideFilters": "Skjul filtre"
+    },
+    "chatSwitch": {
+      "ai": "AI",
+      "creator": "Skaber"
+    }
+  }

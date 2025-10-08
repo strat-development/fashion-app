@@ -11,55 +11,79 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { Currencies, Languages } from '@/consts/userSettings';
+import i18n from '@/i18n';
 import { useUpdatePreferredCurrency } from '@/mutations/dashboard/UpdatePreferredCurrency';
 import { useUpdatePreferredLanguage } from '@/mutations/dashboard/UpdatePreferredLanguage';
 import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { router } from 'expo-router';
-import { ChevronLeft, Moon, Smartphone, Sun } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { ChevronLeft, DollarSign, Globe, Moon, Smartphone, Sun } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ThemeSettings() {
-  const { userId } = useUserContext();
+  const { t } = useTranslation();
+  const { userId, preferredLanguage: userLanguage, preferredCurrency: userCurrency } = useUserContext();
   const { mode, setMode, colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
 
+  const [selectedCurrency, setSelectedCurrency] = useState(userCurrency || Currencies[0].name);
+  const [selectedLanguage, setSelectedLanguage] = useState(userLanguage || Languages[0].code);
 
-  const [selectedCurrency, setSelectedCurrency] = useState(Currencies[0].name);
-  const [selectedLanguage, setSelectedLanguage] = useState(Languages[0].code);
-
-  const { mutate: preferredLanguage } = useUpdatePreferredLanguage({
+  const { mutate: updateLanguage } = useUpdatePreferredLanguage({
     userId: userId || '',
     language: selectedLanguage,
-  })
+  });
 
-  const { mutate: preferredCurrency } = useUpdatePreferredCurrency({
+  const { mutate: updateCurrency } = useUpdatePreferredCurrency({
     userId: userId || '',
     currency: selectedCurrency,
-  })
+  });
+
+  useEffect(() => {
+    if (userLanguage) {
+      setSelectedLanguage(userLanguage);
+    }
+  }, [userLanguage]);
+
+  useEffect(() => {
+    if (userCurrency) {
+      setSelectedCurrency(userCurrency);
+    }
+  }, [userCurrency]);
 
   const themeOptions = [
     {
       key: 'light' as const,
-      label: 'Light',
-      description: 'Always use light theme',
+      label: t('themeSettings.appearance.options.light.label'),
+      description: t('themeSettings.appearance.options.light.description'),
       icon: Sun,
     },
     {
       key: 'dark' as const,
-      label: 'Dark',
-      description: 'Always use dark theme',
+      label: t('themeSettings.appearance.options.dark.label'),
+      description: t('themeSettings.appearance.options.dark.description'),
       icon: Moon,
     },
     {
       key: 'system' as const,
-      label: 'System',
-      description: 'Follow system settings',
+      label: t('themeSettings.appearance.options.system.label'),
+      description: t('themeSettings.appearance.options.system.description'),
       icon: Smartphone,
     },
   ];
+
+  const languageIcons = Languages.reduce((acc, lang) => ({
+    ...acc,
+    [lang.code]: Globe,
+  }), {} as Record<string, any>);
+
+  const currencyIcons = Currencies.reduce((acc, currency) => ({
+    ...acc,
+    [currency.name]: DollarSign,
+  }), {} as Record<string, any>);
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
@@ -76,7 +100,7 @@ export default function ThemeSettings() {
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Pressable
-            onPress={() => router.back()}
+            onPress={() => router.push('/(tabs)/userProfile')}
             style={{
               padding: 8,
               marginRight: 8,
@@ -94,7 +118,7 @@ export default function ThemeSettings() {
               flex: 1,
             }}
           >
-            Theme Settings
+            {t('themeSettings.title')}
           </Text>
         </View>
       </View>
@@ -110,7 +134,7 @@ export default function ThemeSettings() {
               marginBottom: 8,
             }}
           >
-            Appearance
+            {t('themeSettings.appearance.title')}
           </Text>
           <Text
             style={{
@@ -119,7 +143,7 @@ export default function ThemeSettings() {
               marginBottom: 20,
             }}
           >
-            Choose how Fashion App looks to you. Select a single theme, or sync with your system settings.
+            {t('themeSettings.appearance.description')}
           </Text>
 
           {themeOptions.map((option) => {
@@ -213,7 +237,7 @@ export default function ThemeSettings() {
                 marginBottom: 16,
               }}
             >
-              Preview
+              {t('themeSettings.preview.title')}
             </Text>
 
             <View
@@ -245,10 +269,10 @@ export default function ThemeSettings() {
                   <Text
                     style={{ fontSize: 16, fontWeight: '600', color: colors.text }}
                   >
-                    Fashion App
+                    {t('themeSettings.preview.appName')}
                   </Text>
                   <Text style={{ fontSize: 14, color: colors.textMuted }}>
-                    {isDark ? 'Dark' : 'Light'} theme preview
+                    {isDark ? 'Dark' : 'Light' + t('themeSettings.preview.themePreview' )}
                   </Text>
                 </View>
               </View>
@@ -260,8 +284,7 @@ export default function ThemeSettings() {
                   lineHeight: 20,
                 }}
               >
-                This is how your outfit feed and other content will look with the
-                selected theme.
+                {t('themeSettings.preview.description')}
               </Text>
 
               <View style={{ flexDirection: 'row', gap: 8, marginTop: 16 }}>
@@ -282,7 +305,7 @@ export default function ThemeSettings() {
                       fontSize: 14,
                     }}
                   >
-                    Primary
+                    {t('themeSettings.preview.primaryButton')}
                   </Text>
                 </View>
                 <View
@@ -300,157 +323,281 @@ export default function ThemeSettings() {
                   <Text
                     style={{ color: colors.text, fontWeight: '600', fontSize: 14 }}
                   >
-                    Secondary
+                    {t('themeSettings.preview.secondaryButton')}
                   </Text>
                 </View>
               </View>
             </View>
-            {/* Language & Currency Section */}
-            <View style={{ marginTop: 32 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: '600',
-                  color: colors.text,
-                  marginBottom: 8,
-                }}
-              >
-                Language & Currency
-              </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: colors.textMuted,
-                  marginBottom: 16,
-                }}
-              >
-                Select your preferred language and currency for the app.
-              </Text>
+          </View>
 
-              {/* Language Select */}
-              <View
-                style={{
-                  marginTop: 16,
-                  marginBottom: 16,
-                  borderRadius: 12,
-                  borderWidth: 1,
-                  borderColor: colors.border,
-                  backgroundColor: colors.surface,
+          {/* Language & Currency Section */}
+          <View style={{ marginTop: 32 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: '600',
+                color: colors.text,
+                marginBottom: 8,
+              }}
+            >
+              {t('themeSettings.languageCurrency.title')}
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                color: colors.textMuted,
+                marginBottom: 16,
+              }}
+            >
+              {t('themeSettings.languageCurrency.description')}
+            </Text>
+
+            {/* Language Select */}
+            <View
+              style={{
+                marginTop: 16,
+                marginBottom: 16,
+                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: selectedLanguage ? colors.accent : colors.border,
+                backgroundColor: selectedLanguage ? colors.surfaceVariant : colors.surface,
+              }}
+            >
+              <Select
+                selectedValue={selectedLanguage}
+                onValueChange={(value: string) => {
+                  setSelectedLanguage(value);
+                  i18n.changeLanguage(value);
+                  updateLanguage();
                 }}
               >
-                <Select
-                  selectedValue={selectedLanguage}
-                  onValueChange={(value: string) => {
-                    setSelectedLanguage(value);
+                <SelectTrigger
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    margin: 16,
+                    borderWidth: 0,
+                    borderColor: "transparent",
+                    backgroundColor: "transparent"
 
-                    preferredLanguage();
                   }}
                 >
-                  <SelectTrigger
+                  <View
                     style={{
-                      flexDirection: 'row',
+                      width: 40,
+                      height: 40,
+                      borderRadius: 20,
+                      backgroundColor: selectedLanguage ? colors.accent : colors.surfaceVariant,
                       alignItems: 'center',
-                      padding: 16,
-                      borderRadius: 12,
+                      justifyContent: 'center',
+                      marginRight: 12,
                     }}
                   >
-                    <SelectInput
-                      placeholder="Select Language"
-                      className='p-2 text-white'
+                    <Globe
+                      size={20}
+                      color={selectedLanguage ? colors.white : colors.textMuted}
                     />
-                    <SelectIcon className="ml-2" />
-                  </SelectTrigger>
-                  <SelectPortal>
-                    <SelectBackdrop />
-                    <SelectContent
-                      style={{
-                        borderRadius: 12,
-                        backgroundColor: colors.surface,
-                        borderWidth: 1,
-                        borderColor: colors.border,
-                      }}
-                    >
-                      <SelectDragIndicatorWrapper>
-                        <SelectDragIndicator />
-                      </SelectDragIndicatorWrapper>
-                      {Languages.map((lang) => (
+                  </View>
+                  <SelectInput
+                    placeholder={t('themeSettings.languageCurrency.languagePlaceholder')}
+                    value={Languages.find(lang => lang.code === selectedLanguage)?.name || ''}
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '600',
+                      color: colors.text,
+                      flex: 1,
+                    }}
+                  />
+                  <SelectIcon className="ml-2" />
+                </SelectTrigger>
+                <SelectPortal>
+                  <SelectBackdrop />
+                  <SelectContent
+                    style={{
+                      borderRadius: 12,
+                      backgroundColor: colors.surface,
+                      borderWidth: 1,
+                      borderColor: colors.border,
+                    }}
+                  >
+                    <SelectDragIndicatorWrapper>
+                      <SelectDragIndicator />
+                    </SelectDragIndicatorWrapper>
+                    {Languages.map((lang) => {
+                      const LanguageIcon = languageIcons[lang.code];
+                      return (
                         <SelectItem
                           key={lang.code}
                           label={lang.name}
                           value={lang.code}
                           style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
                             padding: 14,
                             borderBottomWidth: 1,
                             borderBottomColor: colors.border,
+                            backgroundColor: selectedLanguage === lang.code
+                              ? colors.surfaceVariant
+                              : colors.surface,
                           }}
-                        />
-                      ))}
-                    </SelectContent>
-                  </SelectPortal>
-                </Select>
-              </View>
+                        >
+                          <View
+                            style={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: 20,
+                              backgroundColor: selectedLanguage === lang.code
+                                ? colors.accent
+                                : colors.surfaceVariant,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              marginRight: 12,
+                            }}
+                          >
+                            <LanguageIcon
+                              size={20}
+                              color={selectedLanguage === lang.code ? colors.white : colors.textMuted}
+                            />
+                          </View>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontWeight: '600',
+                              color: colors.text,
+                              flex: 1,
+                            }}
+                          >
+                            {lang.name}
+                          </Text>
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
+            </View>
 
-              {/* Currency Select */}
-              <View
-                style={{
-                  marginBottom: 16,
-                  borderRadius: 12,
-                  borderWidth: 1,
-                  borderColor: colors.border,
-                  backgroundColor: colors.surface,
+            {/* Currency Select */}
+            <View
+              style={{
+                marginBottom: 16,
+                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: selectedCurrency ? colors.accent : colors.border,
+                backgroundColor: selectedCurrency ? colors.surfaceVariant : colors.surface,
+              }}
+            >
+              <Select
+                selectedValue={selectedCurrency}
+                onValueChange={(value: string) => {
+                  setSelectedCurrency(value);
+                  updateCurrency();
                 }}
               >
-                <Select
-                  selectedValue={selectedCurrency}
-                  onValueChange={(value: string) => {
-                    setSelectedCurrency(value)
-
-                    preferredCurrency();
+                <SelectTrigger
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    margin: 16,
+                    borderWidth: 0,
+                    borderColor: "transparent",
+                    backgroundColor: "transparent"
                   }}
                 >
-                  <SelectTrigger
+                  <View
                     style={{
-                      flexDirection: 'row',
+                      width: 40,
+                      height: 40,
+                      borderRadius: 20,
+                      backgroundColor: selectedCurrency ? colors.accent : colors.surfaceVariant,
                       alignItems: 'center',
-                      padding: 16,
-                      borderRadius: 12,
+                      justifyContent: 'center',
+                      marginRight: 12,
                     }}
                   >
-                    <SelectInput
-                      placeholder="Select Currency"
-                      className='p-2 text-white'
+                    <DollarSign
+                      size={20}
+                      color={selectedCurrency ? colors.white : colors.textMuted}
                     />
-                    <SelectIcon className="ml-2" />
-                  </SelectTrigger>
-                  <SelectPortal>
-                    <SelectBackdrop />
-                    <SelectContent
-                      style={{
-                        borderRadius: 12,
-                        backgroundColor: colors.surface,
-                        borderWidth: 1,
-                        borderColor: colors.border,
-                      }}
-                    >
-                      <SelectDragIndicatorWrapper>
-                        <SelectDragIndicator />
-                      </SelectDragIndicatorWrapper>
-                      {Currencies.map((currency) => (
+                  </View>
+                  <SelectInput
+                    placeholder={t('themeSettings.languageCurrency.currencyPlaceholder')}
+                    value={Currencies.find(currency => currency.name === selectedCurrency)?.name ? 
+                           `${Currencies.find(currency => currency.name === selectedCurrency)?.name} (${Currencies.find(currency => currency.name === selectedCurrency)?.symbol})` : ''}
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '600',
+                      color: colors.text,
+                      flex: 1,
+                    }}
+                  />
+                  <SelectIcon className="ml-2" />
+                </SelectTrigger>
+                <SelectPortal>
+                  <SelectBackdrop />
+                  <SelectContent
+                    style={{
+                      borderRadius: 12,
+                      backgroundColor: colors.surface,
+                      borderWidth: 1,
+                      borderColor: colors.border,
+                    }}
+                  >
+                    <SelectDragIndicatorWrapper>
+                      <SelectDragIndicator />
+                    </SelectDragIndicatorWrapper>
+                    {Currencies.map((currency) => {
+                      const CurrencyIcon = currencyIcons[currency.name];
+                      return (
                         <SelectItem
                           key={currency.name}
                           label={`${currency.name} (${currency.symbol})`}
                           value={currency.name}
                           style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
                             padding: 14,
                             borderBottomWidth: 1,
                             borderBottomColor: colors.border,
+                            backgroundColor: selectedCurrency === currency.name
+                              ? colors.surfaceVariant
+                              : colors.surface,
                           }}
-                        />
-                      ))}
-                    </SelectContent>
-                  </SelectPortal>
-                </Select>
-              </View>
+                        >
+                          <View
+                            style={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: 20,
+                              backgroundColor: selectedCurrency === currency.name
+                                ? colors.accent
+                                : colors.surfaceVariant,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              marginRight: 12,
+                            }}
+                          >
+                            <CurrencyIcon
+                              size={20}
+                              color={selectedCurrency === currency.name ? colors.white : colors.textMuted}
+                            />
+                          </View>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontWeight: '600',
+                              color: colors.text,
+                              flex: 1,
+                            }}
+                          >
+                            {`${currency.name} (${currency.symbol})`}
+                          </Text>
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
             </View>
           </View>
         </View>

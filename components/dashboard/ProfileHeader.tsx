@@ -2,6 +2,7 @@ import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { Image } from 'expo-image';
 import { BookOpen, Edit3, Heart, User, User2 } from 'lucide-react-native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';
 
 interface ProfileHeaderProps {
@@ -21,12 +22,13 @@ export function ProfileHeader({
   onTabPress,
   onEditProfile,
 }: ProfileHeaderProps) {
+  const { t } = useTranslation();
   const { colors } = useTheme();
 
   const tabs = [
-    { key: 'user-info', label: 'Profile', icon: User2 },
-    { key: 'created-outfits', label: 'Created', icon: BookOpen },
-    { key: 'saved-outfits', label: 'Saved', icon: Heart },
+    { key: 'user-info', label: t('profileHeader.tabs.user-info'), icon: User2 },
+    { key: 'created-outfits', label: t('profileHeader.tabs.created-outfits'), icon: BookOpen },
+    { key: 'saved-outfits', label: t('profileHeader.tabs.saved-outfits'), icon: Heart },
   ];
 
   return (
@@ -77,10 +79,10 @@ export function ProfileHeader({
         </View>
 
         <Text style={{ color: colors.text, fontSize: 24, fontWeight: 'bold', marginBottom: 4 }}>
-          {userName || 'Anonymous User'}
+          {userName || t('profileHeader.anonymousUser')}
         </Text>
         <Text style={{ color: colors.textMuted, fontSize: 14, marginBottom: 16 }}>
-          Fashion Enthusiast
+          {t('profileHeader.defaultRole')}
         </Text>
 
         {isOwnProfile && (
@@ -99,7 +101,7 @@ export function ProfileHeader({
           >
             <Edit3 size={16} color={colors.text} />
             <Text style={{ color: colors.text, fontWeight: '500', marginLeft: 8 }}>
-              Edit Profile
+              {t('profileHeader.editProfile')}
             </Text>
           </Pressable>
         )}

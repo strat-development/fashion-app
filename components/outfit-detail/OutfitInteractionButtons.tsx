@@ -1,6 +1,8 @@
 import { SparkleBurst } from "@/components/ui/SparkleBurst";
+import { useTheme } from "@/providers/themeContext";
 import { Bookmark, MessageCircle, Share, ThumbsDown, ThumbsUp } from "lucide-react-native";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import Animated, { SharedValue, useAnimatedStyle, withSequence, withSpring } from "react-native-reanimated";
 
@@ -21,6 +23,7 @@ interface OutfitInteractionButtonsProps {
   commentScale: SharedValue<number>;
   shareScale: SharedValue<number>;
   saveScale?: SharedValue<number>;
+  showCommentsButton?: boolean;
 }
 
 export default function OutfitInteractionButtons({
@@ -33,14 +36,17 @@ export default function OutfitInteractionButtons({
   onPositiveRate,
   onNegativeRate,
   onComments,
-  onShare,
+    onShare,
   onSave,
   likeScale,
   dislikeScale,
   commentScale,
   shareScale,
   saveScale,
+  showCommentsButton = true,
 }: OutfitInteractionButtonsProps) {
+  const { t } = useTranslation();
+  const { colors } = useTheme();
   const [likeSparkle, setLikeSparkle] = useState(false);
   const [dislikeSparkle, setDislikeSparkle] = useState(false);
   const [saveSparkle, setSaveSparkle] = useState(false);
@@ -120,58 +126,59 @@ export default function OutfitInteractionButtons({
               onPress={handlePositiveRate}
               onPressIn={() => springDown(likeScale, 0.9)}
               onPressOut={() => springUp(likeScale)}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingHorizontal: 6,
-                paddingVertical: 2,
-                borderRadius: 999,
-                borderWidth: 1,
-                backgroundColor: isLiked ? '#7e22ce20' : '#374151',
-                borderColor: isLiked ? '#7e22ce80' : '#4b5563'
-              }}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 6,
+              paddingVertical: 2,
+              borderRadius: 999,
+              borderWidth: 1,
+              backgroundColor: isLiked ? `${colors.accent}20` : colors.surfaceVariant,
+              borderColor: isLiked ? `${colors.accent}80` : colors.border
+            }}
             >
               <Animated.View style={[likeStyle, { position: 'relative' }]}>
                 <ThumbsUp
                   size={16}
-                  color={isLiked ? "#EC4899" : "#9CA3AF"}
-                  fill={isLiked ? "#EC4899" : "transparent"}
+                color={isLiked ? colors.accent : colors.textSecondary}
+                fill={isLiked ? colors.accent : "transparent"}
                 />
-                <SparkleBurst show={likeSparkle} color="#EC4899" />
+              <SparkleBurst 
+              show={likeSparkle} color={colors.accent} size={16} />
               </Animated.View>
             </Pressable>
             <Pressable
               onPress={handleNegativeRate}
               onPressIn={() => springDown(dislikeScale, 0.9)}
               onPressOut={() => springUp(dislikeScale)}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingHorizontal: 6,
-                paddingVertical: 2,
-                borderRadius: 999,
-                borderWidth: 1,
-                backgroundColor: isDisliked ? '#4b556340' : '#374151',
-                borderColor: isDisliked ? '#4b556380' : '#4b5563'
-              }}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 6,
+              paddingVertical: 2,
+              borderRadius: 999,
+              borderWidth: 1,
+              backgroundColor: isDisliked ? `${colors.textSecondary}30` : colors.surfaceVariant,
+              borderColor: isDisliked ? `${colors.textSecondary}80` : colors.border
+            }}
             >
               <Animated.View style={[dislikeStyle, { position: 'relative' }]}>
                 <ThumbsDown
                   size={16}
-                  color={isDisliked ? "#9CA3AF" : "#6B7280"}
-                  fill={isDisliked ? "#9CA3AF" : "transparent"}
+                color={isDisliked ? colors.textSecondary : colors.textMuted}
+                fill={isDisliked ? colors.textSecondary : "transparent"}
                 />
-                <SparkleBurst show={dislikeSparkle} color="#9CA3AF" />
+              <SparkleBurst show={dislikeSparkle} color={colors.textSecondary} size={16} />
               </Animated.View>
             </Pressable>
           </View>
 
           {/* Compact visual percentage line */}
-          <View style={{ height: 2, backgroundColor: '#374151', borderRadius: 999, overflow: 'hidden', width: '100%' }}>
+          <View style={{ height: 2, backgroundColor: colors.border, borderRadius: 999, overflow: 'hidden', width: '100%' }}>
             <View
               style={{
                 height: '100%',
-                backgroundColor: '#7e22ce',
+                backgroundColor: colors.accent,
                 borderRadius: 999,
                 width: `${percentage}%`
               }}
@@ -180,28 +187,32 @@ export default function OutfitInteractionButtons({
         </View>
 
         {/* Comment Section */}
-        <Pressable
-          onPress={onComments}
-          onPressIn={() => springDown(commentScale, 0.94)}
-          onPressOut={() => springUp(commentScale)}
-          style={{
-            backgroundColor: '#1f1f1fcc',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingHorizontal: 12,
-            paddingVertical: 8,
-            borderRadius: 999,
-            borderWidth: 1,
-            borderColor: '#2a2a2a',
-            marginLeft: 12
-          }}
-        >
-          <Animated.View style={[commentStyle, { flexDirection: 'row', alignItems: 'center' }]}>
-            <MessageCircle size={16} color="#9CA3AF" />
-            <Text style={{ color: '#9CA3AF', marginLeft: 8, fontSize: 14, fontWeight: '500' }}>{commentsCount}</Text>
-          </Animated.View>
-        </Pressable>
+        {showCommentsButton && (
+          <Pressable
+            onPress={onComments}
+            onPressIn={() => springDown(commentScale, 0.94)}
+            onPressOut={() => springUp(commentScale)}
+            style={{
+              backgroundColor: colors.surface,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingHorizontal: 12,
+              paddingVertical: 8,
+              borderRadius: 999,
+              borderWidth: 1,
+              borderColor: colors.border,
+              marginLeft: 12
+            }}
+          >
+            <Animated.View style={[commentStyle, { flexDirection: 'row', alignItems: 'center' }]}>
+              <MessageCircle size={16} color={colors.textSecondary} />
+              <Text style={{ color: colors.textSecondary, marginLeft: 8, fontSize: 14, fontWeight: '500' }}>
+                { commentsCount }
+              </Text>
+            </Animated.View>
+          </Pressable>
+        )}
       </View>
 
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flexShrink: 0 }}>
@@ -212,14 +223,14 @@ export default function OutfitInteractionButtons({
             onPressIn={() => springDown(saveScale || { value: 1 } as SharedValue<number>, 0.94)}
             onPressOut={() => springUp(saveScale || { value: 1 } as SharedValue<number>)}
             style={{
-              backgroundColor: '#1f1f1fcc',
+              backgroundColor: colors.surface,
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
               padding: 8,
               borderRadius: 999,
               borderWidth: 1,
-              borderColor: '#2a2a2a'
+              borderColor: colors.border
             }}
           >
             <Animated.View style={[saveStyle, { position: 'relative' }]}>
@@ -228,7 +239,7 @@ export default function OutfitInteractionButtons({
                 color={isSaved ? "#EC4899" : "#9CA3AF"}
                 fill={isSaved ? "#EC4899" : "transparent"}
               />
-              <SparkleBurst show={saveSparkle} color="#EC4899" />
+              <SparkleBurst show={saveSparkle} color="#EC4899" size={16} />
             </Animated.View>
           </Pressable>
         )}
@@ -238,18 +249,18 @@ export default function OutfitInteractionButtons({
           onPressIn={() => springDown(shareScale, 0.94)}
           onPressOut={() => springUp(shareScale)}
           style={{
-            backgroundColor: '#1f1f1fcc',
+            backgroundColor: colors.surface,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
             padding: 8,
             borderRadius: 999,
             borderWidth: 1,
-            borderColor: '#2a2a2a'
+            borderColor: colors.border
           }}
         >
           <Animated.View style={shareStyle}>
-            <Share size={16} color="#9CA3AF" />
+            <Share size={16} color={colors.textSecondary} />
           </Animated.View>
         </Pressable>
       </View>

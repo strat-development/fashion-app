@@ -4,6 +4,7 @@ import { Image, Pressable, Text, View, useWindowDimensions } from "react-native"
 import { State, TapGestureHandler } from "react-native-gesture-handler";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
+import { useTranslation } from "react-i18next";
 import { OutfitData } from "../OutfitCard";
 
 interface OutfitImageCarouselProps {
@@ -13,6 +14,7 @@ interface OutfitImageCarouselProps {
 }
 
 export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageCarouselProps) => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
   const { width: screenWidth } = useWindowDimensions();
   const progress = useSharedValue<number>(0);
@@ -27,7 +29,7 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-        <Text style={{ color: colors.textSecondary }}>No images</Text>
+        <Text style={{ color: colors.textSecondary }}>{t('outfitDetail.images.noImages')}</Text>
       </View>
     );
   }

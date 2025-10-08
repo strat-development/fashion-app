@@ -1,0 +1,656 @@
+{
+    "common": {
+      "loading": "جارٍ التحميل..."
+    },
+    "homeScreen": {
+      "welcomeMessage": "مرحبًا، كيف ترغب في إنشاء زي؟",
+      "aiConstructorButton": "منشئ الذكاء الاصطناعي",
+      "createOwnOutfitButton": "إنشاء زيك الخاص"
+    },
+    "feedSection": {
+      "alerts": {
+        "notLoggedIn": {
+          "title": "غير مسجل الدخول",
+          "message": "يجب أن تكون مسجل الدخول لحفظ الأزياء."
+        }
+      },
+      "emptyState": {
+        "title": "لا توجد أزياء بعد",
+        "description": "قم بإنشاء زيك الأول أو تابع الآخرين لرؤية إبداعاتهم",
+        "actionText": "إنشاء زي"
+      },
+      "loadingOutfits": "جارٍ التحميل..."
+    },
+    "rankingScreen": {
+      "title": "التصنيف",
+      "subtitle": "أفضل الأزياء والمبدعين",
+      "tabs": {
+        "outfits": "الأزياء",
+        "creators": "المبدعون"
+      },
+      "loading": "جارٍ التحميل...",
+      "error": "فشل التحميل",
+      "tryAgain": "حاول مرة أخرى",
+      "rankRow": {
+        "untitledOutfit": "زي بدون عنوان",
+        "unknownCreator": "غير معروف",
+        "outfitStats": "الإعجابات · الحفظ · التقييمات",
+        "creatorStats": "الأزياء · الإعجابات",
+        "rank": "#"
+      }
+    },
+    "userProfile": {
+      "loading": "جارٍ التحميل...",
+      "about": "حول",
+      "privateProfile": "هذا الملف الشخصي خاص."
+    },
+    "outfitDetail": {
+      "header": {
+        "title": "تفاصيل الزي",
+        "yourCreation": "إبداعك"
+      },
+      "loading": "جارٍ تحميل الزي...",
+      "notFound": "لم نتمكن من العثور على هذا الزي.",
+      "goBack": "رجوع",
+      "images": {
+        "free": "مجاني",
+        "noImages": "لا توجد صور"
+      },
+      "info": {
+        "anonymous": "مجهول",
+        "tags": "الوسوم",
+        "description": "الوصف"
+      },
+      "sections": {
+        "description": "الوصف",
+        "tags": "الوسوم"
+      },
+      "interactions": {
+        "comments": " تعليقات",
+        "likes": " إعجابات"
+      },
+      "defaultOutfitName": "زي بدون عنوان"
+    },
+    "commentItem": {
+      "reply": "رد",
+      "viewReplies": "عرض الردود",
+      "hideReplies": "إخفاء الردود",
+      "replyPlaceholder": "الرد على ",
+      "cancel": "إلغاء",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "غير مسجل الدخول",
+          "message": "يجب أن تكون مسجل الدخول للتعليق."
+        },
+        "error": {
+          "title": "خطأ",
+          "message": "فشل إضافة التعليق"
+        }
+      }
+    },
+    "commentReactions": {
+      "reacted": "تم التفاعل",
+      "react": "تفاعل",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "غير مسجل الدخول",
+          "message": "يجب أن تكون مسجل الدخول للتفاعل مع التعليقات."
+        }
+      }
+    },
+    "commentSection": {
+      "header": "التعليقات • ",
+      "headerDefault": "التعليقات",
+      "loading": "جارٍ التحميل...",
+      "empty": "لا توجد تعليقات بعد. كن الأول!",
+      "placeholder": "إضافة تعليق...",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "غير مسجل الدخول",
+          "message": "يجب أن تكون مسجل الدخول للتعليق."
+        },
+        "error": {
+          "title": "خطأ",
+          "message": "فشل إضافة التعليق"
+        }
+      }
+    },
+    "feedFilters": {
+      "searchPlaceholder": "البحث عن الأزياء...",
+      "sections": {
+        "styleTags": "وسوم الأسلوب",
+        "elements": "العناصر"
+      },
+      "clearFilters": "مسح جميع الفلاتر"
+    },
+    "notFoundScreen": {
+      "title": "عذرًا!",
+      "message": "هذه الشاشة غير موجودة.",
+      "link": "اذهب إلى الشاشة الرئيسية!"
+    },
+    "themeSettings": {
+      "title": "إعدادات الثيم",
+      "appearance": {
+        "title": "المظهر",
+        "description": "اختر كيف يبدو تطبيق الموضة بالنسبة لك. اختر ثيمًا واحدًا، أو قم بمزامنته مع إعدادات نظامك.",
+        "options": {
+          "light": {
+            "label": "فاتح",
+            "description": "استخدام الثيم الفاتح دائمًا"
+          },
+          "dark": {
+            "label": "داكن",
+            "description": "استخدام الثيم الداكن دائمًا"
+          },
+          "system": {
+            "label": "النظام",
+            "description": "اتباع إعدادات النظام"
+          }
+        }
+      },
+      "preview": {
+        "title": "معاينة",
+        "appName": "تطبيق الموضة",
+        "themePreview": " معاينة الثيم",
+        "description": "هكذا ستبدو تغذية الأزياء والمحتوى الآخر مع الثيم المختار.",
+        "primaryButton": "أساسي",
+        "secondaryButton": "ثانوي"
+      },
+      "languageCurrency": {
+        "title": "اللغة والعملة",
+        "description": "اختر اللغة والعملة المفضلة للتطبيق.",
+        "languagePlaceholder": "اختر اللغة",
+        "currencyPlaceholder": "اختر العملة"
+      }
+    },
+    "createdOutfitsSection": {
+      "loading": "جارٍ تحميل الأزياء...",
+      "header": "إبداعاتك",
+      "createButton": "إنشاء",
+      "emptyState": {
+        "title": "لم يتم إنشاء أزياء بعد",
+        "description": "ابدأ بإنشاء زيك الأول!",
+        "actionText": "إنشاء زي"
+      }
+    },
+    "followButton": {
+      "follow": "متابعة",
+      "unfollow": "إلغاء المتابعة",
+      "pending": "طلب المتابعة قيد الانتظار"
+    },
+    "profileBioSection": {
+      "title": "حول",
+      "noBio": "لا توجد سيرة ذاتية متاحة بعد. أضف واحدة من خلال تعديل ملفك الشخصي!"
+    },
+    "profileHeader": {
+      "anonymousUser": "مستخدم مجهول",
+      "defaultRole": "عاشق الموضة",
+      "editProfile": "تعديل الملف الشخصي",
+      "tabs": {
+        "user-info": "الملف الشخصي",
+        "created-outfits": "تم إنشاؤها",
+        "saved-outfits": "تم حفظها"
+      }
+    },
+    "profileRecentActivitySection": {
+      "title": "النشاط الأخير",
+      "activities": [
+        {
+          "text": "حصل زيك على أكثر من 50 إعجاب!"
+        },
+        {
+          "text": "أعجبتك 5 أزياء جديدة"
+        },
+        {
+          "text": "أنشأت \"إطلالة صيفية كاجوال\""
+        }
+      ]
+    },
+    "auth": {
+      "welcome": "مرحبًا",
+      "hero": {
+        "badge": "مساعد الموضة",
+        "title": "الأناقة، بإدارة ذكية.",
+        "slogan": "بسيط مثل Apple. قوي مثل Vercel. مصمم خصيصًا لك."
+      },
+      "signInSubtitle": "تسجيل الدخول للمتابعة",
+      "signUpSubtitle": "إنشاء حساب",
+      "labels": {
+        "email": "البريد الإلكتروني",
+        "password": "كلمة المرور"
+      },
+      "placeholders": {
+        "email": "you@example.com",
+        "password": "••••••••"
+      },
+      "buttons": {
+        "signIn": "تسجيل الدخول",
+        "signUp": "إنشاء حساب",
+        "google": "تسجيل الدخول باستخدام Google"
+      },
+      "switch": {
+        "signUpPrompt": "ليس لديك حساب؟ ",
+        "signInPrompt": "هل لديك حساب بالفعل؟ ",
+        "signUp": "اشترك",
+        "signIn": "تسجيل الدخول"
+      },
+      "termsAndPrivacy": "بالمتابعة، فإنك توافق على شروطنا وسياسة الخصوصية.",
+      "alerts": {
+        "supabaseNotInitialized": {
+          "title": "خطأ",
+          "message": "عميل Supabase غير مهيأ."
+        },
+        "signInError": {
+          "title": "خطأ في تسجيل الدخول"
+        },
+        "signUpError": {
+          "title": "خطأ في الاشتراك"
+        },
+        "emailVerification": {
+          "title": "التحقق من البريد الإلكتروني",
+          "message": "يرجى التحقق من بريدك الوارد لتأكيد البريد الإلكتروني!"
+        }
+      }
+    },
+    "profileSettingsButtons": {
+      "themeSettings": "إعدادات الثيم",
+      "logout": "تسجيل الخروج"
+    },
+    "savedOutfitsSection": {
+      "loading": "جارٍ تحميل الأزياء المحفوظة...",
+      "emptyState": {
+        "title": "لا توجد أزياء محفوظة بعد",
+        "description": "ابدأ بحفظ الأزياء التي تحبها!"
+      }
+    },
+    "userStatistics": {
+      "title": "الإحصائيات",
+      "created": "تم إنشاؤها",
+      "saved": "تم حفظها",
+      "likes": "الإعجابات",
+      "loading": "..."
+    },
+    "contactModal": {
+      "title": "تواصل معنا",
+      "sendMessage": "إرسال رسالة",
+      "sending": "جارٍ الإرسال...",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "message": "الرسالة",
+      "placeholders": {
+        "fullName": "أدخل اسمك الكامل",
+        "email": "أدخل بريدك الإلكتروني",
+        "message": "صف رسالتك..."
+      },
+      "errors": {
+        "fullNameRequired": "الاسم الكامل مطلوب",
+        "fullNameMaxLength": "الاسم لا يمكن أن يتجاوز 80 حرفًا",
+        "emailRequired": "أدخل بريدك الإلكتروني",
+        "emailInvalid": "يرجى إدخال بريد إلكتروني صالح",
+        "messageRequired": "الرسالة مطلوبة"
+      },
+      "alerts": {
+        "apiKeyMissing": "مفتاح API غير موجود. يرجى التواصل مع الدعم.",
+        "success": "تم إرسال الرسالة بنجاح!",
+        "error": "فشل إرسال الرسالة. حاول مرة أخرى لاحقًا."
+      }
+    },
+    "deleteModalOutfit": {
+      "title": "حذف الزي",
+      "message": "هل أنت متأكد من رغبتك في حذف هذا الزي؟ لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "deleting": "جارٍ الحذف...",
+      "error": "معرف المستخدم مطلوب للحذف"
+    },
+    "outfitCreateModal": {
+      "title": "إنشاء زي",
+      "save": "حفظ",
+      "saving": "جارٍ الحفظ...",
+      "addElement": "إضافة عنصر",
+      "outfitElements": "عناصر الزي",
+      "name": "الاسم",
+      "description": "الوصف",
+      "styleTags": "وسوم الأسلوب",
+      "elementType": "نوع العنصر",
+      "elementCategory": "فئة العنصر",
+      "selectFromOptions": "اختر من الخيارات أدناه",
+      "elementImage": "صورة العنصر",
+      "imageReady": "جاهز للرفع",
+      "tapToSelectImage": "اضغط لاختيار الصورة",
+      "price": "السعر",
+      "shopUrl": "رابط المتجر",
+      "optional": "اختياري",
+      "siteUrl": "رابط الموقع",
+      "image": "الصورة",
+      "placeholders": {
+        "name": "أدخل اسم الزي",
+        "description": "صف زيك...",
+        "elementType": "اختر نوع العنصر",
+        "price": "أدخل السعر (اختياري)",
+        "siteUrl": "أدخل رابط الموقع",
+        "image": "اختر صورة",
+        "shopUrl": "مثال: https://example.com/product"
+      },
+      "errors": {
+        "nameRequired": "اسم الزي مطلوب",
+        "descriptionRequired": "الوصف مطلوب",
+        "elementRequired": "مطلوب عنصر زي واحد على الأقل",
+        "elementTypeRequired": "نوع العنصر مطلوب",
+        "priceInvalid": "يجب أن يكون السعر رقمًا",
+        "priceNegative": "لا يمكن أن يكون السعر سلبيًا",
+        "siteUrlRequired": "رابط الموقع مطلوب",
+        "siteUrlInvalid": "يرجى إدخال رابط صالح",
+        "imageRequired": "الصورة مطلوبة",
+        "styleTagsRequired": "يرجى اختيار وسم أسلوب واحد على الأقل",
+        "priceRequired": "السعر مطلوب",
+        "priceMin": "يجب أن يكون السعر صفرًا أو أكثر",
+        "invalidUrl": "يرجى إدخال رابط صالح"
+      },
+      "elementCount": {
+        "zero": "أضف عنصرًا واحدًا على الأقل",
+        "one": " عنصر تمت إضافته",
+        "multiple": "عناصر تمت إضافتها"
+      },
+      "totalPrice": "السعر الإجمالي: ",
+      "imageFormat": "JPG، PNG (الحد الأقصى 5 ميجابايت)",
+      "imageSelected": "تم اختيار الصورة بنجاح",
+      "addElementToOutfit": "إضافة عنصر إلى الزي",
+      "alerts": {
+        "permissionDenied": "مطلوب إذن التخزين لاختيار الصور.",
+        "imagePickerError": "فشل في فتح أداة اختيار الصور",
+        "imageSelectError": "فشل في اختيار الصورة",
+        "noImageSelected": "لم يتم اختيار صورة",
+        "imagePickerErrorMessage": "خطأ في أداة اختيار الصور: ",
+        "success": {
+          "title": "نجاح",
+          "message": "تم حفظ الزي بنجاح!"
+        },
+        "error": {
+          "title": "خطأ",
+          "message": "فشل إنشاء الزي"
+        },
+        "unknownError": "حدث خطأ غير معروف"
+      }
+    },
+    "profileEdit": {
+      "title": "تعديل الملف الشخصي",
+      "save": "حفظ",
+      "saving": "جارٍ الحفظ...",
+      "displayName": "اسم العرض",
+      "bio": "السيرة الذاتية",
+      "stylePreferences": "تفضيلات الأسلوب",
+      "privacy": "الخصوصية",
+      "publicProfile": "ملف شخصي عام",
+      "publicProfileDescription": "يمكن للآخرين رؤية ملفك الشخصي والأزياء التي أنشأتها",
+      "privateProfileDescription": "سيكون اسمك المستعار وصورة ملفك الشخصي فقط مرئيين",
+      "privateAccount": "حساب خاص",
+      "privateAccountDescription": "عندما يكون الحساب خاصًا، سيكون اسم المستخدم وصورة الملف الشخصي فقط مرئيين للآخرين. ستكون سيرتك الذاتية وأزياؤك مخفية.",
+      "changePhoto": "اضغط لتغيير الصورة",
+      "stylePreferencesComingSoon": "قريبًا! قم بتعيين أنماطك وألوانك وماركاتك المفضلة.",
+      "placeholders": {
+        "name": "أدخل اسمك",
+        "bio": "أخبرنا عن أسلوبك..."
+      },
+      "errors": {
+        "nameRequired": "الاسم مطلوب",
+        "bioMaxLength": "يجب ألا تتجاوز السيرة الذاتية 200 حرف"
+      },
+      "alerts": {
+        "permissionDenied": "مطلوب إذن التخزين لاختيار الصور.",
+        "imagePickerError": "فشل في فتح أداة اختيار الصور",
+        "imageSelectError": "فشل في اختيار الصورة",
+        "noImageSelected": "لم يتم اختيار صورة",
+        "imagePickerErrorMessage": "خطأ في أداة اختيار الصور: ",
+        "imageUploadError": "فشل في رفع الصورة",
+        "imageUrlError": "فشل في استرداد رابط الصورة",
+        "success": "تم تحديث الملف الشخصي بنجاح",
+        "error": "فشل تحديث الملف الشخصي"
+      }
+    },
+    "registrationModal": {
+      "welcome": "مرحبًا بك في التطبيق!",
+      "welcomeDescription": "لاستخدام التطبيق، تحتاج إلى إكمال عملية التسجيل.",
+      "provideDetails": "يرجى تقديم تفاصيل ملفك الشخصي في الخطوات التالية.",
+      "logout": "تسجيل الخروج",
+      "proceed": "متابعة",
+      "previous": "السابق",
+      "next": "التالي",
+      "complete": "إكمال",
+      "saving": "جارٍ الحفظ...",
+      "username": "اسم المستخدم",
+      "fullName": "الاسم الكامل",
+      "bio": "السيرة الذاتية",
+      "profilePicture": "صورة الملف الشخصي",
+      "setPhoto": "اضغط لتعيين الصورة (اختياري)",
+      "reviewInfo": "راجع معلوماتك",
+      "notProvided": "غير مقدم",
+      "placeholders": {
+        "username": "أدخل اسم المستخدم الخاص بك",
+        "fullName": "أدخل اسمك الكامل",
+        "bio": "أخبرنا عن أسلوبك... (اختياري)"
+      },
+      "errors": {
+        "usernameRequired": "اسم المستخدم مطلوب",
+        "usernameMinLength": "يجب أن يكون اسم المستخدم 3 أحرف على الأقل",
+        "usernameMaxLength": "لا يمكن أن يتجاوز اسم المستخدم 20 حرفًا",
+        "usernamePattern": "يمكن أن يحتوي اسم المستخدم على الحروف والأرقام والشرطات السفلية فقط",
+        "fullNameRequired": "الاسم الكامل مطلوب",
+        "fullNameMaxLength": "لا يمكن أن يتجاوز الاسم الكامل 50 حرفًا",
+        "bioMaxLength": "لا يمكن أن تتجاوز السيرة الذاتية 200 حرف",
+        "userIdMissing": "معرف المستخدم غير موجود. يرجى تسجيل الدخول مرة أخرى."
+      },
+      "alerts": {
+        "permissionDenied": "مطلوب إذن التخزين لاختيار الصور.",
+        "imagePickerError": "فشل في فتح أداة اختيار الصور",
+        "imageSelectError": "فشل في اختيار الصورة",
+        "noImageSelected": "لم يتم اختيار صورة",
+        "imagePickerErrorMessage": "خطأ في أداة اختيار الصور: ",
+        "imageUploadError": "فشل في رفع الصورة",
+        "imageUrlError": "فشل في استرداد رابط الصورة",
+        "registrationError": "فشل إكمال التسجيل. يرجى المحاولة مرة أخرى.",
+        "logoutError": "فشل تسجيل الخروج. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "reportModal": {
+      "report": "تقرير",
+      "sendReport": "إرسال تقرير",
+      "sending": "جارٍ الإرسال...",
+      "email": "البريد الإلكتروني",
+      "reason": "السبب",
+      "description": "الوصف",
+      "placeholders": {
+        "email": "أدخل بريدك الإلكتروني",
+        "reason": "اختر السبب",
+        "description": "صف المشكلة..."
+      },
+      "errors": {
+        "userIdRequired": "معرف المستخدم مطلوب",
+        "emailRequired": "أدخل بريدك الإلكتروني حتى نتمكن من الرد عليك",
+        "emailInvalid": "يرجى إدخال بريد إلكتروني صالح",
+        "reasonRequired": "السبب مطلوب",
+        "descriptionRequired": "الوصف مطلوب"
+      },
+      "alerts": {
+        "apiKeyMissing": "مفتاح API غير موجود. يرجى التواصل مع الدعم.",
+        "success": "تم إرسال التقرير بنجاح!",
+        "error": "فشل إرسال التقرير. يرجى المحاولة مرة أخرى لاحقًا."
+      }
+    },
+    "shareModal": {
+      "title": "مشاركة الزي",
+      "cancel": "إلغاء",
+      "shareOptions": {
+        "native": "مشاركة...",
+        "copy": "نسخ الرابط",
+        "twitter": "تويتر",
+        "facebook": "فيسبوك",
+        "instagram": "إنستغرام",
+        "email": "البريد الإلكتروني",
+        "sms": "رسالة",
+        "more": "المزيد"
+      },
+      "untitledOutfit": "زي بدون عنوان",
+      "defaultDescription": "زي موضة للمشاركة",
+      "shareText": "تحقق من هذا الزي الرائع على تطبيق الموضة!",
+      "alerts": {
+        "shareError": "غير قادر على مشاركة هذا الزي",
+        "copySuccess": "تم نسخ الرابط إلى الحافظة!",
+        "copyError": "فشل نسخ الرابط",
+        "platformError": "لا يمكن فتح ",
+        "instagramShare": "تم نسخ الرابط! يمكنك الآن لصقه في قصتك أو منشورك على إنستغرام."
+      }
+    },
+    "chatSection": {
+      "promptPrefix": "أريدك أن تساعدني في إنشاء زي وفقًا للمعايير التالية:",
+      "selectGender": "الجنس",
+      "selectOutfitStyles": "أنماط الزي",
+      "selectFit": "المقاس",
+      "selectDominantColors": "الألوان الرئيسية",
+      "selectOutfitElements": "عناصر الزي",
+      "selectPriceRange": "نطاق السعر",
+      "from": "من",
+      "to": "إلى",
+      "currency": "العملة",
+      "placeholders": {
+        "lowestPrice": "أقل سعر",
+        "highestPrice": "أعلى سعر",
+        "currency": "اختر العملة",
+        "outfitDescription": "وصف الزي... (اختياري)"
+      },
+      "genders": {
+        "male": "ذكر",
+        "female": "أنثى",
+        "unisex": "للجنسين"
+      },
+      "styles": {
+        "casual": "كاجوال",
+        "formal": "رسمي",
+        "sporty": "رياضي",
+        "bohemian": "بوهيمي",
+        "vintage": "كلاسيكي",
+        "streetwear": "ملابس الشارع",
+        "business": "أعمال",
+        "party": "حفلة",
+        "beach": "شاطئ",
+        "office": "مكتب",
+        "old money": "المال القديم",
+        "athleisure": "أثليجر",
+        "minimalist": "بسيط",
+        "gothic": "غوثيك",
+        "preppy": "بريبي",
+        "punk": "بانك",
+        "grunge": "غرانج",
+        "smart casual": "كاجوال ذكي",
+        "business casual": "كاجوال أعمال",
+        "chic": "أنيق",
+        "resort": "منتجع",
+        "cottagecore": "كوتجكور",
+        "normcore": "نورمكور",
+        "techwear": "تيكوير",
+        "avant-garde": "أفانت-غارد",
+        "monochrome": "أحادي اللون",
+        "color blocking": "تجميع الألوان",
+        "safari": "سفاري",
+        "retro": "رجعي",
+        "y2k": "Y2K",
+        "maximalist": "ماكسيماليست"
+      },
+      "fits": {
+        "slim": "نحيف",
+        "regular": "عادي",
+        "relaxed": "مريح",
+        "oversized": "كبير الحجم",
+        "tailored": "مفصل",
+        "slim fit": "مقاس نحيف",
+        "regular fit": "مقاس عادي",
+        "relaxed fit": "مقاس مريح",
+        "loose fit": "مقاس فضفاض",
+        "oversized fit": "مقاس كبير الحجم",
+        "tailored fit": "مقاس مفصل",
+        "athletic fit": "مقاس رياضي",
+        "tapered fit": "مقاس مدبب",
+        "boxy fit": "مقاس مربع",
+        "straight fit": "مقاس مستقيم"
+      },
+      "colors": {
+        "black": "أسود",
+        "white": "أبيض",
+        "red": "أحمر",
+        "blue": "أزرق",
+        "green": "أخضر",
+        "yellow": "أصفر",
+        "purple": "بنفسجي",
+        "pink": "وردي",
+        "gray": "رمادي",
+        "brown": "بني",
+        "orange": "برتقالي",
+        "navy": "كحلي",
+        "beige": "بيج",
+        "olive": "زيتوني",
+        "teal": "تركواز",
+        "burgundy": "بورجوندي",
+        "cream": "كريمي",
+        "camel": "جملي",
+        "charcoal": "فحمي",
+        "off white": "أبيض مائل",
+        "pastel pink": "وردي باستيل",
+        "pastel blue": "أزرق باستيل",
+        "pastel green": "أخضر باستيل",
+        "pastel yellow": "أصفر باستيل"
+      },
+      "elements": {
+        "shirt": "قميص",
+        "pants": "سروال",
+        "shoes": "أحذية",
+        "jacket": "جاكيت",
+        "dress": "فستان",
+        "skirt": "تنورة",
+        "hat": "قبعة",
+        "belt": "حزام",
+        "watch": "ساعة",
+        "bag": "حقيبة",
+        "top": "توب",
+        "bottom": "سفلية",
+        "footwear": "أحذية",
+        "accessories": "إكسسوارات",
+        "outerwear": "ملابس خارجية",
+        "headwear": "أغطية الرأس",
+        "eyewear": "نظارات",
+        "jewelry": "مجوهرات",
+        "scarf": "وشاح",
+        "gloves": "قفازات",
+        "socks": "جوارب"
+      },
+      "currencies": {
+        "usd": "دولار أمريكي ($)",
+        "eur": "يورو (€)",
+        "gbp": "جنيه إسترليني (£)",
+        "jpy": "ين ياباني (¥)",
+        "aud": "دولار أسترالي (A$)",
+        "cad": "دولار كندي (C$)",
+        "pln": "زلوتي بولندي (zł)",
+        "chf": "فرنك سويسري (CHF)",
+        "rub": "روبل روسي (₽)",
+        "cny": "يوان صيني (¥)",
+        "inr": "روبية هندية (₹)",
+        "krw": "وون كوري (₩)",
+        "mxn": "بيزو مكسيكي (MXN)",
+        "nzd": "دولار نيوزيلندي (NZD)",
+        "sek": "كرونة سويدية (SEK)",
+        "sgd": "دولار سنغافوري (SGD)",
+        "thb": "بات تايلاندي (฿)",
+        "zar": "راند جنوب أفريقي (R)",
+        "try": "ليرة تركية (₺)",
+        "uah": "هريفنيا أوكرانية (₴)"
+      },
+      "conversations": "المحادثات",
+      "newChat": "دردشة جديدة",
+      "showFilters": "إظهار الفلاتر",
+      "hideFilters": "إخفاء الفلاتر"
+    },
+    "chatSwitch": {
+      "ai": "الذكاء الاصطناعي",
+      "creator": "المبدع"
+    }
+  }

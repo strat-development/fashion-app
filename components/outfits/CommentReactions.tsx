@@ -3,6 +3,7 @@ import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Frown, Heart, Laugh, Plus } from "lucide-react-native";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, Pressable, Text, View } from "react-native";
 
 interface CommentReactionsProps {
@@ -17,17 +18,15 @@ const reactionConfig = {
 };
 
 export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps) => {
+  const { t } = useTranslation();
   const [showReactionPicker, setShowReactionPicker] = useState(false);
   const { userId } = useUserContext();
   const { colors } = useTheme();
   const { mutate: updateReaction, isPending } = useUpdateCommentReactionMutation();
 
-  // Debug logging
-  console.log('CommentReactions render:', { commentId, reactions, userId });
-
   const handleReactionPress = (reactionType: ReactionType) => {
     if (!userId) {
-      Alert.alert('Not logged in', 'You must be logged in to react to comments.');
+      Alert.alert(t('commentReactions.alerts.notLoggedIn.title'), t('commentReactions.alerts.notLoggedIn.message'));
       return;
     }
 
@@ -35,7 +34,6 @@ export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps
     setShowReactionPicker(false);
   };
 
-  // Get current user's reaction
   const getUserReaction = (): ReactionType | null => {
     if (!reactions || !userId) return null;
     
@@ -49,7 +47,6 @@ export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps
 
   const userReaction = getUserReaction();
 
-  // Count total reactions
   const getReactionCounts = () => {
     if (!reactions) return {};
     
@@ -67,7 +64,6 @@ export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps
 
   return (
     <View className="flex-row items-center mt-1">
-      {/* Display existing reactions with counts */}
       {hasReactions && (
         <View className="flex-row items-center mr-2">
           {Object.entries(reactionCounts).map(([reactionType, count]) => {
@@ -89,7 +85,6 @@ export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps
         </View>
       )}
 
-      {/* Reaction picker */}
       <View className="relative">
         <Pressable
           onPress={() => setShowReactionPicker(!showReactionPicker)}
@@ -99,17 +94,16 @@ export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps
           {userReaction ? (
             <>
               <Text className="text-xs mr-1">{reactionConfig[userReaction].emoji}</Text>
-              <Text className="text-gray-400 text-xs">Reacted</Text>
+              <Text className="text-gray-400 text-xs">{t('commentReactions.reacted')}</Text>
             </>
           ) : (
             <>
               <Plus size={12} color="#6B7280" />
-              <Text className="text-gray-400 text-xs ml-1">React</Text>
+              <Text className="text-gray-400 text-xs ml-1">{t('commentReactions.react')}</Text>
             </>
           )}
         </Pressable>
 
-        {/* Reaction options dropdown */}
         {showReactionPicker && (
           <View style={{
             position: 'absolute',
@@ -124,7 +118,7 @@ export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps
             zIndex: 1000,
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.15,
+            shadowOpacity: 0.25,
             shadowRadius: 8,
             elevation: 10,
           }}>
@@ -142,7 +136,6 @@ export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps
         )}
       </View>
 
-      {/* Overlay to close picker when clicking outside */}
       {showReactionPicker && (
         <Pressable
           onPress={() => setShowReactionPicker(false)}

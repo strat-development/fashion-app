@@ -1,9 +1,10 @@
-import { Currencies } from "@/consts/userSettings"; // Import your Currencies object
+import { Currencies } from "@/consts/userSettings";
+import { ThemedGradient } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { OutfitElementData } from "@/types/createOutfitTypes";
-import { LinearGradient } from "expo-linear-gradient";
-import { ExternalLink, Tag } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import { ExternalLink, Shirt, Tag } from "lucide-react-native";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
@@ -20,34 +21,31 @@ interface OutfitDetailImagesProps {
 }
 
 export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDetailImagesProps) {
+  const { t } = useTranslation();
   const { preferredCurrency } = useUserContext();
   const progress = useSharedValue<number>(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [convertedPrices, setConvertedPrices] = useState<(number | null)[]>(elementsData?.map(el => el.price) || []);
+  const [convertedPrices, setConvertedPrices] = useState<(number | null)[]>(
+    elementsData ? elementsData.map((el) => (typeof el.price === 'number' ? el.price : null)) : []
+  );
 
   const { width, height } = useWindowDimensions();
   const singleH = Math.min(520, Math.max(280, Math.floor(height * 0.55)));
   const multiH = Math.min(450, Math.max(300, Math.floor(height * 0.45)));
   const cardW = width - 32;
 
-
-  // Function which validates currencies and converts prices to the preferred currency
-
   useEffect(() => {
     const convertPrices = async () => {
       if (!elementsData) {
         console.log("No elementsData provided");
+
         return;
       }
 
-      console.log("Preferred currency:", preferredCurrency);
-      console.log("Elements data:", JSON.stringify(elementsData));
-
       const newConvertedPrices = await Promise.all(
-        elementsData.map(async (element, index) => {
-          if (!element.price || !element.currency || element.currency.toUpperCase() === preferredCurrency.toUpperCase()) {
-            console.log(`No conversion needed for ${element.type} (index ${index}): price=${element.price}, currency=${element.currency}, preferred=${preferredCurrency}`);
-            return element.price;
+        elementsData.map(async (element) => {
+          if (typeof element.price !== 'number' || !element.currency || element.currency.toUpperCase() === preferredCurrency.toUpperCase()) {
+            return typeof element.price === 'number' ? element.price : null;
           }
 
           const elementCurrency = element.currency.toUpperCase();
@@ -55,15 +53,13 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
 
           if (!Currencies.some(c => c.name === elementCurrency) || !Currencies.some(c => c.name === preferredCurrencyUpper)) {
             console.warn(`Invalid currency detected: element.currency=${elementCurrency}, preferredCurrency=${preferredCurrencyUpper}`);
-            
+
             return element.price;
           }
 
           const cacheKey = `${elementCurrency}_${preferredCurrencyUpper}`;
           if (exchangeRateCache[cacheKey]) {
-            const converted = element.price * exchangeRateCache[cacheKey];
-
-            console.log(`Cache hit for ${cacheKey}: rate=${exchangeRateCache[cacheKey]}, original=${element.price}, converted=${converted}`);
+            const converted = (element.price as number) * exchangeRateCache[cacheKey];
 
             return Number(converted.toFixed(2));
           }
@@ -71,8 +67,6 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
           try {
             const fromCurrencyLower = elementCurrency.toLowerCase();
             const toCurrencyLower = preferredCurrencyUpper.toLowerCase();
-
-            console.log(`Fetching conversion rate: ${elementCurrency} to ${preferredCurrencyUpper}`);
 
             const response = await fetch(
               `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${fromCurrencyLower}.min.json`
@@ -83,25 +77,22 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
             if (rate) {
               exchangeRateCache[cacheKey] = rate;
 
-              const converted = element.price * rate;
-
-              console.log(`Conversion success: ${cacheKey}, rate=${rate}, converted=${converted}`);
+              const converted = (element.price as number) * rate;
 
               return Number(converted.toFixed(2));
             } else {
               console.warn(`Rate not found for ${cacheKey}`);
 
-              return element.price;
+              return typeof element.price === 'number' ? element.price : null;
             }
           } catch (error) {
             console.error(`Currency conversion error for ${cacheKey}:`, error);
 
-            return element.price;
+            return typeof element.price === 'number' ? element.price : null;
           }
         })
       );
 
-      console.log("Converted prices:", newConvertedPrices);
       setConvertedPrices(newConvertedPrices);
     };
 
@@ -140,7 +131,7 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
               <View className="flex-row items-center justify-between">
                 <View className="flex-1 mr-3">
                   <View className="flex-row items-center mb-1">
-                    <Tag size={14} color="#9CA3AF" />
+                    <Shirt size={14} color="#9CA3AF" />
                     <Text className="text-white font-semibold text-sm ml-2">
                       {elementData.type}
                     </Text>
@@ -160,14 +151,9 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
                     onPress={handleSitePress}
                     style={{ borderRadius: 999, overflow: 'hidden' }}
                   >
-                    <LinearGradient
-                      colors={['#7e22ce', '#db2777']}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}
-                      style={{ padding: 10, borderRadius: 999 }}
-                    >
+                    <ThemedGradient style={{ padding: 10, borderRadius: 999 }}>
                       <ExternalLink size={16} color="#FFFFFF" />
-                    </LinearGradient>
+                    </ThemedGradient>
                   </Pressable>
                 )}
               </View>
@@ -219,14 +205,9 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
                     }}
                     style={{ borderRadius: 999, overflow: 'hidden' }}
                   >
-                    <LinearGradient
-                      colors={['#7e22ce', '#db2777']}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}
-                      style={{ padding: 12, borderRadius: 999 }}
-                    >
+                    <ThemedGradient style={{ padding: 12, borderRadius: 999 }}>
                       <ExternalLink size={18} color="#FFFFFF" />
-                    </LinearGradient>
+                    </ThemedGradient>
                   </Pressable>
                 )}
               </View>
