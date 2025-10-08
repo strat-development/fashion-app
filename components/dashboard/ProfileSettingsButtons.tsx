@@ -3,8 +3,8 @@ import { useTheme } from '@/providers/themeContext';
 import { router } from 'expo-router';
 import { LogOut, Palette } from 'lucide-react-native';
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Pressable, Text, View } from 'react-native';
 
 export function ProfileSettingsButtons() {
   const { t } = useTranslation();

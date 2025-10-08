@@ -44,7 +44,7 @@ const lightColors = {
   textMuted: '#64748b',
   border: '#e2e8f0',
   borderVariant: '#cbd5e1',
-  accent: '#7e22ce',
+  accent: '#2563EB',
   accentSecondary: '#db2777',
   success: '#059669',
   warning: '#d97706',

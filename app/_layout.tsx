@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import { Text } from 'react-native';
 import 'react-native-reanimated';
 
 import Auth from '@/components/Auth';
@@ -38,7 +39,19 @@ export default function RootLayout() {
   const [session, setSession] = useState<Session | null>(null);
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    InstrumentSans: require('../assets/fonts/InstrumentSans-VariableFont.ttf'),
+    InriaSans: require('../assets/fonts/InriaSans-Regular.ttf'),
   });
+
+  useEffect(() => {
+    if (loaded) {
+      (Text as any).defaultProps = (Text as any).defaultProps || {};
+      const prev = (Text as any).defaultProps.style;
+      (Text as any).defaultProps.style = Array.isArray(prev)
+        ? [{ fontFamily: 'InriaSans' }, ...prev]
+        : [{ fontFamily: 'InriaSans' }, prev].filter(Boolean);
+    }
+  }, [loaded]);
 
   useEffect(() => {
     supabase?.auth.getSession().then(({ data: { session } }) => {
