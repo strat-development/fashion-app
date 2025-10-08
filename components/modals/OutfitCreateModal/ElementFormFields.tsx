@@ -1,11 +1,11 @@
+import { Select, SelectBackdrop, SelectContent, SelectInput, SelectItem, SelectPortal, SelectTrigger } from '@/components/ui/select';
+import { OutfitElements } from '@/consts/chatFilterConsts';
+import { ThemedGradient, useTheme } from '@/providers/themeContext';
+import { Camera, Trash2 } from 'lucide-react-native';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Image, Pressable, Text, TextInput, View } from 'react-native';
-import { Camera, Trash2 } from 'lucide-react-native';
-import { useTheme, ThemedGradient } from '@/providers/themeContext';
-import { Select, SelectBackdrop, SelectContent, SelectInput, SelectItem, SelectPortal, SelectTrigger } from '@/components/ui/select';
-import { OutfitElements } from '@/consts/chatFilterConsts';
 
 interface ElementFormFieldsProps {
   elementControl: any;
@@ -15,6 +15,8 @@ interface ElementFormFieldsProps {
   handleImageSelect: () => void;
   URL_PATTERN: RegExp;
   setElementValue: any;
+  imagePreviewUri?: string;
+  onRemoveSelectedImage?: () => void;
 }
 
 export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
@@ -24,7 +26,8 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
   selectedImageName,
   handleImageSelect,
   URL_PATTERN,
-  setElementValue
+  imagePreviewUri,
+  onRemoveSelectedImage
 }) => {
   const { t } = useTranslation();
   const { colors, isDark } = useTheme();
@@ -33,7 +36,7 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
 
   return (
     <>
-      {/* Element Type */}
+      {/* Element Type - Select */}
       <View className="mb-4">
         <Text className="font-medium text-base mb-2" style={{ color: colors.text }}>
           {t('outfitCreateModal.elementType')}
@@ -42,22 +45,20 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
           control={elementControl}
           name="type"
           rules={{ required: t('outfitCreateModal.errors.elementTypeRequired') }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              placeholder={t('outfitCreateModal.placeholders.elementType')}
-              placeholderTextColor={colors.textMuted}
-              className="px-4 py-3 rounded-lg text-base"
-              style={{ 
-                backgroundColor: colors.surfaceVariant, 
-                borderWidth: 1, 
-                borderColor: elementErrors.type ? colors.error : colors.border, 
-                color: colors.text 
-              }}
-              maxLength={50}
-            />
+          render={({ field: { onChange, value } }) => (
+            <Select onValueChange={onChange} selectedValue={value}>
+              <SelectTrigger variant="outline" size="xl" style={{ borderColor: elementErrors.type ? colors.error : colors.border }}>
+                <SelectInput placeholder={t('outfitCreateModal.placeholders.elementType') as string} style={{ color: colors.text }} />
+              </SelectTrigger>
+              <SelectPortal>
+                <SelectBackdrop />
+                <SelectContent>
+                  {OutfitElements.map((element) => (
+                    <SelectItem key={element.name} label={element.name} value={element.name} />
+                  ))}
+                </SelectContent>
+              </SelectPortal>
+            </Select>
           )}
         />
         {elementErrors.type && (
@@ -65,33 +66,6 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
             {elementErrors.type.message}
           </Text>
         )}
-      </View>
-
-      {/* Element Category - using Select */}
-      <View className="mb-4">
-        <Text className="font-medium text-base mb-2" style={{ color: colors.text }}>
-          {t('outfitCreateModal.elementCategory')}
-        </Text>
-        <Text className="text-sm mb-2" style={{ color: colors.textMuted }}>
-          {t('outfitCreateModal.selectFromOptions')}
-        </Text>
-        <View className="flex-row flex-wrap">
-          {OutfitElements.map((element) => (
-            <Pressable
-              key={element.name}
-              onPress={() => setElementValue('type', element.name)}
-              className="px-3 py-2 mr-2 mb-2 rounded-lg border"
-              style={{
-                backgroundColor: colors.surfaceVariant,
-                borderColor: colors.border
-              }}
-            >
-              <Text className="text-sm" style={{ color: colors.text }}>
-                {element.name}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
       </View>
 
       {/* Image Upload */}
@@ -103,7 +77,7 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
           <View className="border rounded-lg p-3 flex-row items-center justify-between" style={{ backgroundColor: colors.surfaceVariant, borderColor: colors.border }}>
             <View className="flex-row items-center flex-1">
               <Image
-                source={{ uri: imageUrl?.startsWith('temp://') ? imageUrl.replace('temp://', 'file://') : imageUrl }}
+                source={{ uri: imagePreviewUri || (imageUrl?.startsWith('temp://') ? imageUrl.replace('temp://', 'file://') : imageUrl) }}
                 className="w-12 h-12 rounded-lg mr-3"
                 style={{ backgroundColor: colors.surfaceVariant }}
               />
@@ -117,20 +91,11 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
               </View>
             </View>
             <Pressable
-              onPress={() => {}}
+              onPress={onRemoveSelectedImage}
               className="w-8 h-8 rounded-full items-center justify-center overflow-hidden"
-              style={{ backgroundColor: colors.error }}
-            >
-              <ThemedGradient style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+              style={{ backgroundColor: colors.error }}>
               <Trash2 size={16} color={colors.white} />
             </Pressable>
-            <View className="mt-2 flex-row items-center justify-center py-1 px-2 rounded-full" 
-                  style={{ backgroundColor: isDark ? 'rgba(16,185,129,0.12)' : 'rgba(16,185,129,0.12)' }}>
-              <View className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: colors.success }} />
-              <Text className="text-xs" style={{ color: colors.success }}>
-                {t('outfitCreateModal.imageSelected')}
-              </Text>
-            </View>
           </View>
         ) : (
           <Pressable
@@ -156,7 +121,7 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
             <Controller
               control={elementControl}
               name="price"
-              rules={{ 
+              rules={{
                 required: t('outfitCreateModal.errors.priceRequired'),
                 min: { value: 0, message: t('outfitCreateModal.errors.priceMin') }
               }}
@@ -169,11 +134,11 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
                   placeholderTextColor={colors.textMuted}
                   keyboardType="numeric"
                   className="px-4 py-3 rounded-lg text-base"
-                  style={{ 
-                    backgroundColor: colors.surfaceVariant, 
-                    borderWidth: 1, 
-                    borderColor: elementErrors.price ? colors.error : colors.border, 
-                    color: colors.text 
+                  style={{
+                    backgroundColor: colors.surfaceVariant,
+                    borderWidth: 1,
+                    borderColor: elementErrors.price ? colors.error : colors.border,
+                    color: colors.text
                   }}
                 />
               )}
@@ -185,7 +150,17 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
               name="currency"
               render={({ field: { onChange, value } }) => (
                 <Select onValueChange={onChange} selectedValue={value}>
-                  <SelectTrigger variant="outline" size="md">
+                  <SelectTrigger
+                    variant="outline"
+                    size="xl"
+                    style={{
+                      backgroundColor: colors.surfaceVariant,
+                      borderColor: colors.border,
+                      borderWidth: 1,
+                      borderRadius: 8,
+                      paddingVertical: 6,
+                    }}
+                  >
                     <SelectInput style={{ color: colors.text, textAlign: 'center' }} />
                   </SelectTrigger>
                   <SelectPortal>
@@ -217,11 +192,11 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
         <Controller
           control={elementControl}
           name="siteUrl"
-          rules={{ 
-            pattern: { 
-              value: URL_PATTERN, 
-              message: t('outfitCreateModal.errors.invalidUrl') 
-            } 
+          rules={{
+            pattern: {
+              value: URL_PATTERN,
+              message: t('outfitCreateModal.errors.invalidUrl')
+            }
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
@@ -231,11 +206,11 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
               placeholder={t('outfitCreateModal.placeholders.shopUrl')}
               placeholderTextColor={colors.textMuted}
               className="px-4 py-3 rounded-lg text-base"
-              style={{ 
-                backgroundColor: colors.surfaceVariant, 
-                borderWidth: 1, 
-                borderColor: elementErrors.siteUrl ? colors.error : colors.border, 
-                color: colors.text 
+              style={{
+                backgroundColor: colors.surfaceVariant,
+                borderWidth: 1,
+                borderColor: elementErrors.siteUrl ? colors.error : colors.border,
+                color: colors.text
               }}
               keyboardType="url"
               autoCapitalize="none"

@@ -32,11 +32,11 @@ export const StyleTagsSection: React.FC<StyleTagsSectionProps> = ({
               onPress={() => toggleTag(style.name)}
               className={`px-3 py-1.5 rounded-full mr-2 mb-2 border`}
               style={{
-                backgroundColor: selected ? 'rgba(168,85,247,0.15)' : 'rgba(255,255,255,0.05)',
+                backgroundColor: selected ? 'rgba(168,85,247,0.50)' : 'rgba(0, 0, 0, .02)',
                 borderColor: selected ? '#A855F7' : colors.borderVariant,
               }}
             >
-              <Text className="text-xs" style={{ color: selected ? colors.white : '#D1D5DB' }}>
+              <Text className="text-xs" style={{ color: selected ? colors.white : colors.textMuted }}>
                 {style.name}
               </Text>
             </Pressable>

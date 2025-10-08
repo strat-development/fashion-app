@@ -2,7 +2,7 @@ import { Currencies } from "@/consts/userSettings";
 import { ThemedGradient } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { OutfitElementData } from "@/types/createOutfitTypes";
-import { ExternalLink, Tag } from "lucide-react-native";
+import { ExternalLink, Shirt, Tag } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
@@ -131,7 +131,7 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
               <View className="flex-row items-center justify-between">
                 <View className="flex-1 mr-3">
                   <View className="flex-row items-center mb-1">
-                    <Tag size={14} color="#9CA3AF" />
+                    <Shirt size={14} color="#9CA3AF" />
                     <Text className="text-white font-semibold text-sm ml-2">
                       {elementData.type}
                     </Text>

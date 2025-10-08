@@ -20,8 +20,9 @@ export const useCreateOutfitMutation = (
         .filter((el) => el.imageUrl.startsWith('temp://'))
         .map((el) => ({
           tempKey: el.imageUrl,
-          uri: (el as any)._localUri || el.imageUrl, // Using _localUri if available
+          uri: (el as any)._localUri || el.imageUrl,
           fileName: (el as any)._fileName || 'image.jpg',
+          type: (el as any)._type,
         }));
 
       let replacements: Record<string, string> = {};

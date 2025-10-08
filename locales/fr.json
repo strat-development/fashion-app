@@ -5,7 +5,7 @@
   "homeScreen": {
     "welcomeMessage": "Bienvenue, comment souhaitez-vous créer une tenue ?",
     "aiConstructorButton": "Constructeur IA",
-    "createOwnOutfitButton": "Créer votre propre tenue"
+    "createOwnOutfitButton": "Créez votre propre tenue"
   },
   "feedSection": {
     "alerts": {
@@ -15,9 +15,9 @@
       }
     },
     "emptyState": {
-      "title": "Aucune tenue pour l'instant",
-      "description": "Créez votre première tenue ou suivez d'autres utilisateurs pour voir leurs créations",
-      "actionText": "Créer une tenue"
+      "title": "Aucune tenue pour le moment",
+      "description": "Créez votre première tenue ou suivez d'autres pour voir leurs créations",
+      "actionText": "Créer une Tenue"
     },
     "loadingOutfits": "Chargement..."
   },
@@ -34,8 +34,8 @@
     "rankRow": {
       "untitledOutfit": "Tenue sans titre",
       "unknownCreator": "Inconnu",
-      "outfitStats": "J’aime · Enregistré · Notes",
-      "creatorStats": "Tenues · J’aime",
+      "outfitStats": "J'aime · Enregistrés · Notes",
+      "creatorStats": "Tenues · J'aime",
       "rank": "#"
     }
   },
@@ -46,16 +46,16 @@
   },
   "outfitDetail": {
     "header": {
-      "title": "Détails de la tenue",
+      "title": "Détails de la Tenue",
       "yourCreation": "Votre création"
     },
+    "loading": "Chargement de la tenue…",
+    "notFound": "Nous n'avons pas pu trouver cette tenue.",
+    "goBack": "Retour",
     "images": {
       "free": "Gratuit",
       "noImages": "Aucune image"
     },
-      "loading": "Chargement de la tenue…",
-      "notFound": "Nous n'avons pas trouvé cette tenue.",
-      "goBack": "Retour",
     "info": {
       "anonymous": "Anonyme",
       "tags": "Étiquettes",
@@ -67,7 +67,7 @@
     },
     "interactions": {
       "comments": " commentaires",
-      "likes": " j’aime"
+      "likes": " j'aime"
     },
     "defaultOutfitName": "Tenue sans titre"
   },
@@ -84,7 +84,7 @@
       },
       "error": {
         "title": "Erreur",
-        "message": "Impossible d’ajouter le commentaire"
+        "message": "Échec de l'ajout du commentaire"
       }
     }
   },
@@ -102,7 +102,7 @@
     "header": "Commentaires • ",
     "headerDefault": "Commentaires",
     "loading": "Chargement…",
-    "empty": "Aucun commentaire pour l'instant. Soyez le premier !",
+    "empty": "Aucun commentaire pour le moment. Soyez le premier !",
     "placeholder": "Ajouter un commentaire…",
     "alerts": {
       "notLoggedIn": {
@@ -111,28 +111,28 @@
       },
       "error": {
         "title": "Erreur",
-        "message": "Impossible d’ajouter le commentaire"
+        "message": "Échec de l'ajout du commentaire"
       }
     }
   },
   "feedFilters": {
     "searchPlaceholder": "Rechercher des tenues...",
     "sections": {
-      "styleTags": "Étiquettes de style",
+      "styleTags": "Étiquettes de Style",
       "elements": "Éléments"
     },
     "clearFilters": "Effacer tous les filtres"
   },
   "notFoundScreen": {
     "title": "Oups !",
-    "message": "Cet écran n’existe pas.",
-    "link": "Aller à l’écran d’accueil !"
+    "message": "Cet écran n'existe pas.",
+    "link": "Aller à l'écran d'accueil !"
   },
   "themeSettings": {
-    "title": "Paramètres du thème",
+    "title": "Paramètres de Thème",
     "appearance": {
       "title": "Apparence",
-      "description": "Choisissez l’apparence de l’application Fashion. Sélectionnez un thème unique ou synchronisez avec les paramètres de votre système.",
+      "description": "Choisissez l'apparence de l'application Mode. Sélectionnez un thème unique ou synchronisez avec les paramètres de votre système.",
       "options": {
         "light": {
           "label": "Clair",
@@ -150,27 +150,27 @@
     },
     "preview": {
       "title": "Aperçu",
-      "appName": "Application Fashion",
+      "appName": "Application Mode",
       "themePreview": " aperçu du thème",
-      "description": "Voici à quoi ressembleront votre flux de tenues et autres contenus avec le thème sélectionné.",
+      "description": "Voici à quoi ressembleront votre flux de tenues et autre contenu avec le thème sélectionné.",
       "primaryButton": "Primaire",
       "secondaryButton": "Secondaire"
     },
     "languageCurrency": {
-      "title": "Langue et devise",
-      "description": "Sélectionnez votre langue et devise préférées pour l’application.",
-      "languagePlaceholder": "Sélectionner une langue",
-      "currencyPlaceholder": "Sélectionner une devise"
+      "title": "Langue et Devise",
+      "description": "Sélectionnez votre langue et devise préférées pour l'application.",
+      "languagePlaceholder": "Sélectionner la langue",
+      "currencyPlaceholder": "Sélectionner la devise"
     }
   },
   "createdOutfitsSection": {
     "loading": "Chargement des tenues...",
-    "header": "Vos créations",
+    "header": "Vos Créations",
     "createButton": "Créer",
     "emptyState": {
-      "title": "Aucune tenue créée pour l'instant",
+      "title": "Aucune tenue créée pour le moment",
       "description": "Commencez à créer votre première tenue !",
-      "actionText": "Créer une tenue"
+      "actionText": "Créer une Tenue"
     }
   },
   "followButton": {
@@ -180,12 +180,12 @@
   },
   "profileBioSection": {
     "title": "À propos",
-    "noBio": "Aucune bio disponible pour l'instant. Ajoutez-en une en modifiant votre profil !"
+    "noBio": "Aucune biographie disponible pour le moment. Ajoutez-en une en modifiant votre profil !"
   },
   "profileHeader": {
-    "anonymousUser": "Utilisateur anonyme",
-    "defaultRole": "Passionné de mode",
-    "editProfile": "Modifier le profil",
+    "anonymousUser": "Utilisateur Anonyme",
+    "defaultRole": "Passionné de Mode",
+    "editProfile": "Modifier le Profil",
     "tabs": {
       "user-info": "Profil",
       "created-outfits": "Créées",
@@ -193,25 +193,25 @@
     }
   },
   "profileRecentActivitySection": {
-    "title": "Activité récente",
+    "title": "Activité Récente",
     "activities": [
       {
-        "text": "Votre tenue a obtenu plus de 50 j’aime !"
+        "text": "Votre tenue a reçu plus de 50 j'aime !"
       },
       {
         "text": "Vous avez aimé 5 nouvelles tenues"
       },
       {
-        "text": "Création de « Look décontracté d’été »"
+        "text": "Création de \"Look Décontracté d'Été\""
       }
     ]
   },
   "auth": {
     "welcome": "Bienvenue",
     "hero": {
-      "badge": "Assistant mode",
-      "title": "Le style, pensé avec intelligence.",
-      "slogan": "Minimal comme Apple. Puissant comme Vercel. Personnalisé pour vous."
+      "badge": "Assistant Mode",
+      "title": "Style, curaté avec intelligence.",
+      "slogan": "Minimaliste comme Apple. Puissant comme Vercel. Personnalisé pour vous."
     },
     "signInSubtitle": "Connectez-vous pour continuer",
     "signUpSubtitle": "Créer un compte",
@@ -220,46 +220,46 @@
       "password": "Mot de passe"
     },
     "placeholders": {
-      "email": "vous@exemple.fr",
+      "email": "vous@exemple.com",
       "password": "••••••••"
     },
     "buttons": {
-      "signIn": "Se connecter",
-      "signUp": "Créer un compte",
+      "signIn": "Se Connecter",
+      "signUp": "Créer un Compte",
       "google": "Se connecter avec Google"
     },
     "switch": {
-      "signUpPrompt": "Vous n’avez pas de compte ? ",
+      "signUpPrompt": "Vous n'avez pas de compte ? ",
       "signInPrompt": "Vous avez déjà un compte ? ",
-      "signUp": "S’inscrire",
+      "signUp": "S'inscrire",
       "signIn": "Se connecter"
     },
-    "termsAndPrivacy": "En continuant, vous acceptez nos conditions et notre politique de confidentialité.",
+    "termsAndPrivacy": "En continuant, vous acceptez nos Conditions et Confidentialité.",
     "alerts": {
       "supabaseNotInitialized": {
         "title": "Erreur",
-        "message": "Le client Supabase n’est pas initialisé."
+        "message": "Le client Supabase n'est pas initialisé."
       },
       "signInError": {
-        "title": "Erreur de connexion"
+        "title": "Erreur de Connexion"
       },
       "signUpError": {
-        "title": "Erreur d’inscription"
+        "title": "Erreur d'Inscription"
       },
       "emailVerification": {
-        "title": "Vérification de l’e-mail",
-        "message": "Veuillez vérifier votre boîte de réception pour la vérification de l’e-mail !"
+        "title": "Vérification de l'E-mail",
+        "message": "Veuillez vérifier votre boîte de réception pour la vérification de l'e-mail !"
       }
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Paramètres du thème",
+    "themeSettings": "Paramètres de Thème",
     "logout": "Déconnexion"
   },
   "savedOutfitsSection": {
     "loading": "Chargement des tenues enregistrées...",
     "emptyState": {
-      "title": "Aucune tenue enregistrée pour l'instant",
+      "title": "Aucune tenue enregistrée pour le moment",
       "description": "Commencez à enregistrer les tenues que vous aimez !"
     }
   },
@@ -267,14 +267,14 @@
     "title": "Statistiques",
     "created": "Créées",
     "saved": "Enregistrées",
-    "likes": "J’aime",
+    "likes": "J'aime",
     "loading": "..."
   },
   "contactModal": {
-    "title": "Nous contacter",
-    "sendMessage": "Envoyer le message",
-    "sending": "Envoi en cours...",
-    "fullName": "Nom complet",
+    "title": "Nous Contacter",
+    "sendMessage": "Envoyer le Message",
+    "sending": "Envoi...",
+    "fullName": "Nom Complet",
     "email": "E-mail",
     "message": "Message",
     "placeholders": {
@@ -283,58 +283,69 @@
       "message": "Décrivez votre message..."
     },
     "errors": {
-      "fullNameRequired": "Le nom complet est requis",
+      "fullNameRequired": "Le / System: nom complet est requis",
       "fullNameMaxLength": "Le nom ne peut pas dépasser 80 caractères",
       "emailRequired": "Entrez votre e-mail",
       "emailInvalid": "Veuillez entrer un e-mail valide",
       "messageRequired": "Le message est requis"
     },
     "alerts": {
-      "apiKeyMissing": "Clé API manquante. Veuillez contacter le support.",
+      "apiKeyMissing": "La clé API est manquante. Veuillez contacter le support.",
       "success": "Message envoyé avec succès !",
-      "error": "Échec de l’envoi du message. Veuillez réessayer plus tard."
+      "error": "Échec de l'envoi du message. Veuillez réessayer plus tard."
     }
   },
   "deleteModalOutfit": {
-    "title": "Supprimer la tenue",
+    "title": "Supprimer la Tenue",
     "message": "Êtes-vous sûr de vouloir supprimer cette tenue ? Cette action est irréversible.",
     "cancel": "Annuler",
     "delete": "Supprimer",
-    "deleting": "Suppression en cours...",
-    "error": "L’ID utilisateur est requis pour la suppression"
+    "deleting": "Suppression...",
+    "error": "L'ID utilisateur est requis pour la suppression"
   },
   "outfitCreateModal": {
-    "title": "Créer une tenue",
+    "title": "Créer une Tenue",
     "save": "Enregistrer",
-    "saving": "Enregistrement en cours...",
-    "addElement": "Ajouter un élément",
-    "outfitElements": "Éléments de la tenue",
+    "saving": "Enregistrement...",
+    "addElement": "Ajouter un Élément",
+    "outfitElements": "Éléments de la Tenue",
     "name": "Nom",
     "description": "Description",
-    "styleTags": "Étiquettes de style",
-    "elementType": "Type d’élément",
+    "styleTags": "Étiquettes de Style",
+    "elementType": "Type d'Élément",
+    "elementCategory": "Catégorie d'Élément",
+    "selectFromOptions": "Sélectionnez parmi les options ci-dessous",
+    "elementImage": "Image de l'Élément",
+    "imageReady": "Prêt à télécharger",
+    "tapToSelectImage": "Touchez pour sélectionner une image",
     "price": "Prix",
-    "siteUrl": "URL du site",
+    "shopUrl": "URL de la Boutique",
+    "optional": "facultatif",
+    "siteUrl": "URL du Site",
     "image": "Image",
     "placeholders": {
       "name": "Entrez le nom de la tenue",
       "description": "Décrivez votre tenue...",
-      "elementType": "Sélectionnez le type d’élément",
+      "elementType": "Sélectionnez le type d'élément",
       "price": "Entrez le prix (facultatif)",
-      "siteUrl": "Entrez l’URL du site",
-      "image": "Sélectionnez une image"
+      "siteUrl": "Entrez l'URL du site",
+      "image": "Sélectionner une Image",
+      "shopUrl": "ex. https://exemple.com/produit"
     },
     "errors": {
       "nameRequired": "Le nom de la tenue est requis",
       "descriptionRequired": "La description est requise",
       "elementRequired": "Au moins un élément de tenue est requis",
-      "elementTypeRequired": "Le type d’élément est requis",
+      "elementTypeRequired": "Le type d'élément est requis",
       "priceInvalid": "Le prix doit être un nombre",
       "priceNegative": "Le prix ne peut pas être négatif",
-      "siteUrlRequired": "L’URL du site est requise",
+      "siteUrlRequired": "L'URL du site est requise",
       "siteUrlInvalid": "Veuillez entrer une URL valide",
-      "imageRequired": "L’image est requise",
-      "styleTagsRequired": "Veuillez sélectionner au moins une étiquette de style"
+      "imageRequired": "L'image est requise",
+      "styleTagsRequired": "Veuillez sélectionner au moins une étiquette de style",
+      "priceRequired": "Le prix est requis",
+      "priceMin": "Le prix doit être zéro ou plus",
+      "invalidUrl": "Veuillez entrer une URL valide"
     },
     "elementCount": {
       "zero": "Ajoutez au moins 1 élément",
@@ -342,33 +353,40 @@
       "multiple": "éléments ajoutés"
     },
     "totalPrice": "Prix total : ",
-    "imageFormat": "JPG, PNG (max. 5 Mo)",
+    "imageFormat": "JPG, PNG (max 5 Mo)",
     "imageSelected": "Image sélectionnée avec succès",
+    "addElementToOutfit": "Ajouter un élément à la tenue",
     "alerts": {
-      "permissionDenied": "Une autorisation de stockage est requise pour sélectionner des images.",
-      "imagePickerError": "Impossible d’ouvrir le sélecteur d’images",
-      "imageSelectError": "Impossible de sélectionner l’image",
+      "permissionDenied": "La permission de stockage est requise pour sélectionner des images.",
+      "imagePickerError": "Échec de l'ouverture du sélecteur d'images",
+      "imageSelectError": "Échec de la sélection de l'image",
       "noImageSelected": "Aucune image sélectionnée",
-      "imagePickerErrorMessage": "Erreur du sélecteur d’images : ",
-      "success": "Tenue enregistrée avec succès !",
-      "error": "Échec de la création de la tenue",
-      "unknownError": "Une erreur inconnue s’est produite"
+      "imagePickerErrorMessage": "Erreur du sélecteur d'images : ",
+      "success": {
+        "title": "Succès",
+        "message": "Tenue enregistrée avec succès !"
+      },
+      "error": {
+        "title": "Erreur",
+        "message": "Échec de la création de la tenue"
+      },
+      "unknownError": "Une erreur inconnue s'est produite"
     }
   },
   "profileEdit": {
-    "title": "Modifier le profil",
+    "title": "Modifier le Profil",
     "save": "Enregistrer",
-    "saving": "Enregistrement en cours...",
-    "displayName": "Nom d’affichage",
-    "bio": "Bio",
-    "stylePreferences": "Préférences de style",
+    "saving": "Enregistrement...",
+    "displayName": "Nom d'Affichage",
+    "bio": "Biographie",
+    "stylePreferences": "Préférences de Style",
     "privacy": "Confidentialité",
-    "publicProfile": "Profil public",
+    "publicProfile": "Profil Public",
     "publicProfileDescription": "Les autres peuvent voir votre profil et les tenues créées",
-    "privateProfileDescription": "Seuls votre pseudo et avatar seront visibles",
-    "privateAccount": "Compte privé",
-    "privateAccountDescription": "Lorsqu’il est privé, seuls votre nom d’utilisateur et votre photo de profil seront visibles pour les autres. Votre bio et vos tenues seront masquées.",
-    "changePhoto": "Appuyez pour changer la photo",
+    "privateProfileDescription": "Seul votre pseudo et avatar seront visibles",
+    "privateAccount": "Compte Privé",
+    "privateAccountDescription": "Lorsqu'il est privé, seul votre nom d'utilisateur et votre photo de profil seront visibles pour les autres. Votre biographie et vos tenues seront cachées.",
+    "changePhoto": "Touchez pour changer la photo",
     "stylePreferencesComingSoon": "Bientôt disponible ! Définissez vos styles, couleurs et marques préférés.",
     "placeholders": {
       "name": "Entrez votre nom",
@@ -376,95 +394,95 @@
     },
     "errors": {
       "nameRequired": "Le nom est requis",
-      "bioMaxLength": "La bio ne doit pas dépasser 200 caractères"
+      "bioMaxLength": "La biographie ne doit pas dépasser 200 caractères"
     },
     "alerts": {
-      "permissionDenied": "Une autorisation de stockage est requise pour sélectionner des images.",
-      "imagePickerError": "Impossible d’ouvrir le sélecteur d’images",
-      "imageSelectError": "Impossible de sélectionner l’image",
+      "permissionDenied": "La permission de stockage est requise pour sélectionner des images.",
+      "imagePickerError": "Échec de l'ouverture du sélecteur d'images",
+      "imageSelectError": "Échec de la sélection de l'image",
       "noImageSelected": "Aucune image sélectionnée",
-      "imagePickerErrorMessage": "Erreur du sélecteur d’images : ",
-      "imageUploadError": "Échec du téléchargement de l’image",
-      "imageUrlError": "Impossible de récupérer l’URL de l’image",
+      "imagePickerErrorMessage": "Erreur du sélecteur d'images : ",
+      "imageUploadError": "Échec du téléchargement de l'image",
+      "imageUrlError": "Échec de la récupération de l'URL de l'image",
       "success": "Profil mis à jour avec succès",
       "error": "Échec de la mise à jour du profil"
     }
   },
   "registrationModal": {
-    "welcome": "Bienvenue dans l’application !",
-    "welcomeDescription": "Pour utiliser l’application, vous devez compléter le processus d’inscription.",
+    "welcome": "Bienvenue dans l'Application !",
+    "welcomeDescription": "Pour utiliser l'application, vous devez compléter le processus d'inscription.",
     "provideDetails": "Veuillez fournir les détails de votre profil dans les étapes suivantes.",
     "logout": "Déconnexion",
     "proceed": "Continuer",
     "previous": "Précédent",
     "next": "Suivant",
     "complete": "Terminer",
-    "saving": "Enregistrement en cours...",
-    "username": "Nom d’utilisateur",
-    "fullName": "Nom complet",
-    "bio": "Bio",
-    "profilePicture": "Photo de profil",
-    "setPhoto": "Appuyez pour définir une photo (facultatif)",
-    "reviewInfo": "Vérifiez vos informations",
+    "saving": "Enregistrement...",
+    "username": "Nom d'Utilisateur",
+    "fullName": "Nom Complet",
+    "bio": "Biographie",
+    "profilePicture": "Photo de Profil",
+    "setPhoto": "Touchez pour définir la photo (facultatif)",
+    "reviewInfo": "Vérifiez Vos Informations",
     "notProvided": "Non fourni",
     "placeholders": {
-      "username": "Entrez votre nom d’utilisateur",
+      "username": "Entrez votre nom d'utilisateur",
       "fullName": "Entrez votre nom complet",
       "bio": "Parlez-nous de votre style... (facultatif)"
     },
     "errors": {
-      "usernameRequired": "Le nom d’utilisateur est requis",
-      "usernameMinLength": "Le nom d’utilisateur doit comporter au moins 3 caractères",
-      "usernameMaxLength": "Le nom d’utilisateur ne peut pas dépasser 20 caractères",
-      "usernamePattern": "Le nom d’utilisateur ne peut contenir que des lettres, des chiffres et des traits de soulignement",
+      "usernameRequired": "Le nom d'utilisateur est requis",
+      "usernameMinLength": "Le nom d'utilisateur doit comporter au moins 3 caractères",
+      "usernameMaxLength": "Le nom d'utilisateur ne peut pas dépasser 20 caractères",
+      "usernamePattern": "Le nom d'utilisateur ne peut contenir que des lettres, des chiffres et des tirets bas",
       "fullNameRequired": "Le nom complet est requis",
       "fullNameMaxLength": "Le nom complet ne peut pas dépasser 50 caractères",
-      "bioMaxLength": "La bio ne peut pas dépasser 200 caractères",
-      "userIdMissing": "L’ID utilisateur est manquant. Veuillez vous reconnecter."
+      "bioMaxLength": "La biographie ne peut pas dépasser 200 caractères",
+      "userIdMissing": "L'ID utilisateur est manquant. Veuillez vous reconnecter."
     },
     "alerts": {
-      "permissionDenied": "Une autorisation de stockage est requise pour sélectionner des images.",
-      "imagePickerError": "Impossible d’ouvrir le sélecteur d’images",
-      "imageSelectError": "Impossible de sélectionner l’image",
+      "permissionDenied": "La permission de stockage est requise pour sélectionner des images.",
+      "imagePickerError": "Échec de l'ouverture du sélecteur d'images",
+      "imageSelectError": "Échec de la sélection de l'image",
       "noImageSelected": "Aucune image sélectionnée",
-      "imagePickerErrorMessage": "Erreur du sélecteur d’images : ",
-      "imageUploadError": "Échec du téléchargement de l’image",
-      "imageUrlError": "Impossible de récupérer l’URL de l’image",
-      "registrationError": "Échec de l’inscription. Veuillez réessayer.",
+      "imagePickerErrorMessage": "Erreur du sélecteur d'images : ",
+      "imageUploadError": "Échec du téléchargement de l'image",
+      "imageUrlError": "Échec de la récupération de l'URL de l'image",
+      "registrationError": "Échec de l'inscription. Veuillez réessayer.",
       "logoutError": "Échec de la déconnexion. Veuillez réessayer."
     }
   },
   "reportModal": {
     "report": "Signaler",
-    "sendReport": "Envoyer le signalement",
-    "sending": "Envoi en cours...",
+    "sendReport": "Envoyer le Rapport",
+    "sending": "Envoi...",
     "email": "E-mail",
-    "reason": "Raison",
+    "reason": "Motif",
     "description": "Description",
     "placeholders": {
       "email": "Entrez votre e-mail",
-      "reason": "Sélectionnez une raison",
+      "reason": "Sélectionnez le motif",
       "description": "Décrivez le problème..."
     },
     "errors": {
-      "userIdRequired": "L’ID utilisateur est requis",
+      "userIdRequired": "L'ID utilisateur est requis",
       "emailRequired": "Entrez votre e-mail pour que nous puissions vous répondre",
       "emailInvalid": "Veuillez entrer un e-mail valide",
-      "reasonRequired": "La raison est requise",
+      "reasonRequired": "Le motif est requis",
       "descriptionRequired": "La description est requise"
     },
     "alerts": {
-      "apiKeyMissing": "Clé API manquante. Veuillez contacter le support.",
-      "success": "Signalement envoyé avec succès !",
-      "error": "Échec de l’envoi du signalement. Veuillez réessayer plus tard."
+      "apiKeyMissing": "La clé API est manquante. Veuillez contacter le support.",
+      "success": "Rapport envoyé avec succès !",
+      "error": "Échec de l'envoi du rapport. Veuillez réessayer plus tard."
     }
   },
   "shareModal": {
-    "title": "Partager la tenue",
+    "title": "Partager la Tenue",
     "cancel": "Annuler",
     "shareOptions": {
       "native": "Partager...",
-      "copy": "Copier le lien",
+      "copy": "Copier le Lien",
       "twitter": "Twitter",
       "facebook": "Facebook",
       "instagram": "Instagram",
@@ -474,30 +492,30 @@
     },
     "untitledOutfit": "Tenue sans titre",
     "defaultDescription": "Tenue de mode à partager",
-    "shareText": "Découvrez cette incroyable tenue sur l’application Fashion !",
+    "shareText": "Découvrez cette incroyable tenue sur l'Application Mode !",
     "alerts": {
       "shareError": "Impossible de partager cette tenue",
       "copySuccess": "Lien copié dans le presse-papiers !",
       "copyError": "Échec de la copie du lien",
-      "platformError": "Impossible d’ouvrir ",
+      "platformError": "Impossible d'ouvrir ",
       "instagramShare": "Lien copié ! Vous pouvez maintenant le coller dans votre story ou publication Instagram."
     }
   },
   "chatSection": {
-    "promptPrefix": "Aidez-moi à créer une tenue selon les critères suivants :",
-    "selectGender": "Le genre",
-    "selectOutfitStyles": "Les styles de tenue",
-    "selectFit": "L’ajustement",
-    "selectDominantColors": "Les couleurs dominantes",
-    "selectOutfitElements": "Les éléments de la tenue",
-    "selectPriceRange": "La gamme de prix",
+    "promptPrefix": "Je veux que vous m'aidiez à créer une tenue selon les critères suivants :",
+    "selectGender": "Genre",
+    "selectOutfitStyles": "Styles de tenue",
+    "selectFit": "Coupe",
+    "selectDominantColors": "Couleurs dominantes",
+    "selectOutfitElements": "Éléments de la tenue",
+    "selectPriceRange": "Fourchette de prix",
     "from": "De",
     "to": "À",
     "currency": "Devise",
     "placeholders": {
       "lowestPrice": "Prix le plus bas",
       "highestPrice": "Prix le plus élevé",
-      "currency": "Sélectionner une devise",
+      "currency": "Sélectionner la devise",
       "outfitDescription": "Description de la tenue... (facultatif)"
     },
     "genders": {
@@ -516,23 +534,23 @@
       "party": "Fête",
       "beach": "Plage",
       "office": "Bureau",
-      "old money": "Old Money",
+      "old money": "Vieux Argent",
       "athleisure": "Athleisure",
       "minimalist": "Minimaliste",
       "gothic": "Gothique",
       "preppy": "Preppy",
       "punk": "Punk",
       "grunge": "Grunge",
-      "smart casual": "Smart casual",
-      "business casual": "Business casual",
+      "smart casual": "Casual Chic",
+      "business casual": "Casual d'Affaires",
       "chic": "Chic",
       "resort": "Resort",
       "cottagecore": "Cottagecore",
       "normcore": "Normcore",
       "techwear": "Techwear",
-      "avant-garde": "Avant-garde",
+      "avant-garde": "Avant-Garde",
       "monochrome": "Monochrome",
-      "color blocking": "Color blocking",
+      "color blocking": "Blocage de Couleur",
       "safari": "Safari",
       "retro": "Rétro",
       "y2k": "Y2K",
@@ -541,18 +559,18 @@
     "fits": {
       "slim": "Slim",
       "regular": "Régulier",
-      "relaxed": "Détendu",
+      "relaxed": "Relaxed",
       "oversized": "Oversize",
-      "tailored": "Sur mesure",
+      "tailored": "Sur Mesure",
       "slim fit": "Coupe Slim",
       "regular fit": "Coupe Régulière",
-      "relaxed fit": "Coupe Détendue",
+      "relaxed fit": "Coupe Relaxe",
       "loose fit": "Coupe Ample",
       "oversized fit": "Coupe Oversize",
-      "tailored fit": "Coupe Ajustée",
+      "tailored fit": "Coupe Sur Mesure",
       "athletic fit": "Coupe Athlétique",
-      "tapered fit": "Coupe Fusée",
-      "boxy fit": "Coupe Carrée",
+      "tapered fit": "Coupe Fuselée",
+      "boxy fit": "Coupe Boîte",
       "straight fit": "Coupe Droite"
     },
     "colors": {
@@ -567,19 +585,19 @@
       "gray": "Gris",
       "brown": "Marron",
       "orange": "Orange",
-      "navy": "Bleu marine",
+      "navy": "Bleu Marine",
       "beige": "Beige",
       "olive": "Olive",
       "teal": "Sarcelle",
       "burgundy": "Bordeaux",
       "cream": "Crème",
-      "camel": "Camel",
-      "charcoal": "Anthracite",
-      "off white": "Blanc cassé",
-      "pastel pink": "Rose pastel",
-      "pastel blue": "Bleu pastel",
-      "pastel green": "Vert pastel",
-      "pastel yellow": "Jaune pastel"
+      "camel": "Chameau",
+      "charcoal": "Charbon",
+      "off white": "Blanc Cassé",
+      "pastel pink": "Rose Pastel",
+      "pastel blue": "Bleu Pastel",
+      "pastel green": "Vert Pastel",
+      "pastel yellow": "Jaune Pastel"
     },
     "elements": {
       "shirt": "Chemise",
@@ -596,8 +614,8 @@
       "bottom": "Bas",
       "footwear": "Chaussures",
       "accessories": "Accessoires",
-      "outerwear": "Manteaux",
-      "headwear": "Couvre-chef",
+      "outerwear": "Vêtements d'Extérieur",
+      "headwear": "Couvre-Chef",
       "eyewear": "Lunettes",
       "jewelry": "Bijoux",
       "scarf": "Écharpe",

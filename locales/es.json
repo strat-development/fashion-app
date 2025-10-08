@@ -3,39 +3,39 @@
     "loading": "Cargando…"
   },
   "homeScreen": {
-    "welcomeMessage": "Bienvenido, ¿cómo te gustaría crear un conjunto?",
+    "welcomeMessage": "Bienvenido, ¿cómo te gustaría crear un atuendo?",
     "aiConstructorButton": "Constructor de IA",
-    "createOwnOutfitButton": "Crea tu propio conjunto"
+    "createOwnOutfitButton": "Crea tu propio atuendo"
   },
   "feedSection": {
     "alerts": {
       "notLoggedIn": {
         "title": "No has iniciado sesión",
-        "message": "Debes iniciar sesión para guardar conjuntos."
+        "message": "Debes iniciar sesión para guardar atuendos."
       }
     },
     "emptyState": {
-      "title": "Aún no hay conjuntos",
-      "description": "Crea tu primer conjunto o sigue a otros para ver sus creaciones",
-      "actionText": "Crear conjunto"
+      "title": "Aún no hay atuendos",
+      "description": "Crea tu primer atuendo o sigue a otros para ver sus creaciones",
+      "actionText": "Crear Atuendo"
     },
     "loadingOutfits": "Cargando..."
   },
   "rankingScreen": {
     "title": "Clasificación",
-    "subtitle": "Mejores conjuntos y creadores",
+    "subtitle": "Mejores atuendos y creadores",
     "tabs": {
-      "outfits": "Conjuntos",
+      "outfits": "Atuendos",
       "creators": "Creadores"
     },
     "loading": "Cargando…",
-    "error": "Error al cargar",
+    "error": "No se pudo cargar",
     "tryAgain": "Intentar de nuevo",
     "rankRow": {
-      "untitledOutfit": "Conjunto sin título",
+      "untitledOutfit": "Atuendo sin título",
       "unknownCreator": "Desconocido",
       "outfitStats": "Me gusta · Guardados · Calificaciones",
-      "creatorStats": "Conjuntos · Me gusta",
+      "creatorStats": "Atuendos · Me gusta",
       "rank": "#"
     }
   },
@@ -44,18 +44,18 @@
     "about": "Acerca de",
     "privateProfile": "Este perfil es privado."
   },
-  "outfitDetail": {
+  "outfitDetail)": {
     "header": {
-      "title": "Detalles del conjunto",
+      "title": "Detalles del Atuendo",
       "yourCreation": "Tu creación"
     },
+    "loading": "Cargando atuendo…",
+    "notFound": "No pudimos encontrar este atuendo.",
+    "goBack": "Volver",
     "images": {
       "free": "Gratis",
       "noImages": "Sin imágenes"
     },
-      "loading": "Cargando outfit…",
-      "notFound": "No pudimos encontrar este outfit.",
-      "goBack": "Volver",
     "info": {
       "anonymous": "Anónimo",
       "tags": "Etiquetas",
@@ -69,7 +69,7 @@
       "comments": " comentarios",
       "likes": " me gusta"
     },
-    "defaultOutfitName": "Conjunto sin título"
+    "defaultOutfitName": "Atuendo sin título"
   },
   "commentItem": {
     "reply": "Responder",
@@ -84,7 +84,7 @@
       },
       "error": {
         "title": "Error",
-        "message": "No se pudo añadir el comentario"
+        "message": "No se pudo agregar el comentario"
       }
     }
   },
@@ -111,17 +111,17 @@
       },
       "error": {
         "title": "Error",
-        "message": "No se pudo añadir el comentario"
+        "message": "No se pudo agregar el comentario"
       }
     }
   },
   "feedFilters": {
-    "searchPlaceholder": "Buscar conjuntos...",
+    "searchPlaceholder": "Buscar atuendos...",
     "sections": {
-      "styleTags": "Etiquetas de estilo",
+      "styleTags": "Etiquetas de Estilo",
       "elements": "Elementos"
     },
-    "clearFilters": "Borrar todos los filtros"
+    "clearFilters": "Limpiar Todos los Filtros"
   },
   "notFoundScreen": {
     "title": "¡Ups!",
@@ -129,10 +129,10 @@
     "link": "¡Ir a la pantalla de inicio!"
   },
   "themeSettings": {
-    "title": "Configuración de tema",
+    "title": "Configuración de Tema",
     "appearance": {
       "title": "Apariencia",
-      "description": "Elige cómo se ve la aplicación de moda. Selecciona un tema único o sincroniza con la configuración de tu sistema.",
+      "description": "Elige cómo se ve la aplicación de Moda. Selecciona un tema único o sincroniza con la configuración de tu sistema.",
       "options": {
         "light": {
           "label": "Claro",
@@ -149,43 +149,43 @@
       }
     },
     "preview": {
-      "title": "Vista previa",
-      "appName": "Aplicación de moda",
+      "title": "Vista Previa",
+      "appName": "Aplicación de Moda",
       "themePreview": " vista previa del tema",
-      "description": "Así se verá tu feed de conjuntos y otro contenido con el tema seleccionado.",
+      "description": "Así se verá tu feed de atuendos y otro contenido con el tema seleccionado.",
       "primaryButton": "Primario",
       "secondaryButton": "Secundario"
     },
     "languageCurrency": {
-      "title": "Idioma y moneda",
+      "title": "Idioma y Moneda",
       "description": "Selecciona tu idioma y moneda preferidos para la aplicación.",
-      "languagePlaceholder": "Seleccionar idioma",
-      "currencyPlaceholder": "Seleccionar moneda"
+      "languagePlaceholder": "Seleccionar Idioma",
+      "currencyPlaceholder": "Seleccionar Moneda"
     }
   },
   "createdOutfitsSection": {
-    "loading": "Cargando conjuntos...",
-    "header": "Tus creaciones",
+    "loading": "Cargando atuendos...",
+    "header": "Tus Creaciones",
     "createButton": "Crear",
     "emptyState": {
-      "title": "Aún no has creado conjuntos",
-      "description": "¡Comienza a crear tu primer conjunto!",
-      "actionText": "Crear conjunto"
+      "title": "Aún no has creado atuendos",
+      "description": "¡Comienza a crear tu primer atuendo!",
+      "actionText": "Crear Atuendo"
     }
   },
   "followButton": {
     "follow": "Seguir",
     "unfollow": "Dejar de seguir",
-    "pending": "Solicitud de seguimiento pendiente"
+    "pending": "Solicitud de Seguimiento Pendiente"
   },
   "profileBioSection": {
     "title": "Acerca de",
     "noBio": "Aún no hay biografía disponible. ¡Añade una editando tu perfil!"
   },
   "profileHeader": {
-    "anonymousUser": "Usuario anónimo",
-    "defaultRole": "Entusiasta de la moda",
-    "editProfile": "Editar perfil",
+    "anonymousUser": "Usuario Anónimo",
+    "defaultRole": "Entusiasta de la Moda",
+    "editProfile": "Editar Perfil",
     "tabs": {
       "user-info": "Perfil",
       "created-outfits": "Creados",
@@ -193,44 +193,44 @@
     }
   },
   "profileRecentActivitySection": {
-    "title": "Actividad reciente",
+    "title": "Actividad Reciente",
     "activities": [
       {
-        "text": "¡Tu conjunto obtuvo más de 50 me gusta!"
+        "text": "¡Tu atuendo recibió más de 50 me gusta!"
       },
       {
-        "text": "Diste me gusta a 5 nuevos conjuntos"
+        "text": "Diste me gusta a 5 nuevos atuendos"
       },
       {
-        "text": "Creaste \"Look casual de verano\""
+        "text": "Creado \"Look Casual de Verano\""
       }
     ]
   },
   "auth": {
     "welcome": "Bienvenido",
     "hero": {
-      "badge": "Asistente de moda",
+      "badge": "Asistente de Moda",
       "title": "Estilo, curado con inteligencia.",
-      "slogan": "Minimal como Apple. Potente como Vercel. Personalizado para ti."
+      "slogan": "Minimalista como Apple. Poderoso como Vercel. Personalizado para ti."
     },
     "signInSubtitle": "Inicia sesión para continuar",
     "signUpSubtitle": "Crea una cuenta",
     "labels": {
-      "email": "Correo electrónico",
+      "email": "Correo Electrónico",
       "password": "Contraseña"
     },
     "placeholders": {
-      "email": "tucorreo@ejemplo.com",
+      "email": "tú@ejemplo.com",
       "password": "••••••••"
     },
     "buttons": {
-      "signIn": "Iniciar sesión",
-      "signUp": "Crear cuenta",
+      "signIn": "Iniciar Sesión",
+      "signUp": "Crear Cuenta",
       "google": "Iniciar sesión con Google"
     },
     "switch": {
-      "signUpPrompt": "¿No tienes cuenta? ",
-      "signInPrompt": "¿Ya tienes cuenta? ",
+      "signUpPrompt": "¿No tienes una cuenta? ",
+      "signInPrompt": "¿Ya tienes una cuenta? ",
       "signUp": "Regístrate",
       "signIn": "Inicia sesión"
     },
@@ -241,26 +241,26 @@
         "message": "El cliente de Supabase no está inicializado."
       },
       "signInError": {
-        "title": "Error al iniciar sesión"
+        "title": "Error al Iniciar Sesión"
       },
       "signUpError": {
-        "title": "Error al registrarse"
+        "title": "Error al Registrarse"
       },
       "emailVerification": {
-        "title": "Verificación de correo",
-        "message": "¡Revisa tu bandeja de entrada para la verificación de correo!"
+        "title": "Verificación de Correo",
+        "message": "¡Por favor, revisa tu bandeja de entrada para la verificación de correo!"
       }
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Configuración de tema",
-    "logout": "Cerrar sesión"
+    "themeSettings": "Configuración de Tema",
+    "logout": "Cerrar Sesión"
   },
   "savedOutfitsSection": {
-    "loading": "Cargando conjuntos guardados...",
+    "loading": "Cargando atuendos guardados...",
     "emptyState": {
-      "title": "Aún no hay conjuntos guardados",
-      "description": "¡Comienza a guardar los conjuntos que te encantan!"
+      "title": "Aún no hay atuendos guardados",
+      "description": "¡Comienza a guardar los atuendos que te encantan!"
     }
   },
   "userStatistics": {
@@ -272,10 +272,10 @@
   },
   "contactModal": {
     "title": "Contáctanos",
-    "sendMessage": "Enviar mensaje",
+    "sendMessage": "Enviar Mensaje",
     "sending": "Enviando...",
-    "fullName": "Nombre completo",
-    "email": "Correo electrónico",
+    "fullName": "Nombre Completo",
+    "email": "Correo Electrónico",
     "message": "Mensaje",
     "placeholders": {
       "fullName": "Ingresa tu nombre completo",
@@ -291,83 +291,101 @@
     },
     "alerts": {
       "apiKeyMissing": "Falta la clave de API. Por favor, contacta al soporte.",
-      "success": "¡Mensaje enviado con éxito!",
-      "error": "No se pudo enviar el mensaje. Intenta de nuevo más tarde."
+      "success": "¡Mensaje enviado exitosamente!",
+      "error": "No se pudo enviar el mensaje. Por favor, intenta de nuevo más tarde."
     }
   },
   "deleteModalOutfit": {
-    "title": "Eliminar conjunto",
-    "message": "¿Estás seguro de que quieres eliminar este conjunto? Esta acción no se puede deshacer.",
+    "title": "Eliminar Atuendo",
+    "message": "¿Estás seguro de que quieres eliminar este atuendo? Esta acción no se puede deshacer.",
     "cancel": "Cancelar",
     "delete": "Eliminar",
     "deleting": "Eliminando...",
     "error": "Se requiere el ID de usuario para la eliminación"
   },
   "outfitCreateModal": {
-    "title": "Crear conjunto",
+    "title": "Crear Atuendo",
     "save": "Guardar",
     "saving": "Guardando...",
-    "addElement": "Añadir elemento",
-    "outfitElements": "Elementos del conjunto",
+    "addElement": "Agregar Elemento",
+    "outfitElements": "Elementos del Atuendo",
     "name": "Nombre",
     "description": "Descripción",
-    "styleTags": "Etiquetas de estilo",
-    "elementType": "Tipo de elemento",
+    "styleTags": "Etiquetas de Estilo",
+    "elementType": "Tipo de Elemento",
+    "elementCategory": "Categoría de Elemento",
+    "selectFromOptions": "Selecciona de las opciones a continuación",
+    "elementImage": "Imagen del Elemento",
+    "imageReady": "Listo para subir",
+    "tapToSelectImage": "Toca para seleccionar imagen",
     "price": "Precio",
-    "siteUrl": "URL del sitio",
+    "shopUrl": "URL de la Tienda",
+    "optional": "opcional",
+    "siteUrl": "URL del Sitio",
     "image": "Imagen",
     "placeholders": {
-      "name": "Ingresa el nombre del conjunto",
-      "description": "Describe tu conjunto...",
+      "name": "Ingresa el nombre del atuendo",
+      "description": "Describe tu atuendo...",
       "elementType": "Selecciona el tipo de elemento",
       "price": "Ingresa el precio (opcional)",
       "siteUrl": "Ingresa la URL del sitio",
-      "image": "Selecciona una imagen"
+      "image": "Seleccionar Imagen",
+      "shopUrl": "ej. https://ejemplo.com/producto"
     },
     "errors": {
-      "nameRequired": "El nombre del conjunto es obligatorio",
+      "nameRequired": "El nombre del atuendo es obligatorio",
       "descriptionRequired": "La descripción es obligatoria",
-      "elementRequired": "Se requiere al menos un elemento del conjunto",
+      "elementRequired": "Se requiere al menos un elemento del atuendo",
       "elementTypeRequired": "El tipo de elemento es obligatorio",
       "priceInvalid": "El precio debe ser un número",
       "priceNegative": "El precio no puede ser negativo",
       "siteUrlRequired": "La URL del sitio es obligatoria",
       "siteUrlInvalid": "Por favor, ingresa una URL válida",
       "imageRequired": "La imagen es obligatoria",
-      "styleTagsRequired": "Por favor, selecciona al menos una etiqueta de estilo"
+      "styleTagsRequired": "Por favor, selecciona al menos una etiqueta de estilo",
+      "priceRequired": "El precio es obligatorio",
+      "priceMin": "El precio debe ser cero o más",
+      "invalidUrl": "Por favor, ingresa una URL válida"
     },
     "elementCount": {
-      "zero": "Añade al menos 1 elemento",
-      "one": " elemento añadido",
-      "multiple": "elementos añadidos"
+      "zero": "Agrega al menos 1 elemento",
+      "one": " elemento agregado",
+      "multiple": "elementos agregados"
     },
     "totalPrice": "Precio total: ",
     "imageFormat": "JPG, PNG (máx. 5MB)",
-    "imageSelected": "Imagen seleccionada con éxito",
+    "imageSelected": "Imagen seleccionada exitosamente",
+    "addElementToOutfit": "Agregar elemento al atuendo",
     "alerts": {
       "permissionDenied": "Se requiere permiso de almacenamiento para seleccionar imágenes.",
       "imagePickerError": "No se pudo abrir el selector de imágenes",
       "imageSelectError": "No se pudo seleccionar la imagen",
       "noImageSelected": "No se seleccionó ninguna imagen",
-      "imagePickerErrorMessage": "Error en el selector de imágenes: ",
-      "success": "¡Conjunto guardado con éxito!",
-      "error": "No se pudo crear el conjunto",
+      "imagePickerErrorMessage": "Error del selector de imágenes: ",
+      "success": {
+        "title": "Éxito",
+        "message": "¡Atuendo guardado exitosamente!"
+      },
+      "error": {
+        "title": "Error",
+        "message": "No se pudo crear el atuendo"
+      },
       "unknownError": "Ocurrió un error desconocido"
     }
   },
   "profileEdit": {
-    "title": "Editar perfil",
+    "title": "-editar Perfil",
     "save": "Guardar",
     "saving": "Guardando...",
-    "displayName": "Nombre para mostrar",
+    "displayName": "Nombre para Mostrar",
     "bio": "Biografía",
-    "stylePreferences": "Preferencias de estilo",
+    "stylePreferences": "Preferencias de Estilo",
     "privacy": "Privacidad",
-    "publicProfile": "Perfil público",
-    "publicProfileDescription": "Otros pueden ver tu perfil y los conjuntos creados",
+    "publicProfile": "Perfil Público",
+    "publicProfileDescription": "Otros pueden ver tu perfil y los atuendos creados",
     "privateProfileDescription": "Solo tu apodo y avatar serán visibles",
-    "privateAccount": "Cuenta privada",
-    "privateAccountDescription": "Cuando es privada, solo tu nombre de usuario y foto de perfil serán visibles para otros. Tu biografía y conjuntos estarán ocultos.",
+    "privateAccount": "Cuenta Privada",
+    "privateAccountDescription": "Cuando es privada, solo tu nombre de usuario y foto de perfil serán visibles para otros. Tu biografía y atuendos estarán ocultos.",
     "changePhoto": "Toca para cambiar la foto",
     "stylePreferencesComingSoon": "¡Próximamente! Configura tus estilos, colores y marcas favoritas.",
     "placeholders": {
@@ -383,29 +401,29 @@
       "imagePickerError": "No se pudo abrir el selector de imágenes",
       "imageSelectError": "No se pudo seleccionar la imagen",
       "noImageSelected": "No se seleccionó ninguna imagen",
-      "imagePickerErrorMessage": "Error en el selector de imágenes: ",
-      "imageUploadError": "No se pudo cargar la imagen",
+      "imagePickerErrorMessage": "Error del selector de imágenes: ",
+      "imageUploadError": "No se pudo subir la imagen",
       "imageUrlError": "No se pudo recuperar la URL de la imagen",
-      "success": "Perfil actualizado con éxito",
+      "success": "Perfil actualizado exitosamente",
       "error": "No se pudo actualizar el perfil"
     }
   },
   "registrationModal": {
-    "welcome": "¡Bienvenido a la aplicación!",
-    "welcomeDescription": "Para usar la aplicación, debes completar el proceso de registro.",
+    "welcome": "¡Bienvenido a la Aplicación!",
+    "welcomeDescription": "Para usar la aplicación, necesitas completar el proceso de registro.",
     "provideDetails": "Por favor, proporciona los detalles de tu perfil en los siguientes pasos.",
-    "logout": "Cerrar sesión",
+    "logout": "Cerrar Sesión",
     "proceed": "Continuar",
     "previous": "Anterior",
     "next": "Siguiente",
     "complete": "Completar",
     "saving": "Guardando...",
-    "username": "Nombre de usuario",
-    "fullName": "Nombre completo",
+    "username": "Nombre de Usuario",
+    "fullName": "Nombre Completo",
     "bio": "Biografía",
-    "profilePicture": "Foto de perfil",
-    "setPhoto": "Toca para establecer una foto (opcional)",
-    "reviewInfo": "Revisa tu información",
+    "profilePicture": "Foto de Perfil",
+    "setPhoto": "Toca para establecer la foto (opcional)",
+    "reviewInfo": "Revisa Tu Información",
     "notProvided": "No proporcionado",
     "placeholders": {
       "username": "Ingresa tu nombre de usuario",
@@ -420,34 +438,34 @@
       "fullNameRequired": "El nombre completo es obligatorio",
       "fullNameMaxLength": "El nombre completo no puede exceder los 50 caracteres",
       "bioMaxLength": "La biografía no puede exceder los 200 caracteres",
-      "userIdMissing": "Falta el ID de usuario. Por favor, inicia sesión nuevamente."
+      "userIdMissing": "Falta el ID de usuario. Por favor, inicia sesión de nuevo."
     },
     "alerts": {
       "permissionDenied": "Se requiere permiso de almacenamiento para seleccionar imágenes.",
       "imagePickerError": "No se pudo abrir el selector de imágenes",
       "imageSelectError": "No se pudo seleccionar la imagen",
       "noImageSelected": "No se seleccionó ninguna imagen",
-      "imagePickerErrorMessage": "Error en el selector de imágenes: ",
-      "imageUploadError": "No se pudo cargar la imagen",
+      "imagePickerErrorMessage": "Error del selector de imágenes: ",
+      "imageUploadError": "No se pudo subir la imagen",
       "imageUrlError": "No se pudo recuperar la URL de la imagen",
-      "registrationError": "No se pudo completar el registro. Intenta de nuevo.",
-      "logoutError": "No se pudo cerrar sesión. Intenta de nuevo."
+      "registrationError": "No se pudo completar el registro. Por favor, intenta de nuevo.",
+      "logoutError": "No se pudo cerrar sesión. Por favor, intenta de nuevo."
     }
   },
   "reportModal": {
     "report": "Reportar",
-    "sendReport": "Enviar reporte",
+    "sendReport": "Enviar Reporte",
     "sending": "Enviando...",
-    "email": "Correo electrónico",
+    "email": "Correo Electrónico",
     "reason": "Motivo",
     "description": "Descripción",
     "placeholders": {
       "email": "Ingresa tu correo electrónico",
-      "reason": "Selecciona un motivo",
+      "reason": "Selecciona el motivo",
       "description": "Describe el problema..."
     },
     "errors": {
-      "userIdRequired": "El ID de usuario es obligatorio",
+      "userIdRequired": "Se requiere el ID de usuario",
       "emailRequired": "Ingresa tu correo electrónico para que podamos responderte",
       "emailInvalid": "Por favor, ingresa un correo electrónico válido",
       "reasonRequired": "El motivo es obligatorio",
@@ -455,28 +473,28 @@
     },
     "alerts": {
       "apiKeyMissing": "Falta la clave de API. Por favor, contacta al soporte.",
-      "success": "¡Reporte enviado con éxito!",
-      "error": "No se pudo enviar el reporte. Intenta de nuevo más tarde."
+      "success": "¡Reporte enviado exitosamente!",
+      "error": "No se pudo enviar el reporte. Por favor, intenta de nuevo más tarde."
     }
   },
   "shareModal": {
-    "title": "Compartir conjunto",
+    "title": "Compartir Atuendo",
     "cancel": "Cancelar",
     "shareOptions": {
       "native": "Compartir...",
-      "copy": "Copiar enlace",
+      "copy": "Copiar Enlace",
       "twitter": "Twitter",
       "facebook": "Facebook",
       "instagram": "Instagram",
-      "email": "Correo electrónico",
+      "email": "Correo Electrónico",
       "sms": "Mensaje",
       "more": "Más"
     },
-    "untitledOutfit": "Conjunto sin título",
-    "defaultDescription": "Conjunto de moda para compartir",
-    "shareText": "¡Mira este increíble conjunto en la aplicación de moda!",
+    "untitledOutfit": "Atuendo sin título",
+    "defaultDescription": "Atuendo de moda para compartir",
+    "shareText": "¡Mira este increíble atuendo en la Aplicación de Moda!",
     "alerts": {
-      "shareError": "No se pudo compartir este conjunto",
+      "shareError": "No se pudo compartir este atuendo",
       "copySuccess": "¡Enlace copiado al portapapeles!",
       "copyError": "No se pudo copiar el enlace",
       "platformError": "No se pudo abrir ",
@@ -484,12 +502,12 @@
     }
   },
   "chatSection": {
-    "promptPrefix": "Quiero que me ayudes a crear un conjunto con los siguientes criterios:",
+    "promptPrefix": "Quiero que me ayudes a crear un atuendo con los siguientes criterios:",
     "selectGender": "Género",
-    "selectOutfitStyles": "Estilos de conjunto",
+    "selectOutfitStyles": "Estilos de atuendo",
     "selectFit": "Ajuste",
     "selectDominantColors": "Colores dominantes",
-    "selectOutfitElements": "Elementos del conjunto",
+    "selectOutfitElements": "Elementos del atuendo",
     "selectPriceRange": "Rango de precios",
     "from": "Desde",
     "to": "Hasta",
@@ -498,7 +516,7 @@
       "lowestPrice": "Precio más bajo",
       "highestPrice": "Precio más alto",
       "currency": "Seleccionar moneda",
-      "outfitDescription": "Descripción del conjunto... (opcional)"
+      "outfitDescription": "Descripción del atuendo... (opcional)"
     },
     "genders": {
       "male": "Masculino",
@@ -516,23 +534,23 @@
       "party": "Fiesta",
       "beach": "Playa",
       "office": "Oficina",
-      "old money": "Old Money",
+      "old money": "Dinero Antiguo",
       "athleisure": "Athleisure",
       "minimalist": "Minimalista",
       "gothic": "Gótico",
       "preppy": "Preppy",
       "punk": "Punk",
       "grunge": "Grunge",
-      "smart casual": "Smart casual",
-      "business casual": "Negocios casual",
+      "smart casual": "Casual Elegante",
+      "business casual": "Casual de Negocios",
       "chic": "Chic",
       "resort": "Resort",
       "cottagecore": "Cottagecore",
       "normcore": "Normcore",
       "techwear": "Techwear",
-      "avant-garde": "Avant-garde",
+      "avant-garde": "Vanguardia",
       "monochrome": "Monocromo",
-      "color blocking": "Bloques de color",
+      "color blocking": "Bloqueo de Color",
       "safari": "Safari",
       "retro": "Retro",
       "y2k": "Y2K",
@@ -544,16 +562,16 @@
       "relaxed": "Relajado",
       "oversized": "Extragrande",
       "tailored": "A medida",
-      "slim fit": "Ajuste slim",
-      "regular fit": "Ajuste regular",
-      "relaxed fit": "Ajuste relajado",
-      "loose fit": "Ajuste suelto",
-      "oversized fit": "Ajuste extragrande",
-      "tailored fit": "Corte sastre",
-      "athletic fit": "Ajuste atlético",
-      "tapered fit": "Corte entallado",
-      "boxy fit": "Corte squadrato",
-      "straight fit": "Corte recto"
+      "slim fit": "Ajuste Ajustado",
+      "regular fit": "Ajuste Regular",
+      "relaxed fit": "Ajuste Relajado",
+      "loose fit": "Ajuste Suelto",
+      "oversized fit": "Ajuste Extragrande",
+      "tailored fit": "Ajuste a Medida",
+      "athletic fit": "Ajuste Atlético",
+      "tapered fit": "Ajuste Cónico",
+      "boxy fit": "Ajuste Cuadrado",
+      "straight fit": "Ajuste Recto"
     },
     "colors": {
       "black": "Negro",
@@ -562,24 +580,24 @@
       "blue": "Azul",
       "green": "Verde",
       "yellow": "Amarillo",
-      "purple": "Púrpura",
+      "purple": "Morado",
       "pink": "Rosa",
       "gray": "Gris",
       "brown": "Marrón",
       "orange": "Naranja",
-      "navy": "Azul marino",
+      "navy": "Azul Marino",
       "beige": "Beige",
       "olive": "Oliva",
-      "teal": "Verde azulado",
-      "burgundy": "Burdeos",
+      "teal": "Turquesa",
+      "burgundy": "Borgoña",
       "cream": "Crema",
-      "camel": "Camello",
+      "camel": "Camel",
       "charcoal": "Carbón",
-      "off white": "Blanco roto",
-      "pastel pink": "Rosa pastel",
-      "pastel blue": "Azul pastel",
-      "pastel green": "Verde pastel",
-      "pastel yellow": "Amarillo pastel"
+      "off white": "Blanco Roto",
+      "pastel pink": "Rosa Pastel",
+      "pastel blue": "Azul Pastel",
+      "pastel green": "Verde Pastel",
+      "pastel yellow": "Amarillo Pastel"
     },
     "elements": {
       "shirt": "Camisa",
@@ -592,11 +610,11 @@
       "belt": "Cinturón",
       "watch": "Reloj",
       "bag": "Bolso",
-      "top": "Parte superior",
-      "bottom": "Parte inferior",
+      "top": "Parte Superior",
+      "bottom": "Parte Inferior",
       "footwear": "Calzado",
       "accessories": "Accesorios",
-      "outerwear": "Prendas exteriores",
+      "outerwear": "Ropa Exterior",
       "headwear": "Sombrerería",
       "eyewear": "Gafas",
       "jewelry": "Joyería",
@@ -610,7 +628,21 @@
       "gbp": "GBP (£)",
       "jpy": "JPY (¥)",
       "aud": "AUD (A$)",
-      "cad": "CAD (C$)"
+      "cad": "CAD (C$)",
+      "pln": "PLN (zł)",
+      "chf": "CHF (CHF)",
+      "rub": "RUB (₽)",
+      "cny": "CNY (¥)",
+      "inr": "INR (₹)",
+      "krw": "KRW (₩)",
+      "mxn": "MXN (MXN)",
+      "nzd": "NZD (NZD)",
+      "sek": "SEK (SEK)",
+      "sgd": "SGD (SGD)",
+      "thb": "THB (฿)",
+      "zar": "ZAR (R)",
+      "try": "TRY (₺)",
+      "uah": "UAH (₴)"
     },
     "conversations": "Conversaciones",
     "newChat": "Nuevo chat",

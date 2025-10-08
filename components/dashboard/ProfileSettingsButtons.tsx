@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/providers/themeContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { LogOut, Palette } from 'lucide-react-native';
 import React from 'react';
@@ -13,6 +14,12 @@ export function ProfileSettingsButtons() {
   const handleLogout = async () => {
     try {
       await supabase?.auth.signOut();
+      
+      const session = await supabase?.auth.getSession();
+      const userId = session?.data?.session?.user?.id;
+      if (userId) {
+        await AsyncStorage.removeItem(`user_ctx:${userId}`);
+      }
     } catch (error) {
       console.error('Error signing out:', error);
     }

@@ -1,0 +1,656 @@
+{
+    "common": {
+      "loading": "Laden..."
+    },
+    "homeScreen": {
+      "welcomeMessage": "Welkom, hoe wil je een outfit maken?",
+      "aiConstructorButton": "AI Constructor",
+      "createOwnOutfitButton": "Maak je eigen outfit"
+    },
+    "feedSection": {
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Niet ingelogd",
+          "message": "Je moet ingelogd zijn om outfits op te slaan."
+        }
+      },
+      "emptyState": {
+        "title": "Nog geen outfits",
+        "description": "Maak je eerste outfit of volg anderen om hun creaties te zien",
+        "actionText": "Outfit Maken"
+      },
+      "loadingOutfits": "Laden..."
+    },
+    "rankingScreen": {
+      "title": "Ranglijst",
+      "subtitle": "Top outfits en makers",
+      "tabs": {
+        "outfits": "Outfits",
+        "creators": "Makers"
+      },
+      "loading": "Laden...",
+      "error": "Laden mislukt",
+      "tryAgain": "Probeer opnieuw",
+      "rankRow": {
+        "untitledOutfit": "Naamloze outfit",
+        "unknownCreator": "Onbekend",
+        "outfitStats": "Likes · Opslaan · Beoordelingen",
+        "creatorStats": "Outfits · Likes",
+        "rank": "#"
+      }
+    },
+    "userProfile": {
+      "loading": "Laden...",
+      "about": "Over",
+      "privateProfile": "Dit profiel is privé."
+    },
+    "outfitDetail": {
+      "header": {
+        "title": "Outfitdetails",
+        "yourCreation": "Jouw creatie"
+      },
+      "loading": "Outfit laden...",
+      "notFound": "We konden deze outfit niet vinden.",
+      "goBack": "Terug",
+      "images": {
+        "free": "Gratis",
+        "noImages": "Geen afbeeldingen"
+      },
+      "info": {
+        "anonymous": "Anoniem",
+        "tags": "Tags",
+        "description": "Beschrijving"
+      },
+      "sections": {
+        "description": "Beschrijving",
+        "tags": "Tags"
+      },
+      "interactions": {
+        "comments": " Reacties",
+        "likes": " Likes"
+      },
+      "defaultOutfitName": "Naamloze Outfit"
+    },
+    "commentItem": {
+      "reply": "Beantwoorden",
+      "viewReplies": "Antwoorden bekijken",
+      "hideReplies": "Antwoorden verbergen",
+      "replyPlaceholder": "Beantwoord ",
+      "cancel": "Annuleren",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Niet ingelogd",
+          "message": "Je moet ingelogd zijn om te reageren."
+        },
+        "error": {
+          "title": "Fout",
+          "message": "Kon reactie niet toevoegen"
+        }
+      }
+    },
+    "commentReactions": {
+      "reacted": "Gereageerd",
+      "react": "Reageren",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Niet ingelogd",
+          "message": "Je moet ingelogd zijn om te reageren op reacties."
+        }
+      }
+    },
+    "commentSection": {
+      "header": "Reacties • ",
+      "headerDefault": "Reacties",
+      "loading": "Laden...",
+      "empty": "Nog geen reacties. Wees de eerste!",
+      "placeholder": "Voeg een reactie toe...",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "Niet ingelogd",
+          "message": "Je moet ingelogd zijn om te reageren."
+        },
+        "error": {
+          "title": "Fout",
+          "message": "Kon reactie niet toevoegen"
+        }
+      }
+    },
+    "feedFilters": {
+      "searchPlaceholder": "Outfits zoeken...",
+      "sections": {
+        "styleTags": "Stijltags",
+        "elements": "Elementen"
+      },
+      "clearFilters": "Alle filters wissen"
+    },
+    "notFoundScreen": {
+      "title": "Oeps!",
+      "message": "Dit scherm bestaat niet.",
+      "link": "Ga naar het startscherm!"
+    },
+    "themeSettings": {
+      "title": "Thema-instellingen",
+      "appearance": {
+        "title": "Uiterlijk",
+        "description": "Kies hoe de Mode App er voor jou uitziet. Selecteer een enkel thema of synchroniseer met je systeeminstellingen.",
+        "options": {
+          "light": {
+            "label": "Licht",
+            "description": "Altijd het lichte thema gebruiken"
+          },
+          "dark": {
+            "label": "Donker",
+            "description": "Altijd het donkere thema gebruiken"
+          },
+          "system": {
+            "label": "Systeem",
+            "description": "Volg systeeminstellingen"
+          }
+        }
+      },
+      "preview": {
+        "title": "Voorbeeld",
+        "appName": "Mode App",
+        "themePreview": " themavoorbeeld",
+        "description": "Zo zullen je outfitfeed en andere inhoud eruitzien met het geselecteerde thema.",
+        "primaryButton": "Primair",
+        "secondaryButton": "Secundair"
+      },
+      "languageCurrency": {
+        "title": "Taal en Valuta",
+        "description": "Selecteer je voorkeurstaal en valuta voor de app.",
+        "languagePlaceholder": "Selecteer Taal",
+        "currencyPlaceholder": "Selecteer Valuta"
+      }
+    },
+    "createdOutfitsSection": {
+      "loading": "Outfits laden...",
+      "header": "Jouw Creaties",
+      "createButton": "Creëren",
+      "emptyState": {
+        "title": "Nog geen outfits gecreëerd",
+        "description": "Begin met het maken van je eerste outfit!",
+        "actionText": "Outfit Creëren"
+      }
+    },
+    "followButton": {
+      "follow": "Volgen",
+      "unfollow": "Ontvolgen",
+      "pending": "Volgverzoek in behandeling"
+    },
+    "profileBioSection": {
+      "title": "Over",
+      "noBio": "Nog geen bio beschikbaar. Voeg er een toe door je profiel te bewerken!"
+    },
+    "profileHeader": {
+      "anonymousUser": "Anonieme Gebruiker",
+      "defaultRole": "Mode Enthousiast",
+      "editProfile": "Profiel Bewerken",
+      "tabs": {
+        "user-info": "Profiel",
+        "created-outfits": "Gecreëerd",
+        "saved-outfits": "Opgeslagen"
+      }
+    },
+    "profileRecentActivitySection": {
+      "title": "Recente Activiteit",
+      "activities": [
+        {
+          "text": "Je outfit heeft meer dan 50 likes gekregen!"
+        },
+        {
+          "text": "5 nieuwe outfits geliked"
+        },
+        {
+          "text": "Gecreëerd \"Zomerse Casual Look\""
+        }
+      ]
+    },
+    "auth": {
+      "welcome": "Welkom",
+      "hero": {
+        "badge": "Mode Assistent",
+        "title": "Stijl, zorgvuldig samengesteld.",
+        "slogan": "Minimalistisch zoals Apple. Krachtig zoals Vercel. Gepersonaliseerd voor jou."
+      },
+      "signInSubtitle": "Log in om verder te gaan",
+      "signUpSubtitle": "Maak een account aan",
+      "labels": {
+        "email": "E-mail",
+        "password": "Wachtwoord"
+      },
+      "placeholders": {
+        "email": "jij@voorbeeld.com",
+        "password": "••••••••"
+      },
+      "buttons": {
+        "signIn": "Inloggen",
+        "signUp": "Account Aanmaken",
+        "google": "Inloggen met Google"
+      },
+      "switch": {
+        "signUpPrompt": "Heb je geen account? ",
+        "signInPrompt": "Heb je al een account? ",
+        "signUp": "Registreren",
+        "signIn": "Inloggen"
+      },
+      "termsAndPrivacy": "Door verder te gaan, ga je akkoord met onze Voorwaarden en Privacy.",
+      "alerts": {
+        "supabaseNotInitialized": {
+          "title": "Fout",
+          "message": "Supabase-client is niet geïnitialiseerd."
+        },
+        "signInError": {
+          "title": "Inlogfout"
+        },
+        "signUpError": {
+          "title": "Registratiefout"
+        },
+        "emailVerification": {
+          "title": "E-mailverificatie",
+          "message": "Controleer je inbox voor e-mailverificatie!"
+        }
+      }
+    },
+    "profileSettingsButtons": {
+      "themeSettings": "Thema-instellingen",
+      "logout": "Uitloggen"
+    },
+    "savedOutfitsSection": {
+      "loading": "Opgeslagen outfits laden...",
+      "emptyState": {
+        "title": "Nog geen opgeslagen outfits",
+        "description": "Begin met het opslaan van outfits die je mooi vindt!"
+      }
+    },
+    "userStatistics": {
+      "title": "Statistieken",
+      "created": "Gecreëerd",
+      "saved": "Opgeslagen",
+      "likes": "Likes",
+      "loading": "..."
+    },
+    "contactModal": {
+      "title": "Contacteer Ons",
+      "sendMessage": "Bericht Verzenden",
+      "sending": "Verzenden...",
+      "fullName": "Volledige Naam",
+      "email": "E-mail",
+      "message": "Bericht",
+      "placeholders": {
+        "fullName": "Voer je volledige naam in",
+        "email": "Voer je e-mail in",
+        "message": "Beschrijf je bericht..."
+      },
+      "errors": {
+        "fullNameRequired": "Volledige naam is vereist",
+        "fullNameMaxLength": "Naam mag niet langer zijn dan 80 tekens",
+        "emailRequired": "Voer je e-mail in",
+        "emailInvalid": "Voer een geldig e-mailadres in",
+        "messageRequired": "Bericht is vereist"
+      },
+      "alerts": {
+        "apiKeyMissing": "API-sleutel ontbreekt. Neem contact op met ondersteuning.",
+        "success": "Bericht succesvol verzonden!",
+        "error": "Kon bericht niet verzenden. Probeer het later opnieuw."
+      }
+    },
+    "deleteModalOutfit": {
+      "title": "Outfit Verwijderen",
+      "message": "Weet je zeker dat je deze outfit wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "cancel": "Annuleren",
+      "delete": "Verwijderen",
+      "deleting": "Verwijderen...",
+      "error": "Gebruikers-ID is vereist voor verwijdering"
+    },
+    "outfitCreateModal": {
+      "title": "Outfit Creëren",
+      "save": "Opslaan",
+      "saving": "Opslaan...",
+      "addElement": "Element Toevoegen",
+      "outfitElements": "Outfitelementen",
+      "name": "Naam",
+      "description": "Beschrijving",
+      "styleTags": "Stijltags",
+      "elementType": "Elementtype",
+      "elementCategory": "Elementcategorie",
+      "selectFromOptions": "Selecteer uit onderstaande opties",
+      "elementImage": "Elementafbeelding",
+      "imageReady": "Klaar om te uploaden",
+      "tapToSelectImage": "Tik om afbeelding te selecteren",
+      "price": "Prijs",
+      "shopUrl": "Winkel-URL",
+      "optional": "optioneel",
+      "siteUrl": "Site-URL",
+      "image": "Afbeelding",
+      "placeholders": {
+        "name": "Voer outfitnaam in",
+        "description": "Beschrijf je outfit...",
+        "elementType": "Selecteer elementtype",
+        "price": "Voer prijs in (optioneel)",
+        "siteUrl": "Voer site-URL in",
+        "image": "Selecteer Afbeelding",
+        "shopUrl": "bijv. https://voorbeeld.com/product"
+      },
+      "errors": {
+        "nameRequired": "Outfitnaam is vereist",
+        "descriptionRequired": "Beschrijving is vereist",
+        "elementRequired": "Minstens één outfitelement is vereist",
+        "elementTypeRequired": "Elementtype is vereist",
+        "priceInvalid": "Prijs moet een getal zijn",
+        "priceNegative": "Prijs kan niet negatief zijn",
+        "siteUrlRequired": "Site-URL is vereist",
+        "siteUrlInvalid": "Voer een geldige URL in",
+        "imageRequired": "Afbeelding is vereist",
+        "styleTagsRequired": "Selecteer minstens één stijltag",
+        "priceRequired": "Prijs is vereist",
+        "priceMin": "Prijs moet nul of meer zijn",
+        "invalidUrl": "Voer een geldige URL in"
+      },
+      "elementCount": {
+        "zero": "Voeg minstens 1 element toe",
+        "one": " element toegevoegd",
+        "multiple": "elementen toegevoegd"
+      },
+      "totalPrice": "Totale prijs: ",
+      "imageFormat": "JPG, PNG (max 5MB)",
+      "imageSelected": "Afbeelding succesvol geselecteerd",
+      "addElementToOutfit": "Element toevoegen aan outfit",
+      "alerts": {
+        "permissionDenied": "Opslagtoestemming is vereist om afbeeldingen te selecteren.",
+        "imagePickerError": "Kon afbeeldingkiezer niet openen",
+        "imageSelectError": "Kon afbeelding niet selecteren",
+        "noImageSelected": "Geen afbeelding geselecteerd",
+        "imagePickerErrorMessage": "Fout in afbeeldingkiezer: ",
+        "success": {
+          "title": "Succes",
+          "message": "Outfit succesvol opgeslagen!"
+        },
+        "error": {
+          "title": "Fout",
+          "message": "Kon outfit niet creëren"
+        },
+        "unknownError": "Er is een onbekende fout opgetreden"
+      }
+    },
+    "profileEdit": {
+      "title": "Profiel Bewerken",
+      "save": "Opslaan",
+      "saving": "Opslaan...",
+      "displayName": "Weergavenaam",
+      "bio": "Bio",
+      "stylePreferences": "Stijlvoorkeuren",
+      "privacy": "Privacy",
+      "publicProfile": "Openbaar Profiel",
+      "publicProfileDescription": "Anderen kunnen je profiel en gecreëerde outfits zien",
+      "privateProfileDescription": "Alleen je bijnaam en avatar zijn zichtbaar",
+      "privateAccount": "Privé Account",
+      "privateAccountDescription": "Wanneer privé, zijn alleen je gebruikersnaam en profielfoto zichtbaar voor anderen. Je bio en outfits worden verborgen.",
+      "changePhoto": "Tik om foto te wijzigen",
+      "stylePreferencesComingSoon": "Binnenkort beschikbaar! Stel je favoriete stijlen, kleuren en merken in.",
+      "placeholders": {
+        "name": "Voer je naam in",
+        "bio": "Vertel ons over je stijl..."
+      },
+      "errors": {
+        "nameRequired": "Naam is vereist",
+        "bioMaxLength": "Bio mag niet langer zijn dan 200 tekens"
+      },
+      "alerts": {
+        "permissionDenied": "Opslagtoestemming is vereist om afbeeldingen te selecteren.",
+        "imagePickerError": "Kon afbeeldingkiezer niet openen",
+        "imageSelectError": "Kon afbeelding niet selecteren",
+        "noImageSelected": "Geen afbeelding geselecteerd",
+        "imagePickerErrorMessage": "Fout in afbeeldingkiezer: ",
+        "imageUploadError": "Kon afbeelding niet uploaden",
+        "imageUrlError": "Kon afbeelding-URL niet ophalen",
+        "success": "Profiel succesvol bijgewerkt",
+        "error": "Kon profiel niet bijwerken"
+      }
+    },
+    "registrationModal": {
+      "welcome": "Welkom bij de App!",
+      "welcomeDescription": "Om de app te gebruiken, moet je het registratieproces voltooien.",
+      "provideDetails": "Geef je profielgegevens op in de volgende stappen.",
+      "logout": "Uitloggen",
+      "proceed": "Doorgaan",
+      "previous": "Vorige",
+      "next": "Volgende",
+      "complete": "Voltooien",
+      "saving": "Opslaan...",
+      "username": "Gebruikersnaam",
+      "fullName": "Volledige Naam",
+      "bio": "Bio",
+      "profilePicture": "Profielfoto",
+      "setPhoto": "Tik om foto in te stellen (optioneel)",
+      "reviewInfo": "Controleer Je Gegevens",
+      "notProvided": "Niet opgegeven",
+      "placeholders": {
+        "username": "Voer je gebruikersnaam in",
+        "fullName": "Voer je volledige naam in",
+        "bio": "Vertel ons over je stijl... (optioneel)"
+      },
+      "errors": {
+        "usernameRequired": "Gebruikersnaam is vereist",
+        "usernameMinLength": "Gebruikersnaam moet minimaal 3 tekens bevatten",
+        "usernameMaxLength": "Gebruikersnaam mag niet langer zijn dan 20 tekens",
+        "usernamePattern": "Gebruikersnaam mag alleen letters, cijfers en underscores bevatten",
+        "fullNameRequired": "Volledige naam is vereist",
+        "fullNameMaxLength": "Volledige naam mag niet langer zijn dan 50 tekens",
+        "bioMaxLength": "Bionoun mag niet langer zijn dan 200 tekens",
+        "userIdMissing": "Gebruikers-ID ontbreekt. Log opnieuw in."
+      },
+      "alerts": {
+        "permissionDenied": "Opslagtoestemming is vereist om afbeeldingen te selecteren.",
+        "imagePickerError": "Kon afbeeldingkiezer niet openen",
+        "imageSelectError": "Kon afbeelding niet selecteren",
+        "noImageSelected": "Geen afbeelding geselecteerd",
+        "imagePickerErrorMessage": "Fout in afbeeldingkiezer: ",
+        "imageUploadError": "Kon afbeelding niet uploaden",
+        "imageUrlError": "Kon afbeelding-URL niet ophalen",
+        "registrationError": "Kon registratie niet voltooien. Probeer het opnieuw.",
+        "logoutError": "Kon niet uitloggen. Probeer het opnieuw."
+      }
+    },
+    "reportModal": {
+      "report": "Rapporteren",
+      "sendReport": "Rapport Verzenden",
+      "sending": "Verzenden...",
+      "email": "E-mail",
+      "reason": "Reden",
+      "description": "Beschrijving",
+      "placeholders": {
+        "email": "Voer je e-mail in",
+        "reason": "Selecteer reden",
+        "description": "Beschrijf het probleem..."
+      },
+      "errors": {
+        "userIdRequired": "Gebruikers-ID is vereist",
+        "emailRequired": "Voer je e-mail in zodat we kunnen reageren",
+        "emailInvalid": "Voer een geldig e-mailadres in",
+        "reasonRequired": "Reden is vereist",
+        "descriptionRequired": "Beschrijving is vereist"
+      },
+      "alerts": {
+        "apiKeyMissing": "API-sleutel ontbreekt. Neem contact op met ondersteuning.",
+        "success": "Rapport succesvol verzonden!",
+        "error": "Kon rapport niet verzenden. Probeer het later opnieuw."
+      }
+    },
+    "shareModal": {
+      "title": "Outfit Delen",
+      "cancel": "Annuleren",
+      "shareOptions": {
+        "native": "Delen...",
+        "copy": "Link Kopiëren",
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "instagram": "Instagram",
+        "email": "E-mail",
+        "sms": "Bericht",
+        "more": "Meer"
+      },
+      "untitledOutfit": "Naamloze Outfit",
+      "defaultDescription": "Mode-outfit om te delen",
+      "shareText": "Bekijk deze geweldige outfit op de Mode App!",
+      "alerts": {
+        "shareError": "Kon deze outfit niet delen",
+        "copySuccess": "Link gekopieerd naar klembord!",
+        "copyError": "Kon link niet kopiëren",
+        "platformError": "Kan niet openen ",
+        "instagramShare": "Link gekopieerd! Je kunt het nu plakken in je Instagram-verhaal of bericht."
+      }
+    },
+    "chatSection": {
+      "promptPrefix": "Ik wil dat je me helpt een outfit te creëren volgens de volgende criteria:",
+      "selectGender": "Geslacht",
+      "selectOutfitStyles": "Outfitstijlen",
+      "selectFit": "Pasvorm",
+      "selectDominantColors": "Dominerende kleuren",
+      "selectOutfitElements": "Outfitelementen",
+      "selectPriceRange": "Prijsklasse",
+      "from": "Van",
+      "to": "Tot",
+      "currency": "Valuta",
+      "placeholders": {
+        "lowestPrice": "Laagste prijs",
+        "highestPrice": "Hoogste prijs",
+        "currency": "Selecteer valuta",
+        "outfitDescription": "Outfitbeschrijving... (optioneel)"
+      },
+      "genders": {
+        "male": "Man",
+        "female": "Vrouw",
+        "unisex": "Unisex"
+      },
+      "styles": {
+        "casual": "Casual",
+        "formal": "Formeel",
+        "sporty": "Sportief",
+        "bohemian": "Bohemien",
+        "vintage": "Vintage",
+        "streetwear": "Streetwear",
+        "business": "Zakelijk",
+        "party": "Feest",
+        "beach": "Strand",
+        "office": "Kantoor",
+        "old money": "Oud Geld",
+        "athleisure": "Athleisure",
+        "minimalist": "Minimalistisch",
+        "gothic": "Gotisch",
+        "preppy": "Preppy",
+        "punk": "Punk",
+        "grunge": "Grunge",
+        "smart casual": "Smart Casual",
+        "business casual": "Zakelijk Casual",
+        "chic": "Chic",
+        "resort": "Resort",
+        "cottagecore": "Cottagecore",
+        "normcore": "Normcore",
+        "techwear": "Techwear",
+        "avant-garde": "Avant-garde",
+        "monochrome": "Monochroom",
+        "color blocking": "Kleurblokkering",
+        "safari": "Safari",
+        "retro": "Retro",
+        "y2k": "Y2K",
+        "maximalist": "Maximalistisch"
+      },
+      "fits": {
+        "slim": "Slank",
+        "regular": "Normaal",
+        "relaxed": "Ontspannen",
+        "oversized": "Oversized",
+        "tailored": "Op maat",
+        "slim fit": "Slanke Pasvorm",
+        "regular fit": "Normale Pasvorm",
+        "relaxed fit": "Ontspannen Pasvorm",
+        "loose fit": "Losse Pasvorm",
+        "oversized fit": "Oversized Pasvorm",
+        "tailored fit": "Op maat gemaakte Pasvorm",
+        "athletic fit": "Atletische Pasvorm",
+        "tapered fit": "Taps toelopende Pasvorm",
+        "boxy fit": "Boxy Pasvorm",
+        "straight fit": "Rechte Pasvorm"
+      },
+      "colors": {
+        "black": "Zwart",
+        "white": "Wit",
+        "red": "Rood",
+        "blue": "Blauw",
+        "green": "Groen",
+        "yellow": "Geel",
+        "purple": "Paars",
+        "pink": "Roze",
+        "gray": "Grijs",
+        "brown": "Bruin",
+        "orange": "Oranje",
+        "navy": "Marineblauw",
+        "beige": "Beige",
+        "olive": "Olijfgroen",
+        "teal": "Teal",
+        "burgundy": "Bordeauxrood",
+        "cream": "Crème",
+        "camel": "Camel",
+        "charcoal": "Houtskool",
+        "off white": "Gebroken Wit",
+        "pastel pink": "Pastelroze",
+        "pastel blue": "Pastelblauw",
+        "pastel green": "Pastelgroen",
+        "pastel yellow": "Pastelgeel"
+      },
+      "elements": {
+        "shirt": "Overhemd",
+        "pants": "Broek",
+        "shoes": "Schoenen",
+        "jacket": "Jas",
+        "dress": "Jurk",
+        "skirt": "Rok",
+        "hat": "Hoed",
+        "belt": "Riem",
+        "watch": "Horloge",
+        "bag": "Tas",
+        "top": "Top",
+        "bottom": "Onderstuk",
+        "footwear": "Schoeisel",
+        "accessories": "Accessoires",
+        "outerwear": "Bovenkleding",
+        "headwear": "Hoofddeksels",
+        "eyewear": "Brillen",
+        "jewelry": "Sieraden",
+        "scarf": "Sjaal",
+        "gloves": "Handschoenen",
+        "socks": "Sokken"
+      },
+      "currencies": {
+        "usd": "USD ($)",
+        "eur": "EUR (€)",
+        "gbp": "GBP (£)",
+        "jpy": "JPY (¥)",
+        "aud": "AUD (A$)",
+        "cad": "CAD (C$)",
+        "pln": "PLN (zł)",
+        "chf": "CHF (CHF)",
+        "rub": "RUB (₽)",
+        "cny": "CNY (¥)",
+        "inr": "INR (₹)",
+        "krw": "KRW (₩)",
+        "mxn": "MXN (MXN)",
+        "nzd": "NZD (NZD)",
+        "sek": "SEK (SEK)",
+        "sgd": "SGD (SGD)",
+        "thb": "THB (฿)",
+        "zar": "ZAR (R)",
+        "try": "TRY (₺)",
+        "uah": "UAH (₴)"
+      },
+      "conversations": "Gesprekken",
+      "newChat": "Nieuwe chat",
+      "showFilters": "Filters tonen",
+      "hideFilters": "Filters verbergen"
+    },
+    "chatSwitch": {
+      "ai": "AI",
+      "creator": "Maker"
+    }
+  }

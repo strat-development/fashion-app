@@ -1,0 +1,656 @@
+{
+    "common": {
+      "loading": "加载中…"
+    },
+    "homeScreen": {
+      "welcomeMessage": "欢迎，您想如何创建一套服装？",
+      "aiConstructorButton": "AI构造器",
+      "createOwnOutfitButton": "创建您自己的服装"
+    },
+    "feedSection": {
+      "alerts": {
+        "notLoggedIn": {
+          "title": "未登录",
+          "message": "您必须登录才能保存服装。"
+        }
+      },
+      "emptyState": {
+        "title": "暂无服装",
+        "description": "创建您的第一套服装或关注他人以查看他们的创作",
+        "actionText": "创建服装"
+      },
+      "loadingOutfits": "加载中..."
+    },
+    "rankingScreen": {
+      "title": "排名",
+      "subtitle": "顶级服装和创作者",
+      "tabs": {
+        "outfits": "服装",
+        "creators": "创作者"
+      },
+      "loading": "加载中…",
+      "error": "加载失败",
+      "tryAgain": "重试",
+      "rankRow": {
+        "untitledOutfit": "未命名服装",
+        "unknownCreator": "未知",
+        "outfitStats": "点赞 · 保存 · 评分",
+        "creatorStats": "服装 · 点赞",
+        "rank": "#"
+      }
+    },
+    "userProfile": {
+      "loading": "加载中...",
+      "about": "关于",
+      "privateProfile": "此个人资料为私人资料。"
+    },
+    "outfitDetail": {
+      "header": {
+        "title": "服装详情",
+        "yourCreation": "您的创作"
+      },
+      "loading": "加载服装中…",
+      "notFound": "我们无法找到这套服装。",
+      "goBack": "返回",
+      "images": {
+        "free": "免费",
+        "noImages": "无图片"
+      },
+      "info": {
+        "anonymous": "匿名",
+        "tags": "标签",
+        "description": "描述"
+      },
+      "sections": {
+        "description": "描述",
+        "tags": "标签"
+      },
+      "interactions": {
+        "comments": " 评论",
+        "likes": " 点赞"
+      },
+      "defaultOutfitName": "未命名服装"
+    },
+    "commentItem": {
+      "reply": "回复",
+      "viewReplies": "查看回复",
+      "hideReplies": "隐藏回复",
+      "replyPlaceholder": "回复 ",
+      "cancel": "取消",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "未登录",
+          "message": "您必须登录才能评论。"
+        },
+        "error": {
+          "title": "错误",
+          "message": "无法添加评论"
+        }
+      }
+    },
+    "commentReactions": {
+      "reacted": "已反应",
+      "react": "反应",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "未登录",
+          "message": "您必须登录才能对评论做出反应。"
+        }
+      }
+    },
+    "commentSection": {
+      "header": "评论 • ",
+      "headerDefault": "评论",
+      "loading": "加载中…",
+      "empty": "暂无评论。成为第一个！",
+      "placeholder": "添加评论…",
+      "alerts": {
+        "notLoggedIn": {
+          "title": "未登录",
+          "message": "您必须登录才能评论。"
+        },
+        "error": {
+          "title": "错误",
+          "message": "无法添加评论"
+        }
+      }
+    },
+    "feedFilters": {
+      "searchPlaceholder": "搜索服装...",
+      "sections": {
+        "styleTags": "风格标签",
+        "elements": "元素"
+      },
+      "clearFilters": "清除所有过滤器"
+    },
+    "notFoundScreen": {
+      "title": "哎呀！",
+      "message": "此页面不存在。",
+      "link": "前往首页！"
+    },
+    "themeSettings": {
+      "title": "主题设置",
+      "appearance": {
+        "title": "外观",
+        "description": "选择时尚应用的外观。选择单一主题，或与您的系统设置同步。",
+        "options": {
+          "light": {
+            "label": "浅色",
+            "description": "始终使用浅色主题"
+          },
+          "dark": {
+            "label": "深色",
+            "description": "始终使用深色主题"
+          },
+          "system": {
+            "label": "系统",
+            "description": "遵循系统设置"
+          }
+        }
+      },
+      "preview": {
+        "title": "预览",
+        "appName": "时尚应用",
+        "themePreview": " 主题预览",
+        "description": "这是您的服装动态和其他内容在所选主题下的外观。",
+        "primaryButton": "主要",
+        "secondaryButton": "次要"
+      },
+      "languageCurrency": {
+        "title": "语言与货币",
+        "description": "为应用选择您喜欢的语言和货币。",
+        "languagePlaceholder": "选择语言",
+        "currencyPlaceholder": "选择货币"
+      }
+    },
+    "createdOutfitsSection": {
+      "loading": "加载服装中...",
+      "header": "您的创作",
+      "createButton": "创建",
+      "emptyState": {
+        "title": "尚未创建任何服装",
+        "description": "开始创建您的第一套服装！",
+        "actionText": "创建服装"
+      }
+    },
+    "followButton": {
+      "follow": "关注",
+      "unfollow": "取消关注",
+      "pending": "关注请求待处理"
+    },
+    "profileBioSection": {
+      "title": "关于",
+      "noBio": "暂无简介。编辑您的个人资料以添加一个！"
+    },
+    "profileHeader": {
+      "anonymousUser": "匿名用户",
+      "defaultRole": "时尚爱好者",
+      "editProfile": "编辑个人资料",
+      "tabs": {
+        "user-info": "个人资料",
+        "created-outfits": "已创建",
+        "saved-outfits": "已保存"
+      }
+    },
+    "profileRecentActivitySection": {
+      "title": "近期活动",
+      "activities": [
+        {
+          "text": "您的服装获得了50+个点赞！"
+        },
+        {
+          "text": "点赞了5套新服装"
+        },
+        {
+          "text": "创建了“夏季休闲装”"
+        }
+      ]
+    },
+    "auth": {
+      "welcome": "欢迎",
+      "hero": {
+        "badge": "时尚助手",
+        "title": "智能策划的风格。",
+        "slogan": "像Apple一样简约。像Vercel一样强大。为您个性化。"
+      },
+      "signInSubtitle": "登录以继续",
+      "signUpSubtitle": "创建账户",
+      "labels": {
+        "email": "电子邮件",
+        "password": "密码"
+      },
+      "placeholders": {
+        "email": "您@示例.com",
+        "password": "••••••••"
+      },
+      "buttons": {
+        "signIn": "登录",
+        "signUp": "创建账户",
+        "google": "使用Google登录"
+      },
+      "switch": {
+        "signUpPrompt": "没有账户？ ",
+        "signInPrompt": "已有账户？ ",
+        "signUp": "注册",
+        "signIn": "登录"
+      },
+      "termsAndPrivacy": "继续即表示您同意我们的条款和隐私政策。",
+      "alerts": {
+        "supabaseNotInitialized": {
+          "title": "错误",
+          "message": "Supabase客户端未初始化。"
+        },
+        "signInError": {
+          "title": "登录错误"
+        },
+        "signUpError": {
+          "title": "注册错误"
+        },
+        "emailVerification": {
+          "title": "电子邮件验证",
+          "message": "请检查您的收件箱以验证电子邮件！"
+        }
+      }
+    },
+    "profileSettingsButtons": {
+      "themeSettings": "主题设置",
+      "logout": "退出"
+    },
+    "savedOutfitsSection": {
+      "loading": "加载已保存的服装...",
+      "emptyState": {
+        "title": "尚未保存任何服装",
+        "description": "开始保存您喜欢的服装！"
+      }
+    },
+    "userStatistics": {
+      "title": "统计",
+      "created": "已创建",
+      "saved": "已保存",
+      "likes": "点赞",
+      "loading": "..."
+    },
+    "contactModal": {
+      "title": "联系我们",
+      "sendMessage": "发送消息",
+      "sending": "发送中...",
+      "fullName": "全名",
+      "email": "电子邮件",
+      "message": "消息",
+      "placeholders": {
+        "fullName": "输入您的全名",
+        "email": "输入您的电子邮件",
+        "message": "描述您的消息..."
+      },
+      "errors": {
+        "fullNameRequired": "全名是必填项",
+        "fullNameMaxLength": "姓名不得超过80个字符",
+        "emailRequired": "请输入您的电子邮件",
+        "emailInvalid": "请输入有效的电子邮件地址",
+        "messageRequired": "消息是必填项"
+      },
+      "alerts": {
+        "apiKeyMissing": "API密钥缺失。请联系支持。",
+        "success": "消息发送成功！",
+        "error": "无法发送消息。请稍后再试。"
+      }
+    },
+    "deleteModalOutfit": {
+      "title": "删除服装",
+      "message": "您确定要删除这套服装吗？此操作无法撤销。",
+      "cancel": "取消",
+      "delete": "删除",
+      "deleting": "删除中...",
+      "error": "删除需要用户ID"
+    },
+    "outfitCreateModal": {
+      "title": "创建服装",
+      "save": "保存",
+      "saving": "保存中...",
+      "addElement": "添加元素",
+      "outfitElements": "服装元素",
+      "name": "名称",
+      "description": "描述",
+      "styleTags": "风格标签",
+      "elementType": "元素类型",
+      "elementCategory": "元素类别",
+      "selectFromOptions": "从以下选项中选择",
+      "elementImage": "元素图片",
+      "imageReady": "准备上传",
+      "tapToSelectImage": "点击选择图片",
+      "price": "价格",
+      "shopUrl": "商店URL",
+      "optional": "可选",
+      "siteUrl": "网站URL",
+      "image": "图片",
+      "placeholders": {
+        "name": "输入服装名称",
+        "description": "描述您的服装...",
+        "elementType": "选择元素类型",
+        "price": "输入价格（可选）",
+        "siteUrl": "输入网站URL",
+        "image": "选择图片",
+        "shopUrl": "例如 https://example.com/product"
+      },
+      "errors": {
+        "nameRequired": "服装名称是必填项",
+        "descriptionRequired": "描述是必填项",
+        "elementRequired": "至少需要一个服装元素",
+        "elementTypeRequired": "元素类型是必填项",
+        "priceInvalid": "价格必须是数字",
+        "priceNegative": "价格不能为负数",
+        "siteUrlRequired": "网站URL是必填项",
+        "siteUrlInvalid": "请输入有效的URL",
+        "imageRequired": "图片是必填项",
+        "styleTagsRequired": "请至少选择一个风格标签",
+        "priceRequired": "价格是必填项",
+        "priceMin": "价格必须为零或以上",
+        "invalidUrl": "请输入有效的URL"
+      },
+      "elementCount": {
+        "zero": "至少添加1个元素",
+        "one": " 个元素已添加",
+        "multiple": "个元素已添加"
+      },
+      "totalPrice": "总价：",
+      "imageFormat": "JPG, PNG（最大5MB）",
+      "imageSelected": "图片选择成功",
+      "addElementToOutfit": "将元素添加到服装",
+      "alerts": {
+        "permissionDenied": "需要存储权限才能选择图片。",
+        "imagePickerError": "无法打开图片选择器",
+        "imageSelectError": "无法选择图片",
+        "noImageSelected": "未选择图片",
+        "imagePickerErrorMessage": "图片选择器错误：",
+        "success": {
+          "title": "成功",
+          "message": "服装保存成功！"
+        },
+        "error": {
+          "title": "错误",
+          "message": "无法创建服装"
+        },
+        "unknownError": "发生未知错误"
+      }
+    },
+    "profileEdit": {
+      "title": "编辑个人资料",
+      "save": "保存",
+      "saving": "保存中...",
+      "displayName": "显示名称",
+      "bio": "简介",
+      "stylePreferences": "风格偏好",
+      "privacy": "隐私",
+      "publicProfile": "公开个人资料",
+      "publicProfileDescription": "其他人可以看到您的个人资料和创建的服装",
+      "privateProfileDescription": "只有您的昵称和头像可见",
+      "privateAccount": "私人账户",
+      "privateAccountDescription": "当设置为私人时，只有您的用户名和个人资料图片对他人可见。您的简介和服装将被隐藏。",
+      "changePhoto": "点击更改照片",
+      "stylePreferencesComingSoon": "即将推出！设置您喜欢的风格、颜色和品牌。",
+      "placeholders": {
+        "name": "输入您的名称",
+        "bio": "告诉我们您的风格..."
+      },
+      "errors": {
+        "nameRequired": "名称是必填项",
+        "bioMaxLength": "简介不得超过200个字符"
+      },
+      "alerts": {
+        "permissionDenied": "需要存储权限才能选择图片。",
+        "imagePickerError": "无法打开图片选择器",
+        "imageSelectError": "无法选择图片",
+        "noImageSelected": "未选择图片",
+        "imagePickerErrorMessage": "图片选择器错误：",
+        "imageUploadError": "无法上传图片",
+        "imageUrlError": "无法检索图片URL",
+        "success": "个人资料更新成功",
+        "error": "无法更新个人资料"
+      }
+    },
+    "registrationModal": {
+      "welcome": "欢迎使用应用！",
+      "welcomeDescription": "要使用应用，您需要完成注册过程。",
+      "provideDetails": "请在接下来的步骤中提供您的个人资料详情。",
+      "logout": "退出",
+      "proceed": "继续",
+      "previous": "上一步",
+      "next": "下一步",
+      "complete": "完成",
+      "saving": "保存中...",
+      "username": "用户名",
+      "fullName": "全名",
+      "bio": "简介",
+      "profilePicture": "个人资料图片",
+      "setPhoto": "点击设置照片（可选）",
+      "reviewInfo": "审查您的信息",
+      "notProvided": "未提供",
+      "placeholders": {
+        "username": "输入您的用户名",
+        "fullName": "输入您的全名",
+        "bio": "告诉我们您的风格...（可选）"
+      },
+      "errors": {
+        "usernameRequired": "用户名是必填项",
+        "usernameMinLength": "用户名必须至少3个字符",
+        "usernameMaxLength": "用户名不得超过20个字符",
+        "usernamePattern": "用户名只能包含字母、数字和下划线",
+        "fullNameRequired": "全名是必填项",
+        "fullNameMaxLength": "全名不得超过50个字符",
+        "bioMaxLength": "简介不得超过200个字符",
+        "userIdMissing": "用户ID缺失。请重新登录。"
+      },
+      "alerts": {
+        "permissionDenied": "需要存储权限才能选择图片。",
+        "imagePickerError": "无法打开图片选择器",
+        "imageSelectError": "无法选择图片",
+        "noImageSelected": "未选择图片",
+        "imagePickerErrorMessage": "图片选择器错误：",
+        "imageUploadError": "无法上传图片",
+        "imageUrlError": "无法检索图片URL",
+        "registrationError": "无法完成注册。请重试。",
+        "logoutError": "无法退出。请重试。"
+      }
+    },
+    "reportModal": {
+      "report": "报告",
+      "sendReport": "发送报告",
+      "sending": "发送中...",
+      "email": "电子邮件",
+      "reason": "原因",
+      "description": "描述",
+      "placeholders": {
+        "email": "输入您的电子邮件",
+        "reason": "选择原因",
+        "description": "描述问题..."
+      },
+      "errors": {
+        "userIdRequired": "用户ID是必填项",
+        "emailRequired": "请输入您的电子邮件以便我们回复您",
+        "emailInvalid": "请输入有效的电子邮件地址",
+        "reasonRequired": "原因是必填项",
+        "descriptionRequired": "描述是必填项"
+      },
+      "alerts": {
+        "apiKeyMissing": "API密钥缺失。请联系支持。",
+        "success": "报告发送成功！",
+        "error": "无法发送报告。请稍后再试。"
+      }
+    },
+    "shareModal": {
+      "title": "分享服装",
+      "cancel": "取消",
+      "shareOptions": {
+        "native": "分享...",
+        "copy": "复制链接",
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "instagram": "Instagram",
+        "email": "电子邮件",
+        "sms": "消息",
+        "more": "更多"
+      },
+      "untitledOutfit": "未命名服装",
+      "defaultDescription": "分享的时尚服装",
+      "shareText": "在时尚应用上查看这套惊艳的服装！",
+      "alerts": {
+        "shareError": "无法分享此服装",
+        "copySuccess": "链接已复制到剪贴板！",
+        "copyError": "无法复制链接",
+        "platformError": "无法打开 ",
+        "instagramShare": "链接已复制！您现在可以将其粘贴到您的Instagram故事或帖子中。"
+      }
+    },
+    "chatSection": {
+      "promptPrefix": "我想让您帮助我根据以下标准创建一套服装：",
+      "selectGender": "性别",
+      "selectOutfitStyles": "服装风格",
+      "selectFit": "版型",
+      "selectDominantColors": "主要颜色",
+      "selectOutfitElements": "服装元素",
+      "selectPriceRange": "价格范围",
+      "from": "从",
+      "to": "到",
+      "currency": "货币",
+      "placeholders": {
+        "lowestPrice": "最低价格",
+        "highestPrice": "最高价格",
+        "currency": "选择货币",
+        "outfitDescription": "服装描述...（可选）"
+      },
+      "genders": {
+        "male": "男性",
+        "female": "女性",
+        "unisex": "中性"
+      },
+      "styles": {
+        "casual": "休闲",
+        "formal": "正式",
+        "sporty": "运动",
+        "bohemian": "波西米亚",
+        "vintage": "复古",
+        "streetwear": "街头风格",
+        "business": "商务",
+        "party": "派对",
+        "beach": "海滩",
+        "office": "办公",
+        "old money": "老派贵族",
+        "athleisure": "运动休闲",
+        "minimalist": "极简主义",
+        "gothic": "哥特",
+        "preppy": "学院风",
+        "punk": "朋克",
+        "grunge": "垃圾摇滚",
+        "smart casual": "智能休闲",
+        "business casual": "商务休闲",
+        "chic": "时髦",
+        "resort": "度假",
+        "cottagecore": "田园风",
+        "normcore": "普通核",
+        "techwear": "科技服饰",
+        "avant-garde": "前卫",
+        "monochrome": "单色",
+        "color blocking": "色块",
+        "safari": " safari风格",
+        "retro": "复古风",
+        "y2k": "Y2K",
+        "maximalist": "极繁主义"
+      },
+      "fits": {
+        "slim": "修身",
+        "regular": "常规",
+        "relaxed": "宽松",
+        "oversized": "超大",
+        "tailored": "定制",
+        "slim fit": "修身版型",
+        "regular fit": "常规版型",
+        "relaxed fit": "宽松版型",
+        "loose fit": "宽松版型",
+        "oversized fit": "超大版型",
+        "tailored fit": "定制版型",
+        "athletic fit": "运动版型",
+        "tapered fit": "锥形版型",
+        "boxy fit": "方形版型",
+        "straight fit": "直筒版型"
+      },
+      "colors": {
+        "black": "黑色",
+        "white": "白色",
+        "red": "红色",
+        "blue": "蓝色",
+        "green": "绿色",
+        "yellow": "黄色",
+        "purple": "紫色",
+        "pink": "粉色",
+        "gray": "灰色",
+        "brown": "棕色",
+        "orange": "橙色",
+        "navy": "海军蓝",
+        "beige": "米色",
+        "olive": "橄榄绿",
+        "teal": "青绿色",
+        "burgundy": "酒红色",
+        "cream": "奶油色",
+        "camel": "驼色",
+        "charcoal": "炭灰色",
+        "off white": "灰白色",
+        "pastel pink": "粉彩粉",
+        "pastel blue": "粉彩蓝",
+        "pastel green": "粉彩绿",
+        "pastel yellow": "粉彩黄"
+      },
+      "elements": {
+        "shirt": "衬衫",
+        "pants": "裤子",
+        "shoes": "鞋子",
+        "jacket": "夹克",
+        "dress": "连衣裙",
+        "skirt": "裙子",
+        "hat": "帽子",
+        "belt": "腰带",
+        "watch": "手表",
+        "bag": "包",
+        "top": "上衣",
+        "bottom": "下装",
+        "footwear": "鞋履",
+        "accessories": "配件",
+        "outerwear": "外套",
+        "headwear": "头饰",
+        "eyewear": "眼镜",
+        "jewelry": "珠宝",
+        "scarf": "围巾",
+        "gloves": "手套",
+        "socks": "袜子"
+      },
+      "currencies": {
+        "usd": "美元 ($)",
+        "eur": "欧元 (€)",
+        "gbp": "英镑 (£)",
+        "jpy": "日元 (¥)",
+        "aud": "澳元 (A$)",
+        "cad": "加元 (C$)",
+        "pln": "波兰兹罗提 (zł)",
+        "chf": "瑞士法郎 (CHF)",
+        "rub": "俄罗斯卢布 (₽)",
+        "cny": "人民币 (¥)",
+        "inr": "印度卢比 (₹)",
+        "krw": "韩元 (₩)",
+        "mxn": "墨西哥比索 (MXN)",
+        "nzd": "新西兰元 (NZD)",
+        "sek": "瑞典克朗 (SEK)",
+        "sgd": "新加坡元 (SGD)",
+        "thb": "泰铢 (฿)",
+        "zar": "南非兰特 (R)",
+        "try": "土耳其里拉 (₺)",
+        "uah": "乌克兰格里夫纳 (₴)"
+      },
+      "conversations": "对话",
+      "newChat": "新聊天",
+      "showFilters": "显示过滤器",
+      "hideFilters": "隐藏过滤器"
+    },
+    "chatSwitch": {
+      "ai": "人工智能",
+      "creator": "创作者"
+    }
+  }

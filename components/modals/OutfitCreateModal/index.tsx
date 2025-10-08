@@ -1,21 +1,21 @@
+import { DevTool } from '@hookform/devtools';
+import { X } from 'lucide-react-native';
 import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Alert, Modal, Pressable, ScrollView, Text, View } from 'react-native';
-import { X } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DevTool } from '@hookform/devtools';
 
+import { useCreateOutfitMutation } from '@/mutations/outfits/CreateOutfitMutation';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
-import { useCreateOutfitMutation } from '@/mutations/outfits/CreateOutfitMutation';
 import { ModalProps, OutfitElementData } from '@/types/createOutfitTypes';
 
-import { OutfitState, PendingImage } from './types';
+import { ElementModal } from './ElementModal';
+import { ElementsListSection } from './ElementsListSection';
 import { OutfitFormFields } from './OutfitFormFields';
 import { StyleTagsSection } from './StyleTagsSection';
-import { ElementsListSection } from './ElementsListSection';
-import { ElementModal } from './ElementModal';
+import { OutfitState, PendingImage } from './types';
 
 export const OutfitCreateModal = ({
   isVisible,
@@ -23,7 +23,7 @@ export const OutfitCreateModal = ({
   isAnimated
 }: ModalProps) => {
   const { t } = useTranslation();
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const [elementModalVisible, setElementModalVisible] = useState(false);
   const [selectedImageName, setSelectedImageName] = useState<string | null>(null);
 
@@ -96,7 +96,12 @@ export const OutfitCreateModal = ({
 
   const onElementSubmit = (data: OutfitElementData) => {
     const currentElements = getValues('outfit_elements_data') || [];
-    setValue('outfit_elements_data', [...currentElements, data], {
+    const tempKey = data.imageUrl;
+    const pending = tempKey && tempKey.startsWith('temp://') ? pendingImagesRef.current[tempKey] : undefined;
+    const enriched = pending
+      ? ({ ...data, _localUri: pending.uri, _fileName: pending.fileName, _type: pending.type } as any)
+      : (data as any);
+    setValue('outfit_elements_data', [...currentElements, enriched], {
       shouldValidate: true
     });
     setSelectedImageName(null);
@@ -147,15 +152,12 @@ export const OutfitCreateModal = ({
       >
         <SafeAreaView className="flex-1" style={{ backgroundColor: colors.background }}>
           <View 
-            className="flex-row items-center justify-between px-4 py-3" 
+            className="flex-row items-center justify-between px-4 py-3"
             style={{ borderBottomWidth: 1, borderBottomColor: colors.border, backgroundColor: colors.surface }}
           >
             <Pressable onPress={onClose} className="p-2">
               <X size={24} color={colors.textMuted} />
             </Pressable>
-            <Text className="font-semibold text-lg" style={{ color: colors.text }}>
-              {t('outfitCreateModal.title')}
-            </Text>
             <Pressable
               onPress={handleSubmit(onSubmit)}
               disabled={!isValid || outfitElements.length === 0 || isPending}
@@ -164,7 +166,7 @@ export const OutfitCreateModal = ({
                 paddingVertical: 8, 
                 borderRadius: 9999, 
                 overflow: 'hidden', 
-                backgroundColor: (!isValid || outfitElements.length === 0 || isPending) ? colors.borderVariant : 'transparent' 
+                backgroundColor: (!isValid || outfitElements.length === 0 || isPending) ? colors.borderVariant : 'transparent'
               }}
             >
               <ThemedGradient 
@@ -217,5 +219,3 @@ export const OutfitCreateModal = ({
     </>
   );
 };
-
-export default OutfitCreateModal;

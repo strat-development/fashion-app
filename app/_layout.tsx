@@ -37,6 +37,7 @@ const queryClient = new QueryClient({
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [session, setSession] = useState<Session | null>(null);
+  const [sessionChecked, setSessionChecked] = useState(false);
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     InstrumentSans: require('../assets/fonts/InstrumentSans-VariableFont.ttf'),
@@ -56,16 +57,22 @@ export default function RootLayout() {
   useEffect(() => {
     supabase?.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      setSessionChecked(true);
     });
 
     const subscription = supabase?.auth.onAuthStateChange?.((_event, session) => {
       setSession(session);
+      setSessionChecked(true);
     })?.data?.subscription;
 
     return () => subscription?.unsubscribe();
   }, []);
 
   if (!loaded) {
+    return null;
+  }
+
+  if (!sessionChecked) {
     return null;
   }
 

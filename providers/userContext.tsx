@@ -1,4 +1,5 @@
 import i18n from "@/i18n";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
     useSessionContext
 } from "@supabase/auth-helpers-react";
@@ -50,9 +51,44 @@ export default function UserContextProvider({ children }: { children: React.Reac
     }, [preferredLanguage]);
 
     useEffect(() => {
-        if (session?.user) {
-            setLoading(true);
-            const getUserRole = async () => {
+        const hydrateFromCacheAndMaybeFetch = async () => {
+            if (!session?.user) {
+                setLoading(false);
+                return;
+            }
+
+            const cacheKey = `user_ctx:${session.user.id}`;
+            try {
+                // Try hydrate from cache first to avoid flicker
+                const cached = await AsyncStorage.getItem(cacheKey);
+                let isStale = true;
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+                    setUserName(parsed.userName || "");
+                    setUserBio(parsed.userBio || "");
+                    setUserImage(parsed.userImage || "");
+                    setUserEmail(parsed.userEmail || "");
+                    setUserSocials(Array.isArray(parsed.userSocials) ? parsed.userSocials : []);
+                    setUserJoinedAt(parsed.userJoinedAt || "");
+                    setIsPublic(typeof parsed.isPublic === 'boolean' ? parsed.isPublic : true);
+                    setPreferredLanguage(parsed.preferredLanguage || "en");
+                    setPreferredCurrency(parsed.preferredCurrency || "USD");
+                    setLoading(false);
+
+                    const updatedAt = typeof parsed.updatedAt === 'number' ? parsed.updatedAt : 0;
+                    const STALE_MS = 5 * 60 * 1000; // 5 minutes
+                    isStale = Date.now() - updatedAt > STALE_MS;
+                } else {
+                    // No cache; show loader until first fetch completes
+                    setLoading(true);
+                }
+
+                if (!isStale) {
+                    // Fresh enough; skip network fetch
+                    return;
+                }
+
+                // Fetch latest user profile
                 const { data: userData, error } = await supabase
                     .from("users")
                     .select("*")
@@ -73,13 +109,31 @@ export default function UserContextProvider({ children }: { children: React.Reac
                     setIsPublic(userData.is_public ?? true);
                     setPreferredLanguage(userData.preferred_language || "en");
                     setPreferredCurrency(userData.preferred_currency || "USD");
+
+                    // Persist to cache
+                    const toCache = {
+                        userName: userData.full_name,
+                        userBio: userData.bio,
+                        userImage: userData.user_avatar,
+                        userEmail: userData.email,
+                        userSocials: userData.socials,
+                        userJoinedAt: userData.created_at,
+                        isPublic: userData.is_public ?? true,
+                        preferredLanguage: userData.preferred_language || "en",
+                        preferredCurrency: userData.preferred_currency || "USD",
+                        updatedAt: Date.now(),
+                    };
+                    await AsyncStorage.setItem(cacheKey, JSON.stringify(toCache));
                 }
 
                 setLoading(false);
-            };
+            } catch (e) {
+                console.log("UserContext cache/fetch error", e);
+                setLoading(false);
+            }
+        };
 
-            getUserRole();
-        }
+        hydrateFromCacheAndMaybeFetch();
     }, [session, supabase]);
 
     return (
