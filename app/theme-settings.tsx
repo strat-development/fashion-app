@@ -34,12 +34,10 @@ export default function ThemeSettings() {
 
   const { mutate: updateLanguage } = useUpdatePreferredLanguage({
     userId: userId || '',
-    language: selectedLanguage,
   });
 
   const { mutate: updateCurrency } = useUpdatePreferredCurrency({
     userId: userId || '',
-    currency: selectedCurrency,
   });
 
   useEffect(() => {
@@ -368,7 +366,7 @@ export default function ThemeSettings() {
                 onValueChange={(value: string) => {
                   setSelectedLanguage(value);
                   i18n.changeLanguage(value);
-                  updateLanguage();
+                  updateLanguage(value);
                 }}
               >
                 <SelectTrigger
@@ -491,7 +489,7 @@ export default function ThemeSettings() {
                 selectedValue={selectedCurrency}
                 onValueChange={(value: string) => {
                   setSelectedCurrency(value);
-                  updateCurrency();
+                  updateCurrency(value);
                 }}
               >
                 <SelectTrigger
