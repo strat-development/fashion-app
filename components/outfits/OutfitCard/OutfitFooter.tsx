@@ -47,12 +47,21 @@ export const OutfitFooter = ({
   const commentScale = useSharedValue(1);
   const shareScale = useSharedValue(1);
 
-  const scaleStyle = (sv: any) => useAnimatedStyle(() => ({ transform: [{ scale: sv.value }] }));
-  const likeStyle = scaleStyle(likeScale);
-  const dislikeStyle = scaleStyle(dislikeScale);
-  const saveStyle = scaleStyle(saveScale);
-  const commentStyle = scaleStyle(commentScale);
-  const shareStyle = scaleStyle(shareScale);
+  const likeStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: likeScale.value }],
+  }));
+  const dislikeStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: dislikeScale.value }],
+  }));
+  const saveStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: saveScale.value }],
+  }));
+  const commentStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: commentScale.value }],
+  }));
+  const shareStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: shareScale.value }],
+  }));
 
   const trigger = (fn: React.Dispatch<React.SetStateAction<boolean>>) => {
     fn(true);
