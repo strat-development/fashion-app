@@ -39,34 +39,38 @@ export const OutfitHeader = ({
       paddingVertical: 12 
     }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-        {userData?.user_avatar ? (
-          <View style={{
-            width: 32,
-            height: 32,
-            backgroundColor: colors.surfaceVariant,
-            borderRadius: 16,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginRight: 12
-          }}>
-            <Image 
-              source={{ uri: userData.user_avatar }} 
-              style={{ width: '100%', height: '100%', borderRadius: 16 }}
-            />
-          </View>
-        ) : (
-          <View style={{
-            width: 32,
-            height: 32,
-            backgroundColor: colors.accent,
-            borderRadius: 16,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginRight: 12
-          }}>
-            <User size={16} color={colors.white} />
-          </View>
-        )}
+        <Link href={{ pathname: "/userProfile/[id]", params: { id: createdBy } }} asChild>
+          <Pressable>
+            {userData?.user_avatar ? (
+              <View style={{
+                width: 32,
+                height: 32,
+                backgroundColor: colors.surfaceVariant,
+                borderRadius: 16,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 12
+              }}>
+                <Image 
+                  source={{ uri: userData.user_avatar }} 
+                  style={{ width: '100%', height: '100%', borderRadius: 16 }}
+                />
+              </View>
+            ) : (
+              <View style={{
+                width: 32,
+                height: 32,
+                backgroundColor: colors.accent,
+                borderRadius: 16,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 12
+              }}>
+                <User size={16} color={colors.white} />
+              </View>
+            )}
+          </Pressable>
+        </Link>
         <View style={{ flex: 1 }}>
           <Link
             href={{
