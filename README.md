@@ -1,50 +1,91 @@
-# Welcome to your Expo app 👋
+<h1>🎉 "Versa" Fashion Inspiration App</h1>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<p>An application created to discover new styles in seconds </p>
 
-## Get started
+<hr />
 
-1. Install dependencies
+<img width="3840" height="2160" alt="Github-light-mode" src="https://github.com/user-attachments/assets/2027b3e9-b354-4142-8139-a2fa64b7392b" />
 
-   ```bash
-   npm install
-   ```
+<img width="3840" height="2160" alt="Github-dark-mode" src="https://github.com/user-attachments/assets/39aa8923-ec9b-4a71-9914-035a4b95a8a3" />
 
-2. Start the app
 
-   ```bash
-   npx expo start
-   ```
 
-In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
+<h2>📁 Folder Structure</h2>
 
-When you're ready, run:
+<pre><code>
+    📁 src
+ ┣ 📁 app            #
+ ┣ 📁 components     #
+ ┣ 📁 features       #
+ ┣ 📁 fetchers       #
+ ┣ 📁 locales        #
+ ┣ 📁 mutations      #
+ ┣ 📁 hooks          #
+ ┣ 📁 lib            #
+ ┣ 📁 providers      #
+ ┣ 📁 styles         #
+ ┣ 📁 server         #
+ ┗ 📁 types          #
+</code></pre>
 
-```bash
-npm run reset-project
-```
+<hr />
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+<h2>✨ Features</h2>
+<ul>
+  <li> Live Feed </li>
+  <li> AI Assistant for creating outfits </li>
+  <li> Auto currency conversion </li>
+  <li> Manual outfit creator </li>
+  <li> User statistics </li>
+  <li> Outfits ranking </li>
+  <li> Huge variety of outfit elements </li>
+  <li> Language settings </li>
+  <li> Theme settings </li>
+  <li> Outfits, users reports </li>
+</ul>
 
-## Learn more
+<hr />
 
-To learn more about developing your project with Expo, look at the following resources:
+<h2>🧠 Technology</h2>
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+<h3>🎨 Front-end</h3> 
 
-## Join the community
+<table> 
+  <tr><th>Technology</th><th>Description</th></tr> 
+  <tr><td>Expo</td><td>A framework for building cross-platform mobile apps using React Native.</td></tr> 
+  <tr><td>React Native</td><td>A framework for building native mobile applications using JavaScript and React.</td></tr>
+  <tr><td>TypeScript</td><td>A strongly typed superset of JavaScript that improves code quality, readability, and maintainability.</td></tr>
+</table> 
 
-Join our community of developers creating universal apps.
+<h3>🧪 AI and others</h3> 
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+<table> 
+  <tr><th>Technology</th><th>Description</th></tr> 
+  <tr><td>i18Next</td><td>A JavaScript library for internationalization and localization in web and mobile apps.</td></tr> 
+  <tr><td>React Hook Form</td><td>A lightweight library for managing and validating forms in React applications.</td></tr> 
+  <tr><td>Open AI Api</td><td>A machine learning API for integrating advanced AI capabilities like natural language processing.</td></tr> 
+</table> 
+
+<h3>💅 UI Libraries</h3> 
+
+<table> 
+  <tr><th>Library</th><th>Description</th></tr> 
+  <tr><td>Gluestack UI</td><td>A universal UI library offering customizable, accessible components for React Native and web.</td></tr> 
+</table> 
+
+<h3>📡 Data Fetching</h3>
+
+<table> 
+  <tr><th>Technology</th><th>Description</th></tr> 
+  <tr><td>Supabase API</td><td>An open-source platform providing RESTful and real-time APIs for PostgreSQL databases.</td></tr> 
+</table>
+
+<h3>🧱 Back-end</h3>
+<table>
+  <tr><th>Technology</th><th>Description</th></tr> 
+   <tr><td>Vercel</td><td>A platform for deploying and hosting serverless APIs and web applications.</td></tr>   <tr><td>Supabase</td><td>A backend-as-a-service offering authentication, storage, and database management built on PostgreSQL.</td></tr> 
+  </table> 
+<hr />
