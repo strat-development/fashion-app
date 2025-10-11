@@ -302,7 +302,7 @@ export default function HomeScreen() {
 
       <View className='flex-1' style={{ backgroundColor: colors.background }}>
         {/* Header Section - Fixed at top */}
-        <View style={{ backgroundColor: colors.background, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+        <View style={{ backgroundColor: colors.background,}}>
           <ChatHeader
             onShowConversations={async () => {
               try {

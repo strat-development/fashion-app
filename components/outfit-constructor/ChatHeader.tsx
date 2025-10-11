@@ -1,7 +1,7 @@
 import { useTheme } from '@/providers/themeContext';
 import { BlurView } from 'expo-blur';
 import { MessageSquare, Plus, SlidersHorizontal } from 'lucide-react-native';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 type ChatHeaderProps = {
   onShowConversations: () => void;
@@ -44,7 +44,7 @@ export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, on
           alignItems: 'center',
           justifyContent: 'space-between',
           paddingHorizontal: 16,
-          paddingVertical: 14, // Adjusted padding for vertical alignment
+          paddingVertical: 12, // Adjusted padding for vertical alignment
           gap: 12,
         }}
       >
