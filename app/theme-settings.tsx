@@ -5,10 +5,9 @@ import {
   SelectDragIndicator,
   SelectDragIndicatorWrapper,
   SelectIcon,
-  SelectInput,
   SelectItem,
   SelectPortal,
-  SelectTrigger,
+  SelectTrigger
 } from '@/components/ui/select';
 import { Currencies, Languages } from '@/consts/userSettings';
 import i18n from '@/i18n';
@@ -88,7 +87,7 @@ export default function ThemeSettings() {
       {/* Header */}
       <View
         style={{
-          paddingTop: insets.top + 16,
+          paddingTop: insets.top,
           paddingHorizontal: 16,
           paddingBottom: 16,
           backgroundColor: colors.surface,
@@ -359,6 +358,7 @@ export default function ThemeSettings() {
                 borderWidth: 1,
                 borderColor: selectedLanguage ? colors.accent : colors.border,
                 backgroundColor: selectedLanguage ? colors.surfaceVariant : colors.surface,
+                overflow: 'hidden',
               }}
             >
               <Select
@@ -373,11 +373,11 @@ export default function ThemeSettings() {
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    margin: 16,
+                    paddingVertical: 16,
+                    paddingHorizontal: 16,
+                    height: 72,
                     borderWidth: 0,
-                    borderColor: "transparent",
                     backgroundColor: "transparent"
-
                   }}
                 >
                   <View
@@ -396,17 +396,20 @@ export default function ThemeSettings() {
                       color={selectedLanguage ? colors.white : colors.textMuted}
                     />
                   </View>
-                  <SelectInput
-                    placeholder={t('themeSettings.languageCurrency.languagePlaceholder')}
-                    value={Languages.find(lang => lang.code === selectedLanguage)?.name || ''}
-                    style={{
-                      fontSize: 16,
-                      fontWeight: '600',
-                      color: colors.text,
-                      flex: 1,
-                    }}
-                  />
-                  <SelectIcon className="ml-2" />
+                  <View style={{ flex: 1, marginRight: 8, justifyContent: 'center' }}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: '600',
+                        color: colors.text,
+                      }}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {Languages.find(lang => lang.code === selectedLanguage)?.name || t('themeSettings.languageCurrency.languagePlaceholder')}
+                    </Text>
+                  </View>
+                  <SelectIcon />
                 </SelectTrigger>
                 <SelectPortal>
                   <SelectBackdrop />
@@ -483,6 +486,7 @@ export default function ThemeSettings() {
                 borderWidth: 1,
                 borderColor: selectedCurrency ? colors.accent : colors.border,
                 backgroundColor: selectedCurrency ? colors.surfaceVariant : colors.surface,
+                overflow: 'hidden',
               }}
             >
               <Select
@@ -496,9 +500,10 @@ export default function ThemeSettings() {
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    margin: 16,
+                    paddingVertical: 16,
+                    paddingHorizontal: 16,
+                    height: 72,
                     borderWidth: 0,
-                    borderColor: "transparent",
                     backgroundColor: "transparent"
                   }}
                 >
@@ -518,18 +523,22 @@ export default function ThemeSettings() {
                       color={selectedCurrency ? colors.white : colors.textMuted}
                     />
                   </View>
-                  <SelectInput
-                    placeholder={t('themeSettings.languageCurrency.currencyPlaceholder')}
-                    value={Currencies.find(currency => currency.name === selectedCurrency)?.name ? 
-                           `${Currencies.find(currency => currency.name === selectedCurrency)?.name} (${Currencies.find(currency => currency.name === selectedCurrency)?.symbol})` : ''}
-                    style={{
-                      fontSize: 16,
-                      fontWeight: '600',
-                      color: colors.text,
-                      flex: 1,
-                    }}
-                  />
-                  <SelectIcon className="ml-2" />
+                  <View style={{ flex: 1, marginRight: 8, justifyContent: 'center' }}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: '600',
+                        color: colors.text,
+                      }}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {Currencies.find(currency => currency.name === selectedCurrency)?.name ? 
+                       `${Currencies.find(currency => currency.name === selectedCurrency)?.name} (${Currencies.find(currency => currency.name === selectedCurrency)?.symbol})` : 
+                       t('themeSettings.languageCurrency.currencyPlaceholder')}
+                    </Text>
+                  </View>
+                  <SelectIcon />
                 </SelectTrigger>
                 <SelectPortal>
                   <SelectBackdrop />
