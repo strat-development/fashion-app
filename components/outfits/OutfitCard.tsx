@@ -11,11 +11,12 @@ import { useUnrateOutfitMutation } from "@/mutations/outfits/UnrateOutfitMutatio
 import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
+import { UserData } from "@/types/userProfileTypes";
+import { X } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { Modal, Pressable, ScrollView, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { OutfitFooter, OutfitHeader, OutfitImageCarousel } from "./OutfitCard/index";
-import { X } from "lucide-react-native";
 
 export type OutfitData = Database["public"]["Tables"]["created-outfits"]["Row"] & {
   likes: number;
@@ -24,13 +25,27 @@ export type OutfitData = Database["public"]["Tables"]["created-outfits"]["Row"] 
   isSaved?: boolean;
 };
 
+export type OutfitCardMeta = {
+  positive: number;
+  negative: number;
+  isLiked: boolean;
+  isDisliked: boolean;
+  isSaved?: boolean;
+  comments: number;
+};
+
+export type OutfitCardPressExtras = {
+  userData?: Pick<UserData, "nickname" | "user_avatar">;
+  meta: OutfitCardMeta;
+};
+
 interface OutfitCardProps {
   outfit: OutfitData;
   userName?: string;
   onToggleSave?: (outfitId: string) => void;
   onComment?: (id: string) => void;
   onShare?: (id: string) => void;
-  onPress?: (outfit: OutfitData) => void;
+  onPress?: (outfit: OutfitData, extras: OutfitCardPressExtras) => void;
   onDelete?: (outfitId: string) => void;
   onUnsave?: (outfitId: string) => void;
   isDeleteVisible?: boolean;
@@ -172,8 +187,35 @@ export const OutfitCard = ({
   const shareScale = useSharedValue(1);
   const saveScale = useSharedValue(1);
 
+  const buildPressExtras = (): OutfitCardPressExtras => {
+    const positiveRatings = ratingStats?.positiveRatings ?? 0;
+    const totalRatings = ratingStats?.totalRatings ?? 0;
+    const negativeRatings = Math.max(0, totalRatings - positiveRatings);
+
+    return {
+      userData: userData
+        ? {
+            nickname: userData.nickname,
+            user_avatar: userData.user_avatar,
+          }
+        : undefined,
+      meta: {
+        positive: positiveRatings,
+        negative: negativeRatings,
+        isLiked: !!optimisticLiked,
+        isDisliked: !!optimisticDisliked,
+        isSaved: !!optimisticSaved,
+        comments: outfit.comments ?? 0,
+      },
+    };
+  };
+
   const handleImagePress = () => {
-    setShowDetail(true);
+    if (onPress) {
+      onPress(outfit, buildPressExtras());
+    } else {
+      setShowDetail(true);
+    }
   };
 
   return (
@@ -190,7 +232,7 @@ export const OutfitCard = ({
 
       <OutfitImageCarousel
         imageUrls={imageUrls}
-        onPress={() => handleImagePress()}
+        onPress={handleImagePress}
         outfit={outfit}
       />
 
@@ -204,13 +246,23 @@ export const OutfitCard = ({
         optimisticPercentage={calculateOptimisticPercentage()}
         onPositiveRate={handlePositiveRate}
         onNegativeRate={handleNegativeRate}
-        onComment={() => setShowDetail(true)}
+        onComment={() => {
+          const extras = buildPressExtras();
+          if (onComment) {
+            onComment(outfit.outfit_id);
+          } else if (onPress) {
+            onPress(outfit, extras);
+          } else {
+            setShowDetail(true);
+          }
+        }}
         onShare={() => setShowShareModal(true)}
         onToggleSave={handleSave}
       />
 
       {/* Inline Outfit Detail Modal */}
-      <Modal visible={showDetail} transparent={false} animationType="slide" onRequestClose={() => setShowDetail(false)}>
+      {!onPress && (
+        <Modal visible={showDetail} transparent={false} animationType="slide" onRequestClose={() => setShowDetail(false)}>
         <View style={{ flex: 1, backgroundColor: colors.background }}>
           <Pressable
             onPress={() => setShowDetail(false)}
@@ -270,7 +322,8 @@ export const OutfitCard = ({
             </View>
           </ScrollView>
         </View>
-      </Modal>
+        </Modal>
+      )}
 
       <ShareModal isVisible={showShareModal} onClose={() => setShowShareModal(false)} outfit={outfit} isAnimated />
     </View>

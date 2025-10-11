@@ -3,7 +3,7 @@ import { ShareModal } from "@/components/modals/ShareModal";
 import OutfitInteractionButtons from "@/components/outfit-detail/OutfitInteractionButtons";
 import CommentSection from "@/components/outfits/CommentSection";
 import { FeedFilters, FilterOptions } from "@/components/outfits/FeedFilters";
-import { OutfitCard } from "@/components/outfits/OutfitCard";
+import { OutfitCard, OutfitCardMeta, OutfitData } from "@/components/outfits/OutfitCard";
 import { useFetchFeedOutfits } from "@/fetchers/outfits/fetchFeedOutfits";
 import { useFetchFilteredFeedOutfits } from "@/fetchers/outfits/fetchFilteredFeedOutfits";
 import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
@@ -11,7 +11,7 @@ import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOut
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
-import { OutfitData } from "@/types/createOutfitTypes";
+import { UserData } from "@/types/userProfileTypes";
 import { enrichOutfit } from "@/utils/enrichOutfit";
 import { useSharedValue } from "react-native-reanimated";
 // import { router } from "expo-router";
@@ -146,9 +146,9 @@ export default function FeedSection({}: FeedSectionProps) {
     const [showCommentSection, setShowCommentSection] = useState(false);
     const [selectedOutfitForShare, setSelectedOutfitForShare] = useState<OutfitData | null>(null);
     const [showShareModal, setShowShareModal] = useState(false);
-    const [selectedOutfit, setSelectedOutfit] = useState<any | null>(null);
-    const [selectedUserData, setSelectedUserData] = useState<{ nickname?: string | null; user_avatar?: string | null } | undefined>(undefined);
-    const [selectedMeta, setSelectedMeta] = useState<{ positive: number; negative: number; isLiked: boolean; isDisliked: boolean; isSaved?: boolean; comments: number } | null>(null);
+    const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
+    const [selectedUserData, setSelectedUserData] = useState<Pick<UserData, "nickname" | "user_avatar"> | undefined>(undefined);
+    const [selectedMeta, setSelectedMeta] = useState<OutfitCardMeta | null>(null);
     const [showOutfitDetail, setShowOutfitDetail] = useState(false);
     const [showInlineComments, setShowInlineComments] = useState(false);
 
@@ -276,10 +276,19 @@ export default function FeedSection({}: FeedSectionProps) {
                         onComment={handleCommentPress}
                         onUnsave={() => handleUnsavePress(outfit)}
                         onShare={() => handleSharePress(outfit.outfit_id)}
-                        onPress={(o) => {
-                            setSelectedOutfit(o);
-                            setSelectedUserData(undefined);
-                            setSelectedMeta(null);
+                        onPress={(outfit, extras) => {
+                            setSelectedOutfit(outfit);
+                            setSelectedUserData(extras?.userData);
+                            setSelectedMeta(
+                                extras?.meta ?? {
+                                    positive: 0,
+                                    negative: 0,
+                                    isLiked: !!outfit.isLiked,
+                                    isDisliked: false,
+                                    isSaved: outfit.isSaved,
+                                    comments: outfit.comments ?? 0,
+                                }
+                            );
                             setShowOutfitDetail(true);
                         }}
                     />

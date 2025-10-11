@@ -1,5 +1,5 @@
 import { useTheme } from "@/providers/themeContext";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
 import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated";
@@ -17,7 +17,6 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
   const { colors } = useTheme();
   const { width: screenWidth } = useWindowDimensions();
   const progress = useSharedValue<number>(0);
-  const [isInteracting, setIsInteracting] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useAnimatedReaction(
@@ -54,47 +53,44 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
 
   return (
     <View className="relative">
-      <Carousel
-        width={screenWidth}
-        height={384}
-        data={imageUrls}
-        onProgressChange={(_, absoluteProgress) => {
-          progress.value = absoluteProgress;
-          if (Math.abs(absoluteProgress % 1) > 0.1) {
-            setIsInteracting(true);
-          } else {
-            setTimeout(() => setIsInteracting(false), 200);
-          }
+      <Pressable 
+        onPress={() => {
+          onPress?.(outfit);
         }}
-        renderItem={({ item, index }) => (
-          <Pressable 
-            onPress={() => {
-              if (!isInteracting) {
-                onPress?.(outfit);
-              }
-            }}
-          >
+        android_ripple={{ color: 'rgba(255, 255, 255, 0.1)' }}
+        style={({ pressed }) => ({
+          opacity: pressed ? 0.8 : 1,
+        })}
+      >
+        <Carousel
+          width={screenWidth}
+          height={384}
+          data={imageUrls}
+          onProgressChange={(_, absoluteProgress) => {
+            progress.value = absoluteProgress;
+          }}
+          renderItem={({ item, index }) => (
             <Image
               source={{ uri: item }}
               className="w-full h-96"
               style={{ width: screenWidth, height: 384 }}
               resizeMode="cover"
             />
-          </Pressable>
-        )}
-        mode="parallax"
-        loop={false}
-        enabled={imageUrls.length > 1}
-        modeConfig={{
-          parallaxScrollingScale: 1.0,
-          parallaxScrollingOffset: 0,
-          parallaxAdjacentItemScale: 1.0,
-        }}
-        style={{ 
-          width: screenWidth,
-          overflow: 'hidden'
-        }}
-      />
+          )}
+          mode="parallax"
+          loop={false}
+          enabled={imageUrls.length > 1}
+          modeConfig={{
+            parallaxScrollingScale: 1.0,
+            parallaxScrollingOffset: 0,
+            parallaxAdjacentItemScale: 1.0,
+          }}
+          style={{ 
+            width: screenWidth,
+            overflow: 'hidden'
+          }}
+        />
+      </Pressable>
       <View style={{
         position: 'absolute',
         top: 12,

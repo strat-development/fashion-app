@@ -17,7 +17,6 @@ import OutfitDetailInfo from "../outfit-detail/OutfitDetailInfo";
 import OutfitDetailSections from "../outfit-detail/OutfitDetailSections";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
-import { Button } from "../ui/button";
 import { EmptyState } from "./EmptyState";
 
 interface CreatedOutfitsSectionProps {
@@ -224,9 +223,14 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                         {profileId === userId && (
                             <View className="flex-row items-center justify-between w-full">
                                 <Text className="text-white text-xl font-semibold">{t('createdOutfitsSection.header')}</Text>
-                                <Button
+                                <Pressable
                                     onPress={handleCreateOutfit}
-                                    className="rounded-xl px-4 py-2"
+                                    style={{
+                                        borderRadius: 12,
+                                        paddingHorizontal: 16,
+                                        paddingVertical: 8,
+                                        overflow: 'hidden'
+                                    }}
                                 >
                                     <ThemedGradient
                                         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 12 }}
@@ -235,7 +239,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                                         <Plus size={16} color="#FFFFFF" />
                                         <Text className="text-white ml-2 font-medium text-sm">{t('createdOutfitsSection.createButton')}</Text>
                                     </View>
-                                </Button>
+                                </Pressable>
                             </View>
                         )}
                     </View>
