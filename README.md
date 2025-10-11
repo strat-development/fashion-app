@@ -4,7 +4,7 @@
 
 
 
-<img width="3840" height="2160" alt="Github-light-mode" src="https://github.com/user-attachments/assets/2027b3e9-b354-4142-8139-a2fa64b7392b" />
+<img width="3840" height="2160" alt="Versa-portfolio" src="https://github.com/user-attachments/assets/96b75a87-3e47-430c-b3b4-18ed936e53e2" />
 
 <img width="3840" height="2160" alt="Github-dark-mode" src="https://github.com/user-attachments/assets/39aa8923-ec9b-4a71-9914-035a4b95a8a3" />
 
