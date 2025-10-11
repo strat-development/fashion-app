@@ -38,7 +38,7 @@ export default function TabLayout() {
     };
 
     return (
-      <View style={{ alignItems: 'center', justifyContent: 'center', borderRadius: 999, padding: 8 }}>
+      <View style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
         <Icon size={24} color={focused ? colors.white : colors.textSecondary} />
       </View>
     );
@@ -115,10 +115,11 @@ export default function TabLayout() {
       <Tabs
         screenOptions={{
           headerShown: false,
+          tabBarShowLabel: false,
           tabBarStyle: {
             position: 'absolute',
-            left: 60,
-            right: 60,
+            left: 80,
+            right: 80,
             bottom: 20,
             height: 58,
             borderRadius: 999,

@@ -17,6 +17,7 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import type { Session } from '@supabase/supabase-js';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { I18nextProvider } from 'react-i18next';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import "../global.css";
 
 const queryClient = new QueryClient({
@@ -87,6 +88,7 @@ export default function RootLayout() {
   }
 
   return (
+    <SafeAreaProvider>
     <CustomThemeProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <QueryClientProvider client={queryClient}>
@@ -94,11 +96,13 @@ export default function RootLayout() {
             <SessionContextProvider supabaseClient={supabase as any}>
               <UserContextProvider>
                 <ViewContextProvider>
+                  <SafeAreaView style={{ flex: 1, backgroundColor: colorScheme === 'dark' ? DarkTheme.colors.background : DefaultTheme.colors.background }}>
                   <Stack screenOptions={{ headerShown: false }}>
                     <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                     <Stack.Screen name="+not-found" />
                   </Stack>
                   <StatusBar style="auto" />
+                  </SafeAreaView>
                 </ViewContextProvider>
               </UserContextProvider>
             </SessionContextProvider>
@@ -106,5 +110,6 @@ export default function RootLayout() {
         </QueryClientProvider>
       </ThemeProvider>
     </CustomThemeProvider>
+    </SafeAreaProvider>
   );
 }
