@@ -1,37 +1,33 @@
-import { useFetchFeedOutfits } from "@/fetchers/outfits/fetchFeedOutfits"
-import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits"
-import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation"
-import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation"
-import { useTheme } from "@/providers/themeContext"
-import { useUserContext } from "@/providers/userContext"
-import { Grid } from "lucide-react-native"
-import { useMemo, useState } from "react"
-import { useTranslation } from "react-i18next"
-import { Alert, Modal, Pressable, RefreshControl, ScrollView, Text, View } from "react-native"
-import { enrichOutfit } from '../../utils/enrichOutfit'
-import { EmptyState } from "../dashboard/EmptyState"
-import OutfitDetailImages from "../outfit-detail/OutfitDetailImages"
-import OutfitDetailInfo from "../outfit-detail/OutfitDetailInfo"
-import OutfitDetailSections from "../outfit-detail/OutfitDetailSections"
-import CommentSection from "./CommentSection"
-import { OutfitCard, OutfitData } from "./OutfitCard"
+import { useFetchFeedOutfits } from "@/fetchers/outfits/fetchFeedOutfits";
+import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
+import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation";
+import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
+import { useUserContext } from "@/providers/userContext";
+import { Grid } from "lucide-react-native";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Alert, RefreshControl, ScrollView, View } from "react-native";
+import { enrichOutfit } from '../../utils/enrichOutfit';
+import { EmptyState } from "../dashboard/EmptyState";
+import CommentSection from "./CommentSection";
+import { OutfitCard, OutfitData } from "./OutfitCard";
+import { useRouter } from "expo-router";
 
 interface FeedSectionProps {
-    refreshing: boolean
-    onPress?: (outfit: OutfitData) => void;
+    refreshing: boolean;
 }
 
 export const FeedSection = ({ refreshing }: FeedSectionProps) => {
     const { t } = useTranslation();
-    const { colors } = useTheme();
     const { data: fetchedOutfits = [] } = useFetchFeedOutfits();
     const { userId } = useUserContext();
     const { mutate: saveOutfit } = useSaveOutfitMutation();
     const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
+    const router = useRouter();
 
-    const savedOutfitIds = useMemo(() => 
-        new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []), 
+    const savedOutfitIds = useMemo(() =>
+        new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []),
         [savedOutfits?.map(outfit => outfit.outfit_id).join(',')]
     );
 
@@ -39,10 +35,6 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
         return fetchedOutfits?.map(raw => enrichOutfit(raw, savedOutfitIds)) || [];
     }, [fetchedOutfits, savedOutfitIds]);
 
-    const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
-    const [selectedMeta, setSelectedMeta] = useState<{ positive: number; negative: number; isLiked: boolean; isDisliked: boolean; isSaved?: boolean; comments: number } | null>(null);
-    const [selectedUserData, setSelectedUserData] = useState<{ nickname?: string | null; user_avatar?: string | null } | undefined>(undefined);
-    const [showOutfitDetail, setShowOutfitDetail] = useState(false);
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [commentOutfitId, setCommentOutfitId] = useState<string | null>(null);
     const [showCommentSection, setShowCommentSection] = useState(false);
@@ -60,8 +52,6 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
             return;
         }
 
-        const isCurrentlySaved = savedOutfitIds.has(outfitId);
-
         saveOutfit({
             userId,
             outfitId,
@@ -70,16 +60,7 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
     };
 
     const handleOutfitPress = (outfit: OutfitData) => {
-        setSelectedOutfit(outfit);
-        setSelectedMeta(null);
-        setShowOutfitDetail(true);
-    };
-
-    const handleOpenDetailInline = (args: { outfit: OutfitData; userData?: { nickname?: string | null; user_avatar?: string | null }; rating: { positive: number; negative: number; isLiked: boolean; isDisliked: boolean; isSaved?: boolean; comments: number } }) => {
-        setSelectedOutfit(args.outfit);
-        setSelectedMeta(args.rating);
-        setSelectedUserData(args.userData);
-        setShowOutfitDetail(true);
+        Alert.alert("Pressed!", `Navigating to ${outfit.outfit_id}`);
     };
 
     const handleCommentPress = (outfitId: string) => {
@@ -110,13 +91,13 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                             />
                         ))
                     ) : (
-                            <EmptyState
-                                icon={Grid}
-                                title={t('feedSection.emptyState.title')}
-                                description={t('feedSection.emptyState.description')}
-                                actionText={t('feedSection.emptyState.actionText')}
-                            />
-                        )}
+                        <EmptyState
+                            icon={Grid}
+                            title={t('feedSection.emptyState.title')}
+                            description={t('feedSection.emptyState.description')}
+                            actionText={t('feedSection.emptyState.actionText')}
+                        />
+                    )}
                 </View>
             </ScrollView>
 
@@ -126,54 +107,6 @@ export const FeedSection = ({ refreshing }: FeedSectionProps) => {
                 outfitId={commentOutfitId || ''}
                 outfitTitle={selectedOutfitForComments?.outfit_name || ''}
             />
-
-            <Modal visible={showOutfitDetail} transparent animationType="fade" onRequestClose={() => setShowOutfitDetail(false)}>
-                <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.6)' }}>
-                    <Pressable style={{ flex: 1 }} onPress={() => setShowOutfitDetail(false)} />
-                    <View style={{ maxHeight: '90%', backgroundColor: colors.background, borderTopLeftRadius: 16, borderTopRightRadius: 16, overflow: 'hidden' }}>
-                        {selectedOutfit && (
-                            <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
-                                {/* Header */}
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: colors.border }}>
-                                    <Text style={{ color: colors.text, fontSize: 18, fontWeight: '700' }}>{selectedOutfit.outfit_name}</Text>
-                                    <Pressable onPress={() => setShowOutfitDetail(false)}>
-                                        <Text style={{ color: colors.textSecondary, fontSize: 16 }}>{t('common.close') || 'Close'}</Text>
-                                    </Pressable>
-                                </View>
-
-                                {/* Info */}
-                                <View style={{ paddingHorizontal: 16, paddingTop: 12 }}>
-                                    <OutfitDetailInfo
-                                        outfit={selectedOutfit}
-                                        userData={selectedUserData}
-                                        tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])}
-                                    />
-                                </View>
-
-                                {/* Images */}
-                                <View style={{ paddingHorizontal: 16 }}>
-                                    <OutfitDetailImages
-                                        imageUrls={Array.isArray(selectedOutfit.outfit_elements_data)
-                                            ? (selectedOutfit.outfit_elements_data as any[])
-                                                .map((el) => (typeof el === 'string' ? el : el?.imageUrl))
-                                                .filter((u): u is string => typeof u === 'string' && !!u)
-                                            : []}
-                                        elementsData={Array.isArray(selectedOutfit.outfit_elements_data)
-                                            ? (selectedOutfit.outfit_elements_data as any[]).filter((el) => el && typeof el === 'object' && (el as any).imageUrl)
-                                            : [] as any}
-                                    />
-                                </View>
-
-                                {/* Sections */}
-                                <OutfitDetailSections
-                                    description={selectedOutfit.description}
-                                    tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])}
-                                />
-                            </ScrollView>
-                        )}
-                    </View>
-                </View>
-            </Modal>
         </View>
-    )
+    );
 }
