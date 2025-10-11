@@ -193,7 +193,7 @@ export default function FeedScreen() {
                 onEndReached={handleEndReached}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={isFetching && page > 1 ? <ActivityIndicator style={{ marginVertical: 16 }} size="large" color={colors.accent} /> : null}
-                contentContainerStyle={{ paddingTop: 16, paddingBottom: 80 }}
+                contentContainerStyle={{ paddingBottom: 80 }}
             />
             <CommentSection isVisible={showCommentSection} onClose={() => setShowCommentSection(false)} outfitId={commentOutfitId || ''} outfitTitle={selectedOutfitForComments?.outfit_name || ''} />
             <ShareModal isVisible={showShareModal} onClose={() => setShowShareModal(false)} outfit={selectedOutfitForShare} isAnimated={true} />
