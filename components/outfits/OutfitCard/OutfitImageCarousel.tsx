@@ -2,7 +2,6 @@ import { useTheme } from "@/providers/themeContext";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
-import { State, TapGestureHandler } from "react-native-gesture-handler";
 import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { OutfitData } from "../OutfitCard";
@@ -68,23 +67,20 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
           }
         }}
         renderItem={({ item, index }) => (
-          <TapGestureHandler
-            numberOfTaps={1}
-            onHandlerStateChange={({ nativeEvent }) => {
-              if (nativeEvent.state === State.ACTIVE) {
+          <Pressable 
+            onPress={() => {
+              if (!isInteracting) {
                 onPress?.(outfit);
               }
             }}
           >
-            <View>
-              <Image
-                source={{ uri: item }}
-                className="w-full h-96"
-                style={{ width: screenWidth, height: 384 }}
-                resizeMode="cover"
-              />
-            </View>
-          </TapGestureHandler>
+            <Image
+              source={{ uri: item }}
+              className="w-full h-96"
+              style={{ width: screenWidth, height: 384 }}
+              resizeMode="cover"
+            />
+          </Pressable>
         )}
         mode="parallax"
         loop={false}

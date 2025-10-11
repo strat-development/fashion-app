@@ -24,17 +24,17 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, FlatList, Modal, Pressable, RefreshControl, ScrollView, Text, View } from "react-native";
 
 interface FeedSectionProps {
-    refreshing: boolean;
     onPress?: (outfit: OutfitData) => void;
 }
 
-export default function FeedSection({ refreshing }: FeedSectionProps) {
+export default function FeedSection({}: FeedSectionProps) {
     const { t } = useTranslation();
     const { colors } = useTheme();
     const { userId } = useUserContext();
     const { mutate: saveOutfit } = useSaveOutfitMutation();
     const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
+    const [refreshing, setRefreshing] = useState(false);
 
     const [filters, setFilters] = useState<FilterOptions>({
         search: '',
@@ -84,6 +84,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
 
     const fetchedOutfits = hasActiveFilters ? (filteredQuery.data || []) : (unfilteredQuery.data || []);
     const isLoading = hasActiveFilters ? filteredQuery.isLoading : unfilteredQuery.isLoading;
+    const isFetching = hasActiveFilters ? filteredQuery.isFetching : unfilteredQuery.isFetching;
 
     const enrichedAllOutfits = useMemo(() => {
         return allOutfits.map(raw => enrichOutfit(raw, savedOutfitIds));
@@ -133,6 +134,12 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
             setHasMore(false);
         }
     }, [fetchedOutfits, page, pageSize, isLoading]);
+
+    useEffect(() => {
+        if (!isFetching && refreshing) {
+            setRefreshing(false);
+        }
+    }, [isFetching, refreshing]);
 
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [commentOutfitId, setCommentOutfitId] = useState<string | null>(null);
@@ -297,10 +304,14 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                 refreshControl={<RefreshControl 
                     refreshing={refreshing} 
                     onRefresh={() => {
+                        setRefreshing(true);
                         setPage(1);
-                        setAllOutfits([]);
                         setHasMore(true);
-                        setDebouncedFilters(filters);
+                        if (hasActiveFilters) {
+                            filteredQuery.refetch();
+                        } else {
+                            unfilteredQuery.refetch();
+                        }
                     }} 
                 />}
                 onEndReached={handleEndReached}
