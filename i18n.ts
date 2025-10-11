@@ -1,6 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import * as RNLocalize from "react-native-localize";
+import * as Localization from "expo-localization";
 
 
 import ar from "./locales/ar.json";
@@ -21,7 +21,7 @@ import sv from "./locales/sv.json";
 import tr from "./locales/tr.json";
 import zh from "./locales/zh.json";
 
-const locales = RNLocalize.getLocales();
+const locales = Localization.getLocales();
 const systemLanguage = locales[0]?.languageCode || "en";
 
 i18n.use(initReactI18next).init({
