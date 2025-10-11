@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { Text } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 
 import Auth from '@/components/Auth';
@@ -88,28 +89,30 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider>
-    <CustomThemeProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <QueryClientProvider client={queryClient}>
-          <I18nextProvider i18n={i18n}>
-            <SessionContextProvider supabaseClient={supabase as any}>
-              <UserContextProvider>
-                <ViewContextProvider>
-                  <SafeAreaView style={{ flex: 1, backgroundColor: colorScheme === 'dark' ? DarkTheme.colors.background : DefaultTheme.colors.background }}>
-                  <Stack screenOptions={{ headerShown: false }}>
-                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                    <Stack.Screen name="+not-found" />
-                  </Stack>
-                  <StatusBar style="auto" />
-                  </SafeAreaView>
-                </ViewContextProvider>
-              </UserContextProvider>
-            </SessionContextProvider>
-          </I18nextProvider>
-        </QueryClientProvider>
-      </ThemeProvider>
-    </CustomThemeProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <CustomThemeProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <QueryClientProvider client={queryClient}>
+              <I18nextProvider i18n={i18n}>
+                <SessionContextProvider supabaseClient={supabase as any}>
+                  <UserContextProvider>
+                    <ViewContextProvider>
+                      <SafeAreaView style={{ flex: 1, backgroundColor: colorScheme === 'dark' ? DarkTheme.colors.background : DefaultTheme.colors.background }}>
+                        <Stack screenOptions={{ headerShown: false }}>
+                          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                          <Stack.Screen name="+not-found" />
+                        </Stack>
+                        <StatusBar style="auto" />
+                      </SafeAreaView>
+                    </ViewContextProvider>
+                  </UserContextProvider>
+                </SessionContextProvider>
+              </I18nextProvider>
+            </QueryClientProvider>
+          </ThemeProvider>
+        </CustomThemeProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

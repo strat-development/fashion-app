@@ -13,7 +13,7 @@ import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { OutfitData } from "@/types/createOutfitTypes";
 import { enrichOutfit } from "@/utils/enrichOutfit";
-import { useSharedValue, withSpring } from "react-native-reanimated";
+import { useSharedValue } from "react-native-reanimated";
 // import { router } from "expo-router";
 import OutfitDetailImages from "@/components/outfit-detail/OutfitDetailImages";
 import OutfitDetailInfo from "@/components/outfit-detail/OutfitDetailInfo";
@@ -62,11 +62,12 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
     }, [filters]);
 
     const [localSavedOutfitIds, setLocalSavedOutfitIds] = useState<Set<string>>(new Set());
+    const [localSavedIdsVersion, setLocalSavedIdsVersion] = useState(0);
     
     const savedOutfitIds = useMemo(() => new Set([
         ...savedOutfits?.map(outfit => outfit.outfit_id) || [],
         ...localSavedOutfitIds
-    ]), [savedOutfits, Array.from(localSavedOutfitIds)]);
+    ]), [savedOutfits, localSavedIdsVersion]);
     
     const [page, setPage] = useState(1);
     const [allOutfits, setAllOutfits] = useState<OutfitData[]>([]);
@@ -93,6 +94,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
         setLocalSavedOutfitIds(prev => {
             const filtered = [...prev].filter(id => !serverSavedIds.has(id));
             if (filtered.length !== prev.size) {
+                setLocalSavedIdsVersion(v => v + 1);
                 return new Set(filtered);
             }
             return prev;
@@ -162,6 +164,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
             setLocalSavedOutfitIds(prev => {
                 const newSet = new Set(prev);
                 newSet.delete(outfitId);
+                setLocalSavedIdsVersion(v => v + 1);
                 return newSet;
             });
 
@@ -173,6 +176,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                     setLocalSavedOutfitIds(prev => {
                         const newSet = new Set(prev);
                         newSet.add(outfitId);
+                        setLocalSavedIdsVersion(v => v + 1);
                         return newSet;
                     });
                 }
@@ -181,6 +185,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
             setLocalSavedOutfitIds(prev => {
                 const newSet = new Set(prev);
                 newSet.add(outfitId);
+                setLocalSavedIdsVersion(v => v + 1);
                 return newSet;
             });
 
@@ -193,6 +198,7 @@ export default function FeedSection({ refreshing }: FeedSectionProps) {
                     setLocalSavedOutfitIds(prev => {
                         const newSet = new Set(prev);
                         newSet.delete(outfitId);
+                        setLocalSavedIdsVersion(v => v + 1);
                         return newSet;
                     });
                 }

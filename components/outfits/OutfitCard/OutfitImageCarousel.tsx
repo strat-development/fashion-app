@@ -1,10 +1,10 @@
 import { useTheme } from "@/providers/themeContext";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
 import { State, TapGestureHandler } from "react-native-gesture-handler";
-import { useSharedValue } from "react-native-reanimated";
+import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
-import { useTranslation } from "react-i18next";
 import { OutfitData } from "../OutfitCard";
 
 interface OutfitImageCarouselProps {
@@ -19,6 +19,17 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
   const { width: screenWidth } = useWindowDimensions();
   const progress = useSharedValue<number>(0);
   const [isInteracting, setIsInteracting] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useAnimatedReaction(
+    () => Math.round(progress.value),
+    (current, previous) => {
+      if (current !== previous) {
+        runOnJS(setCurrentIndex)(current);
+      }
+    },
+    [progress]
+  );
 
   if (imageUrls.length === 0) {
     return (
@@ -103,7 +114,7 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
           color: colors.text,
           fontSize: 12,
           fontWeight: '500'
-        }}>{Math.round(progress.value) + 1}/{imageUrls.length}</Text>
+        }}>{currentIndex + 1}/{imageUrls.length}</Text>
       </View>
       {imageUrls.length <= 5 && (
         <View style={{
@@ -121,7 +132,7 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
                 height: 8,
                 borderRadius: 4,
                 marginHorizontal: 4,
-                backgroundColor: Math.round(progress.value) === index ? colors.white : `${colors.white}66`
+                backgroundColor: currentIndex === index ? colors.white : `${colors.white}66`
               }}
             />
           ))}

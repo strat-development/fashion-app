@@ -68,7 +68,7 @@ export default function OutfitInteractionButtons({
   }));
 
   const saveStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: saveScale?.value || 1 }],
+    transform: [{ scale: saveScale?.value ?? 1 }],
   }));
 
   const springDown = (sv: SharedValue<number>, to = 0.9) => (sv.value = withSpring(to, { damping: 14, stiffness: 220 }));
