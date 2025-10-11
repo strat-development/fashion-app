@@ -2,10 +2,10 @@ import { Select, SelectBackdrop, SelectContent, SelectInput, SelectItem, SelectP
 import { OutfitElements } from '@/consts/chatFilterConsts';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { Camera, Trash2 } from 'lucide-react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Image, Pressable, Text, TextInput, View } from 'react-native';
+import { Image, Pressable, Text, TextInput, View, Platform, Modal, FlatList } from 'react-native';
 
 interface ElementFormFieldsProps {
   elementControl: any;
@@ -34,6 +34,10 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
 
   const imageUrl = watchElement('imageUrl');
 
+  // Android fallback pickers (Actionsheet from gluestack may not render over RN Modal on Android)
+  const [showTypePicker, setShowTypePicker] = useState(false);
+  const [showCurrencyPicker, setShowCurrencyPicker] = useState(false);
+
   return (
     <>
       {/* Element Type - Select */}
@@ -46,19 +50,56 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
           name="type"
           rules={{ required: t('outfitCreateModal.errors.elementTypeRequired') }}
           render={({ field: { onChange, value } }) => (
-            <Select onValueChange={onChange} selectedValue={value}>
-              <SelectTrigger variant="outline" size="xl" style={{ borderColor: elementErrors.type ? colors.error : colors.border }}>
-                <SelectInput placeholder={t('outfitCreateModal.placeholders.elementType') as string} style={{ color: colors.text }} />
-              </SelectTrigger>
-              <SelectPortal>
-                <SelectBackdrop />
-                <SelectContent>
-                  {OutfitElements.map((element) => (
-                    <SelectItem key={element.name} label={element.name} value={element.name} />
-                  ))}
-                </SelectContent>
-              </SelectPortal>
-            </Select>
+            Platform.OS === 'android' ? (
+              <>
+                <Pressable
+                  onPress={() => setShowTypePicker(true)}
+                  className="px-3 py-3 rounded-lg border"
+                  style={{ borderColor: elementErrors.type ? colors.error : colors.border, backgroundColor: colors.surfaceVariant }}
+                >
+                  <Text style={{ color: value ? colors.text : colors.textMuted }}>
+                    {value || (t('outfitCreateModal.placeholders.elementType') as string)}
+                  </Text>
+                </Pressable>
+                <Modal
+                  visible={showTypePicker}
+                  transparent
+                  animationType="fade"
+                  onRequestClose={() => setShowTypePicker(false)}
+                >
+                  <Pressable style={{ flex: 1, backgroundColor: '#00000088', justifyContent: 'center', padding: 24 }} onPress={() => setShowTypePicker(false)}>
+                    <View style={{ borderRadius: 12, overflow: 'hidden', backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border }}>
+                      <FlatList
+                        data={OutfitElements}
+                        keyExtractor={(item) => item.name}
+                        renderItem={({ item }) => (
+                          <Pressable
+                            onPress={() => { onChange(item.name); setShowTypePicker(false); }}
+                            style={{ paddingVertical: 14, paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: colors.border, backgroundColor: value === item.name ? colors.surfaceVariant : colors.surface }}
+                          >
+                            <Text style={{ color: colors.text }}>{item.name}</Text>
+                          </Pressable>
+                        )}
+                      />
+                    </View>
+                  </Pressable>
+                </Modal>
+              </>
+            ) : (
+              <Select onValueChange={onChange} selectedValue={value}>
+                <SelectTrigger variant="outline" size="xl" style={{ borderColor: elementErrors.type ? colors.error : colors.border }}>
+                  <SelectInput placeholder={t('outfitCreateModal.placeholders.elementType') as string} style={{ color: colors.text }} />
+                </SelectTrigger>
+                <SelectPortal>
+                  <SelectBackdrop />
+                  <SelectContent>
+                    {OutfitElements.map((element) => (
+                      <SelectItem key={element.name} label={element.name} value={element.name} />
+                    ))}
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
+            )
           )}
         />
         {elementErrors.type && (
@@ -149,30 +190,69 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
               control={elementControl}
               name="currency"
               render={({ field: { onChange, value } }) => (
-                <Select onValueChange={onChange} selectedValue={value}>
-                  <SelectTrigger
-                    variant="outline"
-                    size="xl"
-                    style={{
-                      backgroundColor: colors.surfaceVariant,
-                      borderColor: colors.border,
-                      borderWidth: 1,
-                      borderRadius: 8,
-                      paddingVertical: 6,
-                    }}
-                  >
-                    <SelectInput style={{ color: colors.text, textAlign: 'center' }} />
-                  </SelectTrigger>
-                  <SelectPortal>
-                    <SelectBackdrop />
-                    <SelectContent>
-                      <SelectItem label="USD" value="USD" />
-                      <SelectItem label="EUR" value="EUR" />
-                      <SelectItem label="GBP" value="GBP" />
-                      <SelectItem label="PLN" value="PLN" />
-                    </SelectContent>
-                  </SelectPortal>
-                </Select>
+                Platform.OS === 'android' ? (
+                  <>
+                    <Pressable
+                      onPress={() => setShowCurrencyPicker(true)}
+                      className="rounded-lg"
+                      style={{
+                        backgroundColor: colors.surfaceVariant,
+                        borderColor: colors.border,
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        paddingVertical: 10,
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Text style={{ color: colors.text }}>{value || 'USD'}</Text>
+                    </Pressable>
+                    <Modal
+                      visible={showCurrencyPicker}
+                      transparent
+                      animationType="fade"
+                      onRequestClose={() => setShowCurrencyPicker(false)}
+                    >
+                      <Pressable style={{ flex: 1, backgroundColor: '#00000088', justifyContent: 'center', padding: 24 }} onPress={() => setShowCurrencyPicker(false)}>
+                        <View style={{ borderRadius: 12, overflow: 'hidden', backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border }}>
+                          {['USD','EUR','GBP','PLN'].map((c) => (
+                            <Pressable
+                              key={c}
+                              onPress={() => { onChange(c); setShowCurrencyPicker(false); }}
+                              style={{ paddingVertical: 14, paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: colors.border, backgroundColor: value === c ? colors.surfaceVariant : colors.surface }}
+                            >
+                              <Text style={{ color: colors.text, textAlign: 'center' }}>{c}</Text>
+                            </Pressable>
+                          ))}
+                        </View>
+                      </Pressable>
+                    </Modal>
+                  </>
+                ) : (
+                  <Select onValueChange={onChange} selectedValue={value}>
+                    <SelectTrigger
+                      variant="outline"
+                      size="xl"
+                      style={{
+                        backgroundColor: colors.surfaceVariant,
+                        borderColor: colors.border,
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        paddingVertical: 6,
+                      }}
+                    >
+                      <SelectInput style={{ color: colors.text, textAlign: 'center' }} />
+                    </SelectTrigger>
+                    <SelectPortal>
+                      <SelectBackdrop />
+                      <SelectContent>
+                        <SelectItem label="USD" value="USD" />
+                        <SelectItem label="EUR" value="EUR" />
+                        <SelectItem label="GBP" value="GBP" />
+                        <SelectItem label="PLN" value="PLN" />
+                      </SelectContent>
+                    </SelectPortal>
+                  </Select>
+                )
               )}
             />
           </View>

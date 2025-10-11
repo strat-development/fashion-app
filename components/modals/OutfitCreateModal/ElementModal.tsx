@@ -1,12 +1,11 @@
-import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { useTheme } from '@/providers/themeContext';
 import { OutfitElementData } from '@/types/createOutfitTypes';
 import { X } from 'lucide-react-native';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Alert, Modal, Pressable, ScrollView, Text, View } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { Alert, Modal, Pressable, ScrollView, Text, View, Platform } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ElementFormFields } from './ElementFormFields';
 import { PendingImage } from './types';
@@ -54,56 +53,49 @@ export const ElementModal: React.FC<ElementModalProps> = ({
   });
 
   const handleImageSelect = async () => {
-    const hasPermission = await useRequestPermission();
-    if (!hasPermission) {
-      Alert.alert(
-        t('outfitCreateModal.alerts.permissionDenied.title'),
-        t('outfitCreateModal.alerts.permissionDenied.message')
-      );
-      return;
-    }
-
     try {
-      launchImageLibrary(
-        {
-          mediaType: 'photo',
-          maxWidth: 1024,
-          maxHeight: 1024,
-          quality: 1,
-          includeBase64: false,
-        },
-        (response) => {
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-          } else if (response.errorCode) {
-            console.error('Image picker error:', response.errorMessage);
-            Alert.alert(t('outfitCreateModal.alerts.error.title'), response.errorMessage);
-          } else if (response.assets && response.assets[0]) {
-            const asset = response.assets[0];
-            if (asset?.uri) {
-              // Build a safe filename fallback when picker doesn't provide one
-              const inferredExt = (asset.type?.split('/')?.[1] || 'jpg').replace(/[^a-zA-Z0-9]/g, '');
-              const fallbackName = `image.${inferredExt || 'jpg'}`;
-              const safeFileName = asset.fileName || fallbackName;
+      // Request permissions using expo-image-picker (handles Android 13+ and iOS gracefully)
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(
+          t('outfitCreateModal.alerts.permissionDenied.title'),
+          t('outfitCreateModal.alerts.permissionDenied.message')
+        );
+        return;
+      }
 
-              const tempKey = `temp://${Date.now()}-${safeFileName}`;
-              pendingImagesRef.current[tempKey] = {
-                uri: asset.uri,
-                type: asset.type || 'image/jpeg',
-                fileName: safeFileName
-              };
-              setElementValue('imageUrl', tempKey, { shouldDirty: true, shouldValidate: true });
+      const pickerResult = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        allowsMultipleSelection: false,
+        exif: false,
+        base64: false,
+      });
 
-              setElementValue('_localUri' as any, asset.uri as any, { shouldDirty: true });
-              setElementValue('_fileName' as any, safeFileName as any, { shouldDirty: true });
-              setElementValue('_type' as any, (asset as any).type as any, { shouldDirty: true });
-              setSelectedImageName(safeFileName);
-            }
-          }
-        }
-      );
+      if (pickerResult.canceled) return;
+      const asset = pickerResult.assets?.[0];
+      if (!asset?.uri) return;
+
+      // Build a safe filename and type
+      const uri = asset.uri;
+      const mimeType = asset.type === 'image' ? 'image/jpeg' : (asset as any).mimeType || 'image/jpeg';
+      const filenameFromUri = uri.split('?')[0].split('/').pop() || 'image.jpg';
+      const safeFileName = (asset as any).fileName || filenameFromUri;
+
+      const tempKey = `temp://${Date.now()}-${safeFileName}`;
+      pendingImagesRef.current[tempKey] = {
+        uri,
+        type: mimeType,
+        fileName: safeFileName,
+      };
+
+      setElementValue('imageUrl', tempKey, { shouldDirty: true, shouldValidate: true });
+      setElementValue('_localUri' as any, uri as any, { shouldDirty: true });
+      setElementValue('_fileName' as any, safeFileName as any, { shouldDirty: true });
+      setElementValue('_type' as any, mimeType as any, { shouldDirty: true });
+      setSelectedImageName(safeFileName);
     } catch (error) {
-      console.error('Error launching image library:', error);
+      console.error('Error launching image library (expo-image-picker):', error);
       Alert.alert(t('outfitCreateModal.alerts.error.title'), t('outfitCreateModal.alerts.error.message'));
     }
   };
