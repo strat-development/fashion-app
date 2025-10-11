@@ -2,49 +2,25 @@
 
 <p>An application created to discover new styles in seconds </p>
 
-<hr />
+
 
 <img width="3840" height="2160" alt="Github-light-mode" src="https://github.com/user-attachments/assets/2027b3e9-b354-4142-8139-a2fa64b7392b" />
 
 <img width="3840" height="2160" alt="Github-dark-mode" src="https://github.com/user-attachments/assets/39aa8923-ec9b-4a71-9914-035a4b95a8a3" />
 
 
-
-
-
-
-<h2>📁 Folder Structure</h2>
-
-<pre><code>
-    📁 src
- ┣ 📁 app            #
- ┣ 📁 components     #
- ┣ 📁 features       #
- ┣ 📁 fetchers       #
- ┣ 📁 locales        #
- ┣ 📁 mutations      #
- ┣ 📁 hooks          #
- ┣ 📁 lib            #
- ┣ 📁 providers      #
- ┣ 📁 styles         #
- ┣ 📁 server         #
- ┗ 📁 types          #
-</code></pre>
-
 <hr />
+
 
 <h2>✨ Features</h2>
 <ul>
-  <li> Live Feed </li>
-  <li> AI Assistant for creating outfits </li>
-  <li> Auto currency conversion </li>
-  <li> Manual outfit creator </li>
-  <li> User statistics </li>
-  <li> Outfits ranking </li>
-  <li> Huge variety of outfit elements </li>
-  <li> Language settings </li>
-  <li> Theme settings </li>
-  <li> Outfits, users reports </li>
+  <li> 📡 <b>Live Feed</b> - Discover new fashion trends in real-time. </li>
+  <li> 🤖 <b>AI Style Assistant</b> - Design unique outfits quickly with AI guidance. </li>
+  <li> 💸 <b>Auto currency conversion</b> - Browse effortlessly with prices automatically converted to your currency.</li>
+  <li> ✂️ <b>Outfit creator</b> - Craft and share your own fashion styles with ease. </li>
+  <li> 📊 <b>User statistics</b> - Track user feedback to improve your creations. </li>
+  <li> 🏆 <b>Outfits ranking</b> - Explore top-rated outfits from the community. </li>
+  <li> 🌐 <b>Language and theme settings</b> - Personalize your app with language and theme options. </li>
 </ul>
 
 <hr />
