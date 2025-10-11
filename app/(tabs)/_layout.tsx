@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs, usePathname } from 'expo-router';
 import { Bot, Compass, Trophy, User2 } from 'lucide-react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Pressable, View, Animated } from 'react-native';
+import { Alert, Pressable, View, Animated, Platform } from 'react-native';
 
 export default function TabLayout() {
   const { colors, isDark } = useTheme();
@@ -28,18 +28,17 @@ export default function TabLayout() {
   };
 
   const getTabIcon = (Icon: React.ElementType, focused: boolean, key: keyof typeof tabGradients) => {
-    const gradient = tabGradients[key];
-    const baseShadow = {
-      shadowColor: gradient?.[1] || colors.accent,
-      shadowOpacity: focused ? 0.25 : 0,
-      shadowRadius: 6,
-      shadowOffset: { width: 0, height: 2 },
-      elevation: focused ? 6 : 0,
-    };
-
     return (
-      <View style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-        <Icon size={24} color={focused ? colors.white : colors.textSecondary} />
+      <View style={{ 
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        alignItems: 'center', 
+        justifyContent: 'center',
+      }}>
+        <Icon size={26} color={focused ? colors.white : colors.textSecondary} />
       </View>
     );
   };
@@ -118,10 +117,9 @@ export default function TabLayout() {
           tabBarShowLabel: false,
           tabBarStyle: {
             position: 'absolute',
-            left: 80,
-            right: 80,
+            marginHorizontal: 40,
             bottom: 20,
-            height: 58,
+            height: 70,
             borderRadius: 999,
             borderWidth: 0,
             borderColor: "transparent",
@@ -132,6 +130,14 @@ export default function TabLayout() {
             shadowOpacity: 0.15,
             shadowRadius: 2,
             shadowOffset: { width: 2, height: 2 },
+            alignSelf: 'center',
+            paddingTop: 0,
+            paddingBottom: 0,
+          },
+          tabBarItemStyle: {
+            paddingVertical: 0,
+            paddingHorizontal: 0,
+            margin: 0,
           },
           tabBarBackground: () => {
             const currentPath = pathname.replace('/(tabs)/', '').replace('/', '') || 'index';
@@ -186,6 +192,9 @@ export default function TabLayout() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 999,
+                padding: 0,
+                margin: 0,
+                position: 'relative',
               }}
               accessibilityLabel={accessibilityLabel}
             >
