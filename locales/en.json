@@ -404,7 +404,10 @@
       "imagePickerErrorMessage": "Image picker error: ",
       "imageUploadError": "Failed to upload image",
       "imageUrlError": "Failed to retrieve image URL",
-      "success": "Profile updated successfully",
+      "success": {
+        "title": "Success",
+        "message": "Profile updated successfully"
+      },
       "error": "Failed to update profile"
     }
   },

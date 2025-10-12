@@ -1,4 +1,7 @@
-import { requestPermission } from '@/hooks/useRequestPermission';
+
+import * as FileSystem from 'expo-file-system/legacy';
+import { decode } from 'base64-arraybuffer';
+import { supabase } from '@/lib/supabase';
 import { supabaseAdmin } from '@/lib/admin';
 import { useEditProfileMutation } from '@/mutations/dashboard/EditProfileMutation';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
@@ -8,7 +11,7 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ProfileEditProps {
@@ -39,6 +42,8 @@ interface FormData {
   isPublic: boolean;
 }
 
+
+
 export const ProfileEdit = ({
   isVisible,
   onClose,
@@ -65,42 +70,27 @@ export const ProfileEdit = ({
   const watchIsPublic = watch('isPublic');
 
   const handleImageSelect = async () => {
-    const hasPermission = await requestPermission();
-    if (!hasPermission) {
-      Alert.alert(t('profileEdit.alerts.permissionDenied.title'), t('profileEdit.alerts.permissionDenied.message'));
-      return;
-    }
-
     try {
-      launchImageLibrary(
-        {
-          mediaType: 'photo',
-          maxWidth: 1024,
-          maxHeight: 1024,
-          quality: 1,
-          includeBase64: false,
-        },
-        (response) => {
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-          } else if (response.errorCode) {
-            console.error('Image picker error:', response.errorMessage);
-            Alert.alert(t('profileEdit.alerts.imagePickerErrorMessage.title'), t('profileEdit.alerts.imagePickerErrorMessage.message' + response.errorMessage));
-          } else if (response.assets && response.assets[0]) {
-            const { uri, fileName, type } = response.assets[0];
-            if (uri) {
-              setSelectedImage({ uri, fileName: fileName || 'image.jpg', type });
-              setValue('avatar', uri);
-            } else {
-              console.error('No URI in image picker response');
-              Alert.alert(t('profileEdit.alerts.imageSelectError.title'), t('profileEdit.alerts.imageSelectError.message'));
-            }
-          } else {
-            console.error('No assets in image picker response');
-            Alert.alert(t('profileEdit.alerts.noImageSelected.title'), t('profileEdit.alerts.noImageSelected.message'));
-          }
-        }
-      );
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(t('profileEdit.alerts.permissionDenied.title'), t('profileEdit.alerts.permissionDenied.message'));
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        const { uri } = result.assets[0];
+        const fileName = uri.split('/').pop();
+        const type = `image/${fileName?.split('.').pop()}`;
+        setSelectedImage({ uri, fileName, type });
+        setValue('avatar', uri);
+      }
     } catch (error) {
       console.error('Image picker error:', error);
       Alert.alert(t('profileEdit.alerts.imagePickerError.title'), t('profileEdit.alerts.imagePickerError.message'));
@@ -121,12 +111,12 @@ export const ProfileEdit = ({
         const fileName = `${userId}_${Date.now()}.${fileExt}`;
         const filePath = `${fileName}`;
 
-        const response = await fetch(selectedImage.uri);
-        const blob = await response.blob();
+        const base64 = await FileSystem.readAsStringAsync(selectedImage.uri, { encoding: 'base64' });
+        const arrayBuffer = decode(base64);
 
-        const { error: uploadError } = await supabaseAdmin.storage
+        const { error: uploadError } = await supabase.storage
           .from('profile-pictures')
-          .upload(filePath, blob, {
+          .upload(filePath, arrayBuffer, {
             contentType: selectedImage.type || 'image/jpeg',
           });
 
@@ -136,7 +126,7 @@ export const ProfileEdit = ({
           return;
         }
 
-        const { data: publicUrlData } = supabaseAdmin.storage
+        const { data: publicUrlData } = supabase.storage
           .from('profile-pictures')
           .getPublicUrl(filePath);
 
@@ -223,32 +213,21 @@ export const ProfileEdit = ({
           <View className="pt-8 pb-20">
             {/* Avatar Section */}
             <View className="items-center mb-8">
-              <View className="relative">
-                <View className="w-24 h-24 border border-gray-700/50 rounded-full items-center justify-center"
-                  style={{
-                    
-                  }}
-                >
-                  {selectedImage?.uri || currentUserData?.avatar ? (
-                    <Image
-                      source={{ uri: selectedImage?.uri || currentUserData?.avatar }}
-                      className="w-24 h-24 rounded-full"
-                      resizeMode="cover"
-                    />
-                  ) : (
-                    <User size={32} color="#9CA3AF" />
-                  )}
+              <Pressable onPress={handleImageSelect}>
+                <View className="relative">
+                  <View className="w-24 h-24 border border-gray-700/50 rounded-full items-center justify-center">
+                    {selectedImage?.uri || currentUserData?.avatar ? (
+                      <Image
+                        source={{ uri: selectedImage?.uri || currentUserData?.avatar }}
+                        className="w-24 h-24 rounded-full"
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      <User size={32} color="#9CA3AF" />
+                    )}
+                  </View>
                 </View>
-                <Pressable
-                  onPress={handleImageSelect}
-                  className="absolute -bottom-2 -right-2 p-2 rounded-full overflow-hidden"
-                >
-                  <ThemedGradient active={true} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
-                  <Camera className='z-10' 
-                  size={14} 
-                  color="white" />
-                </Pressable>
-              </View>
+              </Pressable>
               <Text className="text-gray-400 text-sm mt-2">{t('profileEdit.changePhoto')}</Text>
             </View>
 

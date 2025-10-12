@@ -1,4 +1,7 @@
-import { requestPermission } from "@/hooks/useRequestPermission";
+
+import * as FileSystem from 'expo-file-system/legacy';
+import { decode } from 'base64-arraybuffer';
+
 import { supabase } from "@/lib/supabase";
 import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -8,7 +11,7 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Alert, Image, Modal, Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from "react-native";
-import { launchImageLibrary } from "react-native-image-picker";
+import * as ImagePicker from 'expo-image-picker';
 
 interface RegistrationData {
     username: string;
@@ -47,42 +50,27 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
     });
 
     const handleImageSelect = async () => {
-        const hasPermission = await requestPermission();
-        if (!hasPermission) {
-            Alert.alert(t('registrationModal.alerts.permissionDenied.title'), t('registrationModal.alerts.permissionDenied.message'));
-            return;
-        }
-
         try {
-            launchImageLibrary(
-                {
-                    mediaType: 'photo',
-                    maxWidth: 1024,
-                    maxHeight: 1024,
-                    quality: 1,
-                    includeBase64: false,
-                },
-                (response) => {
-                    if (response.didCancel) {
-                        console.log('User cancelled image picker');
-                    } else if (response.errorCode) {
-                        console.error('Image picker error:', response.errorMessage);
-                        Alert.alert(t('registrationModal.alerts.imagePickerErrorMessage.title'), t('registrationModal.alerts.imagePickerErrorMessage.message' + response.errorMessage ));
-                    } else if (response.assets && response.assets[0]) {
-                        const { uri, fileName, type } = response.assets[0];
-                        if (uri) {
-                            setSelectedImage({ uri, fileName: fileName || 'image.jpg', type });
-                            setValue('profilePicture', uri, { shouldValidate: true });
-                        } else {
-                            console.error('No URI in image picker response');
-                            Alert.alert(t('registrationModal.alerts.imageSelectError.title'), t('registrationModal.alerts.imageSelectError.message'));
-                        }
-                    } else {
-                        console.error('No assets in image picker response');
-                        Alert.alert(t('registrationModal.alerts.noImageSelected.title'), t('registrationModal.alerts.noImageSelected.message'));
-                    }
-                }
-            );
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert(t('registrationModal.alerts.permissionDenied.title'), t('registrationModal.alerts.permissionDenied.message'));
+                return;
+            }
+
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 1,
+            });
+
+            if (!result.canceled) {
+                const { uri } = result.assets[0];
+                const fileName = uri.split('/').pop();
+                const type = `image/${fileName?.split('.').pop()}`;
+                setSelectedImage({ uri, fileName, type });
+                setValue('profilePicture', uri, { shouldValidate: true });
+            }
         } catch (error) {
             console.error('Image picker error:', error);
             Alert.alert(t('registrationModal.alerts.imagePickerError.title'), t('registrationModal.alerts.imagePickerError.message'));
@@ -110,12 +98,12 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                     const fileName = `${userId}_${Date.now()}.${fileExt}`;
                     const filePath = `${fileName}`;
 
-                    const response = await fetch(selectedImage.uri);
-                    const blob = await response.blob();
+                    const base64 = await FileSystem.readAsStringAsync(selectedImage.uri, { encoding: 'base64' });
+                    const arrayBuffer = decode(base64);
 
                     const { error: uploadError } = await supabase.storage
                         .from('profile-pictures')
-                        .upload(filePath, blob, {
+                        .upload(filePath, arrayBuffer, {
                             contentType: selectedImage.type || 'image/jpeg',
                         });
 

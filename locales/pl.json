@@ -404,7 +404,10 @@
         "imagePickerErrorMessage": "Błąd wybieraka obrazów: ",
         "imageUploadError": "Nie udało się przesłać obrazu",
         "imageUrlError": "Nie udało się pobrać adresu URL obrazu",
-        "success": "Profil zaktualizowany pomyślnie",
+        "success": {
+          "title": "Sukces",
+          "message": "Profil zaktualizowany pomyślnie"
+        },
         "error": "Nie udało się zaktualizować profilu"
       }
     },
