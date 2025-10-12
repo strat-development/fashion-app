@@ -182,8 +182,8 @@ export default function Auth() {
           <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
               <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28, paddingBottom: 28, justifyContent: 'space-between' }}>
-                <View style={{ alignItems: 'center', marginBottom: 28 }}>
-                  <Text style={{ color: colors.text + 'dd', fontSize: 84, fontWeight: '900', letterSpacing: 1, textAlign: 'center', fontFamily: 'InstrumentSans' }}>Versa</Text>
+                <View style={{ alignItems: 'center', marginBottom: 28, marginTop: 128 }}>
+                  <Text style={{ color: colors.text + 'dd', fontSize: 84, fontWeight: '900', letterSpacing: 2, textAlign: 'center', fontFamily: 'InstrumentSans' }}>Versa</Text>
                   <Text style={{ color: colors.textSecondary + 'aa', fontSize: 16, fontWeight: '600', letterSpacing: 2, textAlign: 'center' }}>DISCOVER YOUR STYLE</Text>
                 </View>
 

@@ -26,7 +26,9 @@ export const ElementsListSection: React.FC<ElementsListSectionProps> = ({
       <View className="flex-row items-center justify-between mb-4">
         <View>
           <Text className="font-medium text-base" style={{ color: colors.text }}>
-            {t('outfitCreateModal.elements')}
+            {/* {t('outfitCreateModal.elements')}
+             */}
+             Add outfit element
           </Text>
           <Text className="text-sm" style={{ color: colors.textMuted }}>
             {outfitElements.length === 0 
