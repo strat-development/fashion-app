@@ -1,9 +1,9 @@
 import { router } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTranslation } from "react-i18next";
 
 export default function OutfitDetailHeader() {
   const { t } = useTranslation();
@@ -16,7 +16,7 @@ export default function OutfitDetailHeader() {
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 16,
-        paddingTop: insets.top + 16,
+        paddingTop: insets.top,
         paddingBottom: 16,
       }}
     >
