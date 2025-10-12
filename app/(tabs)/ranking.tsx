@@ -15,7 +15,8 @@ import { OutfitData } from '@/components/outfits/OutfitCard';
 import { Trophy, User2 } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Image, Modal, Pressable, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { FlatList, Image, Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RankingScreen() {
   const { t } = useTranslation();
