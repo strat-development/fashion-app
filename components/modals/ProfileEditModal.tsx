@@ -3,7 +3,6 @@ import { supabaseAdmin } from '@/lib/admin';
 import { useEditProfileMutation } from '@/mutations/dashboard/EditProfileMutation';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
-import { DevTool } from '@hookform/devtools';
 import { Camera, User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -402,7 +401,6 @@ export const ProfileEdit = ({
           </View>
         </ScrollView>
       </SafeAreaView>
-      <DevTool control={control} />
     </Modal>
   );
 };
