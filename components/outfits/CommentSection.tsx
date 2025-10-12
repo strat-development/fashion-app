@@ -44,7 +44,7 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: colors.border, backgroundColor: colors.background }}>
-            <Text style={{ color: colors.text, fontWeight: '600', fontSize: 16 }} numberOfLines={1}>
+            <Text style={{ flex: 1, marginRight: 8, color: colors.text, fontWeight: '600', fontSize: 16 }} numberOfLines={1}>
               {outfitTitle ? `${t('commentSection.header')}${outfitTitle}` : t('commentSection.headerDefault')}
             </Text>
             {!asInline && (
