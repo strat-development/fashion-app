@@ -1,6 +1,7 @@
 import { useTheme } from '@/providers/themeContext';
 import { BlurView } from 'expo-blur';
 import { MessageSquare, Plus, SlidersHorizontal } from 'lucide-react-native';
+import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 type ChatHeaderProps = {

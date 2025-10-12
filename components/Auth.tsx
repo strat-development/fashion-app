@@ -4,6 +4,7 @@ import { ThemedGradient, useTheme } from '@/providers/themeContext'
 import { AntDesign } from '@expo/vector-icons'
 import * as Linking from 'expo-linking'
 import { Lock, Mail } from 'lucide-react-native'
+import React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from "react-i18next"
 import { ActivityIndicator, Alert, Animated, AppState, Easing, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native'

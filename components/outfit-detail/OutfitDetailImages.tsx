@@ -3,7 +3,7 @@ import { ThemedGradient } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { OutfitElementData } from "@/types/createOutfitTypes";
 import { ExternalLink, Shirt, Tag } from "lucide-react-native";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";

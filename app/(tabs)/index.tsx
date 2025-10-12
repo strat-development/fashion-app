@@ -1,5 +1,8 @@
-import { OutfitCard, OutfitData } from "@/components/outfits/OutfitCard";
+import { EmptyState } from "@/components/dashboard/EmptyState";
+import { ShareModal } from "@/components/modals/ShareModal";
+import CommentSection from "@/components/outfits/CommentSection";
 import { FeedFilters, FilterOptions } from "@/components/outfits/FeedFilters";
+import { OutfitCard, OutfitData } from "@/components/outfits/OutfitCard";
 import { useFetchFeedOutfits } from "@/fetchers/outfits/fetchFeedOutfits";
 import { useFetchFilteredFeedOutfits } from "@/fetchers/outfits/fetchFilteredFeedOutfits";
 import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
@@ -10,12 +13,9 @@ import { useUserContext } from "@/providers/userContext";
 import { enrichOutfit } from "@/utils/enrichOutfit";
 import { useRouter } from "expo-router";
 import { Grid } from "lucide-react-native";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, RefreshControl, View, Text } from "react-native";
-import { EmptyState } from "@/components/dashboard/EmptyState";
-import CommentSection from "@/components/outfits/CommentSection";
-import { ShareModal } from "@/components/modals/ShareModal";
+import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
 
 export default function FeedScreen() {
     const { t } = useTranslation();

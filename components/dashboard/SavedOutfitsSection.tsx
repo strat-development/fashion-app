@@ -14,6 +14,7 @@ import OutfitDetailSections from "../outfit-detail/OutfitDetailSections";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
 import { EmptyState } from "./EmptyState";
+import React from "react";
 
 interface SavedOutfitsSectionProps {
     refreshing: boolean;

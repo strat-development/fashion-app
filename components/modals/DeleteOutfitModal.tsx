@@ -2,6 +2,7 @@ import { useDeleteOutfitMutation } from '@/mutations/outfits/DeleteOutfitMutatio
 import { useTheme } from '@/providers/themeContext';
 import { ModalProps } from '@/types/createOutfitTypes';
 import { AlertTriangle, X } from "lucide-react-native";
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal, Pressable, Text, View } from "react-native";
 

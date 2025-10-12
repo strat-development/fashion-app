@@ -4,7 +4,8 @@ import { Bookmark, MessageCircle, Share, ThumbsDown, ThumbsUp } from "lucide-rea
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
-import Animated, { SharedValue, useAnimatedStyle, withSequence, withSpring } from "react-native-reanimated";
+import type { SharedValue } from "react-native-reanimated";
+import Animated, { useAnimatedStyle, withSequence, withSpring } from "react-native-reanimated";
 
 interface OutfitInteractionButtonsProps {
   isLiked: boolean;

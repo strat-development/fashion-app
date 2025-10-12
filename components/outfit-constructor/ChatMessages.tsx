@@ -2,6 +2,7 @@ import { ParticleLoader } from '@/components/ui/ParticleLoader';
 import { TypingEffect } from '@/components/ui/TypingEffect';
 import { ImageResult, searchImages } from '@/fetchers/searchImages';
 import { useTheme } from '@/providers/themeContext';
+import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Image, Linking, Pressable, ScrollView, Text, View } from 'react-native';
 

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { CommentReactions } from "./CommentReactions";
+import React from "react";
 
 export const CommentItem = ({ comment, isReply = false, depth = 0, parentCommentId }: {
     comment: CommentData;

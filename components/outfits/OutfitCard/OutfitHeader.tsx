@@ -5,6 +5,7 @@ import { Link } from "expo-router";
 import { Delete, User } from "lucide-react-native";
 import { Image, Pressable, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 type UserData = Database["public"]["Tables"]["users"]["Row"];
 

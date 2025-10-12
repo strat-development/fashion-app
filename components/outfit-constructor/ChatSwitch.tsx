@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useViewContext } from "@/providers/chatViewContext";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 

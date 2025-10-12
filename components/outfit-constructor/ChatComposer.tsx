@@ -1,5 +1,6 @@
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { Send, Square } from 'lucide-react-native';
+import React from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 
 type ChatComposerProps = {

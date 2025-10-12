@@ -13,7 +13,7 @@ import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
 import { UserData } from "@/types/userProfileTypes";
 import { X } from "lucide-react-native";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Pressable, ScrollView, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { OutfitFooter, OutfitHeader, OutfitImageCarousel } from "./OutfitCard/index";

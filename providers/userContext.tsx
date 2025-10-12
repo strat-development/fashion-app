@@ -3,7 +3,7 @@ import i18n from "@/i18n";
 import {
     useSessionContext
 } from "@supabase/auth-helpers-react";
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type UserContextType = {
     userName: string;

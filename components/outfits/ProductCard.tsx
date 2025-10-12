@@ -1,3 +1,4 @@
+import React from 'react';
 import { Image, Linking, Text, View } from 'react-native';
 
 export type ProductCardProps = {

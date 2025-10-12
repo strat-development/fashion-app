@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import type { SharedValue } from "react-native-reanimated";
 
 interface SparkleBurstProps {
   show: boolean;
@@ -9,7 +10,7 @@ interface SparkleBurstProps {
 }
 
 interface SparkleDotProps {
-  progress: Animated.SharedValue<number>;
+  progress: SharedValue<number>;
   angle: number;
   color: string;
   size: number;
