@@ -1,4 +1,4 @@
-import { useRequestPermission } from "@/hooks/useRequestPermission";
+import { requestPermission } from "@/hooks/useRequestPermission";
 import { supabase } from "@/lib/supabase";
 import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -47,7 +47,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
     });
 
     const handleImageSelect = async () => {
-        const hasPermission = await useRequestPermission();
+        const hasPermission = await requestPermission();
         if (!hasPermission) {
             Alert.alert(t('registrationModal.alerts.permissionDenied.title'), t('registrationModal.alerts.permissionDenied.message'));
             return;
@@ -168,7 +168,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
                 setRegistrationStep(1);
                 setSelectedImage(null);
                 setIsPending(false);
-            } catch (error) {
+            } catch {
                 Alert.alert(t('registrationModal.alerts.registrationError.title'), t('registrationModal.alerts.registrationError.message'));
                 setIsPending(false);
             }

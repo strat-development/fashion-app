@@ -14,7 +14,7 @@ interface FollowButtonProps {
 export const FollowButton = ({ profileId, isPublic }: FollowButtonProps) => {
   const { t } = useTranslation();
   const { userId } = useUserContext();
-  const { data: followStatus, isLoading: followLoading } = useFetchIsFollowed(userId || '', profileId || '');
+  const { data: followStatus } = useFetchIsFollowed(userId || '', profileId || '');
   const isFollowed = followStatus?.isFollowed || false;
   const isPending = followStatus?.isPending || false;
   const { mutate: followUser } = useFollowUserMutation();

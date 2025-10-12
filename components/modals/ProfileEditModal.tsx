@@ -1,4 +1,4 @@
-import { useRequestPermission } from '@/hooks/useRequestPermission';
+import { requestPermission } from '@/hooks/useRequestPermission';
 import { supabaseAdmin } from '@/lib/admin';
 import { useEditProfileMutation } from '@/mutations/dashboard/EditProfileMutation';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
@@ -65,7 +65,7 @@ export const ProfileEdit = ({
   const watchIsPublic = watch('isPublic');
 
   const handleImageSelect = async () => {
-    const hasPermission = await useRequestPermission();
+    const hasPermission = await requestPermission();
     if (!hasPermission) {
       Alert.alert(t('profileEdit.alerts.permissionDenied.title'), t('profileEdit.alerts.permissionDenied.message'));
       return;

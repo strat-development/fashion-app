@@ -39,12 +39,12 @@ export default function FeedScreen() {
     }, [filters]);
 
     const [localSavedOutfitIds, setLocalSavedOutfitIds] = useState<Set<string>>(new Set());
-    const [localSavedIdsVersion, setLocalSavedIdsVersion] = useState(0);
+
 
     const savedOutfitIds = useMemo(() => new Set([
         ...savedOutfits?.map(outfit => outfit.outfit_id) || [],
         ...localSavedOutfitIds
-    ]), [savedOutfits, localSavedIdsVersion]);
+    ]), [savedOutfits, localSavedOutfitIds]);
 
     const [page, setPage] = useState(1);
     const [allOutfits, setAllOutfits] = useState<OutfitData[]>([]);
@@ -67,7 +67,6 @@ export default function FeedScreen() {
         setLocalSavedOutfitIds(prev => {
             const filtered = [...prev].filter(id => !serverSavedIds.has(id));
             if (filtered.length !== prev.size) {
-                setLocalSavedIdsVersion(v => v + 1);
                 return new Set(filtered);
             }
             return prev;
@@ -111,7 +110,6 @@ export default function FeedScreen() {
             setLocalSavedOutfitIds(prev => {
                 const newSet = new Set(prev);
                 isCurrentlySaved ? newSet.delete(outfitId) : newSet.add(outfitId);
-                setLocalSavedIdsVersion(v => v + 1);
                 return newSet;
             });
         };
@@ -119,7 +117,6 @@ export default function FeedScreen() {
             setLocalSavedOutfitIds(prev => {
                 const newSet = new Set(prev);
                 isCurrentlySaved ? newSet.add(outfitId) : newSet.delete(outfitId);
-                setLocalSavedIdsVersion(v => v + 1);
                 return newSet;
             });
         };

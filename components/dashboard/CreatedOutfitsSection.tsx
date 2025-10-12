@@ -42,7 +42,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
 
     const savedOutfitIds = useMemo(() => 
         new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []), 
-        [savedOutfits?.map(outfit => outfit.outfit_id).join(',')]
+        [savedOutfits]
     );
 
     const enrichedAllOutfits = useMemo(() => {
@@ -73,12 +73,12 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
     }, [fetchedOutfits, isLoading, page, savedOutfitIds]);
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
-    const [selectedUserData, setSelectedUserData] = useState<{ nickname?: string | null; user_avatar?: string | null } | undefined>(undefined);
+
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [selectedOutfitForShare, setSelectedOutfitForShare] = useState<OutfitData | null>(null);
     const [outfitToDelete, setOutfitToDelete] = useState<OutfitData | null>(null);
 
-    const [showOutfitDetail, setShowOutfitDetail] = useState(false);
+
     const [showCommentSection, setShowCommentSection] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
     const [showOutfitCreate, setShowOutfitCreate] = useState(false);
@@ -121,10 +121,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
         setSelectedOutfit(outfit);
     };
 
-    const handleOpenDetailInline = (args: { outfit: OutfitData; userData?: { nickname?: string | null; user_avatar?: string | null }; rating: { positive: number; negative: number; isLiked: boolean; isDisliked: boolean; isSaved?: boolean; comments: number } }) => {
-        setSelectedOutfit(args.outfit);
-        setSelectedUserData(args.userData);
-    };
+
 
     const handleCommentPress = (outfitId: string) => {
         const enriched = enrichedAllOutfits.find(o => o.outfit_id === outfitId);
@@ -140,10 +137,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
         setShowShareModal(true);
     };
 
-    const handleCloseOutfitDetail = () => {
-        setShowOutfitDetail(false);
-        setSelectedOutfit(null);
-    };
+
 
     const handleToggleSave = (outfitId: string) => {
         if (!userId) return;
@@ -301,7 +295,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                             <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
                                 <OutfitDetailInfo
                                     outfit={selectedOutfit}
-                                    userData={selectedUserData}
+                                    userData={undefined}
                                     tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])}
                                 />
                             </View>

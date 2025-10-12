@@ -3,7 +3,7 @@ import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOut
 import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Bookmark, X } from "lucide-react-native";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, FlatList, Modal, Pressable, RefreshControl, ScrollView, Text, View } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
@@ -14,7 +14,7 @@ import OutfitDetailSections from "../outfit-detail/OutfitDetailSections";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
 import { EmptyState } from "./EmptyState";
-import React from "react";
+
 
 interface SavedOutfitsSectionProps {
     refreshing: boolean;
@@ -37,7 +37,7 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
 
     const savedOutfitIds = useMemo(() => 
         new Set(savedOutfits.map(outfit => outfit.outfit_id)), 
-        [savedOutfits.map(outfit => outfit.outfit_id).join(',')]
+        [savedOutfits]
     );
 
     useEffect(() => {
@@ -64,9 +64,9 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
     }, [savedOutfits, isLoading, page, savedOutfitIds]);
 
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
-    const [selectedMeta, setSelectedMeta] = useState<{ positive: number; negative: number; isLiked: boolean; isDisliked: boolean; isSaved?: boolean; comments: number } | null>(null);
-    const [selectedUserData, setSelectedUserData] = useState<{ nickname?: string | null; user_avatar?: string | null } | undefined>(undefined);
-    const [showOutfitDetail, setShowOutfitDetail] = useState(false);
+
+
+
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [selectedOutfitForShare, setSelectedOutfitForShare] = useState<OutfitData | null>(null);
     const [showCommentSection, setShowCommentSection] = useState(false);
@@ -92,11 +92,7 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
         setSelectedOutfit(outfit);
     };
 
-    const handleOpenDetailInline = (args: { outfit: OutfitData; userData?: { nickname?: string | null; user_avatar?: string | null }; rating: { positive: number; negative: number; isLiked: boolean; isDisliked: boolean; isSaved?: boolean; comments: number } }) => {
-        setSelectedOutfit(args.outfit);
-        setSelectedMeta(args.rating);
-        setSelectedUserData(args.userData);
-    };
+
 
     const handleCommentPress = (outfitId: string) => {
         const enriched = enrichedAllOutfits.find(o => o.outfit_id === outfitId);
@@ -112,10 +108,7 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
         setShowShareModal(true);
     };
 
-    const handleCloseOutfitDetail = () => {
-        setShowOutfitDetail(false);
-        setSelectedOutfit(null);
-    };
+
 
     const handleEndReached = useCallback(() => {
         if (!isLoading && hasMore) {
@@ -201,7 +194,7 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
                             <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
                                     <OutfitDetailInfo
                                         outfit={selectedOutfit}
-                                        userData={selectedUserData}
+                                        userData={undefined}
                                         tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])}
                                     />
                             </View>

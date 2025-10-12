@@ -1,6 +1,6 @@
 import { PermissionsAndroid, Platform } from "react-native";
 
-export const useRequestPermission = async () => {
+export const requestPermission = async () => {
     if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(

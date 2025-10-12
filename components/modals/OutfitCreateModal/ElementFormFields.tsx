@@ -1,6 +1,6 @@
 import { Select, SelectBackdrop, SelectContent, SelectInput, SelectItem, SelectPortal, SelectTrigger } from '@/components/ui/select';
 import { OutfitElements } from '@/consts/chatFilterConsts';
-import { ThemedGradient, useTheme } from '@/providers/themeContext';
+import { useTheme } from '@/providers/themeContext';
 import { Camera, Trash2 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
@@ -30,7 +30,7 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
   onRemoveSelectedImage
 }) => {
   const { t } = useTranslation();
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
 
   const imageUrl = watchElement('imageUrl');
 

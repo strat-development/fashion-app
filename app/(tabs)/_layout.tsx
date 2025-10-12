@@ -7,7 +7,7 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs, usePathname } from 'expo-router';
 import { Bot, Compass, Trophy, User2 } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, Pressable, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
@@ -16,13 +16,12 @@ export default function TabLayout() {
   const { userId, loading: userContextLoading } = useUserContext();
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
-  const [focusedTab, setFocusedTab] = useState(0);
   const pathname = usePathname();
   
   // Reanimated shared value for smooth animation
   const translateX = useSharedValue(0);
   
-  const tabs = ['index', 'chat', 'ranking', 'userProfile'];
+  const tabs = useMemo(() => ['index', 'chat', 'ranking', 'userProfile'], []);
   
   const tabGradients: Record<string, [string, string]> = {
     index: ['#5F94FF', '#6F31FF'],
@@ -52,14 +51,13 @@ export default function TabLayout() {
     const currentPath = pathname.replace('/(tabs)/', '').replace('/', '') || 'index';
     const tabIndex = tabs.indexOf(currentPath);
     if (tabIndex !== -1) {
-      setFocusedTab(tabIndex);
       // Animate the gradient with spring animation
       translateX.value = withSpring(tabIndex, {
         damping: 70,
         stiffness: 1000,
       });
     }
-  }, [pathname]);
+  }, [pathname, tabs, translateX]);
 
   useEffect(() => {
     const checkUserProfile = async () => {
@@ -104,6 +102,12 @@ export default function TabLayout() {
   }, [userId, userContextLoading]);
 
 
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      left: `${translateX.value * 25}%`,
+    };
+  });
+
   if (userContextLoading || isCheckingProfile) {
     return <FullScreenLoader />;
   }
@@ -147,13 +151,6 @@ export default function TabLayout() {
             const currentPath = pathname.replace('/(tabs)/', '').replace('/', '') || 'index';
             const tabIndex = tabs.indexOf(currentPath);
             const gradient = tabIndex !== -1 ? tabGradients[tabs[tabIndex] as keyof typeof tabGradients] : tabGradients.index;
-
-            // Animated style for smooth gradient movement
-            const animatedStyle = useAnimatedStyle(() => {
-              return {
-                left: `${translateX.value * 25}%`,
-              };
-            });
 
             return (
               <>

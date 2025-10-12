@@ -21,7 +21,7 @@ export default function RankingScreen() {
   const { t } = useTranslation();
   const [tab, setTab] = useState<'outfits' | 'creators'>('outfits');
   // const router = useRouter();
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
 
   const {
     data: outfits,
@@ -42,7 +42,7 @@ export default function RankingScreen() {
   const list = useMemo(() => (tab === 'outfits' ? (outfits ?? []) : (creators ?? [])), [tab, outfits, creators]);
 
   const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
-  const [selectedUserData, setSelectedUserData] = useState<{ nickname?: string | null; user_avatar?: string | null } | undefined>(undefined);
+
   const [showOutfitDetail, setShowOutfitDetail] = useState(false);
   const likeScale = useSharedValue(1);
   const dislikeScale = useSharedValue(1);
@@ -117,10 +117,8 @@ export default function RankingScreen() {
                       likes: oi.likes,
                     };
                     setSelectedOutfit(outfit);
-                    setSelectedUserData(undefined);
                     setShowOutfitDetail(true);
                   } else {
-                    const id = (item as CreatorRankItem).user_id;
                     // Keep navigation for user profiles unchanged
                     // if (id) router.push(`/userProfile/${id}`);
                   }

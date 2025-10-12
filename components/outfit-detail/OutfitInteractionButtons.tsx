@@ -2,7 +2,7 @@ import { SparkleBurst } from "@/components/ui/SparkleBurst";
 import { useTheme } from "@/providers/themeContext";
 import { Bookmark, MessageCircle, Share, ThumbsDown, ThumbsUp } from "lucide-react-native";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+
 import { Pressable, Text, View } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, { useAnimatedStyle, withSequence, withSpring } from "react-native-reanimated";
@@ -46,7 +46,6 @@ export default function OutfitInteractionButtons({
   saveScale,
   showCommentsButton = true,
 }: OutfitInteractionButtonsProps) {
-  const { t } = useTranslation();
   const { colors } = useTheme();
   const [likeSparkle, setLikeSparkle] = useState(false);
   const [dislikeSparkle, setDislikeSparkle] = useState(false);

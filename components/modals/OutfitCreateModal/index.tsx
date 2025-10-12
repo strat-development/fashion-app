@@ -22,7 +22,7 @@ export const OutfitCreateModal = ({
   isAnimated
 }: ModalProps) => {
   const { t } = useTranslation();
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
   const [elementModalVisible, setElementModalVisible] = useState(false);
   const [selectedImageName, setSelectedImageName] = useState<string | null>(null);
 
