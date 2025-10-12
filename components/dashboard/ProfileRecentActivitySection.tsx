@@ -31,27 +31,10 @@ export function ProfileRecentActivitySection() {
       <Text style={{ color: colors.text, fontSize: 18, fontWeight: '600', marginBottom: 16 }}>
         {t('profileRecentActivitySection.title')}
       </Text>
-      <View style={{ gap: 16 }}>
-        {activities.map((activity, index) => (
-          <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View
-              style={{
-                width: 32,
-                height: 32,
-                backgroundColor: `${activity.color}33`,
-                borderRadius: 16,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: 12,
-              }}
-            >
-              <activity.icon size={14} color={activity.color} />
-            </View>
-            <Text style={{ color: colors.textSecondary, fontSize: 14, flex: 1 }}>
-              {activity.text}
-            </Text>
-          </View>
-        ))}
+      <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 32 }}>
+        <Text style={{ color: colors.textMuted, fontSize: 16 }}>
+          Coming soon
+        </Text>
       </View>
     </View>
   );
