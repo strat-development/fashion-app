@@ -8,7 +8,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs, usePathname } from 'expo-router';
 import { Bot, Compass, Trophy, User2 } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
-import { Alert, Pressable, View, Platform } from 'react-native';
+import { Alert, Pressable, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 export default function TabLayout() {
   const { colors, isDark } = useTheme();
@@ -17,6 +18,9 @@ export default function TabLayout() {
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
   const [focusedTab, setFocusedTab] = useState(0);
   const pathname = usePathname();
+  
+  // Reanimated shared value for smooth animation
+  const translateX = useSharedValue(0);
   
   const tabs = ['index', 'chat', 'ranking', 'userProfile'];
   
@@ -49,6 +53,11 @@ export default function TabLayout() {
     const tabIndex = tabs.indexOf(currentPath);
     if (tabIndex !== -1) {
       setFocusedTab(tabIndex);
+      // Animate the gradient with spring animation
+      translateX.value = withSpring(tabIndex, {
+        damping: 70,
+        stiffness: 1000,
+      });
     }
   }, [pathname]);
 
@@ -139,6 +148,13 @@ export default function TabLayout() {
             const tabIndex = tabs.indexOf(currentPath);
             const gradient = tabIndex !== -1 ? tabGradients[tabs[tabIndex] as keyof typeof tabGradients] : tabGradients.index;
 
+            // Animated style for smooth gradient movement
+            const animatedStyle = useAnimatedStyle(() => {
+              return {
+                left: `${translateX.value * 25}%`,
+              };
+            });
+
             return (
               <>
                 <BlurView
@@ -152,13 +168,15 @@ export default function TabLayout() {
                     height: '100%',
                   }}
                 />
-                <View
-                  style={{
-                    position: 'absolute',
-                    width: '25%',
-                    height: '100%',
-                    left: `${focusedTab * 25}%`,
-                  }}
+                <Animated.View
+                  style={[
+                    {
+                      position: 'absolute',
+                      width: '25%',
+                      height: '100%',
+                    },
+                    animatedStyle,
+                  ]}
                 >
                   <LinearGradient
                     colors={gradient || tabGradients.index}
@@ -170,7 +188,7 @@ export default function TabLayout() {
                       opacity: 0.9,
                     }}
                   />
-                </View>
+                </Animated.View>
               </>
             );
           },
