@@ -30,8 +30,7 @@
   
   <li> ✂️ <b>Outfit creator</b> - Craft and share your own fashion styles with ease. </li>
 
-![Versa-creator](https://github.com/user-attachments/assets/979d6711-72a2-4428-b3c6-512700477487?raw=true)
-
+![Versa-creator](https://github.com/user-attachments/assets/e5f2118a-7b50-46be-91eb-cbf0e4f3fc34?raw=true)
   
   <li> 📊 <b>User statistics</b> - Track user feedback to improve your creations. </li>
 
