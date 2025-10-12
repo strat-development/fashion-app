@@ -153,3 +153,27 @@ export function ThemedGradient({
     </LinearGradient>
   );
 }
+
+export function RedGradient({ 
+  active = true, 
+  style, 
+  children, 
+  start = { x: 0, y: 0 }, 
+  end = { x: 1, y: 1 } 
+}: ThemedGradientProps) {
+  const { isDark } = useTheme();
+  const darkFrom = '#FF5F5F99';
+  const darkTo = '#99393999';
+  const lightFrom = '#FF8787CC';
+  const lightTo = '#FF3131CC';
+  return (
+    <LinearGradient
+      colors={active ? (isDark ? [darkFrom, darkTo] : [lightFrom, lightTo]) : ['#00000000', '#00000000']}
+      start={start}
+      end={end}
+      style={style}
+    >
+      {children}
+    </LinearGradient>
+  );
+}

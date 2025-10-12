@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { OutfitCreateModal } from "../modals/OutfitCreateModal";
 import { ChatSwitch } from "./ChatSwitch";

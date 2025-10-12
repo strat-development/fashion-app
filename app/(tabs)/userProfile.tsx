@@ -92,22 +92,38 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
 
   return (
     <>
-      <ScrollView
-        style={{ flex: 1, backgroundColor: colors.background }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      >
-        <View style={{ paddingTop: 32, paddingBottom: 80 }}>
-          <ProfileHeader
-            userImage={user_avatar}
-            userName={full_name}
-            isOwnProfile={isOwnProfile}
-            activeTab={activeTab}
-            onTabPress={setActiveTab}
-            onEditProfile={() => setShowEditModal(true)}
-          />
-          {renderTabContent()}
-        </View>
-      </ScrollView>
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
+        {activeTab === 'user-info' ? (
+          <ScrollView
+            style={{ flex: 1 }}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          >
+            <View style={{ paddingTop: 32, paddingBottom: 80 }}>
+              <ProfileHeader
+                userImage={user_avatar}
+                userName={full_name}
+                isOwnProfile={isOwnProfile}
+                activeTab={activeTab}
+                onTabPress={setActiveTab}
+                onEditProfile={() => setShowEditModal(true)}
+              />
+              {renderTabContent()}
+            </View>
+          </ScrollView>
+        ) : (
+          <View style={{ flex: 1, paddingTop: 32 }}>
+            <ProfileHeader
+              userImage={user_avatar}
+              userName={full_name}
+              isOwnProfile={isOwnProfile}
+              activeTab={activeTab}
+              onTabPress={setActiveTab}
+              onEditProfile={() => setShowEditModal(true)}
+            />
+            {renderTabContent()}
+          </View>
+        )}
+      </View>
 
       {showEditModal && (
         <ProfileEdit

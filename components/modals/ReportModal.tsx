@@ -89,7 +89,7 @@ export const ReportModal = ({ expanded, userId }: UserReportProps) => {
             } else {
                 Alert.alert("Error", result.message || "Failed to send report. Please try again later.");
             }
-        } catch (error) {
+        } catch {
             Alert.alert("Error", "Failed to send report. Please try again later.");
         } finally {
             setIsSubmitting(false);

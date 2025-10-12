@@ -118,7 +118,7 @@ export const ParticleLoader = () => {
       lightBeam.stopAnimation();
       textOpacity.stopAnimation();
     };
-  }, []);
+  }, [lightBeam, textOpacity]);
 
   const lightBeamTranslateX = lightBeam.interpolate({
     inputRange: [0, 0.5, 1],

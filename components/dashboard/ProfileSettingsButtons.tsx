@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import { useTheme } from '@/providers/themeContext';
+import { RedGradient, ThemedGradient, useTheme } from '@/providers/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { LogOut, Palette } from 'lucide-react-native';
@@ -27,43 +27,47 @@ export function ProfileSettingsButtons() {
 
   return (
     <View style={{ gap: 12, marginTop: 16 }}>
-      <Pressable
-        onPress={() => router.push('/theme-settings' as any)}
+      <ThemedGradient
         style={{
-          backgroundColor: `${colors.accent}33`,
-          borderWidth: 1,
-          borderColor: `${colors.accent}4D`,
           borderRadius: 12,
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
         }}
       >
-        <Palette size={18} color={colors.accent} />
-        <Text style={{ color: colors.accent, fontWeight: '500', marginLeft: 8 }}>
-          {t('profileSettingsButtons.themeSettings')}
-        </Text>
-      </Pressable>
+        <Pressable
+          onPress={() => router.push('/theme-settings' as any)}
+          style={{
+            padding: 16,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Palette size={18} color={colors.white} />
+          <Text style={{ color: colors.white, fontWeight: '500', marginLeft: 8 }}>
+            {t('profileSettingsButtons.themeSettings')}
+          </Text>
+        </Pressable>
+      </ThemedGradient>
 
-      <Pressable
-        onPress={handleLogout}
+      <RedGradient
         style={{
-          backgroundColor: `${colors.error}33`,
-          borderWidth: 1,
-          borderColor: `${colors.error}4D`,
           borderRadius: 12,
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
         }}
       >
-        <LogOut size={18} color={colors.error} />
-        <Text style={{ color: colors.error, fontWeight: '500', marginLeft: 8 }}>
-          {t('profileSettingsButtons.logout')}
-        </Text>
-      </Pressable>
+        <Pressable
+          onPress={handleLogout}
+          style={{
+            padding: 16,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <LogOut size={18} color={colors.white} />
+          <Text style={{ color: colors.white, fontWeight: '500', marginLeft: 8 }}>
+            {t('profileSettingsButtons.logout')}
+          </Text>
+        </Pressable>
+      </RedGradient>
     </View>
   );
 }

@@ -1,7 +1,7 @@
 import { SparkleBurst } from "@/components/ui/SparkleBurst";
 import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { Bookmark, MessageCircle, Share, ThumbsDown, ThumbsUp } from "lucide-react-native";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring } from "react-native-reanimated";
@@ -47,12 +47,21 @@ export const OutfitFooter = ({
   const commentScale = useSharedValue(1);
   const shareScale = useSharedValue(1);
 
-  const scaleStyle = (sv: any) => useAnimatedStyle(() => ({ transform: [{ scale: sv.value }] }));
-  const likeStyle = scaleStyle(likeScale);
-  const dislikeStyle = scaleStyle(dislikeScale);
-  const saveStyle = scaleStyle(saveScale);
-  const commentStyle = scaleStyle(commentScale);
-  const shareStyle = scaleStyle(shareScale);
+  const likeStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: likeScale.value }],
+  }));
+  const dislikeStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: dislikeScale.value }],
+  }));
+  const saveStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: saveScale.value }],
+  }));
+  const commentStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: commentScale.value }],
+  }));
+  const shareStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: shareScale.value }],
+  }));
 
   const trigger = (fn: React.Dispatch<React.SetStateAction<boolean>>) => {
     fn(true);

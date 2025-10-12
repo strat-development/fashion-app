@@ -1,10 +1,9 @@
 import { useTheme } from "@/providers/themeContext";
-import { useState } from "react";
-import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
-import { State, TapGestureHandler } from "react-native-gesture-handler";
-import { useSharedValue } from "react-native-reanimated";
-import Carousel from "react-native-reanimated-carousel";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
+import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated";
+import Carousel from "react-native-reanimated-carousel";
 import { OutfitData } from "../OutfitCard";
 
 interface OutfitImageCarouselProps {
@@ -18,7 +17,17 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
   const { colors } = useTheme();
   const { width: screenWidth } = useWindowDimensions();
   const progress = useSharedValue<number>(0);
-  const [isInteracting, setIsInteracting] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useAnimatedReaction(
+    () => Math.round(progress.value),
+    (current, previous) => {
+      if (current !== previous) {
+        runOnJS(setCurrentIndex)(current);
+      }
+    },
+    [progress]
+  );
 
   if (imageUrls.length === 0) {
     return (
@@ -50,30 +59,16 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
         data={imageUrls}
         onProgressChange={(_, absoluteProgress) => {
           progress.value = absoluteProgress;
-          if (Math.abs(absoluteProgress % 1) > 0.1) {
-            setIsInteracting(true);
-          } else {
-            setTimeout(() => setIsInteracting(false), 200);
-          }
         }}
         renderItem={({ item, index }) => (
-          <TapGestureHandler
-            numberOfTaps={1}
-            onHandlerStateChange={({ nativeEvent }) => {
-              if (nativeEvent.state === State.ACTIVE) {
-                onPress?.(outfit);
-              }
-            }}
-          >
-            <View>
-              <Image
-                source={{ uri: item }}
-                className="w-full h-96"
-                style={{ width: screenWidth, height: 384 }}
-                resizeMode="cover"
-              />
-            </View>
-          </TapGestureHandler>
+          <Pressable onPress={() => onPress?.(outfit)}>
+            <Image
+              source={{ uri: item }}
+              className="w-full h-96"
+              style={{ width: screenWidth, height: 384 }}
+              resizeMode="cover"
+            />
+          </Pressable>
         )}
         mode="parallax"
         loop={false}
@@ -83,7 +78,7 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
           parallaxScrollingOffset: 0,
           parallaxAdjacentItemScale: 1.0,
         }}
-        style={{ 
+        style={{
           width: screenWidth,
           overflow: 'hidden'
         }}
@@ -103,7 +98,7 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
           color: colors.text,
           fontSize: 12,
           fontWeight: '500'
-        }}>{Math.round(progress.value) + 1}/{imageUrls.length}</Text>
+        }}>{currentIndex + 1}/{imageUrls.length}</Text>
       </View>
       {imageUrls.length <= 5 && (
         <View style={{
@@ -121,7 +116,7 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
                 height: 8,
                 borderRadius: 4,
                 marginHorizontal: 4,
-                backgroundColor: Math.round(progress.value) === index ? colors.white : `${colors.white}66`
+                backgroundColor: currentIndex === index ? colors.white : `${colors.white}66`
               }}
             />
           ))}

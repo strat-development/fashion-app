@@ -9,7 +9,8 @@ import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { buildSystemPrompt as buildSystemPromptUtil, generateUserLikePrompt } from '@/utils/chatPrompt';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 
@@ -26,11 +27,11 @@ export default function HomeScreen() {
   const [lowestPrice, setLowestPrice] = useState<number>(0);
   const [highestPrice, setHighestPrice] = useState<number>(0);
   const [currency, setCurrency] = useState<string>('');
-  const [messages, setMessages] = useState<Array<{ id: string; role: 'user' | 'assistant'; content: string; created_at?: string }>>([]);
+  const [messages, setMessages] = useState<{ id: string; role: 'user' | 'assistant'; content: string; created_at?: string }[]>([]);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [sending, setSending] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView | null>(null);
-  const [conversationList, setConversationList] = useState<Array<{ id: string; title: string; created_at: string }>>([]);
+  const [conversationList, setConversationList] = useState<{ id: string; title: string; created_at: string }[]>([]);
   const [filtersExpanded, setFiltersExpanded] = useState<boolean>(false);
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const abortRef = useRef<AbortController | null>(null);
@@ -48,7 +49,7 @@ export default function HomeScreen() {
 
   const effectiveCurrency = useMemo(() => currency || preferredCurrency || 'USD', [currency, preferredCurrency]);
 
-  function generatePromptFromFilters(): string {
+  const generatePromptFromFilters = useCallback((): string => {
     return generateUserLikePrompt({
       t,
       genders: outfitGender,
@@ -60,7 +61,7 @@ export default function HomeScreen() {
       highestPrice,
       currency: effectiveCurrency,
     });
-  }
+  }, [t, outfitGender, outfitTag, outfitFit, outfitColor, outfitElement, lowestPrice, highestPrice, effectiveCurrency]);
 
   useEffect(() => {
     const auto = generatePromptFromFilters();
@@ -71,7 +72,7 @@ export default function HomeScreen() {
       setSearchQuery(auto);
       lastAutoPromptRef.current = auto;
     }
-  }, [outfitGender, outfitTag, outfitFit, outfitColor, outfitElement, lowestPrice, highestPrice, effectiveCurrency, preferredLanguage]);
+  }, [generatePromptFromFilters, searchQuery, preferredLanguage]);
 
   function buildSystemPrompt() {
     return buildSystemPromptUtil({
@@ -176,9 +177,9 @@ export default function HomeScreen() {
       });
 
       const preChoice = pre.choices?.[0];
-      const toolCalls = preChoice?.message?.tool_calls as Array<any> | undefined;
+      const toolCalls = preChoice?.message?.tool_calls as any[] | undefined;
 
-      const workingMessages: Array<any> = [
+      const workingMessages: any[] = [
         { role: 'system', content: systemPrompt },
         ...history,
         { role: 'user', content: userText },
@@ -248,7 +249,7 @@ export default function HomeScreen() {
       });
 
       persistMessage(convId, 'assistant', assembled, new Date().toISOString());
-    } catch (err) {
+    } catch {
       setMessages((prev) => {
         const copy = [...prev];
         const lastIndex = copy.length - 1;
@@ -302,7 +303,7 @@ export default function HomeScreen() {
 
       <View className='flex-1' style={{ backgroundColor: colors.background }}>
         {/* Header Section - Fixed at top */}
-        <View style={{ backgroundColor: colors.background, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+        <View style={{ backgroundColor: colors.background,}}>
           <ChatHeader
             onShowConversations={async () => {
               try {

@@ -15,13 +15,14 @@ import { OutfitData } from '@/components/outfits/OutfitCard';
 import { Trophy, User2 } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Image, Modal, Pressable, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { FlatList, Image, Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RankingScreen() {
   const { t } = useTranslation();
   const [tab, setTab] = useState<'outfits' | 'creators'>('outfits');
   // const router = useRouter();
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
 
   const {
     data: outfits,
@@ -42,7 +43,7 @@ export default function RankingScreen() {
   const list = useMemo(() => (tab === 'outfits' ? (outfits ?? []) : (creators ?? [])), [tab, outfits, creators]);
 
   const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
-  const [selectedUserData, setSelectedUserData] = useState<{ nickname?: string | null; user_avatar?: string | null } | undefined>(undefined);
+
   const [showOutfitDetail, setShowOutfitDetail] = useState(false);
   const likeScale = useSharedValue(1);
   const dislikeScale = useSharedValue(1);
@@ -117,10 +118,8 @@ export default function RankingScreen() {
                       likes: oi.likes,
                     };
                     setSelectedOutfit(outfit);
-                    setSelectedUserData(undefined);
                     setShowOutfitDetail(true);
                   } else {
-                    const id = (item as CreatorRankItem).user_id;
                     // Keep navigation for user profiles unchanged
                     // if (id) router.push(`/userProfile/${id}`);
                   }

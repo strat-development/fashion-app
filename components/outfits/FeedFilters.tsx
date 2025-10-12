@@ -136,7 +136,8 @@ export const FeedFilters = ({
         style={{
           position: 'relative',
           backgroundColor: isDark ? 'transparent' : colors.surface,
-          borderBottomWidth: 0,
+          borderBottomWidth: 1,
+          borderBottomColor: colors.border,
         }}
       >
         <BlurView
@@ -149,8 +150,6 @@ export const FeedFilters = ({
             right: 0,
             height: 72,
             zIndex: -1,
-            borderBottomWidth: 1,
-            borderBottomColor: colors.border,
           }}
         />
 
@@ -158,7 +157,7 @@ export const FeedFilters = ({
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: 16,
-          paddingTop: 16,
+          paddingTop: 12,
           paddingBottom: 12,
           gap: 12,
         }}>

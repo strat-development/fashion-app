@@ -45,7 +45,7 @@ export const FeedLoadingScreen = ({ message = "Loading your feed..." }: FeedLoad
     return () => {
       pulseAnimation.stop();
     };
-  }, []);
+  }, [fadeAnim, pulseAnim, scaleAnim]);
 
   return (
     <View className="flex-1 justify-center items-center bg-black">
