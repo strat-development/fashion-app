@@ -7,16 +7,16 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs, usePathname } from 'expo-router';
 import { Bot, Compass, Trophy, User2 } from 'lucide-react-native';
-import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Pressable, View, Animated, Platform } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Pressable, View, Platform } from 'react-native';
 
 export default function TabLayout() {
   const { colors, isDark } = useTheme();
   const { userId, loading: userContextLoading } = useUserContext();
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
+  const [focusedTab, setFocusedTab] = useState(0);
   const pathname = usePathname();
-  const indicatorPosition = useRef(new Animated.Value(0)).current;
   
   const tabs = ['index', 'chat', 'ranking', 'userProfile'];
   
@@ -27,7 +27,7 @@ export default function TabLayout() {
     userProfile: ['#A75FFF', '#D631FF'],
   };
 
-  const getTabIcon = (Icon: React.ElementType, focused: boolean, key: keyof typeof tabGradients) => {
+  const getTabIcon = (Icon: React.ElementType, focused: boolean, key: keyof typeof tabGradients, tabIdx: number) => {
     return (
       <View style={{ 
         position: 'absolute',
@@ -43,17 +43,12 @@ export default function TabLayout() {
     );
   };
 
+  // Update focusedTab based on pathname
   useEffect(() => {
     const currentPath = pathname.replace('/(tabs)/', '').replace('/', '') || 'index';
     const tabIndex = tabs.indexOf(currentPath);
-    
     if (tabIndex !== -1) {
-      Animated.spring(indicatorPosition, {
-        toValue: tabIndex,
-        useNativeDriver: false,
-        friction: 8,
-        tension: 40,
-      }).start();
+      setFocusedTab(tabIndex);
     }
   }, [pathname]);
 
@@ -143,11 +138,6 @@ export default function TabLayout() {
             const currentPath = pathname.replace('/(tabs)/', '').replace('/', '') || 'index';
             const tabIndex = tabs.indexOf(currentPath);
             const gradient = tabIndex !== -1 ? tabGradients[tabs[tabIndex] as keyof typeof tabGradients] : tabGradients.index;
-            
-            const translateX = indicatorPosition.interpolate({
-              inputRange: [0, 1, 2, 3],
-              outputRange: ['0%', '100%', '200%', '300%'],
-            });
 
             return (
               <>
@@ -162,12 +152,12 @@ export default function TabLayout() {
                     height: '100%',
                   }}
                 />
-                <Animated.View
+                <View
                   style={{
                     position: 'absolute',
                     width: '25%',
                     height: '100%',
-                    transform: [{ translateX }],
+                    left: `${focusedTab * 25}%`,
                   }}
                 >
                   <LinearGradient
@@ -180,27 +170,31 @@ export default function TabLayout() {
                       opacity: 0.9,
                     }}
                   />
-                </Animated.View>
+                </View>
               </>
             );
           },
-          tabBarButton: ({ children, onPress, accessibilityLabel }) => (
-            <Pressable
-              onPress={onPress}
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 999,
-                padding: 0,
-                margin: 0,
-                position: 'relative',
-              }}
-              accessibilityLabel={accessibilityLabel}
-            >
-              {children}
-            </Pressable>
-          ),
+          tabBarButton: ({ children, onPress, accessibilityLabel }) => {
+            return (
+              <Pressable
+                onPress={event => {
+                  if (onPress) onPress(event);
+                }}
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 999,
+                  padding: 0,
+                  margin: 0,
+                  position: 'relative',
+                }}
+                accessibilityLabel={accessibilityLabel}
+              >
+                {children}
+              </Pressable>
+            );
+          },
         }}
       >
 
@@ -208,28 +202,28 @@ export default function TabLayout() {
           name="index"
           options={{
             title: '',
-            tabBarIcon: ({ focused }) => getTabIcon(Compass, focused, 'index'),
+            tabBarIcon: ({ focused }) => getTabIcon(Compass, focused, 'index', 0),
           }}
         />
         <Tabs.Screen
           name="chat"
           options={{
             title: '',
-            tabBarIcon: ({ focused }) => getTabIcon(Bot, focused, 'chat'),
+            tabBarIcon: ({ focused }) => getTabIcon(Bot, focused, 'chat', 1),
           }}
         />
         <Tabs.Screen
           name="ranking"
           options={{
             title: '',
-            tabBarIcon: ({ focused }) => getTabIcon(Trophy, focused, 'ranking'),
+            tabBarIcon: ({ focused }) => getTabIcon(Trophy, focused, 'ranking', 2),
           }}
         />
         <Tabs.Screen
           name="userProfile"
           options={{
             title: '',
-            tabBarIcon: ({ focused }) => getTabIcon(User2, focused, 'userProfile'),
+            tabBarIcon: ({ focused }) => getTabIcon(User2, focused, 'userProfile', 3),
           }}
         />
       </Tabs>
