@@ -18,7 +18,7 @@ import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { useSharedValue, withSequence, withSpring } from "react-native-reanimated";

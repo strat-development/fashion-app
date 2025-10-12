@@ -1,8 +1,9 @@
 import { UserProfile } from '@/app/(tabs)/userProfile';
 import { useLocalSearchParams } from 'expo-router';
 import { useUserContext } from '@/providers/userContext';
+import React from 'react';
 
-type TabType = 'user-info' | 'created-outfits' | 'saved-outfits';
+
 
 export default function ProfileScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

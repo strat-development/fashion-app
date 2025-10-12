@@ -1,3 +1,5 @@
+import { useRouter } from "expo-router";
+import { useFetchUser } from "@/fetchers/fetchUser";
 import { useFetchCreatedOutfitsByUser } from "@/fetchers/outfits/fetchCreatedOutfitsByUser";
 import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { useDeleteOutfitMutation } from "@/mutations/outfits/DeleteOutfitMutation";
@@ -5,7 +7,7 @@ import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Plus, X } from "lucide-react-native";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, FlatList, Modal, Pressable, RefreshControl, ScrollView, Text, View } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
@@ -17,7 +19,6 @@ import OutfitDetailInfo from "../outfit-detail/OutfitDetailInfo";
 import OutfitDetailSections from "../outfit-detail/OutfitDetailSections";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
-import { Button } from "../ui/button";
 import { EmptyState } from "./EmptyState";
 
 interface CreatedOutfitsSectionProps {
@@ -28,6 +29,7 @@ interface CreatedOutfitsSectionProps {
 
 export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsSectionProps) => {
     const { t } = useTranslation();
+    const router = useRouter();
     const { userId } = useUserContext();
     const { colors } = useTheme();
     const { mutate: saveOutfit } = useSaveOutfitMutation();
@@ -43,7 +45,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
 
     const savedOutfitIds = useMemo(() => 
         new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []), 
-        [savedOutfits?.map(outfit => outfit.outfit_id).join(',')]
+        [savedOutfits]
     );
 
     const enrichedAllOutfits = useMemo(() => {
@@ -73,13 +75,13 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
         }
     }, [fetchedOutfits, isLoading, page, savedOutfitIds]);
 
-    const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
-    const [selectedUserData, setSelectedUserData] = useState<{ nickname?: string | null; user_avatar?: string | null } | undefined>(undefined);
+
+
     const [selectedOutfitForComments, setSelectedOutfitForComments] = useState<OutfitData | null>(null);
     const [selectedOutfitForShare, setSelectedOutfitForShare] = useState<OutfitData | null>(null);
     const [outfitToDelete, setOutfitToDelete] = useState<OutfitData | null>(null);
 
-    const [showOutfitDetail, setShowOutfitDetail] = useState(false);
+
     const [showCommentSection, setShowCommentSection] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
     const [showOutfitCreate, setShowOutfitCreate] = useState(false);
@@ -119,13 +121,10 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
     };
 
     const handleOutfitPress = (outfit: OutfitData) => {
-        setSelectedOutfit(outfit);
+        router.push(`/outfit/${outfit.outfit_id}`);
     };
 
-    const handleOpenDetailInline = (args: { outfit: OutfitData; userData?: { nickname?: string | null; user_avatar?: string | null }; rating: { positive: number; negative: number; isLiked: boolean; isDisliked: boolean; isSaved?: boolean; comments: number } }) => {
-        setSelectedOutfit(args.outfit);
-        setSelectedUserData(args.userData);
-    };
+
 
     const handleCommentPress = (outfitId: string) => {
         const enriched = enrichedAllOutfits.find(o => o.outfit_id === outfitId);
@@ -141,10 +140,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
         setShowShareModal(true);
     };
 
-    const handleCloseOutfitDetail = () => {
-        setShowOutfitDetail(false);
-        setSelectedOutfit(null);
-    };
+
 
     const handleToggleSave = (outfitId: string) => {
         if (!userId) return;
@@ -224,9 +220,14 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                         {profileId === userId && (
                             <View className="flex-row items-center justify-between w-full">
                                 <Text className="text-white text-xl font-semibold">{t('createdOutfitsSection.header')}</Text>
-                                <Button
+                                <Pressable
                                     onPress={handleCreateOutfit}
-                                    className="rounded-xl px-4 py-2"
+                                    style={{
+                                        borderRadius: 12,
+                                        paddingHorizontal: 16,
+                                        paddingVertical: 8,
+                                        overflow: 'hidden'
+                                    }}
                                 >
                                     <ThemedGradient
                                         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 12 }}
@@ -235,7 +236,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                                         <Plus size={16} color="#FFFFFF" />
                                         <Text className="text-white ml-2 font-medium text-sm">{t('createdOutfitsSection.createButton')}</Text>
                                     </View>
-                                </Button>
+                                </Pressable>
                             </View>
                         )}
                     </View>
@@ -283,44 +284,7 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
                 isAnimated={true}
             />
 
-            {/* Inline outfit detail modal - full screen with close icon */}
-            <Modal visible={!!selectedOutfit} transparent={false} animationType="slide" onRequestClose={() => setSelectedOutfit(null)}>
-                <View style={{ flex: 1, backgroundColor: colors.background }}>
-                    <Pressable
-                        onPress={() => setSelectedOutfit(null)}
-                        style={{ position: 'absolute', top: 16, right: 16, zIndex: 10, width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: `${colors.surface}CC`, borderWidth: 1, borderColor: colors.border }}
-                    >
-                        <X size={20} color={colors.text} />
-                    </Pressable>
-                    {selectedOutfit && (
-                        <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
-                            <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-                                <OutfitDetailInfo
-                                    outfit={selectedOutfit}
-                                    userData={selectedUserData}
-                                    tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])}
-                                />
-                            </View>
-                            <View style={{ paddingHorizontal: 16 }}>
-                                <OutfitDetailImages
-                                    imageUrls={Array.isArray(selectedOutfit.outfit_elements_data)
-                                        ? (selectedOutfit.outfit_elements_data as any[])
-                                            .map((el) => (typeof el === 'string' ? el : el?.imageUrl))
-                                            .filter((u): u is string => typeof u === 'string' && !!u)
-                                        : []}
-                                    elementsData={Array.isArray(selectedOutfit.outfit_elements_data)
-                                        ? (selectedOutfit.outfit_elements_data as any[]).filter((el) => el && typeof el === 'object' && (el as any).imageUrl)
-                                        : [] as any}
-                                />
-                            </View>
-                            <OutfitDetailSections
-                                description={selectedOutfit.description}
-                                tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])}
-                            />
-                        </ScrollView>
-                    )}
-                </View>
-            </Modal>
+
         </View>
     );
 };

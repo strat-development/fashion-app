@@ -3,14 +3,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface UpdatePreferredCurrencyProps {
     userId: string;
-    currency: string
 }
 
-export const useUpdatePreferredCurrency = ({ currency, userId }: UpdatePreferredCurrencyProps) => {
+export const useUpdatePreferredCurrency = ({ userId }: UpdatePreferredCurrencyProps) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async () => {
+        mutationFn: async (currency: string) => {
             const { data, error } = await supabase
                 .from('users')
                 .update({

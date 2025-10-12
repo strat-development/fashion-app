@@ -199,10 +199,6 @@ export const Languages = [
         code: "he",
     },
     {
-        name: "Arabic",
-        code: "ar",
-    },
-    {
         name: "Thai",
         code: "th",
     },

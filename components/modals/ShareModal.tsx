@@ -57,7 +57,7 @@ export const ShareModal = ({
       if (result.action === Share.sharedAction) {
         onClose();
       }
-    } catch (error) {
+    } catch {
       Alert.alert(t('shareModal.alerts.shareError.title'), t('shareModal.alerts.shareError.message'));
     }
   };
@@ -67,7 +67,7 @@ export const ShareModal = ({
       await Clipboard.setString(shareUrl);
       Alert.alert(t('shareModal.alerts.copySuccess.title'), t('shareModal.alerts.copySuccess.message'));
       onClose();
-    } catch (error) {
+    } catch {
       Alert.alert(t('shareModal.alerts.copyError.title'), t('shareModal.alerts.copyError.message'));
     }
   };
@@ -104,7 +104,7 @@ export const ShareModal = ({
       } else {
         Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform));
       }
-    } catch (error) {
+    } catch {
       Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform));
     }
   };

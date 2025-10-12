@@ -19,7 +19,7 @@ export function GluestackUIProvider({
 
   useEffect(() => {
     setColorScheme(mode);
-  }, [mode]);
+  }, [mode, setColorScheme]);
 
   return (
     <View

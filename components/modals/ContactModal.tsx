@@ -76,7 +76,7 @@ export const ContactModal = ({ expanded }: ContactModalProps) => {
             } else {
                 Alert.alert(t('contactModal.alerts.error.title'), result.message || t('contactModal.alerts.error.message'));
             }
-        } catch (error) {
+        } catch {
             Alert.alert(t('contactModal.alerts.error.title'), t('contactModal.alerts.error.message'));
         } finally {
             setIsSubmitting(false);

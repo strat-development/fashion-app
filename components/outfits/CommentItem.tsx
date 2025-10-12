@@ -8,10 +8,11 @@ import { useUserContext } from "@/providers/userContext";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { Send, Trash } from "lucide-react-native";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { CommentReactions } from "./CommentReactions";
+
 
 export const CommentItem = ({ comment, isReply = false, depth = 0, parentCommentId }: {
     comment: CommentData;

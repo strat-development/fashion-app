@@ -2,7 +2,8 @@ import { ParticleLoader } from '@/components/ui/ParticleLoader';
 import { TypingEffect } from '@/components/ui/TypingEffect';
 import { ImageResult, searchImages } from '@/fetchers/searchImages';
 import { useTheme } from '@/providers/themeContext';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { Image, Linking, Pressable, ScrollView, Text, View } from 'react-native';
 
 type Message = { id: string; role: 'user' | 'assistant'; content: string };
@@ -21,9 +22,9 @@ function extractImageDescriptions(raw: string): string[] {
   return matches ? matches.map(m => m.replace(/\[IMAGE:\s*|\]/gi, '').trim()) : [];
 }
 
-function extractLinks(text: string): Array<{ text: string; url: string; start: number; end: number }> {
+function extractLinks(text: string): { text: string; url: string; start: number; end: number }[] {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
-  const links: Array<{ text: string; url: string; start: number; end: number }> = [];
+  const links: { text: string; url: string; start: number; end: number }[] = [];
   let match;
 
   while ((match = urlRegex.exec(text)) !== null) {
@@ -38,12 +39,12 @@ function extractLinks(text: string): Array<{ text: string; url: string; start: n
   return links;
 }
 
-function LinkText({ text, links }: { text: string; links: Array<{ text: string; url: string; start: number; end: number }> }) {
+function LinkText({ text, links }: { text: string; links: { text: string; url: string; start: number; end: number }[] }) {
   if (links.length === 0) {
     return <Text className='text-gray-100 leading-6'>{text}</Text>;
   }
 
-  const parts: Array<{ text: string; isLink: boolean; url?: string }> = [];
+  const parts: { text: string; isLink: boolean; url?: string }[] = [];
   let lastIndex = 0;
 
   links.forEach((link) => {
@@ -166,7 +167,7 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
               Welcome to your Personal Stylist
             </Text>
             <Text className='text-center text-sm' style={{ color: colors.textMuted }}>
-              Describe your outfit needs and I'll provide professional styling advice with visual references.
+              Describe your outfit needs and I&apos;ll provide professional styling advice with visual references.
             </Text>
           </View>
         </View>

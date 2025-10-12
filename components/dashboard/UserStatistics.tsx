@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Text, View } from "react-native";
 import { fetchUserStatistics } from '../../fetchers/dashboard/fetchUserStatistics';
+import React from 'react';
 
 interface UserStatisticsProps {
   userId: string;

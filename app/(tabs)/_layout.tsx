@@ -7,8 +7,9 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs, usePathname } from 'expo-router';
 import { Bot, Compass, Trophy, User2 } from 'lucide-react-native';
-import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Pressable, View, Animated } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Alert, Pressable, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 export default function TabLayout() {
   const { colors, isDark } = useTheme();
@@ -16,9 +17,11 @@ export default function TabLayout() {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
   const pathname = usePathname();
-  const indicatorPosition = useRef(new Animated.Value(0)).current;
   
-  const tabs = ['index', 'chat', 'ranking', 'userProfile'];
+  // Reanimated shared value for smooth animation
+  const translateX = useSharedValue(0);
+  
+  const tabs = useMemo(() => ['index', 'chat', 'ranking', 'userProfile'], []);
   
   const tabGradients: Record<string, [string, string]> = {
     index: ['#5F94FF', '#6F31FF'],
@@ -27,36 +30,34 @@ export default function TabLayout() {
     userProfile: ['#A75FFF', '#D631FF'],
   };
 
-  const getTabIcon = (Icon: React.ElementType, focused: boolean, key: keyof typeof tabGradients) => {
-    const gradient = tabGradients[key];
-    const baseShadow = {
-      shadowColor: gradient?.[1] || colors.accent,
-      shadowOpacity: focused ? 0.25 : 0,
-      shadowRadius: 6,
-      shadowOffset: { width: 0, height: 2 },
-      elevation: focused ? 6 : 0,
-    };
-
+  const getTabIcon = (Icon: React.ElementType, focused: boolean, key: keyof typeof tabGradients, tabIdx: number) => {
     return (
-      <View style={{ alignItems: 'center', justifyContent: 'center', borderRadius: 999, padding: 8 }}>
-        <Icon size={24} color={focused ? colors.white : colors.textSecondary} />
+      <View style={{ 
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        alignItems: 'center', 
+        justifyContent: 'center',
+      }}>
+        <Icon size={26} color={focused ? colors.white : colors.textSecondary} />
       </View>
     );
   };
 
+  // Update focusedTab based on pathname
   useEffect(() => {
     const currentPath = pathname.replace('/(tabs)/', '').replace('/', '') || 'index';
     const tabIndex = tabs.indexOf(currentPath);
-    
     if (tabIndex !== -1) {
-      Animated.spring(indicatorPosition, {
-        toValue: tabIndex,
-        useNativeDriver: false,
-        friction: 8,
-        tension: 40,
-      }).start();
+      // Animate the gradient with spring animation
+      translateX.value = withSpring(tabIndex, {
+        damping: 70,
+        stiffness: 1000,
+      });
     }
-  }, [pathname]);
+  }, [pathname, tabs, translateX]);
 
   useEffect(() => {
     const checkUserProfile = async () => {
@@ -101,6 +102,12 @@ export default function TabLayout() {
   }, [userId, userContextLoading]);
 
 
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      left: `${translateX.value * 25}%`,
+    };
+  });
+
   if (userContextLoading || isCheckingProfile) {
     return <FullScreenLoader />;
   }
@@ -115,10 +122,10 @@ export default function TabLayout() {
       <Tabs
         screenOptions={{
           headerShown: false,
+          tabBarShowLabel: false,
           tabBarStyle: {
             position: 'absolute',
-            left: 60,
-            right: 60,
+            marginHorizontal: 40,
             bottom: 20,
             height: 58,
             borderRadius: 999,
@@ -131,16 +138,19 @@ export default function TabLayout() {
             shadowOpacity: 0.15,
             shadowRadius: 2,
             shadowOffset: { width: 2, height: 2 },
+            alignSelf: 'center',
+            paddingTop: 0,
+            paddingBottom: 0,
+          },
+          tabBarItemStyle: {
+            paddingVertical: 0,
+            paddingHorizontal: 0,
+            margin: 0,
           },
           tabBarBackground: () => {
             const currentPath = pathname.replace('/(tabs)/', '').replace('/', '') || 'index';
             const tabIndex = tabs.indexOf(currentPath);
             const gradient = tabIndex !== -1 ? tabGradients[tabs[tabIndex] as keyof typeof tabGradients] : tabGradients.index;
-            
-            const translateX = indicatorPosition.interpolate({
-              inputRange: [0, 1, 2, 3],
-              outputRange: ['0%', '100%', '200%', '300%'],
-            });
 
             return (
               <>
@@ -156,12 +166,14 @@ export default function TabLayout() {
                   }}
                 />
                 <Animated.View
-                  style={{
-                    position: 'absolute',
-                    width: '25%',
-                    height: '100%',
-                    transform: [{ translateX }],
-                  }}
+                  style={[
+                    {
+                      position: 'absolute',
+                      width: '25%',
+                      height: '100%',
+                    },
+                    animatedStyle,
+                  ]}
                 >
                   <LinearGradient
                     colors={gradient || tabGradients.index}
@@ -177,20 +189,27 @@ export default function TabLayout() {
               </>
             );
           },
-          tabBarButton: ({ children, onPress, accessibilityLabel }) => (
-            <Pressable
-              onPress={onPress}
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 999,
-              }}
-              accessibilityLabel={accessibilityLabel}
-            >
-              {children}
-            </Pressable>
-          ),
+          tabBarButton: ({ children, onPress, accessibilityLabel }) => {
+            return (
+              <Pressable
+                onPress={event => {
+                  if (onPress) onPress(event);
+                }}
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 999,
+                  padding: 0,
+                  margin: 0,
+                  position: 'relative',
+                }}
+                accessibilityLabel={accessibilityLabel}
+              >
+                {children}
+              </Pressable>
+            );
+          },
         }}
       >
 
@@ -198,28 +217,28 @@ export default function TabLayout() {
           name="index"
           options={{
             title: '',
-            tabBarIcon: ({ focused }) => getTabIcon(Compass, focused, 'index'),
+            tabBarIcon: ({ focused }) => getTabIcon(Compass, focused, 'index', 0),
           }}
         />
         <Tabs.Screen
           name="chat"
           options={{
             title: '',
-            tabBarIcon: ({ focused }) => getTabIcon(Bot, focused, 'chat'),
+            tabBarIcon: ({ focused }) => getTabIcon(Bot, focused, 'chat', 1),
           }}
         />
         <Tabs.Screen
           name="ranking"
           options={{
             title: '',
-            tabBarIcon: ({ focused }) => getTabIcon(Trophy, focused, 'ranking'),
+            tabBarIcon: ({ focused }) => getTabIcon(Trophy, focused, 'ranking', 2),
           }}
         />
         <Tabs.Screen
           name="userProfile"
           options={{
             title: '',
-            tabBarIcon: ({ focused }) => getTabIcon(User2, focused, 'userProfile'),
+            tabBarIcon: ({ focused }) => getTabIcon(User2, focused, 'userProfile', 3),
           }}
         />
       </Tabs>

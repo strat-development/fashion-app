@@ -3,14 +3,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface UpdatePreferredLanguageProps {
     userId: string;
-    language: string
 }
 
-export const useUpdatePreferredLanguage = ({ language, userId }: UpdatePreferredLanguageProps) => {
+export const useUpdatePreferredLanguage = ({ userId }: UpdatePreferredLanguageProps) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async () => {
+        mutationFn: async (language: string) => {
             const { data, error } = await supabase
                 .from('users')
                 .update({

@@ -2,7 +2,7 @@ import { ReactionData, ReactionType, useUpdateCommentReactionMutation } from "@/
 import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Frown, Heart, Laugh, Plus } from "lucide-react-native";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, Pressable, Text, View } from "react-native";
 

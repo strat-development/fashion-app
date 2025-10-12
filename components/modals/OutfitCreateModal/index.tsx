@@ -1,4 +1,3 @@
-import { DevTool } from '@hookform/devtools';
 import { X } from 'lucide-react-native';
 import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -23,7 +22,7 @@ export const OutfitCreateModal = ({
   isAnimated
 }: ModalProps) => {
   const { t } = useTranslation();
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
   const [elementModalVisible, setElementModalVisible] = useState(false);
   const [selectedImageName, setSelectedImageName] = useState<string | null>(null);
 
@@ -214,8 +213,6 @@ export const OutfitCreateModal = ({
         setSelectedImageName={setSelectedImageName}
         preferredCurrency={preferredCurrency || 'USD'}
       />
-
-      {__DEV__ && <DevTool control={control} />}
     </>
   );
 };
