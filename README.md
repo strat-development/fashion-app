@@ -15,12 +15,38 @@
 <h2>✨ Features</h2>
 <ul>
   <li> 📡 <b>Live Feed</b> - Discover new fashion trends in real-time. </li>
+  
+  ![Versa-feed](https://github.com/user-attachments/assets/95ddaabc-dc78-4e0d-8c37-65ba9365bab6?raw=true)
+
   <li> 🤖 <b>AI Style Assistant</b> - Design unique outfits quickly with AI guidance. </li>
+
+![Versa-chat](https://github.com/user-attachments/assets/a6fdd64d-1bc9-45a1-86d1-e46ee2f09399?raw=true)
+
+  
   <li> 💸 <b>Auto currency conversion</b> - Browse effortlessly with prices automatically converted to your currency.</li>
+
+![Versa-currencies](https://github.com/user-attachments/assets/e5d1e776-3cb1-4c42-b5ff-283ee1bae219?raw=true)
+
+  
   <li> ✂️ <b>Outfit creator</b> - Craft and share your own fashion styles with ease. </li>
+
+![Versa-creator](https://github.com/user-attachments/assets/979d6711-72a2-4428-b3c6-512700477487?raw=true)
+
+  
   <li> 📊 <b>User statistics</b> - Track user feedback to improve your creations. </li>
+
+
+  
   <li> 🏆 <b>Outfits ranking</b> - Explore top-rated outfits from the community. </li>
+
+![Versa-ranking](https://github.com/user-attachments/assets/5bcddf07-3c9a-4b6d-a871-f2a84a02cf7f?raw=true)
+
+  
   <li> 🌐 <b>Language and theme settings</b> - Personalize your app with language and theme options. </li>
+
+![Versa-theme](https://github.com/user-attachments/assets/d8752085-b184-45d2-aeb9-39e81bb0254e?raw=true)
+
+  
 </ul>
 
 <hr />
