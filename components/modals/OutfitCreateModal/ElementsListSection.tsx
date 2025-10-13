@@ -79,7 +79,10 @@ export const ElementsListSection: React.FC<ElementsListSectionProps> = ({
       )}
 
       <Pressable
-        onPress={() => setElementModalVisible(true)}
+        onPress={() => 
+          {
+            setElementModalVisible(true)}
+          }
         className="flex-row items-center justify-center p-4 rounded-lg border-2 border-dashed"
         style={{ borderColor: colors.borderVariant, backgroundColor: 'transparent' }}
       >
