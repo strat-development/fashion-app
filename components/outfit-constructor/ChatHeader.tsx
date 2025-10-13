@@ -45,11 +45,10 @@ export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, on
           alignItems: 'center',
           justifyContent: 'space-between',
           paddingHorizontal: 16,
-          paddingVertical: 12, // Adjusted padding for vertical alignment
+          paddingVertical: 12,
           gap: 12,
         }}
       >
-        {/* "Conversations" button styled as search bar */}
         <TouchableOpacity
           onPress={onShowConversations}
           style={{
@@ -70,9 +69,7 @@ export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, on
           </Text>
         </TouchableOpacity>
 
-        {/* Right side buttons container */}
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          {/* "New Chat" button */}
           <TouchableOpacity
             onPress={onNewChat}
             style={{
@@ -88,7 +85,6 @@ export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, on
             <Plus size={20} color={colors.textSecondary} />
           </TouchableOpacity>
 
-          {/* "Filters" button */}
           <TouchableOpacity
             onPress={onToggleFilters}
             style={{

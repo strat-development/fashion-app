@@ -1,11 +1,11 @@
 import { useTheme } from '@/providers/themeContext';
 import { OutfitElementData } from '@/types/createOutfitTypes';
+import * as ImagePicker from 'expo-image-picker';
 import { X } from 'lucide-react-native';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Alert, Modal, Pressable, ScrollView, Text, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import { Alert, Modal, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ElementFormFields } from './ElementFormFields';
 import { PendingImage } from './types';
@@ -54,8 +54,8 @@ export const ElementModal: React.FC<ElementModalProps> = ({
 
   const handleImageSelect = async () => {
     try {
-      // Request permissions using expo-image-picker (handles Android 13+ and iOS gracefully)
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      
       if (status !== 'granted') {
         Alert.alert(
           t('outfitCreateModal.alerts.permissionDenied.title'),
@@ -76,7 +76,6 @@ export const ElementModal: React.FC<ElementModalProps> = ({
       const asset = pickerResult.assets?.[0];
       if (!asset?.uri) return;
 
-      // Build a safe filename and type
       const uri = asset.uri;
       const mimeType = asset.type === 'image' ? 'image/jpeg' : (asset as any).mimeType || 'image/jpeg';
       const filenameFromUri = uri.split('?')[0].split('/').pop() || 'image.jpg';
@@ -115,15 +114,9 @@ export const ElementModal: React.FC<ElementModalProps> = ({
     setElementModalVisible(false);
   };
 
-  return (
-    <Modal
-      visible={elementModalVisible}
-      animationType="slide"
-      presentationStyle="pageSheet"
-      onRequestClose={handleCloseElementModal}
-    >
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-        <View className="flex-1">
+  const content = (
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <View className="flex-1">
           <View className="flex-row items-center justify-between p-4 border-b" style={{ borderBottomColor: colors.border }}>
             <Text className="text-lg font-semibold" style={{ color: colors.text }}>
               {t('outfitCreateModal.addElement')}
@@ -166,8 +159,37 @@ export const ElementModal: React.FC<ElementModalProps> = ({
               </Text>
             </Pressable>
           </View>
+      </View>
+    </SafeAreaView>
+  );
+
+  if (Platform.OS === 'ios') {
+    if (!elementModalVisible) return null;
+    return (
+      <View
+        pointerEvents="auto"
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 99999 }}
+      >
+        <Pressable
+          onPress={handleCloseElementModal}
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.35)' }}
+        />
+        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+          {content}
         </View>
-      </SafeAreaView>
+      </View>
+    );
+  }
+
+  return (
+    <Modal
+      visible={elementModalVisible}
+      animationType="fade"
+      presentationStyle="overFullScreen"
+      transparent
+      onRequestClose={handleCloseElementModal}
+    >
+      {content}
     </Modal>
   );
 };

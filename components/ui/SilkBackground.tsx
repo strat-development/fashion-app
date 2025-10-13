@@ -56,8 +56,8 @@ export default function SilkBackground() {
   const bgStart = isDark ? '#0A0C16' : '#F7F8FB'
   const bgEnd = isDark ? '#04070E' : '#EEF2F7'
 
-  const silkA = isDark ? '#5B7CFAcc' : '#60A5FA'
-  const silkB = isDark ? '#8B5CF6cc' : '#818CF8'
+  const silkA = isDark ? '#9EB2FDcc' : '#60A5FA'
+  const silkB = isDark ? '#6DA1CEcc' : '#818CF8'
   const silkC = isDark ? '#14B8A6cc' : '#22C55E'
   const silkD = isDark ? '#F472B6cc' : '#F472B6'
 

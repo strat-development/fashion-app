@@ -1,5 +1,5 @@
 import { useTheme } from "@/providers/themeContext";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
 import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated";
@@ -17,6 +17,7 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
   const { colors } = useTheme();
   const { width: screenWidth } = useWindowDimensions();
   const progress = useSharedValue<number>(0);
+  const carouselRef = useRef<any>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useAnimatedReaction(
@@ -54,14 +55,22 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
   return (
     <View className="relative">
       <Carousel
+        ref={carouselRef}
         width={screenWidth}
         height={384}
         data={imageUrls}
+        enabled={imageUrls.length > 1}
+        // @ts-ignore
+        panGestureHandlerProps={{
+          activeOffsetX: [-24, 24],
+          failOffsetY: [-8, 8],   
+          minDist: 8,
+        }}
         onProgressChange={(_, absoluteProgress) => {
           progress.value = absoluteProgress;
         }}
         renderItem={({ item, index }) => (
-          <Pressable onPress={() => onPress?.(outfit)}>
+          <Pressable onPress={() => onPress?.(outfit)} style={{ flex: 1 }}>
             <Image
               source={{ uri: item }}
               className="w-full h-96"
@@ -72,7 +81,6 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
         )}
         mode="parallax"
         loop={false}
-        enabled={imageUrls.length > 1}
         modeConfig={{
           parallaxScrollingScale: 1.0,
           parallaxScrollingOffset: 0,
@@ -83,6 +91,7 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
           overflow: 'hidden'
         }}
       />
+      
       <View style={{
         position: 'absolute',
         top: 12,

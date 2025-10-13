@@ -1,28 +1,29 @@
+import { useTheme } from '@/providers/themeContext';
 import { OutfitData } from '@/types/createOutfitTypes';
+import { BlurView } from 'expo-blur';
 import {
-  Camera,
-  Copy,
-  Facebook,
-  Mail,
-  MessageCircle,
-  MoreHorizontal,
-  Share as ShareIcon,
-  Twitter,
-  X,
+    Camera,
+    Copy,
+    Facebook,
+    Mail,
+    MessageCircle,
+    MoreHorizontal,
+    Share as ShareIcon,
+    Twitter,
+    X,
 } from 'lucide-react-native';
 import React from 'react';
-import {
-  Alert,
-  Clipboard,
-  Linking,
-  Modal,
-  Pressable,
-  Share,
-  Text,
-  View,
-} from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/providers/themeContext';
+import {
+    Alert,
+    Clipboard,
+    Linking,
+    Modal,
+    Pressable,
+    Share,
+    Text,
+    View,
+} from 'react-native';
 
 interface ShareModalProps {
   isVisible: boolean;
@@ -174,7 +175,12 @@ export const ShareModal = ({
       animationType={isAnimated ? 'none' : 'none'}
       transparent={true}
     >
-      <View className="flex-1 justify-end bg-black/0 backdrop-blur-sm">
+      <View className="flex-1 justify-end">
+        <BlurView
+          intensity={40}
+          tint={colors.background === '#121212' ? 'dark' : 'light'}
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+        />
         <View className="rounded-t-3xl border-t"
           style={{ backgroundColor: colors.background,
             borderColor: colors.border

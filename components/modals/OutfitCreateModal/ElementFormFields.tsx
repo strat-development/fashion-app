@@ -5,7 +5,7 @@ import { Camera, Trash2 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Image, Pressable, Text, TextInput, View, Platform, Modal, FlatList } from 'react-native';
+import { FlatList, Image, Modal, Platform, Pressable, Text, TextInput, View } from 'react-native';
 
 interface ElementFormFieldsProps {
   elementControl: any;
@@ -50,7 +50,7 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
           name="type"
           rules={{ required: t('outfitCreateModal.errors.elementTypeRequired') }}
           render={({ field: { onChange, value } }) => (
-            Platform.OS === 'android' ? (
+            Platform.OS !== 'web' ? (
               <>
                 <Pressable
                   onPress={() => setShowTypePicker(true)}
@@ -190,7 +190,7 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
               control={elementControl}
               name="currency"
               render={({ field: { onChange, value } }) => (
-                Platform.OS === 'android' ? (
+                Platform.OS !== 'web' ? (
                   <>
                     <Pressable
                       onPress={() => setShowCurrencyPicker(true)}
