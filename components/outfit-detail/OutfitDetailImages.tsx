@@ -5,9 +5,7 @@ import { OutfitElementData } from "@/types/createOutfitTypes";
 import { ExternalLink, Shirt, Tag } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 
-import { Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
-import { useSharedValue } from "react-native-reanimated";
-import Carousel from "react-native-reanimated-carousel";
+import { FlatList, Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
 
 const exchangeRateCache: Record<string, number> = {};
 
@@ -22,7 +20,6 @@ interface OutfitDetailImagesProps {
 
 export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDetailImagesProps) {
   const { preferredCurrency } = useUserContext();
-  const progress = useSharedValue<number>(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [convertedPrices, setConvertedPrices] = useState<(number | null)[]>(
     elementsData ? elementsData.map((el) => (typeof el.price === 'number' ? el.price : null)) : []
@@ -215,21 +212,23 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
         </View>
       ) : (
         <View className="relative">
-          <Carousel
-            width={cardW}
-            height={multiH}
+          <FlatList
             data={imageUrls}
-            onProgressChange={(_, absoluteProgress) => {
-              progress.value = absoluteProgress;
-              setCurrentIndex(Math.round(absoluteProgress));
-            }}
             renderItem={renderCarouselItem}
-            loop={false}
-            enabled={imageUrls.length > 1}
-            pagingEnabled={true}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+            onViewableItemsChanged={({ viewableItems }) => {
+              if (viewableItems.length > 0) {
+                setCurrentIndex(viewableItems[0].index ?? 0);
+              }
+            }}
+            viewabilityConfig={{
+              itemVisiblePercentThreshold: 50
+            }}
             style={{
               width: cardW,
-              alignItems: 'center',
               overflow: 'hidden'
             }}
           />

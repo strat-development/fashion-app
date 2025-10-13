@@ -1,9 +1,7 @@
 import { useTheme } from "@/providers/themeContext";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
-import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated";
-import Carousel from "react-native-reanimated-carousel";
+import { FlatList, Image, Pressable, Text, View, useWindowDimensions } from "react-native";
 import { OutfitData } from "../OutfitCard";
 
 interface OutfitImageCarouselProps {
@@ -16,19 +14,14 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
   const { t } = useTranslation();
   const { colors } = useTheme();
   const { width: screenWidth } = useWindowDimensions();
-  const progress = useSharedValue<number>(0);
-  const carouselRef = useRef<any>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
 
-  useAnimatedReaction(
-    () => Math.round(progress.value),
-    (current, previous) => {
-      if (current !== previous) {
-        runOnJS(setCurrentIndex)(current);
-      }
-    },
-    [progress]
-  );
+  const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    if (viewableItems.length > 0) {
+      setCurrentIndex(viewableItems[0].index);
+    }
+  }).current;
 
   if (imageUrls.length === 0) {
     return (
@@ -54,23 +47,19 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
 
   return (
     <View className="relative">
-      <Carousel
-        ref={carouselRef}
-        width={screenWidth}
-        height={384}
+      <FlatList
+        ref={flatListRef}
         data={imageUrls}
-        enabled={imageUrls.length > 1}
-        // @ts-ignore
-        panGestureHandlerProps={{
-          activeOffsetX: [-24, 24],
-          failOffsetY: [-8, 8],   
-          minDist: 8,
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item, index) => index.toString()}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 50
         }}
-        onProgressChange={(_, absoluteProgress) => {
-          progress.value = absoluteProgress;
-        }}
-        renderItem={({ item, index }) => (
-          <Pressable onPress={() => onPress?.(outfit)} style={{ flex: 1 }}>
+        renderItem={({ item }) => (
+          <Pressable onPress={() => onPress?.(outfit)} style={{ width: screenWidth, height: 384 }}>
             <Image
               source={{ uri: item }}
               className="w-full h-96"
@@ -79,17 +68,6 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
             />
           </Pressable>
         )}
-        mode="parallax"
-        loop={false}
-        modeConfig={{
-          parallaxScrollingScale: 1.0,
-          parallaxScrollingOffset: 0,
-          parallaxAdjacentItemScale: 1.0,
-        }}
-        style={{
-          width: screenWidth,
-          overflow: 'hidden'
-        }}
       />
       
       <View style={{
