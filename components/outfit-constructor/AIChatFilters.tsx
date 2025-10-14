@@ -1,4 +1,4 @@
-import { Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectInput, SelectItem, SelectPortal, SelectTrigger } from '@/components/ui/select';
+import { CurrencyPicker } from '@/components/outfit-constructor/filters/CurrencyPicker';
 import { FilterSection, UnifiedFilterBar } from '@/components/ui/UnifiedFilterBar';
 import { Currencies, OutfitColors, OutfitElements, OutfitFit, OutfitGender, OutfitStylesTags } from '@/consts/chatFilterConsts';
 import { useTheme } from '@/providers/themeContext';
@@ -182,35 +182,14 @@ export const AIChatFilters = ({
         </View>
       </View>
 
-      <Text style={{ color: colors.textSecondary, fontSize: 12, marginBottom: 4 }}>{t('chatSection.currency')}</Text>
-      <Select selectedValue={currency} onValueChange={(value: string) => setCurrency(value)}>
-        <SelectTrigger className='rounded-lg h-10' style={{ backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 }}>
-          <SelectInput 
-            placeholder={t('chatSection.placeholders.currency')} 
-            value={currency} 
-            style={{ color: colors.text, fontSize: 14 }} 
-          />
-        </SelectTrigger>
-        <SelectPortal>
-          <SelectBackdrop />
-          <SelectContent style={{ backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: 8, overflow: 'hidden' }}>
-            <SelectDragIndicatorWrapper>
-              <SelectDragIndicator />
-            </SelectDragIndicatorWrapper>
-            {Currencies.map((currencyItem: any) => (
-              <SelectItem 
-                key={currencyItem.name} 
-                value={currencyItem.name} 
-                label={t(`chatSection.currencies.${currencyItem.name.toLowerCase()}`)}
-              >
-                <Text style={{ color: colors.text, fontSize: 14 }}>
-                  {t(`chatSection.currencies.${currencyItem.name.toLowerCase()}`)}
-                </Text>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectPortal>
-      </Select>
+      <Text style={{ color: colors.textSecondary, fontSize: 12, marginBottom: 4 }}>
+        {t('chatSection.currency')}
+      </Text>
+      <CurrencyPicker
+        currencies={Currencies}
+        selectedCurrency={currency}
+        onCurrencyChange={setCurrency}
+      />
     </View>
   );
 
