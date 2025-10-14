@@ -1,7 +1,7 @@
+import { AIChatFilters } from '@/components/outfit-constructor/AIChatFilters';
 import { ChatComposer } from '@/components/outfit-constructor/ChatComposer';
 import { ChatHeader } from '@/components/outfit-constructor/ChatHeader';
 import { ChatMessages } from '@/components/outfit-constructor/ChatMessages';
-import { FiltersOverlay } from '@/components/outfit-constructor/FiltersOverlay';
 import { Button, ButtonText } from '@/components/ui/button';
 import { webSearch } from '@/fetchers/webSearch';
 import { openAiClient } from '@/lib/openAiClient';
@@ -318,8 +318,6 @@ export default function HomeScreen() {
 
   return (
     <>
-
-
       <View className='flex-1' style={{ backgroundColor: colors.background }}>
         <View style={{ backgroundColor: colors.background, }}>
           <ChatHeader
@@ -339,6 +337,30 @@ export default function HomeScreen() {
             title={selectedConversationTitle}
           />
         </View>
+
+        {/* AI Chat Filters - Only show when filtersExpanded is true */}
+        {filtersExpanded && (
+          <AIChatFilters
+            outfitGender={outfitGender}
+            setOutfitGender={setOutfitGender}
+            outfitTag={outfitTag}
+            setOutfitTag={setOutfitTag}
+            outfitFit={outfitFit}
+            setOutfitFit={setOutfitFit}
+            outfitColor={outfitColor}
+            setOutfitColor={setOutfitColor}
+            outfitElement={outfitElement}
+            setOutfitElement={setOutfitElement}
+            lowestPrice={lowestPrice}
+            setLowestPrice={setLowestPrice}
+            highestPrice={highestPrice}
+            setHighestPrice={setHighestPrice}
+            currency={currency}
+            setCurrency={setCurrency}
+            isOpen={filtersExpanded}
+            onToggle={() => setFiltersExpanded((v) => !v)}
+          />
+        )}
 
         {/* Conversations List - Overlay */}
         {conversationList.length > 0 && (
@@ -391,29 +413,6 @@ export default function HomeScreen() {
             placeholder={t('chatSection.placeholders.outfitDescription')}
           />
         </View>
-
-        {/* Filters Overlay */}
-        <FiltersOverlay
-          visible={filtersExpanded}
-          onClose={() => setFiltersExpanded(false)}
-          t={(k) => t(k)}
-          outfitGender={outfitGender}
-          setOutfitGender={setOutfitGender}
-          outfitTag={outfitTag}
-          setOutfitTag={setOutfitTag}
-          outfitFit={outfitFit}
-          setOutfitFit={setOutfitFit}
-          outfitColor={outfitColor}
-          setOutfitColor={setOutfitColor}
-          outfitElement={outfitElement}
-          setOutfitElement={setOutfitElement}
-          lowestPrice={lowestPrice}
-          setLowestPrice={setLowestPrice}
-          highestPrice={highestPrice}
-          setHighestPrice={setHighestPrice}
-          currency={currency}
-          setCurrency={setCurrency}
-        />
       </View>
     </>
   );
