@@ -13,7 +13,7 @@ type ChatHeaderProps = {
   t: (k: string) => string;
 };
 
-export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, onToggleFilters, t }: ChatHeaderProps) => {
+export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, onToggleFilters, t, title }: ChatHeaderProps) => {
   const { colors, isDark } = useTheme();
 
   return (
@@ -65,7 +65,7 @@ export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, on
         >
           <MessageSquare size={18} color={colors.textSecondary} />
           <Text style={{ fontSize: 16, color: colors.textSecondary, marginLeft: 8 }}>
-            {t('chatSection.conversations')}
+            {title || t('chatSection.conversations')}
           </Text>
         </TouchableOpacity>
 

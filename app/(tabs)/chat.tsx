@@ -37,6 +37,7 @@ export default function HomeScreen() {
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const abortRef = useRef<AbortController | null>(null);
   const lastAutoPromptRef = useRef<string>('');
+  const [selectedConversationTitle, setSelectedConversationTitle] = useState<string | undefined>(undefined);
 
   function getCleanAssistantText(text: string) {
     let cleaned = text.replace(/```[\s\S]*?```/g, '').trim();
@@ -298,6 +299,23 @@ export default function HomeScreen() {
     };
   }, [conversationId]);
 
+  // Find the current conversation title
+  const currentConversationTitle = useMemo(() => {
+    if (!conversationId) return undefined;
+    const found = conversationList.find(c => c.id === conversationId);
+    return found?.title;
+  }, [conversationId, conversationList]);
+
+  // Update selectedConversationTitle when conversationId changes or a conversation is picked
+  useEffect(() => {
+    if (!conversationId) {
+      setSelectedConversationTitle(undefined);
+      return;
+    }
+    const found = conversationList.find(c => c.id === conversationId);
+    if (found?.title) setSelectedConversationTitle(found.title);
+  }, [conversationId, conversationList]);
+
   return (
     <>
 
@@ -318,6 +336,7 @@ export default function HomeScreen() {
             filtersExpanded={filtersExpanded}
             onToggleFilters={() => setFiltersExpanded((v) => !v)}
             t={(k) => t(k)}
+            title={selectedConversationTitle}
           />
         </View>
 
@@ -331,6 +350,7 @@ export default function HomeScreen() {
               {conversationList.map((c) => (
                 <Button key={c.id} variant='link' action='primary' size='sm' className='justify-start mb-2' onPress={async () => {
                   setConversationId(c.id);
+                  setSelectedConversationTitle(c.title);
                   try {
                     const { data } = await (supabase as any)
                       .from('ai_messages')
