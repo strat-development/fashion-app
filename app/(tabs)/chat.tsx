@@ -1,7 +1,7 @@
+import { AIChatFilters } from '@/components/outfit-constructor/AIChatFilters';
 import { ChatComposer } from '@/components/outfit-constructor/ChatComposer';
 import { ChatHeader } from '@/components/outfit-constructor/ChatHeader';
 import { ChatMessages } from '@/components/outfit-constructor/ChatMessages';
-import { FiltersOverlay } from '@/components/outfit-constructor/FiltersOverlay';
 import { Button, ButtonText } from '@/components/ui/button';
 import { webSearch } from '@/fetchers/webSearch';
 import { openAiClient } from '@/lib/openAiClient';
@@ -11,6 +11,7 @@ import { useUserContext } from '@/providers/userContext';
 import { buildSystemPrompt as buildSystemPromptUtil, generateUserLikePrompt } from '@/utils/chatPrompt';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { BlurView } from 'expo-blur';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 
@@ -36,6 +37,7 @@ export default function HomeScreen() {
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const abortRef = useRef<AbortController | null>(null);
   const lastAutoPromptRef = useRef<string>('');
+  const [selectedConversationTitle, setSelectedConversationTitle] = useState<string | undefined>(undefined);
 
   function getCleanAssistantText(text: string) {
     let cleaned = text.replace(/```[\s\S]*?```/g, '').trim();
@@ -193,7 +195,7 @@ export default function HomeScreen() {
             const q = String(args.query || userText);
             const num = Number(args.num || 5);
             const results = await webSearch(q, num);
-            
+
             workingMessages.push({
               role: 'assistant',
               tool_calls: [call],
@@ -297,13 +299,27 @@ export default function HomeScreen() {
     };
   }, [conversationId]);
 
-                return (
-                  <>
+  // Find the current conversation title
+  const currentConversationTitle = useMemo(() => {
+    if (!conversationId) return undefined;
+    const found = conversationList.find(c => c.id === conversationId);
+    return found?.title;
+  }, [conversationId, conversationList]);
 
+  // Update selectedConversationTitle when conversationId changes or a conversation is picked
+  useEffect(() => {
+    if (!conversationId) {
+      setSelectedConversationTitle(undefined);
+      return;
+    }
+    const found = conversationList.find(c => c.id === conversationId);
+    if (found?.title) setSelectedConversationTitle(found.title);
+  }, [conversationId, conversationList]);
 
+  return (
+    <>
       <View className='flex-1' style={{ backgroundColor: colors.background }}>
-        {/* Header Section - Fixed at top */}
-        <View style={{ backgroundColor: colors.background,}}>
+        <View style={{ backgroundColor: colors.background, }}>
           <ChatHeader
             onShowConversations={async () => {
               try {
@@ -318,18 +334,45 @@ export default function HomeScreen() {
             filtersExpanded={filtersExpanded}
             onToggleFilters={() => setFiltersExpanded((v) => !v)}
             t={(k) => t(k)}
+            title={selectedConversationTitle}
           />
         </View>
+
+        {/* AI Chat Filters - Only show when filtersExpanded is true */}
+        {filtersExpanded && (
+          <AIChatFilters
+            outfitGender={outfitGender}
+            setOutfitGender={setOutfitGender}
+            outfitTag={outfitTag}
+            setOutfitTag={setOutfitTag}
+            outfitFit={outfitFit}
+            setOutfitFit={setOutfitFit}
+            outfitColor={outfitColor}
+            setOutfitColor={setOutfitColor}
+            outfitElement={outfitElement}
+            setOutfitElement={setOutfitElement}
+            lowestPrice={lowestPrice}
+            setLowestPrice={setLowestPrice}
+            highestPrice={highestPrice}
+            setHighestPrice={setHighestPrice}
+            currency={currency}
+            setCurrency={setCurrency}
+            isOpen={filtersExpanded}
+            onToggle={() => setFiltersExpanded((v) => !v)}
+          />
+        )}
 
         {/* Conversations List - Overlay */}
         {conversationList.length > 0 && (
           <View className='absolute inset-0 z-50'>
-            <Pressable className='absolute inset-0' style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} onPress={() => setConversationList([])} />
+            <BlurView intensity={40} tint={colors.background === '#121212' ? 'dark' : 'light'} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+            <Pressable className='absolute inset-0' onPress={() => setConversationList([])} />
             <View className='absolute top-32 left-4 right-4 rounded-2xl p-4 shadow-2xl' style={{ backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border }}>
               <Text className='text-sm font-medium mb-3' style={{ color: colors.text }}>Recent Conversations</Text>
               {conversationList.map((c) => (
                 <Button key={c.id} variant='link' action='primary' size='sm' className='justify-start mb-2' onPress={async () => {
                   setConversationId(c.id);
+                  setSelectedConversationTitle(c.title);
                   try {
                     const { data } = await (supabase as any)
                       .from('ai_messages')
@@ -343,8 +386,8 @@ export default function HomeScreen() {
                 }}>
                   <ButtonText className='text-left' style={{ color: colors.textSecondary }}>{c.title || c.id}</ButtonText>
                 </Button>
-                ))}
-              </View>
+              ))}
+            </View>
           </View>
         )}
 
@@ -362,38 +405,15 @@ export default function HomeScreen() {
         {/* Input Section - Fixed at bottom with proper z-index */}
         <View className='absolute bottom-0 left-0 right-0 px-4 py-3 z-20' style={{ backgroundColor: colors.background, borderTopWidth: 1, borderTopColor: colors.border, paddingBottom: 34 }}>
           <ChatComposer
-          value={searchQuery}
+            value={searchQuery}
             onChange={setSearchQuery}
             onSend={handleSend}
             onStop={handleStop}
             sending={sending}
-          placeholder={t('chatSection.placeholders.outfitDescription')}
-        />
+            placeholder={t('chatSection.placeholders.outfitDescription')}
+          />
+        </View>
       </View>
-
-        {/* Filters Overlay */}
-        <FiltersOverlay
-          visible={filtersExpanded}
-          onClose={() => setFiltersExpanded(false)}
-          t={(k) => t(k)}
-          outfitGender={outfitGender}
-          setOutfitGender={setOutfitGender}
-          outfitTag={outfitTag}
-          setOutfitTag={setOutfitTag}
-          outfitFit={outfitFit}
-          setOutfitFit={setOutfitFit}
-          outfitColor={outfitColor}
-          setOutfitColor={setOutfitColor}
-          outfitElement={outfitElement}
-          setOutfitElement={setOutfitElement}
-          lowestPrice={lowestPrice}
-          setLowestPrice={setLowestPrice}
-          highestPrice={highestPrice}
-          setHighestPrice={setHighestPrice}
-          currency={currency}
-          setCurrency={setCurrency}
-        />
-    </View>
     </>
   );
 }

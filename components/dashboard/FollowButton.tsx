@@ -1,6 +1,7 @@
 import { useFetchIsFollowed } from '@/fetchers/fetchIsFollowed';
 import { useFollowUserMutation } from '@/mutations/FollowUserMutation';
 import { useUnFollowUserMutation } from '@/mutations/UnfollowUserMutation';
+import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +15,7 @@ interface FollowButtonProps {
 export const FollowButton = ({ profileId, isPublic }: FollowButtonProps) => {
   const { t } = useTranslation();
   const { userId } = useUserContext();
+  const { colors } = useTheme();
   const { data: followStatus } = useFetchIsFollowed(userId || '', profileId || '');
   const isFollowed = followStatus?.isFollowed || false;
   const isPending = followStatus?.isPending || false;
@@ -24,8 +26,8 @@ export const FollowButton = ({ profileId, isPublic }: FollowButtonProps) => {
 
   if (isPending && !isPublic) {
     return (
-      <Pressable disabled style={{ backgroundColor: '#666', paddingVertical: 12, borderRadius: 8, marginTop: 16, opacity: 0.5 }}>
-        <Text style={{ color: '#ccc', textAlign: 'center', fontSize: 14 }}>{t('followButton.pending')}</Text>
+      <Pressable disabled style={{ backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, paddingVertical: 12, borderRadius: 8, marginTop: 16, opacity: 0.7 }}>
+        <Text style={{ color: colors.textSecondary, textAlign: 'center', fontSize: 14 }}>{t('followButton.pending')}</Text>
       </Pressable>
     );
   }
@@ -33,18 +35,18 @@ export const FollowButton = ({ profileId, isPublic }: FollowButtonProps) => {
   return isFollowed ? (
     <Pressable
       onPress={() => unFollowUser({ followedAccountId: profileId, userId: userId })}
-      style={{ backgroundColor: '#222', paddingVertical: 12, borderRadius: 8, marginTop: 16 }}
+      style={{ backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, paddingVertical: 12, borderRadius: 8, marginTop: 16 }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{ color: '#ccc', fontWeight: 'bold' }}>{t('followButton.unfollow')}</Text>
+        <Text style={{ color: colors.text, fontWeight: 'bold' }}>{t('followButton.unfollow')}</Text>
       </View>
     </Pressable>
   ) : (
     <Pressable
       onPress={() => followUser({ followedAccountId: profileId, userId: userId, isPublicAccount: isPublic })}
-      style={{ backgroundColor: '#222', paddingVertical: 12, borderRadius: 8, marginTop: 16 }}
+      style={{ backgroundColor: colors.accent, paddingVertical: 12, borderRadius: 8, marginTop: 16 }}
     >
-      <Text style={{ color: '#ccc', textAlign: 'center', fontSize: 14 }}>{t('followButton.follow')}</Text>
+      <Text style={{ color: colors.onAccent, textAlign: 'center', fontSize: 14, fontWeight: '600' }}>{t('followButton.follow')}</Text>
     </Pressable>
   );
 };

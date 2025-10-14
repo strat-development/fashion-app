@@ -1,17 +1,17 @@
 
-import * as FileSystem from 'expo-file-system/legacy';
-import { decode } from 'base64-arraybuffer';
+import { ThemedText } from '@/components/ThemedText';
 import { supabase } from '@/lib/supabase';
-import { supabaseAdmin } from '@/lib/admin';
 import { useEditProfileMutation } from '@/mutations/dashboard/EditProfileMutation';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
-import { Camera, User, X } from 'lucide-react-native';
+import { decode } from 'base64-arraybuffer';
+import * as FileSystem from 'expo-file-system/legacy';
+import * as ImagePicker from 'expo-image-picker';
+import { User, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Alert, Image, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ProfileEditProps {
@@ -195,7 +195,7 @@ export const ProfileEdit = ({
           <Pressable onPress={onClose} style={{ padding: 8 }}>
             <X size={24} color={colors.textMuted} />
           </Pressable>
-          <Text style={{ color: colors.text, fontWeight: '600', fontSize: 18 }}>{t('profileEdit.title')}</Text>
+          <ThemedText type="subtitle" style={{ color: colors.text }}>{t('profileEdit.title')}</ThemedText>
           <Pressable
             onPress={handleSubmit(onSubmit)}
             className="px-4 py-2 rounded-full overflow-hidden"
@@ -233,7 +233,7 @@ export const ProfileEdit = ({
 
             {/* Name Field */}
             <View className="mb-6">
-              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">{t('profileEdit.displayName')}</Text>
+              <ThemedText type="defaultSemiBold" style={{ color: colors.text, marginBottom: 12 }}>{t('profileEdit.displayName')}</ThemedText>
               <Controller
                 control={control}
                 name="name"
@@ -271,7 +271,7 @@ export const ProfileEdit = ({
 
             {/* Bio Field */}
             <View className="mb-6">
-              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">{t('profileEdit.bio')}</Text>
+              <ThemedText type="defaultSemiBold" style={{ color: colors.text, marginBottom: 12 }}>{t('profileEdit.bio')}</ThemedText>
               <Controller
                 control={control}
                 name="bio"
@@ -314,7 +314,7 @@ export const ProfileEdit = ({
 
             {/* Style Preferences */}
             <View className="mb-6">
-              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">{t('profileEdit.stylePreferences')}</Text>
+              <ThemedText type="defaultSemiBold" style={{ color: colors.text, marginBottom: 12 }}>{t('profileEdit.stylePreferences')}</ThemedText>
               <View style={{ backgroundColor: colors.surfaceVariant, borderColor: colors.border, borderWidth: 1, borderRadius: 8, padding: 16 }}>
                 <Text style={{ color: colors.textSecondary, fontSize: 16 }}>
                   {t('profileEdit.stylePreferencesComingSoon')}
@@ -324,7 +324,7 @@ export const ProfileEdit = ({
 
             {/* Privacy Settings */}
             <View className="mb-8">
-              <Text style={{ color: colors.text }} className="font-medium text-base mb-3">{t('profileEdit.privacy')}</Text>
+              <ThemedText type="defaultSemiBold" style={{ color: colors.text, marginBottom: 12 }}>{t('profileEdit.privacy')}</ThemedText>
               <View style={{ backgroundColor: colors.surfaceVariant, borderColor: colors.border, borderWidth: 1, borderRadius: 8, padding: 16 }}>
                 <Controller
                   control={control}
@@ -335,10 +335,10 @@ export const ProfileEdit = ({
                       style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}
                     >
                       <View style={{ flex: 1 }}>
-                        <Text style={{ color: colors.text, fontWeight: '500' }}>{t('profileEdit.publicProfile')}</Text>
-                        <Text style={{ color: colors.textSecondary, fontSize: 13, marginTop: 4 }}>
+                        <ThemedText type="defaultSemiBold" style={{ color: colors.text }}>{t('profileEdit.publicProfile')}</ThemedText>
+                        <ThemedText type="default" style={{ color: colors.textSecondary, fontSize: 13, marginTop: 4 }}>
                           {value ? t('profileEdit.publicProfileDescription') : t('profileEdit.privateProfileDescription')}
-                        </Text>
+                        </ThemedText>
                       </View>
                       <View style={{ marginLeft: 16 }}>
                         <View
@@ -354,10 +354,10 @@ export const ProfileEdit = ({
                 />
                 {!watchIsPublic && (
                   <View style={{ backgroundColor: colors.warning + '22', borderColor: colors.warning, borderWidth: 1, borderRadius: 8, padding: 12, marginTop: 12 }}>
-                    <Text style={{ color: colors.warning, fontSize: 14, fontWeight: '500' }}>{t('profileEdit.privateAccount')}</Text>
-                    <Text style={{ color: colors.warning, fontSize: 12, marginTop: 4 }}>
+                    <ThemedText type="defaultSemiBold" style={{ color: colors.warning, fontSize: 14 }}>{t('profileEdit.privateAccount')}</ThemedText>
+                    <ThemedText type="default" style={{ color: colors.warning, fontSize: 12, marginTop: 4 }}>
                       {t('profileEdit.privateAccountDescription')}
-                    </Text>
+                    </ThemedText>
                   </View>
                 )}
               </View>

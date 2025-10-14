@@ -108,7 +108,7 @@ export function ProfileHeader({
       </View>
 
       {/* Tab Navigation */}
-      <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 32, paddingHorizontal: 24 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 16, paddingHorizontal: 24 }}>
         <View
           style={{
             backgroundColor: colors.surface,

@@ -201,18 +201,17 @@ export const OutfitCreateModal = ({
               />
             </View>
           </ScrollView>
+          <ElementModal
+            elementModalVisible={elementModalVisible}
+            setElementModalVisible={setElementModalVisible}
+            onElementSubmit={onElementSubmit}
+            pendingImagesRef={pendingImagesRef}
+            selectedImageName={selectedImageName}
+            setSelectedImageName={setSelectedImageName}
+            preferredCurrency={preferredCurrency || 'USD'}
+          />
         </SafeAreaView>
       </Modal>
-
-      <ElementModal
-        elementModalVisible={elementModalVisible}
-        setElementModalVisible={setElementModalVisible}
-        onElementSubmit={onElementSubmit}
-        pendingImagesRef={pendingImagesRef}
-        selectedImageName={selectedImageName}
-        setSelectedImageName={setSelectedImageName}
-        preferredCurrency={preferredCurrency || 'USD'}
-      />
     </>
   );
 };

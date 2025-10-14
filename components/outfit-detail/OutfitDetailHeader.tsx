@@ -1,3 +1,4 @@
+import { useTheme } from "@/providers/themeContext";
 import { router } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import React from "react";
@@ -8,6 +9,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 export default function OutfitDetailHeader() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
 
   return (
     <View
@@ -16,8 +18,8 @@ export default function OutfitDetailHeader() {
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 16,
-        paddingTop: insets.top,
-        paddingBottom: 16,
+        paddingTop: 16,
+        marginBottom: 16,
       }}
     >
       <Pressable
@@ -25,18 +27,18 @@ export default function OutfitDetailHeader() {
         style={{
           width: 44,
           height: 44,
-          backgroundColor: '#1f1f1fcc',
+          backgroundColor: colors.surface,
           borderRadius: 22,
           alignItems: 'center',
           justifyContent: 'center',
           borderWidth: 1,
-          borderColor: '#2a2a2a',
+          borderColor: colors.border,
         }}
       >
-        <ArrowLeft size={20} color="#ffffff" />
+        <ArrowLeft size={20} color={colors.text} />
       </Pressable>
       
-      <Text style={{ color: '#fff', fontSize: 18, fontWeight: '700' }}>
+      <Text style={{ color: colors.text, fontSize: 18, fontWeight: '700' }}>
         {t('outfitDetail.header.title')}
       </Text>
       

@@ -19,7 +19,7 @@ import { router } from 'expo-router';
 import { ChevronLeft, DollarSign, Globe, Moon, Smartphone, Sun } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, Text, View, Platform, Modal, FlatList } from 'react-native';
+import { FlatList, Modal, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ThemeSettings() {
@@ -89,7 +89,7 @@ export default function ThemeSettings() {
       {/* Header */}
       <View
         style={{
-          paddingTop: insets.top,
+          paddingTop: 16,
           paddingHorizontal: 16,
           paddingBottom: 16,
           backgroundColor: colors.surface,

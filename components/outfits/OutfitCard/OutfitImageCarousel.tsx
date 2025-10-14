@@ -1,9 +1,8 @@
+import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/providers/themeContext";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
-import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated";
-import Carousel from "react-native-reanimated-carousel";
+import { FlatList, Image, Pressable, Text, View, useWindowDimensions } from "react-native";
 import { OutfitData } from "../OutfitCard";
 
 interface OutfitImageCarouselProps {
@@ -16,18 +15,14 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
   const { t } = useTranslation();
   const { colors } = useTheme();
   const { width: screenWidth } = useWindowDimensions();
-  const progress = useSharedValue<number>(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
 
-  useAnimatedReaction(
-    () => Math.round(progress.value),
-    (current, previous) => {
-      if (current !== previous) {
-        runOnJS(setCurrentIndex)(current);
-      }
-    },
-    [progress]
-  );
+  const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    if (viewableItems.length > 0) {
+      setCurrentIndex(viewableItems[0].index);
+    }
+  }).current;
 
   if (imageUrls.length === 0) {
     return (
@@ -53,15 +48,19 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
 
   return (
     <View className="relative">
-      <Carousel
-        width={screenWidth}
-        height={384}
+      <FlatList
+        ref={flatListRef}
         data={imageUrls}
-        onProgressChange={(_, absoluteProgress) => {
-          progress.value = absoluteProgress;
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item, index) => index.toString()}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 50
         }}
-        renderItem={({ item, index }) => (
-          <Pressable onPress={() => onPress?.(outfit)}>
+        renderItem={({ item }) => (
+          <Pressable onPress={() => onPress?.(outfit)} style={{ width: screenWidth, height: 384 }}>
             <Image
               source={{ uri: item }}
               className="w-full h-96"
@@ -70,19 +69,8 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
             />
           </Pressable>
         )}
-        mode="parallax"
-        loop={false}
-        enabled={imageUrls.length > 1}
-        modeConfig={{
-          parallaxScrollingScale: 1.0,
-          parallaxScrollingOffset: 0,
-          parallaxAdjacentItemScale: 1.0,
-        }}
-        style={{
-          width: screenWidth,
-          overflow: 'hidden'
-        }}
       />
+      
       <View style={{
         position: 'absolute',
         top: 12,
@@ -95,10 +83,11 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
         borderColor: `${colors.border}4D`
       }}>
         <Text style={{
-          color: colors.text,
-          fontSize: 12,
-          fontWeight: '500'
-        }}>{currentIndex + 1}/{imageUrls.length}</Text>
+        }}>
+          <ThemedText type="defaultSemiBold" style={{ fontSize: 12 }}>
+            {currentIndex + 1}/{imageUrls.length}
+          </ThemedText>
+        </Text>
       </View>
       {imageUrls.length <= 5 && (
         <View style={{

@@ -1,4 +1,6 @@
+import { useTheme } from '@/providers/themeContext';
 import { OutfitData } from '@/types/createOutfitTypes';
+import { BlurView } from 'expo-blur';
 import {
   Camera,
   Copy,
@@ -11,6 +13,7 @@ import {
   X,
 } from 'lucide-react-native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Clipboard,
@@ -21,8 +24,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/providers/themeContext';
 
 interface ShareModalProps {
   isVisible: boolean;
@@ -58,17 +59,17 @@ export const ShareModal = ({
         onClose();
       }
     } catch {
-      Alert.alert(t('shareModal.alerts.shareError.title'), t('shareModal.alerts.shareError.message'));
+      Alert.alert(t('shareModal.alerts.shareError'), t('shareModal.alerts.shareError'));
     }
   };
 
   const handleCopyLink = async () => {
     try {
       await Clipboard.setString(shareUrl);
-      Alert.alert(t('shareModal.alerts.copySuccess.title'), t('shareModal.alerts.copySuccess.message'));
+      Alert.alert(t('shareModal.alerts.copySuccess'), t('shareModal.alerts.copySuccess'));
       onClose();
     } catch {
-      Alert.alert(t('shareModal.alerts.copyError.title'), t('shareModal.alerts.copyError.message'));
+      Alert.alert(t('shareModal.alerts.copyError'), t('shareModal.alerts.copyError'));
     }
   };
 
@@ -86,7 +87,7 @@ export const ShareModal = ({
         break;
       case 'instagram':
         await handleCopyLink();
-        Alert.alert(t('shareModal.alerts.instagramShare.title'), t('shareModal.alerts.instagramShare.message'));
+        Alert.alert(t('shareModal.alerts.instagramShare'), t('shareModal.alerts.instagramShare'));
         return;
       case 'email':
         url = `mailto:?subject=${encodeURIComponent(outfit.outfit_name || t('shareModal.untitledOutfit'))}&body=${encodeURIComponent(fullShareText)}`;
@@ -102,10 +103,10 @@ export const ShareModal = ({
         await Linking.openURL(url);
         onClose();
       } else {
-        Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform));
+        Alert.alert(t('shareModal.alerts.platformError'), t('shareModal.alerts.platformError' + platform));
       }
     } catch {
-      Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform));
+      Alert.alert(t('shareModal.alerts.platformError'), t('shareModal.alerts.platformError' + platform));
     }
   };
 
@@ -174,7 +175,12 @@ export const ShareModal = ({
       animationType={isAnimated ? 'none' : 'none'}
       transparent={true}
     >
-      <View className="flex-1 justify-end bg-black/0 backdrop-blur-sm">
+      <View className="flex-1 justify-end">
+        <BlurView
+          intensity={40}
+          tint={colors.background === '#121212' ? 'dark' : 'light'}
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+        />
         <View className="rounded-t-3xl border-t"
           style={{ backgroundColor: colors.background,
             borderColor: colors.border

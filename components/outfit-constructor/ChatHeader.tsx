@@ -13,7 +13,7 @@ type ChatHeaderProps = {
   t: (k: string) => string;
 };
 
-export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, onToggleFilters, t }: ChatHeaderProps) => {
+export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, onToggleFilters, t, title }: ChatHeaderProps) => {
   const { colors, isDark } = useTheme();
 
   return (
@@ -45,11 +45,10 @@ export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, on
           alignItems: 'center',
           justifyContent: 'space-between',
           paddingHorizontal: 16,
-          paddingVertical: 12, // Adjusted padding for vertical alignment
+          paddingVertical: 12,
           gap: 12,
         }}
       >
-        {/* "Conversations" button styled as search bar */}
         <TouchableOpacity
           onPress={onShowConversations}
           style={{
@@ -66,13 +65,11 @@ export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, on
         >
           <MessageSquare size={18} color={colors.textSecondary} />
           <Text style={{ fontSize: 16, color: colors.textSecondary, marginLeft: 8 }}>
-            {t('chatSection.conversations')}
+            {title || t('chatSection.conversations')}
           </Text>
         </TouchableOpacity>
 
-        {/* Right side buttons container */}
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          {/* "New Chat" button */}
           <TouchableOpacity
             onPress={onNewChat}
             style={{
@@ -88,7 +85,6 @@ export const ChatHeader = ({ onShowConversations, onNewChat, filtersExpanded, on
             <Plus size={20} color={colors.textSecondary} />
           </TouchableOpacity>
 
-          {/* "Filters" button */}
           <TouchableOpacity
             onPress={onToggleFilters}
             style={{

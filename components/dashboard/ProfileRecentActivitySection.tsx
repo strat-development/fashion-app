@@ -8,21 +8,23 @@ export function ProfileRecentActivitySection() {
   const { t } = useTranslation();
   const { colors } = useTheme();
 
+  const activityTexts = (t('profileRecentActivitySection.activities', { returnObjects: true }) as Array<{ text: string }>) || [];
+
   const activities = [
     {
       icon: Trophy,
       color: colors.success,
-      text: t('profileRecentActivitySection.activities[0].text'),
+      text: activityTexts[0]?.text ?? '',
     },
     {
       icon: Heart,
       color: colors.accent,
-      text: t('profileRecentActivitySection.activities[1].text'),
+      text: activityTexts[1]?.text ?? '',
     },
     {
       icon: Plus,
       color: colors.secondary,
-      text: t('profileRecentActivitySection.activities[2].text'),
+      text: activityTexts[2]?.text ?? '',
     },
   ];
 
@@ -31,27 +33,16 @@ export function ProfileRecentActivitySection() {
       <Text style={{ color: colors.text, fontSize: 18, fontWeight: '600', marginBottom: 16 }}>
         {t('profileRecentActivitySection.title')}
       </Text>
-      <View style={{ gap: 16 }}>
-        {activities.map((activity, index) => (
-          <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View
-              style={{
-                width: 32,
-                height: 32,
-                backgroundColor: `${activity.color}33`,
-                borderRadius: 16,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: 12,
-              }}
-            >
-              <activity.icon size={14} color={activity.color} />
+      <View style={{ gap: 12, paddingVertical: 16 }}>
+        {activities.map((activity, index) => {
+          const Icon = activity.icon;
+          return (
+            <View key={index} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <Icon size={18} color={activity.color} />
+              <Text style={{ color: colors.textMuted, fontSize: 16 }}>{activity.text}</Text>
             </View>
-            <Text style={{ color: colors.textSecondary, fontSize: 14, flex: 1 }}>
-              {activity.text}
-            </Text>
-          </View>
-        ))}
+          );
+        })}
       </View>
     </View>
   );

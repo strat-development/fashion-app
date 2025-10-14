@@ -1,13 +1,11 @@
 import { Currencies } from "@/consts/userSettings";
-import { ThemedGradient } from "@/providers/themeContext";
+import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { OutfitElementData } from "@/types/createOutfitTypes";
 import { ExternalLink, Shirt, Tag } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 
-import { Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
-import { useSharedValue } from "react-native-reanimated";
-import Carousel from "react-native-reanimated-carousel";
+import { FlatList, Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
 
 const exchangeRateCache: Record<string, number> = {};
 
@@ -22,12 +20,11 @@ interface OutfitDetailImagesProps {
 
 export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDetailImagesProps) {
   const { preferredCurrency } = useUserContext();
-  const progress = useSharedValue<number>(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [convertedPrices, setConvertedPrices] = useState<(number | null)[]>(
     elementsData ? elementsData.map((el) => (typeof el.price === 'number' ? el.price : null)) : []
   );
-
+  const { colors } = useTheme();
   const { width, height } = useWindowDimensions();
   const singleH = Math.min(520, Math.max(280, Math.floor(height * 0.55)));
   const multiH = Math.min(450, Math.max(300, Math.floor(height * 0.45)));
@@ -215,28 +212,44 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
         </View>
       ) : (
         <View className="relative">
-          <Carousel
-            width={cardW}
-            height={multiH}
+          <FlatList
             data={imageUrls}
-            onProgressChange={(_, absoluteProgress) => {
-              progress.value = absoluteProgress;
-              setCurrentIndex(Math.round(absoluteProgress));
-            }}
             renderItem={renderCarouselItem}
-            loop={false}
-            enabled={imageUrls.length > 1}
-            pagingEnabled={true}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+            onViewableItemsChanged={({ viewableItems }) => {
+              if (viewableItems.length > 0) {
+                setCurrentIndex(viewableItems[0].index ?? 0);
+              }
+            }}
+            viewabilityConfig={{
+              itemVisiblePercentThreshold: 50
+            }}
             style={{
               width: cardW,
-              alignItems: 'center',
               overflow: 'hidden'
             }}
           />
 
           {/* Image counter */}
-          <View className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-3 py-1.5 rounded-full border border-gray-400/30">
-            <Text className="text-white text-xs font-medium">{currentIndex + 1}/{imageUrls.length}</Text>
+          <View style={{
+            position: 'absolute',
+            top: 12,
+            right: 12,
+            backgroundColor: `${colors.background}B3`,
+            paddingHorizontal: 12,
+            paddingVertical: 6,
+            borderRadius: 999,
+            borderWidth: 1,
+            borderColor: `${colors.border}4D`
+          }}>
+            <Text style={{
+              color: colors.text,
+              fontSize: 12,
+              fontWeight: '500'
+            }}>{currentIndex + 1}/{imageUrls.length}</Text>
           </View>
 
           {/* Custom pagination dots */}

@@ -42,7 +42,9 @@
   "userProfile": {
     "loading": "Loading...",
     "about": "About",
-    "privateProfile": "This profile is private."
+    "privateProfile": "This profile is private.",
+    "pendingRequests": "Follow Requests",
+    "noPendingRequests": "No pending requests"
   },
   "outfitDetail": {
     "header": {
@@ -177,6 +179,12 @@
     "follow": "Follow",
     "unfollow": "Unfollow",
     "pending": "Follow Request Pending"
+  },
+  "common": {
+    "loading": "Loading…",
+    "approve": "Approve",
+    "decline": "Decline",
+    "close": "Close"
   },
   "profileBioSection": {
     "title": "About",

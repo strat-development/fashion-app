@@ -1,27 +1,19 @@
-import OutfitInteractionButtons from '@/components/outfit-detail/OutfitInteractionButtons';
-import CommentSection from '@/components/outfits/CommentSection';
 import { ThemedView } from '@/components/ThemedView';
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
-import { useFetchUser } from '@/fetchers/fetchUser';
 import { CreatorRankItem, getTopCreators, getTopOutfits, OutfitRankItem } from '@/fetchers/ranking';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { useQuery } from '@tanstack/react-query';
-import { useSharedValue } from 'react-native-reanimated';
-// import { useRouter } from 'expo-router';
-import OutfitDetailImages from '@/components/outfit-detail/OutfitDetailImages';
-import OutfitDetailInfo from '@/components/outfit-detail/OutfitDetailInfo';
-import OutfitDetailSections from '@/components/outfit-detail/OutfitDetailSections';
-import { OutfitData } from '@/components/outfits/OutfitCard';
+import { useRouter } from 'expo-router';
 import { Trophy, User2 } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Image, Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { FlatList, Image, Platform, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RankingScreen() {
   const { t } = useTranslation();
   const [tab, setTab] = useState<'outfits' | 'creators'>('outfits');
-  // const router = useRouter();
+  const router = useRouter();
   const { colors } = useTheme();
 
   const {
@@ -42,21 +34,14 @@ export default function RankingScreen() {
   const error = tab === 'outfits' ? errorOutfits : errorCreators;
   const list = useMemo(() => (tab === 'outfits' ? (outfits ?? []) : (creators ?? [])), [tab, outfits, creators]);
 
-  const [selectedOutfit, setSelectedOutfit] = useState<OutfitData | null>(null);
-
-  const [showOutfitDetail, setShowOutfitDetail] = useState(false);
-  const likeScale = useSharedValue(1);
-  const dislikeScale = useSharedValue(1);
-  const commentScale = useSharedValue(1);
-  const shareScale = useSharedValue(1);
-  const saveScale = useSharedValue(1);
-
-  const { data: modalUserData } = useFetchUser(selectedOutfit?.created_by || '');
-
   return (
     <ThemedView style={{ flex: 1, backgroundColor: colors.background }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ paddingHorizontal: 16, paddingTop: 24, paddingBottom: 12 }}>
+      <SafeAreaView style={{ flex: 1, marginTop: 0 }}>
+        <View style={{
+          paddingHorizontal: 16,
+          paddingBottom: 16,
+          paddingTop: Platform.select({ web: 32, default: 0 })
+        }}>
           <Text style={{ color: colors.text, fontSize: 24, fontWeight: '700' }}>{t('rankingScreen.title')}</Text>
           <Text style={{ color: colors.textSecondary, marginTop: 4 }}>{t('rankingScreen.subtitle')}</Text>
         </View>
@@ -108,20 +93,9 @@ export default function RankingScreen() {
                 item={item as any}
                 onPress={() => {
                   if (tab === 'outfits') {
-                    const oi = item as OutfitRankItem;
-                    const outfit: any = {
-                      outfit_id: oi.outfit_id,
-                      created_by: oi.created_by,
-                      outfit_name: oi.outfit_name,
-                      outfit_elements_data: oi.previewUrl ? [{ imageUrl: oi.previewUrl }] : [],
-                      comments: 0,
-                      likes: oi.likes,
-                    };
-                    setSelectedOutfit(outfit);
-                    setShowOutfitDetail(true);
+                    router.push(`/outfit/${(item as OutfitRankItem).outfit_id}`);
                   } else {
-                    // Keep navigation for user profiles unchanged
-                    // if (id) router.push(`/userProfile/${id}`);
+                    router.push(`/userProfile/${(item as CreatorRankItem).user_id}`);
                   }
                 }}
               />
@@ -130,60 +104,6 @@ export default function RankingScreen() {
           />
         )}
       </SafeAreaView>
-      {/* Inline outfit detail modal for ranking */}
-      <Modal visible={showOutfitDetail} transparent={false} animationType="slide" onRequestClose={() => setShowOutfitDetail(false)}>
-        <View style={{ flex: 1, backgroundColor: colors.background }}>
-          <Pressable onPress={() => setShowOutfitDetail(false)} style={{ position: 'absolute', top: 16, right: 16, zIndex: 10, width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: `${colors.surface}CC`, borderWidth: 1, borderColor: colors.border }}>
-            <Text style={{ color: colors.text, fontWeight: '700' }}>X</Text>
-          </Pressable>
-          {selectedOutfit && (
-            <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
-              <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-                <OutfitDetailInfo
-                  outfit={selectedOutfit}
-                  userData={modalUserData as any}
-                  tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])}
-                />
-              </View>
-              <View style={{ paddingHorizontal: 16 }}>
-                <OutfitDetailImages
-                  imageUrls={Array.isArray(selectedOutfit.outfit_elements_data)
-                    ? (selectedOutfit.outfit_elements_data as any[]).map((el: any) => (typeof el === 'string' ? el : el?.imageUrl)).filter((u: any): u is string => typeof u === 'string' && !!u)
-                    : (selectedOutfit as any).previewUrl ? [String((selectedOutfit as any).previewUrl)] : []}
-                  elementsData={Array.isArray(selectedOutfit.outfit_elements_data)
-                    ? (selectedOutfit.outfit_elements_data as any[]).filter((el: any) => el && typeof el === 'object' && (el as any).imageUrl)
-                    : [] as any}
-                />
-              </View>
-              <OutfitDetailSections description={selectedOutfit.description} tags={Array.isArray(selectedOutfit.outfit_tags) ? selectedOutfit.outfit_tags : (selectedOutfit.outfit_tags ? [selectedOutfit.outfit_tags] : [])} />
-
-              <OutfitInteractionButtons
-                isLiked={false}
-                isDisliked={false}
-                isSaved={false}
-                positiveRatings={0}
-                negativeRatings={0}
-                commentsCount={0}
-                onPositiveRate={() => {}}
-                onNegativeRate={() => {}}
-                onComments={() => {}}
-                onShare={() => {}}
-                onSave={() => {}}
-                likeScale={likeScale}
-                dislikeScale={dislikeScale}
-                commentScale={commentScale}
-                shareScale={shareScale}
-                saveScale={saveScale}
-                showCommentsButton={false}
-              />
-
-              <View style={{ paddingHorizontal: 16, paddingTop: 8 }}>
-                <CommentSection isVisible={true} onClose={() => {}} outfitId={selectedOutfit.outfit_id} outfitTitle={selectedOutfit.outfit_name || ''} asInline />
-              </View>
-            </ScrollView>
-          )}
-        </View>
-      </Modal>
     </ThemedView>
   );
 }
