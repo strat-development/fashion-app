@@ -249,25 +249,15 @@ export const UnifiedFilterBar = ({
       {showFilters && (
         <View
           style={{
-            position: 'absolute',
-            top: 72,
-            left: 0,
-            right: 0,
-            bottom: 0,
             backgroundColor: hexToRgba(colors.background, 0.9),
-            zIndex: 50,
-            borderTopWidth: 1,
-            borderTopColor: colors.border,
-            shadowColor: '#000',
-            shadowOpacity: 0.1,
-            shadowRadius: 10,
-            shadowOffset: { width: 0, height: 5 },
+            borderBottomWidth: 1,
+            borderBottomColor: colors.border,
           }}
         >
           <ScrollView
             className='backdrop-blur-2xl'
-            style={{ padding: 16 }}
-            contentContainerStyle={{ paddingBottom: 60 }}
+            style={{ paddingHorizontal: 16 }}
+            contentContainerStyle={{ paddingBottom: 200, paddingTop: 16 }}
             showsVerticalScrollIndicator={false}
           >
             {filterSections.map(section => renderFilterSection(section))}
