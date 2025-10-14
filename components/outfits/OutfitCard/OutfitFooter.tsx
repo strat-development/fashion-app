@@ -1,3 +1,4 @@
+import { ThemedText } from "@/components/ThemedText";
 import { SparkleBurst } from "@/components/ui/SparkleBurst";
 import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { Bookmark, MessageCircle, Share, ThumbsDown, ThumbsUp } from "lucide-react-native";
@@ -94,12 +95,9 @@ export const OutfitFooter = ({
 
   return (
     <View style={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: 12 }}>
-      <Text style={{
-        color: colors.text,
-        fontWeight: '600',
-        fontSize: 18,
-        marginBottom: 8
-      }}>{outfitName || t('outfitDetail.defaultOutfitName')}</Text>
+      <ThemedText type="subtitle" style={{ color: colors.text, marginBottom: 8 }}>
+        {outfitName || t('outfitDetail.defaultOutfitName')}
+      </ThemedText>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }}>
         <View style={{ flexDirection: 'row' }}>
@@ -116,10 +114,7 @@ export const OutfitFooter = ({
                 borderColor: colors.border
               }}
             >
-              <Text style={{
-                color: colors.textSecondary,
-                fontSize: 12
-              }}>{tag}</Text>
+              <ThemedText type="default" style={{ color: colors.textSecondary, fontSize: 12 }}>{tag}</ThemedText>
             </View>
           ))}
         </View>

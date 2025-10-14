@@ -1,3 +1,4 @@
+import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/providers/themeContext";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -82,10 +83,11 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
         borderColor: `${colors.border}4D`
       }}>
         <Text style={{
-          color: colors.text,
-          fontSize: 12,
-          fontWeight: '500'
-        }}>{currentIndex + 1}/{imageUrls.length}</Text>
+        }}>
+          <ThemedText type="defaultSemiBold" style={{ fontSize: 12 }}>
+            {currentIndex + 1}/{imageUrls.length}
+          </ThemedText>
+        </Text>
       </View>
       {imageUrls.length <= 5 && (
         <View style={{

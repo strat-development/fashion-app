@@ -3,7 +3,8 @@ import { useTheme } from "@/providers/themeContext";
 import { Bookmark, MessageCircle, Share, ThumbsDown, ThumbsUp } from "lucide-react-native";
 import React, { useState } from "react";
 
-import { Pressable, Text, View } from "react-native";
+import { ThemedText } from "@/components/ThemedText";
+import { Pressable, View } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, { useAnimatedStyle, withSequence, withSpring } from "react-native-reanimated";
 
@@ -207,9 +208,9 @@ export default function OutfitInteractionButtons({
           >
             <Animated.View style={[commentStyle, { flexDirection: 'row', alignItems: 'center' }]}>
               <MessageCircle size={16} color={colors.textSecondary} />
-              <Text style={{ color: colors.textSecondary, marginLeft: 8, fontSize: 14, fontWeight: '500' }}>
+              <ThemedText type="defaultSemiBold" style={{ color: colors.textSecondary, marginLeft: 8, fontSize: 14 }}>
                 { commentsCount }
-              </Text>
+              </ThemedText>
             </Animated.View>
           </Pressable>
         )}
