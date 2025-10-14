@@ -1,5 +1,5 @@
 import { Currencies } from "@/consts/userSettings";
-import { ThemedGradient } from "@/providers/themeContext";
+import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { OutfitElementData } from "@/types/createOutfitTypes";
 import { ExternalLink, Shirt, Tag } from "lucide-react-native";
@@ -24,7 +24,7 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
   const [convertedPrices, setConvertedPrices] = useState<(number | null)[]>(
     elementsData ? elementsData.map((el) => (typeof el.price === 'number' ? el.price : null)) : []
   );
-
+  const { colors } = useTheme();
   const { width, height } = useWindowDimensions();
   const singleH = Math.min(520, Math.max(280, Math.floor(height * 0.55)));
   const multiH = Math.min(450, Math.max(300, Math.floor(height * 0.45)));
@@ -234,8 +234,22 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
           />
 
           {/* Image counter */}
-          <View className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-3 py-1.5 rounded-full border border-gray-400/30">
-            <Text className="text-white text-xs font-medium">{currentIndex + 1}/{imageUrls.length}</Text>
+          <View style={{
+            position: 'absolute',
+            top: 12,
+            right: 12,
+            backgroundColor: `${colors.background}B3`,
+            paddingHorizontal: 12,
+            paddingVertical: 6,
+            borderRadius: 999,
+            borderWidth: 1,
+            borderColor: `${colors.border}4D`
+          }}>
+            <Text style={{
+              color: colors.text,
+              fontSize: 12,
+              fontWeight: '500'
+            }}>{currentIndex + 1}/{imageUrls.length}</Text>
           </View>
 
           {/* Custom pagination dots */}
