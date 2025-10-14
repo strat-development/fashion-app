@@ -7,7 +7,7 @@ import { useRouter } from 'expo-router';
 import { Trophy, User2 } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Image, Pressable, Text, View } from 'react-native';
+import { FlatList, Image, Platform, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RankingScreen() {
@@ -36,8 +36,12 @@ export default function RankingScreen() {
 
   return (
     <ThemedView style={{ flex: 1, backgroundColor: colors.background }}>
-      <SafeAreaView style={{ flex: 1, marginTop: -32 }}>
-        <View style={{ paddingHorizontal: 16, paddingBottom: 16 }}>
+      <SafeAreaView style={{ flex: 1, marginTop: 0 }}>
+        <View style={{
+          paddingHorizontal: 16,
+          paddingBottom: 16,
+          paddingTop: Platform.select({ web: 32, default: 0 })
+        }}>
           <Text style={{ color: colors.text, fontSize: 24, fontWeight: '700' }}>{t('rankingScreen.title')}</Text>
           <Text style={{ color: colors.textSecondary, marginTop: 4 }}>{t('rankingScreen.subtitle')}</Text>
         </View>
