@@ -1,4 +1,4 @@
-<h1>🎉 "Versa" Fashion Inspiration App - <a href="https://versa-landing-two.vercel.app/" target="_blank">Landing Page 🌐</a></h1>
+<h1>🎉 "Versa" Fashion Inspiration App - <a href="https://versa-style.vercel.app/" target="_blank">Landing Page 🌐</a></h1>
 
 <p>An application created to discover new styles in seconds </p>
 
