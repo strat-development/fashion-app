@@ -1,21 +1,13 @@
-import OutfitInteractionButtons from '@/components/outfit-detail/OutfitInteractionButtons';
-import CommentSection from '@/components/outfits/CommentSection';
 import { ThemedView } from '@/components/ThemedView';
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
-import { useFetchUser } from '@/fetchers/fetchUser';
 import { CreatorRankItem, getTopCreators, getTopOutfits, OutfitRankItem } from '@/fetchers/ranking';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { useQuery } from '@tanstack/react-query';
-import { useSharedValue } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
-import OutfitDetailImages from '@/components/outfit-detail/OutfitDetailImages';
-import OutfitDetailInfo from '@/components/outfit-detail/OutfitDetailInfo';
-import OutfitDetailSections from '@/components/outfit-detail/OutfitDetailSections';
-import { OutfitData } from '@/components/outfits/OutfitCard';
 import { Trophy, User2 } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Image, Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { FlatList, Image, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RankingScreen() {
@@ -44,8 +36,8 @@ export default function RankingScreen() {
 
   return (
     <ThemedView style={{ flex: 1, backgroundColor: colors.background }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ paddingHorizontal: 16, paddingTop: 24, paddingBottom: 12 }}>
+      <SafeAreaView style={{ flex: 1, marginTop: -32 }}>
+        <View style={{ paddingHorizontal: 16, paddingBottom: 16 }}>
           <Text style={{ color: colors.text, fontSize: 24, fontWeight: '700' }}>{t('rankingScreen.title')}</Text>
           <Text style={{ color: colors.textSecondary, marginTop: 4 }}>{t('rankingScreen.subtitle')}</Text>
         </View>

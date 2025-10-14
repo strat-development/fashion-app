@@ -24,6 +24,8 @@ interface ThemeContextType {
     borderVariant: string;
     accent: string;
     accentSecondary: string;
+    onAccent: string;
+    onSurface: string;
     success: string;
     warning: string;
     error: string;
@@ -46,6 +48,8 @@ const lightColors = {
   borderVariant: '#cbd5e1',
   accent: '#2563EB',
   accentSecondary: '#db2777',
+  onAccent: '#ffffff',
+  onSurface: '#0f172a',
   success: '#059669',
   warning: '#d97706',
   error: '#dc2626',
@@ -67,6 +71,8 @@ const darkColors = {
   borderVariant: '#374151',
   accent: '#7e22ce',
   accentSecondary: '#db2777',
+  onAccent: '#ffffff',
+  onSurface: '#ffffff',
   success: '#10b981',
   warning: '#f59e0b',
   error: '#ef4444',
