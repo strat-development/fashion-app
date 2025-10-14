@@ -1,12 +1,11 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectInput, SelectItem, SelectPortal, SelectTrigger } from '@/components/ui/select';
 import { Currencies, OutfitColors, OutfitElements, OutfitFit, OutfitGender, OutfitStylesTags } from '@/consts/chatFilterConsts';
 import { useTheme } from '@/providers/themeContext';
 import { BlurView } from 'expo-blur';
 import { ChevronDown, ChevronUp, DollarSign, Layers, Palette, Ruler, Tags, User } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Modal, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 type FiltersOverlayProps = {
@@ -35,6 +34,13 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
   const { visible, onClose, t } = props;
   const { colors, isDark } = useTheme();
   const [swallowNextTap, setSwallowNextTap] = useState(false);
+  const [openGender, setOpenGender] = useState(false);
+  const [openStyles, setOpenStyles] = useState(false);
+  const [openFit, setOpenFit] = useState(false);
+  const [openColors, setOpenColors] = useState(false);
+  const [openElements, setOpenElements] = useState(false);
+  const [openPrice, setOpenPrice] = useState(false);
+  const insets = useSafeAreaInsets();
   const swallow = () => {
     setSwallowNextTap(true);
     setTimeout(() => setSwallowNextTap(false), 180);
@@ -45,31 +51,28 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
       visible={visible}
       transparent
       animationType="fade"
-      statusBarTranslucent
+      statusBarTranslucent={Platform.OS === 'android'}
+      presentationStyle="overFullScreen"
       onRequestClose={onClose}
     >
-      <View className='flex-1 z-30 items-center'>
+      <View className='flex-1 z-30 items-center' style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
         <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
         {swallowNextTap && (
           <Pressable style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} onPress={() => setSwallowNextTap(false)} />
         )}
         <SafeAreaView style={{ flex: 1, width: '100%' }} edges={['top', 'bottom']}>
           <View className='w-[95vw] mt-4 mb-4 flex-1'>
-            <ScrollView className='flex-1' contentContainerStyle={{ paddingBottom: 16 }} showsVerticalScrollIndicator={false}>
-            <Accordion variant='filled' type='multiple' className='w-full bg-transparent'>
-              <AccordionItem className='w-full' value='gender'>
-                <AccordionTrigger>
-                  {({ isExpanded }: { isExpanded: boolean }) => (
-                    <>
-                      <View className='flex-row items-center gap-2'>
-                        <User size={16} color={colors.text} />
-                        <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectGender')}</Text>
-                      </View>
-                      {isExpanded ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
-                    </>
-                  )}
-                </AccordionTrigger>
-                <AccordionContent>
+            <ScrollView className='flex-1' contentContainerStyle={{ paddingBottom: 16 + insets.bottom, paddingTop: 0 }} showsVerticalScrollIndicator={false}>
+            <View className='w-full bg-transparent'>
+              <Pressable onPress={() => setOpenGender((v) => !v)} className='w-full flex-row justify-between items-center py-3 px-4'>
+                <View className='flex-row items-center gap-2'>
+                  <User size={16} color={colors.text} />
+                  <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectGender')}</Text>
+                </View>
+                {openGender ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
+              </Pressable>
+              {openGender && (
+                <View style={{ paddingTop: 4, paddingBottom: 12, paddingHorizontal: 16 }}>
                   <View className='flex-row flex-wrap gap-2'>
                     {OutfitGender.map((gender) => {
                       const selected = props.outfitGender.includes(gender.name);
@@ -91,21 +94,18 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
                       );
                     })}
                   </View>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value='styles'>
-                <AccordionTrigger>
-                  {({ isExpanded }: { isExpanded: boolean }) => (
-                    <>
-                      <View className='flex-row items-center gap-2'>
-                        <Tags size={16} color={colors.text} />
-                        <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectOutfitStyles')}</Text>
-                      </View>
-                      {isExpanded ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
-                    </>
-                  )}
-                </AccordionTrigger>
-                <AccordionContent>
+                </View>
+              )}
+
+              <Pressable onPress={() => setOpenStyles((v) => !v)} className='w-full flex-row justify-between items-center py-3 px-4'>
+                <View className='flex-row items-center gap-2'>
+                  <Tags size={16} color={colors.text} />
+                  <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectOutfitStyles')}</Text>
+                </View>
+                {openStyles ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
+              </Pressable>
+              {openStyles && (
+                <View style={{ paddingTop: 4, paddingBottom: 12, paddingHorizontal: 16 }}>
                   <View className='flex-row flex-wrap gap-2'>
                     {OutfitStylesTags.map((tag) => {
                       const selected = props.outfitTag.includes(tag.name);
@@ -127,21 +127,18 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
                       );
                     })}
                   </View>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value='fit'>
-                <AccordionTrigger>
-                  {({ isExpanded }: { isExpanded: boolean }) => (
-                    <>
-                      <View className='flex-row items-center gap-2'>
-                        <Ruler size={16} color={colors.text} />
-                        <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectFit')}</Text>
-                      </View>
-                      {isExpanded ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
-                    </>
-                  )}
-                </AccordionTrigger>
-                <AccordionContent>
+                </View>
+              )}
+
+              <Pressable onPress={() => setOpenFit((v) => !v)} className='w-full flex-row justify-between items-center py-3 px-4'>
+                <View className='flex-row items-center gap-2'>
+                  <Ruler size={16} color={colors.text} />
+                  <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectFit')}</Text>
+                </View>
+                {openFit ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
+              </Pressable>
+              {openFit && (
+                <View style={{ paddingTop: 4, paddingBottom: 12, paddingHorizontal: 16 }}>
                   <View className='flex-row flex-wrap gap-2'>
                     {OutfitFit.map((fit) => {
                       const selected = props.outfitFit.includes(fit.name);
@@ -163,21 +160,18 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
                       );
                     })}
                   </View>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value='colors'>
-                <AccordionTrigger>
-                  {({ isExpanded }: { isExpanded: boolean }) => (
-                    <>
-                      <View className='flex-row items-center gap-2'>
-                        <Palette size={16} color={colors.text} />
-                        <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectDominantColors')}</Text>
-                      </View>
-                      {isExpanded ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
-                    </>
-                  )}
-                </AccordionTrigger>
-                <AccordionContent>
+                </View>
+              )}
+
+              <Pressable onPress={() => setOpenColors((v) => !v)} className='w-full flex-row justify-between items-center py-3 px-4'>
+                <View className='flex-row items-center gap-2'>
+                  <Palette size={16} color={colors.text} />
+                  <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectDominantColors')}</Text>
+                </View>
+                {openColors ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
+              </Pressable>
+              {openColors && (
+                <View style={{ paddingTop: 4, paddingBottom: 12, paddingHorizontal: 16 }}>
                   <View className='flex-row flex-wrap gap-2'>
                     {OutfitColors.map((color) => {
                       const selected = props.outfitColor.includes(color.name);
@@ -203,21 +197,18 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
                       );
                     })}
                   </View>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value='elements'>
-                <AccordionTrigger>
-                  {({ isExpanded }: { isExpanded: boolean }) => (
-                    <>
-                      <View className='flex-row items-center gap-2'>
-                        <Layers size={16} color={colors.text} />
-                        <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectOutfitElements')}</Text>
-                      </View>
-                      {isExpanded ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
-                    </>
-                  )}
-                </AccordionTrigger>
-                <AccordionContent>
+                </View>
+              )}
+
+              <Pressable onPress={() => setOpenElements((v) => !v)} className='w-full flex-row justify-between items-center py-3 px-4'>
+                <View className='flex-row items-center gap-2'>
+                  <Layers size={16} color={colors.text} />
+                  <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectOutfitElements')}</Text>
+                </View>
+                {openElements ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
+              </Pressable>
+              {openElements && (
+                <View style={{ paddingTop: 4, paddingBottom: 12, paddingHorizontal: 16 }}>
                   <View className='flex-row flex-wrap gap-2'>
                     {OutfitElements.map((element) => {
                       const selected = props.outfitElement.includes(element.name);
@@ -239,21 +230,18 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
                       );
                     })}
                   </View>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value='price-range'>
-                <AccordionTrigger>
-                  {({ isExpanded }: { isExpanded: boolean }) => (
-                    <>
-                      <View className='flex-row items-center gap-2'>
-                        <DollarSign size={16} color={colors.text} />
-                        <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectPriceRange')}</Text>
-                      </View>
-                      {isExpanded ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
-                    </>
-                  )}
-                </AccordionTrigger>
-                <AccordionContent className='flex flex-col items-start gap-2'>
+                </View>
+              )}
+
+              <Pressable onPress={() => setOpenPrice((v) => !v)} className='w-full flex-row justify-between items-center py-3 px-4'>
+                <View className='flex-row items-center gap-2'>
+                  <DollarSign size={16} color={colors.text} />
+                  <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600' }}>{t('chatSection.selectPriceRange')}</Text>
+                </View>
+                {openPrice ? <ChevronDown size={24} color={colors.text} /> : <ChevronUp size={24} color={colors.text} />}
+              </Pressable>
+              {openPrice && (
+                <View style={{ paddingTop: 4, paddingBottom: 12, paddingHorizontal: 16 }}>
                   <View className='flex-row items-center gap-3 w-full'>
                     <View className='flex-1'>
                       <Text style={{ color: colors.textSecondary, fontSize: 12, marginBottom: 4 }}>{t('chatSection.from')}</Text>
@@ -295,12 +283,12 @@ export const FiltersOverlay = (props: FiltersOverlayProps) => {
                       </SelectContent>
                     </SelectPortal>
                   </Select>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+                </View>
+              )}
+            </View>
             </ScrollView>
           </View>
-          <View className='w-[95vw] mb-4'>
+          <View className='w-[95vw] mb-4' style={{ paddingBottom: Math.max(insets.bottom - 8, 0) }}>
             <View className='rounded-xl p-3 items-center' style={{ backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 }}>
               <Text style={{ color: colors.text, fontSize: 14 }} onPress={onClose}>Close</Text>
             </View>

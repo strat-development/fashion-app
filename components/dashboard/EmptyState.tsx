@@ -30,7 +30,8 @@ export const EmptyState = ({
       <Text style={{ 
         color: colors.textSecondary, 
         fontSize: 16, 
-        marginTop: 16 
+        marginTop: 16,
+        width: '80%'
       }}>{title}</Text>
       <Text style={{ 
         color: colors.textMuted, 
