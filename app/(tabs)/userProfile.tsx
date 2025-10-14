@@ -7,13 +7,12 @@ import { PendingRequestsModal } from '@/components/modals/PendingRequestsModal';
 import { ProfileEdit } from '@/components/modals/ProfileEditModal';
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
 import { NotificationBell } from '@/components/ui/NotificationBell';
-import { useFetchPendingFollowersDetailed } from '@/fetchers/fetchIsFollowed';
+import { useFetchIsFollowed, useFetchPendingFollowersDetailed } from '@/fetchers/fetchIsFollowed';
 import { useFetchUser } from '@/fetchers/fetchUser';
 import { useAcceptFollowerMutation } from '@/mutations/AcceptFollower';
 import { useUnFollowUserMutation } from '@/mutations/UnfollowUserMutation';
 import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
-import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
@@ -37,6 +36,9 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
   const { data: pendingFollowers = [], refetch: refetchPending } = useFetchPendingFollowersDetailed(profileId);
   const { mutate: acceptFollower } = useAcceptFollowerMutation();
   const { mutate: declineFollower } = useUnFollowUserMutation();
+  const { userId: viewerId } = useUserContext();
+  const { data: followStatus } = useFetchIsFollowed(viewerId || '', profileId || '');
+  const isFollowed = followStatus?.isFollowed || false;
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -46,11 +48,10 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
   if (isLoading || !userData) {
     return <FullScreenLoader message={t('userProfile.loading')} />;
   }
-  const router = useRouter();
 
   const { full_name, bio, user_avatar, email, socials, user_id, is_public } = userData;
 
-  if (!isOwnProfile && is_public === false) {
+  if (!isOwnProfile && is_public === false && !isFollowed) {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: colors.background }}>
         <View style={{ paddingTop: 32, paddingBottom: 80 }}>
