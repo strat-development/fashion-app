@@ -100,5 +100,8 @@
     "jscodeshift": "^0.15.2",
     "typescript": "~5.9.2"
   },
+  "overrides": {
+    "tmp": "^0.2.4"
+  },
   "private": true
 }
