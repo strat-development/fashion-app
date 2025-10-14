@@ -18,8 +18,8 @@ export default function OutfitDetailHeader() {
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 16,
-        paddingTop: insets.top,
-        paddingBottom: 16,
+        paddingTop: 16,
+        marginBottom: 16,
       }}
     >
       <Pressable

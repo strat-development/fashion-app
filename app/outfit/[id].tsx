@@ -20,7 +20,7 @@ import { Database } from "@/types/supabase";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
+import { Pressable, SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
 import { useSharedValue, withSequence, withSpring } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -73,20 +73,15 @@ function OutfitDetailContent() {
 
   const { mutate: saveOutfit } = useSaveOutfitMutation();
   const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
-
-  // Check if outfit is saved
   const isSaved = useMemo(() => {
     return savedOutfits?.some(saved => saved.outfit_id === id) || false;
   }, [savedOutfits, id]);
-
-  // Animation values
   const likeScale = useSharedValue(1);
   const dislikeScale = useSharedValue(1);
   const shareScale = useSharedValue(1);
   const commentScale = useSharedValue(1);
   const saveScale = useSharedValue(1);
 
-  // Fetch outfit data
   useEffect(() => {
     const fetchOutfit = async () => {
       if (!id) return;
@@ -222,7 +217,7 @@ function OutfitDetailContent() {
   return (
     <>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={colors.background} />
-      <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
         <ScrollView 
           style={{ flex: 1 }}
           contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
@@ -267,7 +262,7 @@ function OutfitDetailContent() {
             saveScale={saveScale}
           />
         </ScrollView>
-      </View>
+      </SafeAreaView>
 
       {/* Comments Modal */}
       <CommentSection

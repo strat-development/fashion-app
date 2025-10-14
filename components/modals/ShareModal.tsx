@@ -2,27 +2,27 @@ import { useTheme } from '@/providers/themeContext';
 import { OutfitData } from '@/types/createOutfitTypes';
 import { BlurView } from 'expo-blur';
 import {
-    Camera,
-    Copy,
-    Facebook,
-    Mail,
-    MessageCircle,
-    MoreHorizontal,
-    Share as ShareIcon,
-    Twitter,
-    X,
+  Camera,
+  Copy,
+  Facebook,
+  Mail,
+  MessageCircle,
+  MoreHorizontal,
+  Share as ShareIcon,
+  Twitter,
+  X,
 } from 'lucide-react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-    Alert,
-    Clipboard,
-    Linking,
-    Modal,
-    Pressable,
-    Share,
-    Text,
-    View,
+  Alert,
+  Clipboard,
+  Linking,
+  Modal,
+  Pressable,
+  Share,
+  Text,
+  View,
 } from 'react-native';
 
 interface ShareModalProps {
@@ -59,17 +59,17 @@ export const ShareModal = ({
         onClose();
       }
     } catch {
-      Alert.alert(t('shareModal.alerts.shareError.title'), t('shareModal.alerts.shareError.message'));
+      Alert.alert(t('shareModal.alerts.shareError'), t('shareModal.alerts.shareError'));
     }
   };
 
   const handleCopyLink = async () => {
     try {
       await Clipboard.setString(shareUrl);
-      Alert.alert(t('shareModal.alerts.copySuccess.title'), t('shareModal.alerts.copySuccess.message'));
+      Alert.alert(t('shareModal.alerts.copySuccess'), t('shareModal.alerts.copySuccess'));
       onClose();
     } catch {
-      Alert.alert(t('shareModal.alerts.copyError.title'), t('shareModal.alerts.copyError.message'));
+      Alert.alert(t('shareModal.alerts.copyError'), t('shareModal.alerts.copyError'));
     }
   };
 
@@ -87,7 +87,7 @@ export const ShareModal = ({
         break;
       case 'instagram':
         await handleCopyLink();
-        Alert.alert(t('shareModal.alerts.instagramShare.title'), t('shareModal.alerts.instagramShare.message'));
+        Alert.alert(t('shareModal.alerts.instagramShare'), t('shareModal.alerts.instagramShare'));
         return;
       case 'email':
         url = `mailto:?subject=${encodeURIComponent(outfit.outfit_name || t('shareModal.untitledOutfit'))}&body=${encodeURIComponent(fullShareText)}`;
@@ -103,10 +103,10 @@ export const ShareModal = ({
         await Linking.openURL(url);
         onClose();
       } else {
-        Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform));
+        Alert.alert(t('shareModal.alerts.platformError'), t('shareModal.alerts.platformError' + platform));
       }
     } catch {
-      Alert.alert(t('shareModal.alerts.platformError.title'), t('shareModal.alerts.platformError.message' + platform));
+      Alert.alert(t('shareModal.alerts.platformError'), t('shareModal.alerts.platformError' + platform));
     }
   };
 
