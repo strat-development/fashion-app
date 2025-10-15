@@ -26,8 +26,8 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
   );
   const { colors } = useTheme();
   const { width, height } = useWindowDimensions();
-  const singleH = Math.min(520, Math.max(280, Math.floor(height * 0.55)));
-  const multiH = Math.min(450, Math.max(300, Math.floor(height * 0.45)));
+  const singleH = Math.min(520, Math.max(280, Math.floor(height * 0.5)));
+  const multiH = Math.min(420, Math.max(260, Math.floor(height * 0.4)));
   const cardW = width - 32;
 
   useEffect(() => {
@@ -112,43 +112,54 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
     };
 
     return (
-      <View style={{ width: cardW, alignItems: 'center' }}>
-        <View className="relative">
+      <View style={{ width: cardW, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.18,
+          shadowRadius: 8,
+          elevation: 6,
+          backgroundColor: colors.surface,
+          borderRadius: 24,
+          marginVertical: 8,
+        }}>
           <Image
             source={{ uri: item }}
-            className="rounded-2xl"
-            style={{ width: cardW - 8, height: multiH }}
+            style={{ width: cardW - 8, height: multiH, borderRadius: 24 }}
             resizeMode="cover"
           />
 
           {/* Element Info Overlay */}
           {elementData && (
-            <View className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent rounded-b-2xl p-4">
-              <View className="flex-row items-center justify-between">
-                <View className="flex-1 mr-3">
-                  <View className="flex-row items-center mb-1">
-                    <Shirt size={14} color="#9CA3AF" />
-                    <Text className="text-white font-semibold text-sm ml-2">
-                      {elementData.type}
-                    </Text>
+            <View style={{
+              position: 'absolute',
+              left: 0, right: 0, bottom: 0,
+              borderBottomLeftRadius: 24,
+              borderBottomRightRadius: 24,
+              padding: 16,
+              backgroundColor: 'rgba(0,0,0,0.60)',
+            }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <View style={{ flex: 1, marginRight: 12 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+                    <Shirt size={16} color="#9CA3AF" />
+                    <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 15, marginLeft: 8 }}>{elementData.type}</Text>
                   </View>
-
                   {convertedPrice !== null && (
-                    <View className="flex-row items-center">
-                      <Text className="text-green-400 font-medium text-sm ml-1">
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Text style={{ color: '#4ade80', fontWeight: '600', fontSize: 15, marginLeft: 4 }}>
                         {displaySymbol}{convertedPrice.toFixed(2)}
                       </Text>
                     </View>
                   )}
                 </View>
-
                 {elementData.siteUrl && (
                   <Pressable
                     onPress={handleSitePress}
-                    style={{ borderRadius: 999, overflow: 'hidden' }}
+                    style={{ borderRadius: 999, overflow: 'hidden', marginLeft: 8 }}
                   >
-                    <ThemedGradient style={{ padding: 10, borderRadius: 999 }}>
-                      <ExternalLink size={16} color="#FFFFFF" />
+                    <ThemedGradient style={{ padding: 12, borderRadius: 999 }}>
+                      <ExternalLink size={18} color="#FFFFFF" />
                     </ThemedGradient>
                   </Pressable>
                 )}
@@ -161,37 +172,48 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
   };
 
   return (
-    <View className="mb-6">
+    <View style={{ marginBottom: 28 }}>
       {imageUrls.length === 1 ? (
-        <View className="relative">
+        <View style={{
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.18,
+          shadowRadius: 8,
+          elevation: 6,
+          backgroundColor: colors.surface,
+          borderRadius: 24,
+          marginVertical: 8,
+        }}>
           <Image
             source={{ uri: imageUrls[0] }}
-            className="w-full rounded-2xl"
-            style={{ height: singleH }}
+            style={{ width: '100%', height: singleH, borderRadius: 24 }}
             resizeMode="cover"
           />
 
           {/* Single Image Element Info Overlay */}
           {elementsData?.[0] && (
-            <View className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent rounded-b-2xl p-4">
-              <View className="flex-row items-center justify-between">
-                <View className="flex-1 mr-3">
-                  <View className="flex-row items-center mb-1">
-                    <Tag size={16} color="#9CA3AF" />
-                    <Text className="text-white font-semibold text-lg ml-2">
-                      {elementsData[0].type}
-                    </Text>
+            <View style={{
+              position: 'absolute',
+              left: 0, right: 0, bottom: 0,
+              borderBottomLeftRadius: 24,
+              borderBottomRightRadius: 24,
+              padding: 18,
+              backgroundColor: 'rgba(0,0,0,0.60)',
+            }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <View style={{ flex: 1, marginRight: 12 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+                    <Tag size={18} color="#9CA3AF" />
+                    <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 17, marginLeft: 8 }}>{elementsData[0].type}</Text>
                   </View>
-
                   {convertedPrices[0] !== null && (
-                    <View className="flex-row items-center">
-                      <Text className="text-green-400 font-medium text-lg ml-1">
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Text style={{ color: '#4ade80', fontWeight: '600', fontSize: 17, marginLeft: 4 }}>
                         {displaySymbol}{convertedPrices[0].toFixed(2)}
                       </Text>
                     </View>
                   )}
                 </View>
-
                 {elementsData[0].siteUrl && (
                   <Pressable
                     onPress={() => {
@@ -199,10 +221,10 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
                         console.error('Failed to open URL:', err)
                       );
                     }}
-                    style={{ borderRadius: 999, overflow: 'hidden' }}
+                    style={{ borderRadius: 999, overflow: 'hidden', marginLeft: 8 }}
                   >
-                    <ThemedGradient style={{ padding: 12, borderRadius: 999 }}>
-                      <ExternalLink size={18} color="#FFFFFF" />
+                    <ThemedGradient style={{ padding: 14, borderRadius: 999 }}>
+                      <ExternalLink size={20} color="#FFFFFF" />
                     </ThemedGradient>
                   </Pressable>
                 )}
@@ -211,7 +233,7 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
           )}
         </View>
       ) : (
-        <View className="relative">
+        <View style={{ position: 'relative', alignItems: 'center' }}>
           <FlatList
             data={imageUrls}
             renderItem={renderCarouselItem}
@@ -229,36 +251,51 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
             }}
             style={{
               width: cardW,
-              overflow: 'hidden'
+              overflow: 'visible',
             }}
+            contentContainerStyle={{ alignItems: 'center' }}
           />
 
           {/* Image counter */}
           <View style={{
             position: 'absolute',
-            top: 12,
-            right: 12,
-            backgroundColor: `${colors.background}B3`,
-            paddingHorizontal: 12,
-            paddingVertical: 6,
+            top: 16,
+            right: 24,
+            backgroundColor: `${colors.background}CC`,
+            paddingHorizontal: 14,
+            paddingVertical: 7,
             borderRadius: 999,
             borderWidth: 1,
-            borderColor: `${colors.border}4D`
+            borderColor: `${colors.border}4D`,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.12,
+            shadowRadius: 4,
+            elevation: 2,
           }}>
             <Text style={{
               color: colors.text,
-              fontSize: 12,
-              fontWeight: '500'
+              fontSize: 13,
+              fontWeight: '600',
+              letterSpacing: 0.5,
             }}>{currentIndex + 1}/{imageUrls.length}</Text>
           </View>
 
           {/* Custom pagination dots */}
           {imageUrls.length <= 5 && (
-            <View className="flex-row justify-center mt-2">
+            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 14 }}>
               {imageUrls.map((_, index) => (
                 <View
                   key={index}
-                  className={`w-2 h-2 rounded-full mx-1 ${currentIndex === index ? 'bg-white' : 'bg-white/40'}`}
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 5,
+                    marginHorizontal: 4,
+                    backgroundColor: currentIndex === index ? '#fff' : 'rgba(255,255,255,0.4)',
+                    borderWidth: currentIndex === index ? 1 : 0,
+                    borderColor: currentIndex === index ? '#4ade80' : 'transparent',
+                  }}
                 />
               ))}
             </View>
