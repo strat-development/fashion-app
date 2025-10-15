@@ -8,8 +8,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function OutfitDetailHeader() {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <View
@@ -18,7 +18,7 @@ export default function OutfitDetailHeader() {
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 16,
-        paddingTop: 16,
+        paddingTop: insets.top,
         marginBottom: 16,
       }}
     >
