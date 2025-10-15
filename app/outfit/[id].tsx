@@ -22,7 +22,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { useSharedValue, withSequence, withSpring } from "react-native-reanimated";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type OutfitDetailData = Database["public"]["Tables"]["created-outfits"]["Row"] & {
   likes: number;
