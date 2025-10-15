@@ -26,4 +26,40 @@ export async function aiChatRequest(params: {
   }
 }
 
+export async function aiChatStream(params: {
+  systemPrompt: string;
+  history: Message[];
+  userText: string;
+  temperature?: number;
+  onDelta: (delta: string) => void;
+}) {
+  const apiUrl = buildApiUrl('/api/ai-chat-stream');
+  const res = await fetch(apiUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+  if (!res.ok || !res.body) return;
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const parts = buffer.split('\n\n');
+    buffer = parts.pop() || '';
+    for (const part of parts) {
+      if (!part.startsWith('data:')) continue;
+      const data = part.replace(/^data:\s*/, '').trim();
+      if (data === '[DONE]') continue;
+      try {
+        const json = JSON.parse(data);
+        const delta = json?.choices?.[0]?.delta?.content || '';
+        if (delta) params.onDelta(delta);
+      } catch {}
+    }
+  }
+}
+
 

@@ -2,7 +2,7 @@ import { AIChatFilters } from '@/components/outfit-constructor/AIChatFilters';
 import { ChatComposer } from '@/components/outfit-constructor/ChatComposer';
 import { ChatHeader } from '@/components/outfit-constructor/ChatHeader';
 import { ChatMessages } from '@/components/outfit-constructor/ChatMessages';
-import { aiChatRequest } from '@/fetchers/aiChat';
+import { aiChatStream } from '@/fetchers/aiChat';
 import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
@@ -127,9 +127,17 @@ export default function HomeScreen() {
     if (!userText || sending) return;
 
     setSending(true);
-    setIsStreaming(false);
+    setIsStreaming(true);
     setFiltersExpanded(false);
     setSearchQuery('');
+    setHighestPrice(0);
+    setLowestPrice(0);
+    setCurrency('USD');
+    setOutfitGender([]);
+    setOutfitTag([]);
+    setOutfitFit([]);
+    setOutfitColor([]);
+    setOutfitElement([]);
 
     const convId = await ensureConversation();
 
@@ -142,24 +150,26 @@ export default function HomeScreen() {
       const systemPrompt = buildSystemPrompt();
       const history = messages.map((m) => ({ role: m.role, content: m.content }));
 
-      const { content, error } = await aiChatRequest({
+      let assembled = '';
+      await aiChatStream({
         systemPrompt,
         history,
         userText,
         temperature: 0.7,
+        onDelta: (delta) => {
+          assembled += delta;
+          setMessages((prev) => {
+            const copy = [...prev];
+            const lastIndex = copy.length - 1;
+            if (lastIndex >= 0 && copy[lastIndex].role === 'assistant') {
+              copy[lastIndex] = { ...copy[lastIndex], content: assembled };
+            }
+            return copy;
+          });
+        },
       });
 
-      const finalText = content || (t('common.error') || 'Error generating response.');
-
-      setMessages((prev) => {
-        const copy = [...prev];
-        const lastIndex = copy.length - 1;
-        if (lastIndex >= 0 && copy[lastIndex].role === 'assistant') {
-          copy[lastIndex] = { ...copy[lastIndex], content: finalText };
-        }
-        return copy;
-      });
-
+      const finalText = assembled || (t('common.error') || 'Error generating response.');
       persistMessage(convId, 'assistant', finalText, new Date().toISOString());
     } catch {
       setMessages((prev) => {

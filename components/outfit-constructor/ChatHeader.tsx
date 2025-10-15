@@ -1,6 +1,7 @@
 import { fetchConversationMessages, fetchConversations } from '@/fetchers/fetchConversations';
 import { deleteConversationMutation } from '@/mutations/DeleteConversationMutation';
 import { useTheme } from '@/providers/themeContext';
+import { useUserContext } from '@/providers/userContext';
 import { BlurView } from 'expo-blur';
 import { MessageSquare, Plus, SlidersHorizontal } from 'lucide-react-native';
 import React from 'react';
@@ -21,9 +22,10 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
   const { colors, isDark } = useTheme();
   const [showOverlay, setShowOverlay] = React.useState(false);
   const [list, setList] = React.useState<{ id: string; title: string; created_at: string }[]>([]);
+  const { userId } = useUserContext();
 
   async function handleShowConversations() {
-    const data = await fetchConversations();
+    const data = await fetchConversations(userId || '');
     const sanitized = (data || []).map((c: any) => ({ id: c.id, title: c.title || '', created_at: c.created_at || '' }));
     setList(sanitized);
     setShowOverlay(true);
@@ -53,7 +55,7 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
     setConversationId(null);
     setSelectedConversationTitle(undefined);
     setMessages([]);
-    const data = await fetchConversations();
+    const data = await fetchConversations(userId || '');
     const sanitized = (data || []).map((c: any) => ({ id: c.id, title: c.title || '', created_at: c.created_at || '' }));
     setList(sanitized);
   }
@@ -195,7 +197,7 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
                       try {
                         await deleteConversationMutation({ supabase: (require('@/lib/supabase').supabase as any), conversationId: c.id });
                       } catch { }
-                      const refreshed = await fetchConversations();
+                      const refreshed = await fetchConversations(userId || '');
                       const sanitized = (refreshed || []).map((cc: any) => ({ id: cc.id, title: cc.title || '', created_at: cc.created_at || '' }));
                       setList(sanitized);
                       if (conversationId === c.id) {
