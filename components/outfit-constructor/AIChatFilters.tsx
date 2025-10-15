@@ -110,13 +110,13 @@ export const AIChatFilters = ({
       filterKey: 'fit',
     },
     {
-      title: t('chatSection.selectColors'),
+      title: t('chatSection.selectDominantColors'),
       items: OutfitColors,
       filterKey: 'colors',
       isColor: true,
     },
     {
-      title: t('chatSection.selectElements'),
+      title: t('chatSection.selectOutfitElements'),
       items: OutfitElements,
       filterKey: 'elements',
     },
@@ -131,13 +131,13 @@ export const AIChatFilters = ({
   }), [outfitGender, outfitTag, outfitFit, outfitColor, outfitElement]);
 
   const customFilterContent = (
-    <View style={{ marginBottom: 24 }}>
+    <View style={{ marginBottom: 96 }}>
       <Text style={{
         color: colors.text,
         fontSize: 16,
         fontWeight: '600',
         marginBottom: 12
-      }}>{t('chatSection.priceRange')}</Text>
+      }}>{t('chatSection.selectPriceRange')}</Text>
       
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 }}>
         <View style={{ flex: 1 }}>

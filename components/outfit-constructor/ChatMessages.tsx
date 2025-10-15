@@ -154,7 +154,7 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
   return (
     <ScrollView
       ref={scrollRef}
-      className='flex-1 px-4 py-2 mb-16'
+      className='flex-1 px-4 py-2 mb-24'
       contentContainerStyle={{ paddingBottom: 10 }}
       showsVerticalScrollIndicator={false}
     >
@@ -175,7 +175,6 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
         const cleanContent = getCleanAssistantText(m.content);
         const imageQueries = m.role === 'assistant' ? extractImageDescriptions(m.content) : [];
 
-        // Skip rendering empty assistant bubbles
         if (m.role === 'assistant' && !cleanContent.trim() && imageQueries.length === 0) {
           return null;
         }
@@ -183,7 +182,7 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
         return (
           <View key={m.id} className={`mb-6 ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
             <View className={`max-w-[85%] ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
-              {/* Avatar */}
+             
               <View className={`flex-row items-center mb-2 ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                 <View className={`w-8 h-8 rounded-full ${m.role === 'user' ? '' : ''} items-center justify-center`} style={{ backgroundColor: m.role === 'user' ? colors.accent : colors.secondary }}>
                   <Text className='text-sm font-bold' style={{ color: colors.white }}>
@@ -195,7 +194,6 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
                 </Text>
               </View>
 
-              {/* Message Content */}
               <View className='backdrop-blur-sm px-4 py-3 rounded-2xl' style={{
                 backgroundColor: m.role === 'user' ? colors.accent + '26' : colors.surfaceVariant,
                 borderColor: m.role === 'user' ? colors.accent + '4D' : colors.border,
@@ -212,16 +210,15 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
                       />
                     ) : (
                       <View>
-                        {/* Headings */}
                         <Text className='text-base font-semibold mb-2' style={{ color: colors.text }}>
                           {(() => {
                             const firstLine = getCleanAssistantText(cleanContent).split('\n')[0] || '';
                             return firstLine.length < 120 ? firstLine : 'Recommendation';
                           })()}
                         </Text>
-                        {/* Body with clickable links */}
+                        
                         <LinkText text={getCleanAssistantText(cleanContent)} links={extractLinks(getCleanAssistantText(cleanContent))} />
-                        {/* Bullet spacing (simple visual gap) */}
+
                         <View className='mt-2' />
                       </View>
                     )}
@@ -231,7 +228,6 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
                 )}
               </View>
 
-              {/* Web image gallery (no generation) */}
               {m.role === 'assistant' && imageQueries.length > 0 && (
                 <View className='mt-3 flex-row flex-wrap gap-3'>
                   {imageQueries.map((q, idx) => (

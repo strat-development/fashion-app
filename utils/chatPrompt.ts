@@ -105,8 +105,7 @@ export function generateUserLikePrompt({
     lines.push(`- ${t('chatSection.selectPriceRange')}: ${low}-${high} ${currency}`);
   }
 
-  const prefix = t('chatSection.promptPrefix') || 'I want you to help me with creating an outfit by following criteria:';
-  return `${prefix}\n${lines.join('\n')}`.trim();
+  return lines.join('\n').trim();
 }
 
 
