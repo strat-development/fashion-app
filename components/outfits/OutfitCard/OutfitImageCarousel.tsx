@@ -84,7 +84,7 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
       }}>
         <Text style={{
         }}>
-          <ThemedText type="defaultSemiBold" style={{ fontSize: 12 }}>
+          <ThemedText type="defaultSemiBold" style={{ fontSize: 12, color: colors.text }}>
             {currentIndex + 1}/{imageUrls.length}
           </ThemedText>
         </Text>

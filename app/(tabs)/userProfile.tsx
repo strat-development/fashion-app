@@ -33,7 +33,7 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
 
   const { colors } = useTheme();
   const { data: userData, isLoading } = useFetchUser(profileId);
-  const { data: pendingFollowers = [], refetch: refetchPending } = useFetchPendingFollowersDetailed(profileId);
+  const { data: pendingFollowers = [] } = useFetchPendingFollowersDetailed(profileId);
   const { mutate: acceptFollower } = useAcceptFollowerMutation();
   const { mutate: declineFollower } = useUnFollowUserMutation();
   const { userId: viewerId } = useUserContext();
