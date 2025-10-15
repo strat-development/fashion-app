@@ -20,9 +20,9 @@ import { Database } from "@/types/supabase";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { Pressable, SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
+import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { useSharedValue, withSequence, withSpring } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 type OutfitDetailData = Database["public"]["Tables"]["created-outfits"]["Row"] & {
   likes: number;
