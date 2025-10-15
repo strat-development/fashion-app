@@ -16,38 +16,42 @@ export const TypingEffect = ({ text, speed = 30, onComplete, style, isStreaming 
   const animationRef = useRef<NodeJS.Timeout | null>(null);
   const lastTextRef = useRef(text);
   const hasStreamedOnceRef = useRef(false);
-  const prevStreamingRef = useRef(isStreaming); 
+  const prevStreamingRef = useRef(isStreaming);
 
   useEffect(() => {
     if (isStreaming) {
       hasStreamedOnceRef.current = true;
+      prevStreamingRef.current = true;
+
       if (text !== displayedText) {
         setDisplayedText(text);
         setCurrentIndex(text.length);
       }
+
       setIsAnimating(false);
       
       return;
     }
 
-    if (prevStreamingRef.current && !isStreaming && text && text.length > 0) {
+    if (prevStreamingRef.current && !isStreaming) {
+      prevStreamingRef.current = false;
       lastTextRef.current = text;
+
       setIsAnimating(true);
       setDisplayedText('');
       setCurrentIndex(0);
-      prevStreamingRef.current = isStreaming;
+      
       return;
     }
 
-    prevStreamingRef.current = isStreaming;
-
     if (text !== lastTextRef.current && text.length > 0) {
       lastTextRef.current = text;
+
       setIsAnimating(true);
       setDisplayedText('');
       setCurrentIndex(0);
     }
-  }, [text, isStreaming]);
+  }, [text, isStreaming, displayedText]);
 
   useEffect(() => {
     if (isAnimating && currentIndex < text.length) {
