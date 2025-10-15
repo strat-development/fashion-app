@@ -216,8 +216,8 @@ function OutfitDetailContent() {
 
   return (
     <>
-      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={colors.background} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
+        <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={colors.background} translucent={false} />
         <ScrollView 
           style={{ flex: 1 }}
           contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
@@ -261,7 +261,7 @@ function OutfitDetailContent() {
             saveScale={saveScale}
           />
         </ScrollView>
-      </SafeAreaView>
+      </View>
 
       <CommentSection
         isVisible={showComments}
