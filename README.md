@@ -1,50 +1,92 @@
-# Welcome to your Expo app 👋
+<h1>🎉 "Versa" Fashion Inspiration App - <a href="https://versa-style.vercel.app/" target="_blank">Landing Page 🌐</a></h1>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<p>An application created to discover new styles in seconds </p>
 
-## Get started
 
-1. Install dependencies
 
-   ```bash
-   npm install
-   ```
+<img width="3840" height="2160" alt="Versa-portfolio" src="https://github.com/user-attachments/assets/96b75a87-3e47-430c-b3b4-18ed936e53e2" />
 
-2. Start the app
+<img width="3840" height="2160" alt="Github-dark-mode" src="https://github.com/user-attachments/assets/39aa8923-ec9b-4a71-9914-035a4b95a8a3" />
 
-   ```bash
-   npx expo start
-   ```
 
-In the output, you'll find options to open the app in a
+<hr />
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+<h2>✨ Features</h2>
+<ul>
+  <li> 📡 <b>Live Feed</b> - Discover new fashion trends in real-time. </li>
+  
+  ![Versa-feed](https://github.com/user-attachments/assets/95ddaabc-dc78-4e0d-8c37-65ba9365bab6?raw=true)
 
-## Get a fresh project
+  <li> 🤖 <b>AI Style Assistant</b> - Design unique outfits quickly with AI guidance. </li>
 
-When you're ready, run:
+![Versa-chat](https://github.com/user-attachments/assets/a6fdd64d-1bc9-45a1-86d1-e46ee2f09399?raw=true)
 
-```bash
-npm run reset-project
-```
+  
+  <li> 💸 <b>Auto currency conversion</b> - Browse effortlessly with prices automatically converted to your currency.</li>
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+![Versa-currencies](https://github.com/user-attachments/assets/e5d1e776-3cb1-4c42-b5ff-283ee1bae219?raw=true)
 
-## Learn more
+  
+  <li> ✂️ <b>Outfit creator</b> - Craft and share your own fashion styles with ease. </li>
 
-To learn more about developing your project with Expo, look at the following resources:
+![Versa-creator](https://github.com/user-attachments/assets/e5f2118a-7b50-46be-91eb-cbf0e4f3fc34?raw=true)
+  
+  <li> 📊 <b>User statistics</b> - Track user feedback to improve your creations. </li>
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-## Join the community
+  
+  <li> 🏆 <b>Outfits ranking</b> - Explore top-rated outfits from the community. </li>
 
-Join our community of developers creating universal apps.
+![Versa-ranking](https://github.com/user-attachments/assets/5bcddf07-3c9a-4b6d-a871-f2a84a02cf7f?raw=true)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+  
+  <li> 🌐 <b>Language and theme settings</b> - Personalize your app with language and theme options. </li>
+
+![Versa-theme](https://github.com/user-attachments/assets/d8752085-b184-45d2-aeb9-39e81bb0254e?raw=true)
+
+  
+</ul>
+
+<hr />
+
+<h2>🧠 Technology</h2>
+
+<h3>🎨 Front-end</h3> 
+
+<table> 
+  <tr><th>Technology</th><th>Description</th></tr> 
+  <tr><td>Expo</td><td>A framework for building cross-platform mobile apps using React Native.</td></tr> 
+  <tr><td>React Native</td><td>A framework for building native mobile applications using JavaScript and React.</td></tr>
+  <tr><td>TypeScript</td><td>A strongly typed superset of JavaScript that improves code quality, readability, and maintainability.</td></tr>
+</table> 
+
+<h3>🧪 AI and others</h3> 
+
+<table> 
+  <tr><th>Technology</th><th>Description</th></tr> 
+  <tr><td>i18Next</td><td>A JavaScript library for internationalization and localization in web and mobile apps.</td></tr> 
+  <tr><td>React Hook Form</td><td>A lightweight library for managing and validating forms in React applications.</td></tr> 
+  <tr><td>Open AI Api</td><td>A machine learning API for integrating advanced AI capabilities like natural language processing.</td></tr> 
+</table> 
+
+<h3>💅 UI Libraries</h3> 
+
+<table> 
+  <tr><th>Library</th><th>Description</th></tr> 
+  <tr><td>Gluestack UI</td><td>A universal UI library offering customizable, accessible components for React Native and web.</td></tr> 
+</table> 
+
+<h3>📡 Data Fetching</h3>
+
+<table> 
+  <tr><th>Technology</th><th>Description</th></tr> 
+  <tr><td>Supabase API</td><td>An open-source platform providing RESTful and real-time APIs for PostgreSQL databases.</td></tr> 
+</table>
+
+<h3>🧱 Back-end</h3>
+<table>
+  <tr><th>Technology</th><th>Description</th></tr> 
+   <tr><td>Vercel</td><td>A platform for deploying and hosting serverless APIs and web applications.</td></tr>   <tr><td>Supabase</td><td>A backend-as-a-service offering authentication, storage, and database management built on PostgreSQL.</td></tr> 
+  </table> 
+<hr />
