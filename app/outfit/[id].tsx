@@ -224,7 +224,6 @@ function OutfitDetailContent() {
         >
           <OutfitDetailHeader />
 
-          {/* Main Content */}
           <View style={{ paddingHorizontal: 16 }}>
             <OutfitDetailInfo 
               outfit={outfit}
@@ -264,7 +263,6 @@ function OutfitDetailContent() {
         </ScrollView>
       </SafeAreaView>
 
-      {/* Comments Modal */}
       <CommentSection
         isVisible={showComments}
         onClose={() => setShowComments(false)}

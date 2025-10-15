@@ -2,18 +2,15 @@ import { AIChatFilters } from '@/components/outfit-constructor/AIChatFilters';
 import { ChatComposer } from '@/components/outfit-constructor/ChatComposer';
 import { ChatHeader } from '@/components/outfit-constructor/ChatHeader';
 import { ChatMessages } from '@/components/outfit-constructor/ChatMessages';
-import { Button, ButtonText } from '@/components/ui/button';
-import { webSearch } from '@/fetchers/webSearch';
-import { openAiClient } from '@/lib/openAiClient';
+import { aiChatRequest } from '@/fetchers/aiChat';
 import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { buildSystemPrompt as buildSystemPromptUtil, generateUserLikePrompt } from '@/utils/chatPrompt';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { BlurView } from 'expo-blur';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -130,7 +127,7 @@ export default function HomeScreen() {
     if (!userText || sending) return;
 
     setSending(true);
-    setIsStreaming(true);
+    setIsStreaming(false);
     setFiltersExpanded(false);
     setSearchQuery('');
 
@@ -145,112 +142,25 @@ export default function HomeScreen() {
       const systemPrompt = buildSystemPrompt();
       const history = messages.map((m) => ({ role: m.role, content: m.content }));
 
-      const tools = [
-        {
-          type: 'function',
-          function: {
-            name: 'web_search',
-            description: 'Search the web for the latest fashion brand pages or style guides relevant to the query.',
-            parameters: {
-              type: 'object',
-              properties: {
-                query: { type: 'string' },
-                num: { type: 'number' },
-              },
-              required: ['query'],
-            },
-          },
-        },
-      ];
-
-      abortRef.current?.abort();
-      abortRef.current = new AbortController();
-      const pre = await (openAiClient as any).chat.completions.create({
-        model: 'gpt-4o',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...history,
-          { role: 'user', content: userText },
-        ],
-        tools,
-        tool_choice: 'auto',
+      const { content, error } = await aiChatRequest({
+        systemPrompt,
+        history,
+        userText,
         temperature: 0.7,
-        stream: false
       });
 
-      const preChoice = pre.choices?.[0];
-      const toolCalls = preChoice?.message?.tool_calls as any[] | undefined;
-
-      const workingMessages: any[] = [
-        { role: 'system', content: systemPrompt },
-        ...history,
-        { role: 'user', content: userText },
-      ];
-
-      if (toolCalls && toolCalls.length) {
-        for (const call of toolCalls) {
-          if (call.type === 'function' && call.function?.name === 'web_search') {
-            let args: any = {};
-            try { args = JSON.parse(call.function.arguments || '{}'); } catch { }
-            const q = String(args.query || userText);
-            const num = Number(args.num || 5);
-            const results = await webSearch(q, num);
-
-            workingMessages.push({
-              role: 'assistant',
-              tool_calls: [call],
-              content: '',
-            });
-            workingMessages.push({
-              role: 'tool',
-              tool_call_id: call.id,
-              content: JSON.stringify({ results }),
-            });
-          }
-        }
-      } else if (preChoice?.message?.content) {
-        workingMessages.push({ role: 'assistant', content: preChoice.message.content });
-      }
-
-      abortRef.current?.abort();
-      abortRef.current = new AbortController();
-      const finalStream = await (openAiClient as any).chat.completions.create({
-        model: 'gpt-4o',
-        messages: workingMessages,
-        temperature: 0.7,
-        stream: true
-      });
-
-      let assembled = '';
-      let updateCount = 0;
-      // @ts-ignore for-await in RN
-      for await (const chunk of finalStream) {
-        const delta = chunk.choices?.[0]?.delta?.content || '';
-        if (!delta) continue;
-        assembled += delta;
-        updateCount++;
-        if (updateCount % 3 === 0) {
-          setMessages((prev) => {
-            const copy = [...prev];
-            const lastIndex = copy.length - 1;
-            if (lastIndex >= 0 && copy[lastIndex].role === 'assistant') {
-              copy[lastIndex] = { ...copy[lastIndex], content: assembled };
-            }
-            return copy;
-          });
-        }
-      }
+      const finalText = content || (t('common.error') || 'Error generating response.');
 
       setMessages((prev) => {
         const copy = [...prev];
         const lastIndex = copy.length - 1;
         if (lastIndex >= 0 && copy[lastIndex].role === 'assistant') {
-          copy[lastIndex] = { ...copy[lastIndex], content: assembled };
+          copy[lastIndex] = { ...copy[lastIndex], content: finalText };
         }
         return copy;
       });
 
-      persistMessage(convId, 'assistant', assembled, new Date().toISOString());
+      persistMessage(convId, 'assistant', finalText, new Date().toISOString());
     } catch {
       setMessages((prev) => {
         const copy = [...prev];
@@ -299,14 +209,6 @@ export default function HomeScreen() {
     };
   }, [conversationId]);
 
-  // Find the current conversation title
-  const currentConversationTitle = useMemo(() => {
-    if (!conversationId) return undefined;
-    const found = conversationList.find(c => c.id === conversationId);
-    return found?.title;
-  }, [conversationId, conversationList]);
-
-  // Update selectedConversationTitle when conversationId changes or a conversation is picked
   useEffect(() => {
     if (!conversationId) {
       setSelectedConversationTitle(undefined);
@@ -321,24 +223,17 @@ export default function HomeScreen() {
       <View className='flex-1' style={{ backgroundColor: colors.background }}>
         <View style={{ backgroundColor: colors.background, }}>
           <ChatHeader
-            onShowConversations={async () => {
-              try {
-                const { data } = await (supabase as any)
-                  .from('ai_conversations')
-                  .select('id,title,created_at')
-                  .order('created_at', { ascending: false });
-                setConversationList(data || []);
-              } catch { }
-            }}
-            onNewChat={() => { setConversationId(null); setMessages([]); }}
             filtersExpanded={filtersExpanded}
             onToggleFilters={() => setFiltersExpanded((v) => !v)}
             t={(k) => t(k)}
             title={selectedConversationTitle}
+            conversationId={conversationId}
+            setConversationId={setConversationId}
+            setSelectedConversationTitle={setSelectedConversationTitle}
+            setMessages={setMessages}
           />
         </View>
 
-        {/* AI Chat Filters - Only show when filtersExpanded is true */}
         {filtersExpanded && (
           <AIChatFilters
             outfitGender={outfitGender}
@@ -362,36 +257,6 @@ export default function HomeScreen() {
           />
         )}
 
-        {/* Conversations List - Overlay */}
-        {conversationList.length > 0 && (
-          <View className='absolute inset-0 z-50'>
-            <BlurView intensity={40} tint={colors.background === '#121212' ? 'dark' : 'light'} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
-            <Pressable className='absolute inset-0' onPress={() => setConversationList([])} />
-            <View className='absolute top-32 left-4 right-4 rounded-2xl p-4 shadow-2xl' style={{ backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border }}>
-              <Text className='text-sm font-medium mb-3' style={{ color: colors.text }}>Recent Conversations</Text>
-              {conversationList.map((c) => (
-                <Button key={c.id} variant='link' action='primary' size='sm' className='justify-start mb-2' onPress={async () => {
-                  setConversationId(c.id);
-                  setSelectedConversationTitle(c.title);
-                  try {
-                    const { data } = await (supabase as any)
-                      .from('ai_messages')
-                      .select('id,role,content,created_at')
-                      .eq('conversation_id', c.id)
-                      .order('created_at', { ascending: true });
-                    const mapped = (data || []).map((m: any) => ({ id: m.id, role: m.role, content: m.content, created_at: m.created_at }));
-                    setMessages(mapped);
-                  } catch { }
-                  setConversationList([]);
-                }}>
-                  <ButtonText className='text-left' style={{ color: colors.textSecondary }}>{c.title || c.id}</ButtonText>
-                </Button>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* Main Chat Area */}
         <View className='flex-1 pb-24'>
           <ChatMessages
             messages={messages}
@@ -402,7 +267,6 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* Input Section - Fixed at bottom with proper z-index */}
         <View className='absolute bottom-0 left-0 right-0 px-4 py-3 z-20' style={{ backgroundColor: colors.background, borderTopWidth: 1, borderTopColor: colors.border, paddingBottom: 34 }}>
           <ChatComposer
             value={searchQuery}
