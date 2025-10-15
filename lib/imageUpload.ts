@@ -1,5 +1,5 @@
 import { Buffer } from 'buffer';
-import * as FileSystem from 'expo-file-system';
+import { File } from 'expo-file-system';
 import { Platform } from 'react-native';
 import { supabase } from './supabase';
 
@@ -48,10 +48,18 @@ export async function uploadImagesAndGetPublicUrls(images: LocalImageDescriptor[
           throw uploadError;
         }
       } else {
-        const base64 = await FileSystem.readAsStringAsync(img.uri.replace('file://', ''), { encoding: FileSystem.EncodingType.Base64 }).catch(async () => {
-          return await FileSystem.readAsStringAsync(img.uri, { encoding: FileSystem.EncodingType.Base64 });
-        });
-        const bytes = Buffer.from(base64, 'base64');
+        // Handle file:// URIs from native platforms
+        let fileUri = img.uri;
+        
+        // Ensure the URI has the file:// prefix for expo-file-system v19
+        if (!fileUri.startsWith('file://')) {
+          fileUri = 'file://' + fileUri;
+        }
+
+        // Use new expo-file-system v19 API
+        const file = new File(fileUri);
+        const arrayBuffer = await file.arrayBuffer();
+        const bytes = Buffer.from(arrayBuffer);
         const { error: uploadError } = await supabase.storage.from(BUCKET).upload(filePath, bytes, {
           contentType: img.type || 'image/jpeg',
           upsert: false,
@@ -67,7 +75,7 @@ export async function uploadImagesAndGetPublicUrls(images: LocalImageDescriptor[
       const { data: publicUrlData } = supabase.storage.from(BUCKET).getPublicUrl(filePath);
       results[img.tempKey] = publicUrlData.publicUrl;
     } catch (e) {
-      console.error('Upload image failed', img.tempKey, e);
+      console.error('Upload image failed', img.tempKey, img.uri, e);
       throw e;
     }
   }
