@@ -127,9 +127,17 @@ export default function HomeScreen() {
     if (!userText || sending) return;
 
     setSending(true);
-    setIsStreaming(false);
+    setIsStreaming(true);
     setFiltersExpanded(false);
     setSearchQuery('');
+    setHighestPrice(0);
+    setLowestPrice(0);
+    setCurrency('USD');
+    setOutfitGender([]);
+    setOutfitTag([]);
+    setOutfitFit([]);
+    setOutfitColor([]);
+    setOutfitElement([]);
 
     const convId = await ensureConversation();
 

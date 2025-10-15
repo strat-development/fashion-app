@@ -174,10 +174,7 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
       {messages.map((m) => {
         const cleanContent = getCleanAssistantText(m.content);
         const imageQueries = m.role === 'assistant' ? extractImageDescriptions(m.content) : [];
-
-        if (m.role === 'assistant' && !cleanContent.trim() && imageQueries.length === 0) {
-          return null;
-        }
+        const displayText = (cleanContent && cleanContent.trim().length > 0) ? cleanContent : (m.content || '');
 
         return (
           <View key={m.id} className={`mb-6 ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
@@ -200,29 +197,12 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
                 borderWidth: 1,
               }}>
                 {m.role === 'assistant' ? (
-                  <View>
-                    {isStreaming ? (
-                      <TypingEffect
-                        text={getCleanAssistantText(cleanContent)}
-                        speed={18}
-                        isStreaming={isStreaming}
-                        style={{ color: colors.text, lineHeight: 24 }}
-                      />
-                    ) : (
-                      <View>
-                        <Text className='text-base font-semibold mb-2' style={{ color: colors.text }}>
-                          {(() => {
-                            const firstLine = getCleanAssistantText(cleanContent).split('\n')[0] || '';
-                            return firstLine.length < 120 ? firstLine : 'Recommendation';
-                          })()}
-                        </Text>
-                        
-                        <LinkText text={getCleanAssistantText(cleanContent)} links={extractLinks(getCleanAssistantText(cleanContent))} />
-
-                        <View className='mt-2' />
-                      </View>
-                    )}
-                  </View>
+                  <TypingEffect
+                    text={displayText}
+                    speed={18}
+                    isStreaming={false}
+                    style={{ color: colors.text, lineHeight: 24 }}
+                  />
                 ) : (
                   <LinkText text={cleanContent} links={extractLinks(cleanContent)} />
                 )}
@@ -253,9 +233,9 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
           <View className='backdrop-blur-sm px-4 py-3 rounded-2xl' style={{ backgroundColor: colors.surfaceVariant, borderColor: colors.border, borderWidth: 1 }}>
             <View className='flex-row items-center'>
               <View className='flex-row space-x-1 mr-3'>
-                <View className='w-2 h-2 rounded-full animate-bounce' style={{ backgroundColor: colors.accent }} />
-                <View className='w-2 h-2 rounded-full animate-bounce' style={{ backgroundColor: colors.accent }} />
-                <View className='w-2 h-2 rounded-full animate-bounce' style={{ backgroundColor: colors.accent }} />
+                <View className='w-2 h-2 rounded-full' style={{ backgroundColor: colors.accent, opacity: 0.6 }} />
+                <View className='w-2 h-2 rounded-full' style={{ backgroundColor: colors.accent, opacity: 0.6 }} />
+                <View className='w-2 h-2 rounded-full' style={{ backgroundColor: colors.accent, opacity: 0.6 }} />
               </View>
               <Text style={{ color: colors.text }}>{t('common.typing') || 'Stylist is thinking…'}</Text>
             </View>

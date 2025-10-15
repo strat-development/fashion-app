@@ -1,10 +1,11 @@
 import { supabase } from "@/lib/supabase";
 
-export async function fetchConversations() {
+export async function fetchConversations(userId: string) {
   try {
     const { data } = await supabase
       .from('ai_conversations')
       .select('id,title,created_at')
+      .eq('user_id', userId)
       .order('created_at', { ascending: false });
     return (data || [])
   } catch {
