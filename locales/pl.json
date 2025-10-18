@@ -192,20 +192,13 @@
         "saved-outfits": "Zapisane"
       }
     },
-    "profileRecentActivitySection": {
-      "title": "Ostatnia Aktywność",
-      "activities": [
-        {
-          "text": "Twoja stylizacja zdobyła ponad 50 polubień!"
-        },
-        {
-          "text": "Polubiono 5 nowych stylizacji"
-        },
-        {
-          "text": "Stworzono \"Letni Casualowy Look\""
-        }
-      ]
-    },
+"profileRecentActivitySection": {
+    "title": "Ostatnia aktywność",
+    "noActivity": "Brak ostatniej aktywności do pokazania.",
+    "created_post": "Utworzono nowy strój.",
+    "new_comment": "Otrzymano nowy komentarz.",
+    "milestone": "Osiągnięto {{count}} polubień pod strojem!"
+  },
     "auth": {
       "welcome": "Witaj",
       "hero": {

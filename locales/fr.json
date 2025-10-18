@@ -192,19 +192,12 @@
       "saved-outfits": "Enregistrées"
     }
   },
-  "profileRecentActivitySection": {
-    "title": "Activité Récente",
-    "activities": [
-      {
-        "text": "Votre tenue a reçu plus de 50 j'aime !"
-      },
-      {
-        "text": "Vous avez aimé 5 nouvelles tenues"
-      },
-      {
-        "text": "Création de \"Look Décontracté d'Été\""
-      }
-    ]
+"profileRecentActivitySection": {
+    "title": "Activité récente",
+    "noActivity": "Aucune activité récente à afficher.",
+    "created_post": "A créé une new tenue.",
+    "new_comment": "A reçu un nouveau commentaire.",
+    "milestone": "A atteint {{count}} J'aime sur une tenue !"
   },
   "auth": {
     "welcome": "Bienvenue",

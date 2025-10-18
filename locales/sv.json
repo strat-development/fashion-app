@@ -192,20 +192,13 @@
         "saved-outfits": "Sparade"
       }
     },
-    "profileRecentActivitySection": {
-      "title": "Senaste Aktivitet",
-      "activities": [
-        {
-          "text": "Din outfit fick över 50 gilla-markeringar!"
-        },
-        {
-          "text": "Gillade 5 nya outfits"
-        },
-        {
-          "text": "Skapade \"Sommar Casual Look\""
-        }
-      ]
-    },
+"profileRecentActivitySection": {
+    "title": "Senaste aktivitet",
+    "noActivity": "Ingen senaste aktivitet att visa.",
+    "created_post": "Skapade en ny outfit.",
+    "new_comment": "Fick en ny kommentar.",
+    "milestone": "Nådde {{count}} gillamarkeringar på en outfit!"
+  },
     "auth": {
       "welcome": "Välkommen",
       "hero": {

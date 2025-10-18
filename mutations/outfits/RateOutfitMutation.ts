@@ -27,6 +27,7 @@ export const useRateOutfitMutation = ({ outfitId, userId, outfitCreatorId }: Rat
                 throw fetchError;
             }
 
+            let ratedOutfit;
             if (existingRating) {
                 const { data, error } = await supabase
                     .from("outfits-rating")
@@ -36,7 +37,7 @@ export const useRateOutfitMutation = ({ outfitId, userId, outfitCreatorId }: Rat
                     .single();
 
                 if (error) throw error;
-                return data;
+                ratedOutfit = data;
             } else {
                 const { data, error } = await supabase
                     .from("outfits-rating")
@@ -45,8 +46,32 @@ export const useRateOutfitMutation = ({ outfitId, userId, outfitCreatorId }: Rat
                     .single();
 
                 if (error) throw error;
-                return data;
+                ratedOutfit = data;
             }
+
+            if (topRated && outfitCreatorId) {
+                const { count } = await supabase
+                    .from('outfits-rating')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('outfit_id', outfitId)
+                    .eq('top_rated', true);
+
+                const milestones = [5, 10, 20, 50, 100, 200, 500, 1000];
+                const currentCount = count || 0;
+
+                for (const milestone of milestones) {
+                    if (currentCount === milestone) {
+                        await supabase.from('activities').insert({
+                            user_id: outfitCreatorId,
+                            activity_type: `milestone_${milestone}_likes`,
+                            outfit_id: outfitId,
+                        });
+                        break;
+                    }
+                }
+            }
+
+            return ratedOutfit;
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["outfits-rats", outfitId] });

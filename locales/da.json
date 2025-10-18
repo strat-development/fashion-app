@@ -192,19 +192,12 @@
         "saved-outfits": "Gemte"
       }
     },
-    "profileRecentActivitySection": {
-      "title": "Seneste Aktivitet",
-      "activities": [
-        {
-          "text": "Dit outfit fik over 50 likes!"
-        },
-        {
-          "text": "Likede 5 nye outfits"
-        },
-        {
-          "text": "Skabte \"Sommerlig afslappet look\""
-        }
-      ]
+"profileRecentActivitySection": {
+      "title": "Seneste aktivitet",
+      "noActivity": "Ingen seneste aktivitet at vise.",
+      "created_post": "Oprettet et nyt outfit.",
+      "new_comment": "Modtaget en ny kommentar.",
+      "milestone": "Nåede {{count}} likes på et outfit!"
     },
     "auth": {
       "welcome": "Velkommen",

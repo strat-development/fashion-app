@@ -192,20 +192,13 @@
         "saved-outfits": "Lagret"
       }
     },
-    "profileRecentActivitySection": {
-      "title": "Siste Aktivitet",
-      "activities": [
-        {
-          "text": "Antrekket ditt fikk over 50 liker!"
-        },
-        {
-          "text": "Likte 5 nye antrekk"
-        },
-        {
-          "text": "Opprettet \"Sommerlig uformell look\""
-        }
-      ]
-    },
+"profileRecentActivitySection": {
+    "title": "Nylig aktivitet",
+    "noActivity": "Ingen nylig aktivitet å vise.",
+    "created_post": "Opprettet et nytt antrekk.",
+    "new_comment": "Mottok en ny kommentar.",
+    "milestone": "Nådde {{count}} likerklikk på et antrekk!"
+  },
     "auth": {
       "welcome": "Velkommen",
       "hero": {

@@ -192,19 +192,12 @@
       "saved-outfits": "Salvati"
     }
   },
-  "profileRecentActivitySection": {
-    "title": "Attività Recente",
-    "activities": [
-      {
-        "text": "Il tuo outfit ha ricevuto più di 50 mi piace!"
-      },
-      {
-        "text": "Hai messo mi piace a 5 nuovi outfit"
-      },
-      {
-        "text": "Creato \"Look Casual Estivo\""
-      }
-    ]
+"profileRecentActivitySection": {
+    "title": "Attività recente",
+    "noActivity": "Nessuna attività recente da mostrare.",
+    "created_post": "Ha creato un nuovo outfit.",
+    "new_comment": "Ha ricevuto un nuovo commento.",
+    "milestone": "Ha raggiunto {{count}} mi piace su un outfit!"
   },
   "auth": {
     "welcome": "Benvenuto",

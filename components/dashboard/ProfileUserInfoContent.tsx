@@ -33,7 +33,7 @@ export function ProfileUserInfoContent({
         {userId && <UserStatistics userId={userId} />}
       </View>
 
-      <ProfileRecentActivitySection />
+      {userId && <ProfileRecentActivitySection userId={userId} />}
 
       {isOwnProfile && <ProfileSettingsButtons />}
     </View>

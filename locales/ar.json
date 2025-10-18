@@ -192,19 +192,12 @@
         "saved-outfits": "تم حفظها"
       }
     },
-    "profileRecentActivitySection": {
+"profileRecentActivitySection": {
       "title": "النشاط الأخير",
-      "activities": [
-        {
-          "text": "حصل زيك على أكثر من 50 إعجاب!"
-        },
-        {
-          "text": "أعجبتك 5 أزياء جديدة"
-        },
-        {
-          "text": "أنشأت \"إطلالة صيفية كاجوال\""
-        }
-      ]
+      "noActivity": "لا يوجد نشاط حديث لعرضه.",
+      "created_post": "تم إنشاء زي جديد.",
+      "new_comment": "تم استلام تعليق جديد.",
+      "milestone": "وصل إلى {{count}} إعجاب على الزي!"
     },
     "auth": {
       "welcome": "مرحبًا",

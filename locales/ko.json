@@ -192,20 +192,13 @@
         "saved-outfits": "저장됨"
       }
     },
-    "profileRecentActivitySection": {
-      "title": "최근 활동",
-      "activities": [
-        {
-          "text": "당신의 의상이 50개 이상의 좋아요를 받았습니다!"
-        },
-        {
-          "text": "5개의 새로운 의상에 좋아요를 눌렀습니다"
-        },
-        {
-          "text": "‘여름 캐주얼 룩’을 생성했습니다"
-        }
-      ]
-    },
+"profileRecentActivitySection": {
+    "title": "최근 활동",
+    "noActivity": "표시할 최근 활동이 없습니다.",
+    "created_post": "새 의상을 만들었습니다.",
+    "new_comment": "새 댓글을 받았습니다.",
+    "milestone": "의상에서 좋아요 {{count}}개를 받았습니다!"
+  },
     "auth": {
       "welcome": "환영합니다",
       "hero": {
