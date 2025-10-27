@@ -402,6 +402,7 @@
     }
   },
   "registrationModal": {
+    "title": "Terminer l'Inscription",
     "welcome": "Bienvenue dans l'Application !",
     "welcomeDescription": "Pour utiliser l'application, vous devez compléter le processus d'inscription.",
     "provideDetails": "Veuillez fournir les détails de votre profil dans les étapes suivantes.",

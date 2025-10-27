@@ -402,6 +402,7 @@
     }
   },
   "registrationModal": {
+    "title": "Completa Registrazione",
     "welcome": "Benvenuto nell'App!",
     "welcomeDescription": "Per utilizzare l'app, devi completare il processo di registrazione.",
     "provideDetails": "Fornisci i dettagli del tuo profilo nei passaggi successivi.",

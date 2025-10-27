@@ -405,6 +405,7 @@
       }
     },
     "registrationModal": {
+      "title": "Ukończ Rejestrację",
       "welcome": "Witaj w Aplikacji!",
       "welcomeDescription": "Aby korzystać z aplikacji, musisz ukończyć proces rejestracji.",
       "provideDetails": "Podaj szczegóły swojego profilu w kolejnych krokach.",

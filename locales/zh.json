@@ -402,6 +402,7 @@
       }
     },
     "registrationModal": {
+      "title": "完成注册",
       "welcome": "欢迎使用应用！",
       "welcomeDescription": "要使用应用，您需要完成注册过程。",
       "provideDetails": "请在接下来的步骤中提供您的个人资料详情。",

@@ -402,6 +402,7 @@
       }
     },
     "registrationModal": {
+      "title": "Fuldfør Registrering",
       "welcome": "Velkommen til Appen!",
       "welcomeDescription": "For at bruge appen skal du gennemføre registreringsprocessen.",
       "provideDetails": "Angiv dine profildetaljer i næste trin.",

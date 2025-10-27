@@ -13,6 +13,7 @@ import i18n from '@/i18n';
 import { supabase } from '@/lib/supabase';
 import ViewContextProvider from '@/providers/chatViewContext';
 import { ThemeProvider as CustomThemeProvider } from '@/providers/themeContext';
+import { ToastProvider } from '@/providers/toastContext';
 import UserContextProvider from '@/providers/userContext';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import type { Session } from '@supabase/supabase-js';
@@ -81,9 +82,11 @@ export default function RootLayout() {
   if (!session) {
     return (
       <CustomThemeProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Auth />
-        </ThemeProvider>
+        <ToastProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Auth />
+          </ThemeProvider>
+        </ToastProvider>
       </CustomThemeProvider>
     );
   }
@@ -92,25 +95,27 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <CustomThemeProvider>
-          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <QueryClientProvider client={queryClient}>
-              <I18nextProvider i18n={i18n}>
-                <SessionContextProvider supabaseClient={supabase as any}>
-                  <UserContextProvider>
-                    <ViewContextProvider>
-                      <SafeAreaView style={{ flex: 1, backgroundColor: colorScheme === 'dark' ? DarkTheme.colors.background : DefaultTheme.colors.background }}>
-                        <Stack screenOptions={{ headerShown: false }}>
-                          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                          <Stack.Screen name="+not-found" />
-                        </Stack>
-                        <StatusBar style="auto" />
-                      </SafeAreaView>
-                    </ViewContextProvider>
-                  </UserContextProvider>
-                </SessionContextProvider>
-              </I18nextProvider>
-            </QueryClientProvider>
-          </ThemeProvider>
+          <ToastProvider>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+              <QueryClientProvider client={queryClient}>
+                <I18nextProvider i18n={i18n}>
+                  <SessionContextProvider supabaseClient={supabase as any}>
+                    <UserContextProvider>
+                      <ViewContextProvider>
+                        <SafeAreaView style={{ flex: 1, backgroundColor: colorScheme === 'dark' ? DarkTheme.colors.background : DefaultTheme.colors.background }}>
+                          <Stack screenOptions={{ headerShown: false }}>
+                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                            <Stack.Screen name="+not-found" />
+                          </Stack>
+                          <StatusBar style="auto" />
+                        </SafeAreaView>
+                      </ViewContextProvider>
+                    </UserContextProvider>
+                  </SessionContextProvider>
+                </I18nextProvider>
+              </QueryClientProvider>
+            </ThemeProvider>
+          </ToastProvider>
         </CustomThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

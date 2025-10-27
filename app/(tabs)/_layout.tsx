@@ -1,6 +1,5 @@
 import RegistrationModal from '@/components/modals/RegistrationModal';
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
-import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { BlurView } from 'expo-blur';
@@ -8,17 +7,37 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs, usePathname } from 'expo-router';
 import { Bot, Compass, Trophy, User2 } from 'lucide-react-native';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Alert, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 export default function TabLayout() {
   const { colors, isDark } = useTheme();
-  const { userId, loading: userContextLoading } = useUserContext();
-  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
-  const [isCheckingProfile, setIsCheckingProfile] = useState(true);
+  const { userId,
+    loading: userContextLoading,
+    nickname,
+    userBio } = useUserContext();
+  const [showRegistrationModal, setShowRegistrationModal] = useState(true);
   const pathname = usePathname();
-  
+  const translateX = useSharedValue<number>(0);
   const tabs = useMemo(() => ['index', 'chat', 'ranking', 'userProfile'], []);
-  
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      left: `${translateX.value * 25}%`,
+    };
+  });
+
+  useEffect(() => {
+    const currentPath = pathname.replace('/(tabs)/', '').replace('/', '') || 'index';
+    const tabIndex = tabs.indexOf(currentPath);
+    if (tabIndex !== -1) {
+      translateX.value = withSpring(tabIndex, {
+        damping: 1000,
+        stiffness: 1000,
+      });
+    }
+  }, [pathname, tabs, translateX]);
+
   const tabGradients: Record<string, [string, string]> = {
     index: ['#5F94FF', '#6F31FF'],
     chat: ['#A45FFF', '#7C31FF'],
@@ -26,15 +45,16 @@ export default function TabLayout() {
     userProfile: ['#A75FFF', '#D631FF'],
   };
 
+
   const getTabIcon = (Icon: React.ElementType, focused: boolean, key: keyof typeof tabGradients, tabIdx: number) => {
     return (
-      <View style={{ 
+      <View style={{
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        alignItems: 'center', 
+        alignItems: 'center',
         justifyContent: 'center',
       }}>
         <Icon size={26} color={focused ? colors.white : colors.textSecondary} />
@@ -42,59 +62,19 @@ export default function TabLayout() {
     );
   };
 
-  useEffect(() => {
-    const checkUserProfile = async () => {
-      if (userContextLoading) {
-        return;
-      }
-
-      if (!userId) {
-        setShowRegistrationModal(false);
-        setIsCheckingProfile(false);
-        return;
-      }
-
-      try {
-        const { data, error } = await supabase
-          .from('users')
-          .select('user_id, nickname, full_name, bio, user_avatar')
-          .eq('user_id', userId)
-          .single();
-
-        if (error && error.code !== 'PGRST116') {
-          console.error('Error checking user profile:', error);
-          Alert.alert('Error', 'Failed to verify user profile. Please try again.');
-          setIsCheckingProfile(false);
-          return;
-        }
-
-        if (data) {
-          setShowRegistrationModal(false);
-        } else {
-          setShowRegistrationModal(false);
-        }
-      } catch (error) {
-        console.error('Error checking user profile:', error);
-        Alert.alert('Error', 'Failed to verify user profile. Please try again.');
-      } finally {
-        setIsCheckingProfile(false);
-      }
-    };
-
-    checkUserProfile();
-  }, [userId, userContextLoading]);
-
-  if (userContextLoading || isCheckingProfile) {
+  if (userContextLoading) {
     return <FullScreenLoader />;
   }
 
   return (
     <>
-      <RegistrationModal
-        isVisible={showRegistrationModal}
-        onClose={() => setShowRegistrationModal(false)}
-        userId={userId}
-      />
+      {nickname == "" && userBio == "" && (
+        <RegistrationModal
+          isVisible={showRegistrationModal}
+          onClose={() => setShowRegistrationModal(false)}
+          userId={userId}
+        />
+      )}  
       <Tabs
         screenOptions={{
           headerShown: false,
@@ -141,16 +121,17 @@ export default function TabLayout() {
                     height: '100%',
                   }}
                 />
-                <View
+                <Animated.View
                   style={[
                     {
                       position: 'absolute',
                       width: '25%',
                       height: '100%',
-                      left: `${tabIndex * 25}%`,
                     },
+                    animatedStyle,
                   ]}
                 >
+
                   <LinearGradient
                     colors={gradient || tabGradients.index}
                     start={{ x: 0, y: 0 }}
@@ -161,7 +142,7 @@ export default function TabLayout() {
                       opacity: 0.9,
                     }}
                   />
-                </View>
+                </Animated.View>
               </>
             );
           },

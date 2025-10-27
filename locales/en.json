@@ -413,6 +413,7 @@
     }
   },
   "registrationModal": {
+    "title": "Complete Registration",
     "welcome": "Welcome to the App!",
     "welcomeDescription": "To use the app, you need to complete the registration process.",
     "provideDetails": "Please provide your profile details in the next steps.",
