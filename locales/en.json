@@ -1,5 +1,186 @@
 {
   "common": {
+    "loading": "Loading…"
+  },
+  "homeScreen": {
+    "welcomeMessage": "Welcome, how would you like to create an outfit?",
+    "aiConstructorButton": "AI Constructor",
+    "createOwnOutfitButton": "Create your own outfit"
+  },
+  "feedSection": {
+    "alerts": {
+      "notLoggedIn": {
+        "title": "Not logged in",
+        "message": "You must be logged in to save outfits."
+      }
+    },
+    "emptyState": {
+      "title": "No outfits yet",
+      "description": "Create your first outfit or follow others to see their creations",
+      "actionText": "Create Outfit"
+    },
+    "loadingOutfits": "Loading..."
+  },
+  "rankingScreen": {
+    "title": "Ranking",
+    "subtitle": "Top outfits and creators",
+    "tabs": {
+      "outfits": "Outfits",
+      "creators": "Creators"
+    },
+    "loading": "Loading…",
+    "error": "Failed to load",
+    "tryAgain": "Try again",
+    "rankRow": {
+      "untitledOutfit": "Untitled outfit",
+      "unknownCreator": "Unknown",
+      "outfitStats": "Likes · Saves · Ratings",
+      "creatorStats": "Outfits · Likes",
+      "rank": "#"
+    }
+  },
+  "userProfile": {
+    "loading": "Loading...",
+    "about": "About",
+    "privateProfile": "This profile is private.",
+    "pendingRequests": "Follow Requests",
+    "noPendingRequests": "No pending requests"
+  },
+  "outfitDetail": {
+    "header": {
+      "title": "Outfit Details",
+      "yourCreation": "Your creation"
+    },
+    "loading": "Loading outfit…",
+    "notFound": "We couldn't find this outfit.",
+    "goBack": "Go back",
+    "images": {
+      "free": "Free",
+      "noImages": "No images"
+    },
+    "info": {
+      "anonymous": "Anonymous",
+      "tags": "Tags",
+      "description": "Description"
+    },
+    "sections": {
+      "description": "Description",
+      "tags": "Tags"
+    },
+    "interactions": {
+      "comments": " comments",
+      "likes": " likes"
+    },
+    "defaultOutfitName": "Untitled Outfit"
+  },
+  "commentItem": {
+    "reply": "Reply",
+    "viewReplies": "View replies",
+    "hideReplies": "Hide replies",
+    "replyPlaceholder": "Reply to ",
+    "cancel": "Cancel",
+    "alerts": {
+      "notLoggedIn": {
+        "title": "Not logged in",
+        "message": "You must be logged in to comment."
+      },
+      "error": {
+        "title": "Error",
+        "message": "Failed to add comment"
+      }
+    }
+  },
+  "commentReactions": {
+    "reacted": "Reacted",
+    "react": "React",
+    "alerts": {
+      "notLoggedIn": {
+        "title": "Not logged in",
+        "message": "You must be logged in to react to comments."
+      }
+    }
+  },
+  "commentSection": {
+    "header": "Comments • ",
+    "headerDefault": "Comments",
+    "loading": "Loading…",
+    "empty": "No comments yet. Be the first!",
+    "placeholder": "Add a comment…",
+    "alerts": {
+      "notLoggedIn": {
+        "title": "Not logged in",
+        "message": "You must be logged in to comment."
+      },
+      "error": {
+        "title": "Error",
+        "message": "Failed to add comment"
+      }
+    }
+  },
+  "feedFilters": {
+    "searchPlaceholder": "Search outfits...",
+    "sections": {
+      "styleTags": "Style Tags",
+      "elements": "Elements"
+    },
+    "clearFilters": "Clear All Filters"
+  },
+  "notFoundScreen": {
+    "title": "Oops!",
+    "message": "This screen does not exist.",
+    "link": "Go to home screen!"
+  },
+  "themeSettings": {
+    "title": "Theme Settings",
+    "appearance": {
+      "title": "Appearance",
+      "description": "Choose how Fashion App looks to you. Select a single theme, or sync with your system settings.",
+      "options": {
+        "light": {
+          "label": "Light",
+          "description": "Always use light theme"
+        },
+        "dark": {
+          "label": "Dark",
+          "description": "Always use dark theme"
+        },
+        "system": {
+          "label": "System",
+          "description": "Follow system settings"
+        }
+      }
+    },
+    "preview": {
+      "title": "Preview",
+      "appName": "Fashion App",
+      "themePreview": " theme preview",
+      "description": "This is how your outfit feed and other content will look with the selected theme.",
+      "primaryButton": "Primary",
+      "secondaryButton": "Secondary"
+    },
+    "languageCurrency": {
+      "title": "Language & Currency",
+      "description": "Select your preferred language and currency for the app.",
+      "languagePlaceholder": "Select Language",
+      "currencyPlaceholder": "Select Currency"
+    }
+  },
+  "createdOutfitsSection": {
+    "loading": "Loading outfits...",
+    "header": "Your Creations",
+    "createButton": "Create",
+    "emptyState": {
+      "title": "No outfits created yet",
+      "description": "Start creating your first outfit!",
+      "actionText": "Create Outfit"
+    }
+  },
+  "followButton": {
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "pending": "Follow Request Pending"
+  },
+  "common": {
     "loading": "Loading…",
     "approve": "Approve",
     "decline": "Decline",
