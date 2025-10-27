@@ -9,7 +9,6 @@ import { Tabs, usePathname } from 'expo-router';
 import { Bot, Compass, Trophy, User2 } from 'lucide-react-native';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, Pressable, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 export default function TabLayout() {
   const { colors, isDark } = useTheme();
@@ -17,9 +16,6 @@ export default function TabLayout() {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
   const pathname = usePathname();
-  
-  // Reanimated shared value for smooth animation
-  const translateX = useSharedValue(0);
   
   const tabs = useMemo(() => ['index', 'chat', 'ranking', 'userProfile'], []);
   
@@ -45,19 +41,6 @@ export default function TabLayout() {
       </View>
     );
   };
-
-  // Update focusedTab based on pathname
-  useEffect(() => {
-    const currentPath = pathname.replace('/(tabs)/', '').replace('/', '') || 'index';
-    const tabIndex = tabs.indexOf(currentPath);
-    if (tabIndex !== -1) {
-      // Animate the gradient with spring animation
-      translateX.value = withSpring(tabIndex, {
-        damping: 70,
-        stiffness: 1000,
-      });
-    }
-  }, [pathname, tabs, translateX]);
 
   useEffect(() => {
     const checkUserProfile = async () => {
@@ -100,13 +83,6 @@ export default function TabLayout() {
 
     checkUserProfile();
   }, [userId, userContextLoading]);
-
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      left: `${translateX.value * 25}%`,
-    };
-  });
 
   if (userContextLoading || isCheckingProfile) {
     return <FullScreenLoader />;
@@ -165,14 +141,14 @@ export default function TabLayout() {
                     height: '100%',
                   }}
                 />
-                <Animated.View
+                <View
                   style={[
                     {
                       position: 'absolute',
                       width: '25%',
                       height: '100%',
+                      left: `${tabIndex * 25}%`,
                     },
-                    animatedStyle,
                   ]}
                 >
                   <LinearGradient
@@ -185,7 +161,7 @@ export default function TabLayout() {
                       opacity: 0.9,
                     }}
                   />
-                </Animated.View>
+                </View>
               </>
             );
           },
