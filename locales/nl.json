@@ -402,6 +402,7 @@
       }
     },
     "registrationModal": {
+      "title": "Registratie Voltooien",
       "welcome": "Welkom bij de App!",
       "welcomeDescription": "Om de app te gebruiken, moet je het registratieproces voltooien.",
       "provideDetails": "Geef je profielgegevens op in de volgende stappen.",

@@ -402,6 +402,7 @@
       }
     },
     "registrationModal": {
+      "title": "등록 완료",
       "welcome": "앱에 오신 것을 환영합니다!",
       "welcomeDescription": "앱을 사용하려면 등록 프로세스를 완료해야 합니다.",
       "provideDetails": "다음 단계에서 프로필 세부정보를 입력하세요.",

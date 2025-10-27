@@ -402,6 +402,7 @@
       }
     },
     "registrationModal": {
+      "title": "Slutför Registrering",
       "welcome": "Välkommen till Appen!",
       "welcomeDescription": "För att använda appen måste du slutföra registreringsprocessen.",
       "provideDetails": "Ange dina profildetaljer i nästa steg.",

@@ -402,6 +402,7 @@
       }
     },
     "registrationModal": {
+      "title": "登録を完了",
       "welcome": "アプリへようこそ！",
       "welcomeDescription": "アプリを使用するには、登録プロセスを完了する必要があります。",
       "provideDetails": "次のステップでプロフィールの詳細を入力してください。",

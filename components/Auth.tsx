@@ -6,8 +6,9 @@ import * as Linking from 'expo-linking'
 import { Lock, Mail } from 'lucide-react-native'
 import React, { useEffect, useRef, useState } from 'react'
 
+import { useToast } from '@/hooks/useToast'
 import { useTranslation } from "react-i18next"
-import { ActivityIndicator, Alert, Animated, AppState, Easing, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native'
+import { ActivityIndicator, Alert, Animated, Easing, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 interface FocusInputProps {
@@ -102,17 +103,10 @@ const FocusInput = ({ icon, label, value, placeholder, secure, onChange, keyboar
   );
 };
 
-AppState.addEventListener('change', (state) => {
-  if (state === 'active') {
-    supabase?.auth?.startAutoRefresh && supabase.auth.startAutoRefresh()
-  } else {
-    supabase?.auth?.stopAutoRefresh && supabase.auth.stopAutoRefresh()
-  }
-})
-
 export default function Auth() {
   const { t } = useTranslation();
   const { colors, isDark } = useTheme()
+  const { showError, showSuccess } = useToast()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -123,7 +117,9 @@ export default function Auth() {
     setLoading(true)
     if (!supabase) {
       Alert.alert(t('auth.alerts.supabaseNotInitialized.title'), t('auth.alerts.supabaseNotInitialized.message'));
+      
       setLoading(false)
+      
       return
     }
     const { error } = await supabase.auth.signInWithPassword({
@@ -131,15 +127,21 @@ export default function Auth() {
       password: password,
     })
 
-    if (error) Alert.alert(t('auth.alerts.signInError.title'), error.message)
+    if (error) {
+      showError(error.message)
+    }
+    
     setLoading(false)
   }
 
   async function signUpWithEmail() {
     setLoading(true)
+    
     if (!supabase) {
       Alert.alert(t('auth.alerts.supabaseNotInitialized.title'), t('auth.alerts.supabaseNotInitialized.message'));
+      
       setLoading(false)
+      
       return
     }
     const {
@@ -150,18 +152,26 @@ export default function Auth() {
       password: password,
     })
 
-    if (error) Alert.alert(t('auth.alerts.signUpError.title'), error.message)
-    if (!session) Alert.alert(t('auth.alerts.emailVerification.title'), t('auth.alerts.emailVerification.message'))
+    if (error) {
+      showError(error.message)
+    } else if (!session) {
+      showSuccess(t('auth.alerts.emailVerification.message'), 5000)
+    }
+
     setLoading(false)
   }
 
   async function signInWithGoogle() {
     setLoading(true)
+    
     if (!supabase) {
       Alert.alert(t('auth.alerts.supabaseNotInitialized.title'), t('auth.alerts.supabaseNotInitialized.message'))
+      
       setLoading(false)
+      
       return
     }
+    
     try {
       await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -171,6 +181,7 @@ export default function Auth() {
       })
     } catch (error: any) {
       Alert.alert(t('auth.alerts.signInError.title'), error?.message || 'Google sign-in failed')
+      
       setLoading(false)
     }
   }

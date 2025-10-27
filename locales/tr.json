@@ -402,6 +402,7 @@
       }
     },
     "registrationModal": {
+      "title": "Kaydı Tamamla",
       "welcome": "Uygulamaya Hoş Geldiniz!",
       "welcomeDescription": "Uygulamayı kullanmak için kayıt işlemini tamamlamanız gerekiyor.",
       "provideDetails": "Lütfen bir sonraki adımlarda profil detaylarınızı sağlayın.",
