@@ -147,6 +147,7 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
 
           <TouchableOpacity
             onPress={onToggleFilters}
+            activeOpacity={1}
             style={{
               width: 44,
               height: 44,

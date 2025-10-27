@@ -221,6 +221,7 @@ export const UnifiedFilterBar = ({
             {/* Filter Button */}
             <TouchableOpacity
               onPress={toggleFilters}
+              activeOpacity={1}
               style={{
                 width: 44,
                 height: 44,
