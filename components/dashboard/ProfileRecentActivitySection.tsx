@@ -1,32 +1,50 @@
+import { useFetchRecentActivity } from '@/fetchers/dashboard/fetchRecentActivity';
 import { useTheme } from '@/providers/themeContext';
-import { Heart, Plus, Trophy } from 'lucide-react-native';
+import { Heart, MessageCircle, Plus, Trophy } from 'lucide-react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 
-export function ProfileRecentActivitySection() {
+interface Activity {
+  id: string;
+  user_id: string;
+  activity_type: string;
+  outfit_id: string | null;
+  comment_id: string | null;
+  created_at: string;
+}
+
+export function ProfileRecentActivitySection({ userId }: { userId: string }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const { data: activities, isLoading } = useFetchRecentActivity(userId);
 
-  const activityTexts = (t('profileRecentActivitySection.activities', { returnObjects: true }) as Array<{ text: string }>) || [];
+  const getActivityIcon = (activityType: string) => {
+    switch (activityType) {
+      case 'created_post':
+        return Plus;
+      case 'new_comment':
+        return MessageCircle;
+      default:
+        if (activityType.startsWith('milestone')) {
+          return Trophy;
+        }
+        return Heart;
+    }
+  };
 
-  const activities = [
-    {
-      icon: Trophy,
-      color: colors.success,
-      text: activityTexts[0]?.text ?? '',
-    },
-    {
-      icon: Heart,
-      color: colors.accent,
-      text: activityTexts[1]?.text ?? '',
-    },
-    {
-      icon: Plus,
-      color: colors.secondary,
-      text: activityTexts[2]?.text ?? '',
-    },
-  ];
+  const getActivityText = (activityType: string) => {
+    const milestoneMatch = activityType.match(/\d+/);
+    if (milestoneMatch) {
+      const milestone = parseInt(milestoneMatch[0], 10);
+      return t('profileRecentActivitySection.milestone', { count: milestone });
+    }
+    return t(`profileRecentActivitySection.${activityType}`);
+  };
+
+  if (isLoading) {
+    return <ActivityIndicator color={colors.accent} />;
+  }
 
   return (
     <View style={{ paddingBottom: 24 }}>
@@ -34,15 +52,23 @@ export function ProfileRecentActivitySection() {
         {t('profileRecentActivitySection.title')}
       </Text>
       <View style={{ gap: 12, paddingVertical: 16 }}>
-        {activities.map((activity, index) => {
-          const Icon = activity.icon;
-          return (
-            <View key={index} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-              <Icon size={18} color={activity.color} />
-              <Text style={{ color: colors.textMuted, fontSize: 16 }}>{activity.text}</Text>
-            </View>
-          );
-        })}
+        {activities && activities.length > 0 ? (
+          (activities as unknown as Activity[]).map((activity, index) => {
+            const Icon = getActivityIcon(activity.activity_type);
+            return (
+              <View key={index} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <Icon size={18} color={colors.accent} />
+                <Text style={{ color: colors.textMuted, fontSize: 16 }}>
+                  {getActivityText(activity.activity_type)}
+                </Text>
+              </View>
+            );
+          })
+        ) : (
+          <Text style={{ color: colors.textMuted, fontSize: 16 }}>
+            {t('profileRecentActivitySection.noActivity')}
+          </Text>
+        )}
       </View>
     </View>
   );

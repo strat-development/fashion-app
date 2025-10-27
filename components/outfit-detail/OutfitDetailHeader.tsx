@@ -3,13 +3,13 @@ import { router } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { Platform, Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function OutfitDetailHeader() {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <View
@@ -18,7 +18,7 @@ export default function OutfitDetailHeader() {
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 16,
-        paddingTop: 16,
+        paddingTop: Platform.OS === 'web' ? 16 : insets.top - 12,
         marginBottom: 16,
       }}
     >

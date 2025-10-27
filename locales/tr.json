@@ -192,20 +192,13 @@
         "saved-outfits": "Kaydedilenler"
       }
     },
-    "profileRecentActivitySection": {
-      "title": "Son Aktiviteler",
-      "activities": [
-        {
-          "text": "Kıyafetiniz 50'den fazla beğeni aldı!"
-        },
-        {
-          "text": "5 yeni kıyafeti beğendiniz"
-        },
-        {
-          "text": "\"Yazlık Gündelik Görünüm\" oluşturdu"
-        }
-      ]
-    },
+"profileRecentActivitySection": {
+    "title": "Son Etkinlik",
+    "noActivity": "Gösterilecek son etkinlik yok.",
+    "created_post": "Yeni bir kıyafet oluşturuldu.",
+    "new_comment": "Yeni bir yorum alındı.",
+    "milestone": "Bir kıyafette {{count}} beğeniye ulaşıldı!"
+  },
     "auth": {
       "welcome": "Hoş Geldiniz",
       "hero": {

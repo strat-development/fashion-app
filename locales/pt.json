@@ -192,20 +192,13 @@
         "saved-outfits": "Salvos"
       }
     },
-    "profileRecentActivitySection": {
-      "title": "Atividade Recente",
-      "activities": [
-        {
-          "text": "Seu look recebeu mais de 50 curtidas!"
-        },
-        {
-          "text": "Você curtiu 5 novos looks"
-        },
-        {
-          "text": "Criou 'Look Casual de Verão'"
-        }
-      ]
-    },
+"profileRecentActivitySection": {
+    "title": "Atividade recente",
+    "noActivity": "Nenhuma atividade recente para mostrar.",
+    "created_post": "Criou um novo look.",
+    "new_comment": "Recebeu um novo comentário.",
+    "milestone": "Alcançou {{count}} curtidas em um look!"
+  },
     "auth": {
       "welcome": "Bem-vindo",
       "hero": {

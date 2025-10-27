@@ -192,20 +192,13 @@
         "saved-outfits": "保存済み"
       }
     },
-    "profileRecentActivitySection": {
-      "title": "最近の活動",
-      "activities": [
-        {
-          "text": "あなたの服が50以上のいいねを獲得しました！"
-        },
-        {
-          "text": "5つの新しい服にいいねしました"
-        },
-        {
-          "text": "「サマーカジュアルルック」を作成"
-        }
-      ]
-    },
+"profileRecentActivitySection": {
+    "title": "最近のアクティビティ",
+    "noActivity": "表示する最近のアクティビティはありません。",
+    "created_post": "新しいアウトフィットを作成しました。",
+    "new_comment": "新しいコメントを受け取りました。",
+    "milestone": "アウトフィットで{{count}}いいねに到達しました！"
+  },
     "auth": {
       "welcome": "ようこそ",
       "hero": {

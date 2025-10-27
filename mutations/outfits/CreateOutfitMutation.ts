@@ -57,6 +57,15 @@ export const useCreateOutfitMutation = (
         throw error;
       }
 
+      if (data && data.length > 0 && outfitData.created_by) {
+        const outfitId = data[0].outfit_id;
+        await supabase.from('activities').insert({
+          user_id: outfitData.created_by,
+          activity_type: 'created_post',
+          outfit_id: outfitId,
+        });
+      }
+
       return data;
     },
     onSuccess: (data, variables) => {
@@ -68,6 +77,9 @@ export const useCreateOutfitMutation = (
       });
       queryClient.invalidateQueries({
         queryKey: ['userStatistics', variables.created_by],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['recent-activity', variables.created_by],
       });
       onSuccess?.();
     },

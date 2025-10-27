@@ -192,19 +192,12 @@
       "saved-outfits": "Gespeichert"
     }
   },
-  "profileRecentActivitySection": {
+"profileRecentActivitySection": {
     "title": "Letzte Aktivität",
-    "activities": [
-      {
-        "text": "Dein Outfit hat über 50 Likes bekommen!"
-      },
-      {
-        "text": "5 neue Outfits geliked"
-      },
-      {
-        "text": "\"Summer Casual Look\" erstellt"
-      }
-    ]
+    "noActivity": "Keine letzte Aktivität zum Anzeigen.",
+    "created_post": "Ein neues Outfit erstellt.",
+    "new_comment": "Einen neuen Kommentar erhalten.",
+    "milestone": "{{count}} Likes für ein Outfit erreicht!"
   },
   "auth": {
     "welcome": "Willkommen",

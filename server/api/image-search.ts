@@ -1,11 +1,9 @@
-// Minimal types to avoid external type deps in serverless runtime
 type VercelRequest = any;
 type VercelResponse = any;
 
 type SearchedImage = { url: string; title?: string; source?: string; pageUrl?: string };
 type Body = { queries: string[]; gl?: string; hl?: string };
 
-// Accept either server-only or client-exposed var names
 const SERPER_API_KEY = process.env.SERPER_API_KEY || process.env.EXPO_PUBLIC_SERPER_API_KEY || '';
 
 const ALLOWED = [/amazon\./, /asos\./, /uniqlo\./, /zara\./, /nike\./, /adidas\./, /hm\.com/];
@@ -129,9 +127,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const results = await Promise.all(
       queries.map(async (q) => {
-        try {
-          // 1) Try image search first for a quick, durable image URL
-          const imgResults = await imagesSerper(q, gl, hl, 10);
+        try {const imgResults = await imagesSerper(q, gl, hl, 10);
           
           const firstImg = imgResults.find((it: any) => it?.imageUrl || it?.thumbnailUrl);
           if (firstImg) {
@@ -143,14 +139,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             } as SearchedImage;
           }
           
-          // 2) Fallback to product-page search with OG extraction
           const productResult = await findProductImageForQuery(q, gl, hl);
           if (productResult) {
             console.log(`Found product for "${q}":`, productResult.url);
             return productResult;
           }
           
-          // 3) Last resort: return a generic image search result
           if (imgResults.length > 0) {
             const anyImg = imgResults[0];
             
@@ -170,12 +164,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       })
     );
 
-    // Never return null entries
     const filtered = results.filter((x): x is SearchedImage => !!(x && (x as any).url));
+   
     if (!filtered.length) {
-      // Return explicit empty array rather than [null]
       return res.status(200).json({ items: [] });
     }
+    
     return res.status(200).json({ items: filtered });
   } catch {
     return res.status(200).json({ items: [] });

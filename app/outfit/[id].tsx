@@ -20,7 +20,7 @@ import { Database } from "@/types/supabase";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { Pressable, SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
+import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { useSharedValue, withSequence, withSpring } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -216,15 +216,14 @@ function OutfitDetailContent() {
 
   return (
     <>
-      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={colors.background} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
+        <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={colors.background} translucent={false} />
         <ScrollView 
           style={{ flex: 1 }}
           contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
         >
           <OutfitDetailHeader />
 
-          {/* Main Content */}
           <View style={{ paddingHorizontal: 16 }}>
             <OutfitDetailInfo 
               outfit={outfit}
@@ -262,9 +261,8 @@ function OutfitDetailContent() {
             saveScale={saveScale}
           />
         </ScrollView>
-      </SafeAreaView>
+      </View>
 
-      {/* Comments Modal */}
       <CommentSection
         isVisible={showComments}
         onClose={() => setShowComments(false)}

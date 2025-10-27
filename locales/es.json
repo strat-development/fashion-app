@@ -192,19 +192,12 @@
       "saved-outfits": "Guardados"
     }
   },
-  "profileRecentActivitySection": {
-    "title": "Actividad Reciente",
-    "activities": [
-      {
-        "text": "¡Tu atuendo recibió más de 50 me gusta!"
-      },
-      {
-        "text": "Diste me gusta a 5 nuevos atuendos"
-      },
-      {
-        "text": "Creado \"Look Casual de Verano\""
-      }
-    ]
+"profileRecentActivitySection": {
+    "title": "Actividad reciente",
+    "noActivity": "No hay actividad reciente para mostrar.",
+    "created_post": "Creó un nuevo atuendo.",
+    "new_comment": "Recibió un nuevo comentario.",
+    "milestone": "¡Alcanzó {{count}} me gusta en un atuendo!"
   },
   "auth": {
     "welcome": "Bienvenido",

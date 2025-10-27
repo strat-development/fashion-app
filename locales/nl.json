@@ -192,20 +192,13 @@
         "saved-outfits": "Opgeslagen"
       }
     },
-    "profileRecentActivitySection": {
-      "title": "Recente Activiteit",
-      "activities": [
-        {
-          "text": "Je outfit heeft meer dan 50 likes gekregen!"
-        },
-        {
-          "text": "5 nieuwe outfits geliked"
-        },
-        {
-          "text": "Gecreëerd \"Zomerse Casual Look\""
-        }
-      ]
-    },
+"profileRecentActivitySection": {
+    "title": "Recente activiteit",
+    "noActivity": "Geen recente activiteit om te tonen.",
+    "created_post": "Een nieuwe outfit gemaakt.",
+    "new_comment": "Een nieuwe opmerking ontvangen.",
+    "milestone": "{{count}} likes bereikt op een outfit!"
+  },
     "auth": {
       "welcome": "Welkom",
       "hero": {

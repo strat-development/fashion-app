@@ -1,9 +1,9 @@
 import { useTheme } from '@/providers/themeContext';
 import { useQuery } from '@tanstack/react-query';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Text, View } from "react-native";
 import { fetchUserStatistics } from '../../fetchers/dashboard/fetchUserStatistics';
-import React from 'react';
 
 interface UserStatisticsProps {
   userId: string;
@@ -41,7 +41,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                 }}>
                     <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <ActivityIndicator size="small" color="#ec4899" />
+                                <ActivityIndicator size="small" color={colors.accent} />
                             <Text style={{ 
                                 color: colors.textMuted, 
                                 fontSize: 20, 
@@ -57,7 +57,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <ActivityIndicator size="small" color="#ec4899" />
+                            <ActivityIndicator size="small" color={colors.accent} />
                             <Text style={{ 
                                 color: colors.textMuted, 
                                 fontSize: 20, 
@@ -73,7 +73,7 @@ export const UserStatistics = ({ userId }: UserStatisticsProps) => {
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <ActivityIndicator size="small" color="#ec4899" />
+                            <ActivityIndicator size="small" color={colors.accent} />
                             <Text style={{ 
                                 color: colors.textMuted, 
                                 fontSize: 20, 

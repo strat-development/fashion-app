@@ -202,17 +202,10 @@
   },
   "profileRecentActivitySection": {
     "title": "Recent Activity",
-    "activities": [
-      {
-        "text": "Your outfit got 50+ likes!"
-      },
-      {
-        "text": "Liked 5 new outfits"
-      },
-      {
-        "text": "Created \"Summer Casual Look\""
-      }
-    ]
+    "noActivity": "No recent activity to show.",
+    "created_post": "Created a new outfit.",
+    "new_comment": "Received a new comment.",
+    "milestone": "Reached {{count}} likes on an outfit!"
   },
   "auth": {
     "welcome": "Welcome",
