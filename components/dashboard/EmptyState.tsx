@@ -31,13 +31,15 @@ export const EmptyState = ({
         color: colors.textSecondary, 
         fontSize: 16, 
         marginTop: 16,
-        width: '80%'
+        width: '80%',
+        textAlign: 'center'
       }}>{title}</Text>
       <Text style={{ 
         color: colors.textMuted, 
         textAlign: 'center', 
         marginTop: 8, 
-        fontSize: 14 
+        fontSize: 14,
+        paddingHorizontal: 16
       }}>{description}</Text>
       {actionText && onAction && (
         <Pressable 
