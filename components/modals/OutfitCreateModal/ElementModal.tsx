@@ -65,7 +65,7 @@ export const ElementModal: React.FC<ElementModalProps> = ({
       }
 
       const pickerResult = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: [ImagePicker.MediaTypeOptions.Images as any],
         quality: 1,
         allowsMultipleSelection: false,
         exif: false,

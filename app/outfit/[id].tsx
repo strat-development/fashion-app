@@ -53,6 +53,7 @@ function OutfitDetailContent() {
   
   const [outfit, setOutfit] = useState<OutfitDetailData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showComments, setShowComments] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   
@@ -85,6 +86,9 @@ function OutfitDetailContent() {
   useEffect(() => {
     const fetchOutfit = async () => {
       if (!id) return;
+      
+      setLoading(true);
+      setError(null);
 
       try {
         const { data, error } = await supabase
@@ -96,18 +100,25 @@ function OutfitDetailContent() {
           .eq('outfit_id', id)
           .single();
 
-        if (error) throw error;
-
-        if (data) {
+        if (error) {
+          setError('Oops! This outfit no longer exists.');
+          setOutfit(null);
+        } else if (data) {
           setOutfit({
             ...data,
             comments: data.comments?.[0]?.count || 0,
             likes: ratingStats?.positiveRatings || 0,
             isLiked: ratingStats?.data?.some((rating) => rating.rated_by === userId && rating.top_rated === true),
           });
+          setError(null);
+        } else {
+          setError('Oops! This outfit no longer exists.');
+          setOutfit(null);
         }
       } catch (error) {
         console.error('Error fetching outfit:', error);
+        setError('Oops! Something went wrong.');
+        setOutfit(null);
       } finally {
         setLoading(false);
       }
@@ -179,10 +190,12 @@ function OutfitDetailContent() {
     return <FullScreenLoader message={t('outfitDetail.loading')} />;
   }
 
-  if (!outfit) {
+  if (error || !outfit) {
     return (
       <View style={{ flex: 1, backgroundColor: colors.background, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
-        <Text style={{ color: colors.text, fontSize: 18, fontWeight: '600', marginBottom: 16 }}>{t('outfitDetail.notFound')}</Text>
+        <Text style={{ color: colors.text, fontSize: 18, fontWeight: '600', marginBottom: 16 }}>
+          {error || t('outfitDetail.notFound')}
+        </Text>
         <Pressable onPress={() => router.back()} style={{ borderRadius: 999, overflow: 'hidden' }}>
           <ThemedGradient style={{ paddingHorizontal: 24, paddingVertical: 12, borderRadius: 999 }}>
             <Text style={{ color: colors.white, fontWeight: '600', fontSize: 16 }}>{t('outfitDetail.goBack')}</Text>
