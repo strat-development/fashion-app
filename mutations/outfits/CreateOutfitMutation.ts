@@ -63,6 +63,7 @@ export const useCreateOutfitMutation = (
           user_id: outfitData.created_by,
           activity_type: 'created_post',
           outfit_id: outfitId,
+          created_at: new Date().toISOString(),
         });
       }
 
