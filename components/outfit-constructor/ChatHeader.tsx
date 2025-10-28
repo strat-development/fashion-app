@@ -3,7 +3,7 @@ import { deleteConversationMutation } from '@/mutations/DeleteConversationMutati
 import { useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { BlurView } from 'expo-blur';
-import { MessageSquare, Plus, SlidersHorizontal } from 'lucide-react-native';
+import { MessageSquare, Plus, SlidersHorizontal, AlertTriangle, X } from 'lucide-react-native';
 import React from 'react';
 import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
@@ -23,6 +23,8 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
   const [showOverlay, setShowOverlay] = React.useState(false);
   const [list, setList] = React.useState<{ id: string; title: string; created_at: string }[]>([]);
   const { userId } = useUserContext();
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = React.useState(false);
+  const [toDeleteConversationId, setToDeleteConversationId] = React.useState<string | null>(null);
 
   async function handleShowConversations() {
     const data = await fetchConversations(userId || '');
@@ -47,17 +49,26 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
 
   async function handleDeleteCurrent() {
     if (!conversationId) return;
-    const confirmed = true;
-    if (!confirmed) return;
+    setToDeleteConversationId(conversationId);
+    setConfirmDeleteVisible(true);
+  }
+
+  async function confirmDeleteConversation(id?: string | null) {
+    const cid = id || toDeleteConversationId;
+    if (!cid) return;
     try {
-      await deleteConversationMutation({ supabase: (require('@/lib/supabase').supabase as any), conversationId });
+      await deleteConversationMutation({ supabase: (require('@/lib/supabase').supabase as any), conversationId: cid });
     } catch { }
-    setConversationId(null);
-    setSelectedConversationTitle(undefined);
-    setMessages([]);
+    if (conversationId === cid) {
+      setConversationId(null);
+      setSelectedConversationTitle(undefined);
+      setMessages([]);
+    }
     const data = await fetchConversations(userId || '');
     const sanitized = (data || []).map((c: any) => ({ id: c.id, title: c.title || '', created_at: c.created_at || '' }));
     setList(sanitized);
+    setConfirmDeleteVisible(false);
+    setToDeleteConversationId(null);
   }
 
   return (
@@ -127,7 +138,7 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
                 justifyContent: 'center',
               }}
             >
-              <Text style={{ color: colors.textSecondary, fontSize: 18 }}>✕</Text>
+              <X size={18} color={colors.textSecondary} />
             </TouchableOpacity>
           )}
           <TouchableOpacity
@@ -184,7 +195,7 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
               <Text style={{ color: colors.text, fontWeight: '600', marginBottom: 8 }}>{t('chatSection.conversations')}</Text>
               <TouchableOpacity onPress={() => setShowOverlay(false)} style={{ paddingVertical: 8 }}>
-                <Text style={{ color: colors.textSecondary, fontSize: 18 }}>X</Text>
+                <X size={18} color={colors.textSecondary} />
               </TouchableOpacity>
             </View>
             <ScrollView style={{ maxHeight: 420 }} showsVerticalScrollIndicator={false}>
@@ -194,18 +205,10 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
                     <Text style={{ color: colors.text }}>{c.title || c.id}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={async () => {
-                      try {
-                        await deleteConversationMutation({ supabase: (require('@/lib/supabase').supabase as any), conversationId: c.id });
-                      } catch { }
-                      const refreshed = await fetchConversations(userId || '');
-                      const sanitized = (refreshed || []).map((cc: any) => ({ id: cc.id, title: cc.title || '', created_at: cc.created_at || '' }));
-                      setList(sanitized);
-                      if (conversationId === c.id) {
-                        setConversationId(null);
-                        setSelectedConversationTitle(undefined);
-                        setMessages([]);
-                      }
+                    onPress={() => {
+                      // open confirm modal for this conversation
+                      setToDeleteConversationId(c.id);
+                      setConfirmDeleteVisible(true);
                     }}
                     style={{ paddingHorizontal: 8, paddingVertical: 6, borderWidth: 1, borderColor: colors.border, borderRadius: 8 }}
                   >
@@ -214,6 +217,38 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
                 </View>
               ))}
             </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        visible={confirmDeleteVisible}
+        animationType={'fade'}
+        transparent={true}
+        onRequestClose={() => setConfirmDeleteVisible(false)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24, backgroundColor: isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.4)' }}>
+          <View style={{ width: '100%', maxWidth: 520, borderRadius: 18, padding: 18, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.border }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginRight: 10, backgroundColor: `${colors.error}20` }}>
+                  <AlertTriangle size={18} color={colors.error} />
+                </View>
+                <Text style={{ color: colors.text, fontWeight: '600' }}>{t('deleteModalOutfit.title')}</Text>
+              </View>
+              <TouchableOpacity onPress={() => setConfirmDeleteVisible(false)} style={{ padding: 6 }}>
+                <X size={20} color={colors.text} />
+              </TouchableOpacity>
+            </View>
+            <Text style={{ color: colors.textSecondary, marginBottom: 18 }}>{t('deleteModalOutfit.message')}</Text>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              <TouchableOpacity onPress={() => setConfirmDeleteVisible(false)} style={{ flex: 1, paddingVertical: 12, borderRadius: 12, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface, alignItems: 'center' }}>
+                <Text style={{ color: colors.text }}>{t('deleteModalOutfit.cancel')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => confirmDeleteConversation()} style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: colors.error, alignItems: 'center' }}>
+                <Text style={{ color: colors.white }}>{t('deleteModalOutfit.delete')}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
