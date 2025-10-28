@@ -59,7 +59,7 @@ export default function RegistrationModal({ isVisible, onClose, userId }: Regist
             }
 
             const result = await ImagePicker.launchImageLibraryAsync({
-              mediaTypes: [ImagePicker.MediaTypeOptions.Images as any],
+              mediaTypes: ImagePicker.MediaTypeOptions.Images,
               allowsEditing: true,
                 aspect: [1, 1],
                 quality: 1,
