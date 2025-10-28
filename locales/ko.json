@@ -191,6 +191,15 @@
         "created-outfits": "생성됨",
         "saved-outfits": "저장됨"
       }
+      ,
+      "reportBug": "버그 신고",
+      "send": "전송",
+      "reportSubject": "제목",
+      "reportSubjectPlaceholder": "간단한 요약",
+      "reportDescription": "설명",
+      "reportDescriptionPlaceholder": "문제를 설명해주세요...",
+      "reportSent": "보고서가 전송되었습니다",
+      "reportFailed": "보고서 전송 실패"
     },
 "profileRecentActivitySection": {
     "title": "최근 활동",

@@ -191,6 +191,15 @@
         "created-outfits": "Skabte",
         "saved-outfits": "Gemte"
       }
+      ,
+      "reportBug": "Rapporter en fejl",
+      "send": "Send",
+      "reportSubject": "Emne",
+      "reportSubjectPlaceholder": "Kort resumé",
+      "reportDescription": "Beskrivelse",
+      "reportDescriptionPlaceholder": "Beskriv problemet...",
+      "reportSent": "Rapport sendt",
+      "reportFailed": "Kunne ikke sende rapport"
     },
 "profileRecentActivitySection": {
       "title": "Seneste aktivitet",
@@ -453,6 +462,14 @@
       "email": "E-mail",
       "reason": "Årsag",
       "description": "Beskrivelse",
+       "reportBug": "Rapporter en fejl",
+       "send": "Send",
+       "reportSubject": "Emne",
+       "reportSubjectPlaceholder": "Kort resumé",
+       "reportDescription": "Beskrivelse",
+       "reportDescriptionPlaceholder": "Beskriv problemet...",
+       "reportSent": "Rapport sendt",
+       "reportFailed": "Kunne ikke sende rapport",
       "placeholders": {
         "email": "Indtast din e-mail",
         "reason": "Vælg årsag",

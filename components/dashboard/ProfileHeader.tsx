@@ -1,9 +1,11 @@
+import { supabase } from '@/lib/supabase';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
+import { useUserContext } from '@/providers/userContext';
 import { Image } from 'expo-image';
-import { BookOpen, Edit3, Heart, User, User2 } from 'lucide-react-native';
+import { BookOpen, Bug, Edit3, Heart, User, User2, X } from 'lucide-react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, Text, View } from 'react-native';
+import { Alert, Modal, Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
 
 interface ProfileHeaderProps {
   userImage: string | null;
@@ -24,6 +26,38 @@ export function ProfileHeader({
 }: ProfileHeaderProps) {
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const [showReportModal, setShowReportModal] = React.useState(false);
+  const [reportSubject, setReportSubject] = React.useState('');
+  const [reportMessage, setReportMessage] = React.useState('');
+  const { userId } = useUserContext();
+
+  const handleSendReport = async () => {
+    const payload = { user_id: userId || null, subject: reportSubject || 'Bug report', message: reportMessage || '', created_at: new Date().toISOString() };
+    console.log('Sending report (client):', payload);
+
+    try {
+      // Try inserting into Supabase if configured
+        if ((process.env.EXPO_PUBLIC_SUPABASE_URL || '') !== '') {
+          const { error } = await supabase.from('reports' as any).insert(payload as any);
+        if (error) {
+          console.warn('Supabase insert error', error);
+          // fallback to server API
+          await fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        }
+      } else {
+        // fallback for environments without supabase config
+        await fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      }
+
+      Alert.alert(t('profileHeader.reportSent') || 'Report sent');
+    } catch (e) {
+      console.error('Report send failed', e);
+      Alert.alert(t('profileHeader.reportFailed') || 'Failed to send report');
+    }
+    setShowReportModal(false);
+    setReportSubject('');
+    setReportMessage('');
+  };
 
   const tabs = [
     { key: 'user-info', label: t('profileHeader.tabs.user-info'), icon: User2 },
@@ -86,28 +120,85 @@ export function ProfileHeader({
         </Text>
 
         {isOwnProfile && (
-          <Pressable
-            onPress={onEditProfile}
-            style={{
-              backgroundColor: colors.surface,
-              paddingHorizontal: 24,
-              paddingVertical: 12,
-              borderRadius: 999,
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderWidth: 1,
-              borderColor: colors.border,
-            }}
-          >
-            <Edit3 size={16} color={colors.text} />
-            <Text style={{ color: colors.text, fontWeight: '500', marginLeft: 8 }}>
-              {t('profileHeader.editProfile')}
-            </Text>
-          </Pressable>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Pressable
+              onPress={onEditProfile}
+              style={{
+                backgroundColor: colors.surface,
+                paddingHorizontal: 24,
+                paddingVertical: 12,
+                borderRadius: 999,
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderWidth: 1,
+                borderColor: colors.border,
+              }}
+            >
+              <Edit3 size={16} color={colors.text} />
+              <Text style={{ color: colors.text, fontWeight: '500', marginLeft: 8 }}>
+                {t('profileHeader.editProfile')}
+              </Text>
+            </Pressable>
+
+            {/* Small circular bug report button */}
+            <Pressable
+              onPress={() => setShowReportModal(true)}
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 999,
+                borderWidth: 1,
+                borderColor: colors.border,
+                backgroundColor: colors.surface,
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <Bug size={18} color={colors.text} />
+            </Pressable>
+          </View>
         )}
       </View>
 
       {/* Tab Navigation */}
+      {/* Report Modal */}
+      <Modal visible={showReportModal} animationType="slide" presentationStyle="pageSheet">
+        <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+            <Pressable onPress={() => setShowReportModal(false)} style={{ padding: 8 }}>
+              <X size={24} color={colors.textMuted} />
+            </Pressable>
+            <Text style={{ color: colors.text, fontWeight: '600' }}>{t('profileHeader.reportBug') || 'Report a bug'}</Text>
+            <Pressable onPress={handleSendReport} style={{ padding: 8 }}>
+              <Text style={{ color: colors.primary }}>{t('profileHeader.send') || 'Send'}</Text>
+            </Pressable>
+          </View>
+          <ScrollView contentContainerStyle={{ padding: 16 }}>
+            <Text style={{ color: colors.text, marginBottom: 8 }}>{t('profileHeader.reportSubject') || 'Subject'}</Text>
+            <TextInput value={reportSubject} onChangeText={setReportSubject} placeholder={t('profileHeader.reportSubjectPlaceholder') || 'Short summary'} placeholderTextColor={colors.textMuted} style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: colors.border, padding: 12, borderRadius: 8, color: colors.text, marginBottom: 12 }} />
+
+            <Text style={{ color: colors.text, marginBottom: 8 }}>{t('profileHeader.reportDescription') || 'Description'}</Text>
+            <TextInput
+              value={reportMessage}
+              onChangeText={setReportMessage}
+              placeholder={t('profileHeader.reportDescriptionPlaceholder') || 'Describe the issue...'}
+              placeholderTextColor={colors.textMuted}
+              multiline
+              numberOfLines={8}
+              style={{
+                backgroundColor: colors.surfaceVariant,
+                borderWidth: 1,
+                borderColor: colors.border,
+                padding: 12,
+                borderRadius: 8,
+                color: colors.text,
+                textAlignVertical: 'top',
+                minHeight: 180,
+              }}
+            />
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
       <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 16, paddingHorizontal: 24 }}>
         <View
           style={{

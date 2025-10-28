@@ -191,6 +191,15 @@
         "created-outfits": "Oluşturulanlar",
         "saved-outfits": "Kaydedilenler"
       }
+      ,
+      "reportBug": "Hata bildir",
+      "send": "Gönder",
+      "reportSubject": "Konu",
+      "reportSubjectPlaceholder": "Kısa özet",
+      "reportDescription": "Açıklama",
+      "reportDescriptionPlaceholder": "Sorunu açıklayın...",
+      "reportSent": "Rapor gönderildi",
+      "reportFailed": "Rapor gönderilemedi"
     },
 "profileRecentActivitySection": {
     "title": "Son Etkinlik",

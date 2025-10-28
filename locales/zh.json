@@ -191,6 +191,15 @@
         "created-outfits": "已创建",
         "saved-outfits": "已保存"
       }
+      ,
+      "reportBug": "报告错误",
+      "send": "发送",
+      "reportSubject": "主题",
+      "reportSubjectPlaceholder": "简要说明",
+      "reportDescription": "描述",
+      "reportDescriptionPlaceholder": "描述问题...",
+      "reportSent": "报告已发送",
+      "reportFailed": "报告发送失败"
     },
 "profileRecentActivitySection": {
     "title": "最近活动",

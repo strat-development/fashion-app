@@ -191,6 +191,15 @@
         "created-outfits": "Создано",
         "saved-outfits": "Сохранено"
       }
+      ,
+      "reportBug": "Сообщить об ошибке",
+      "send": "Отправить",
+      "reportSubject": "Тема",
+      "reportSubjectPlaceholder": "Краткое описание",
+      "reportDescription": "Описание",
+      "reportDescriptionPlaceholder": "Опишите проблему...",
+      "reportSent": "Сообщение отправлено",
+      "reportFailed": "Не удалось отправить сообщение"
     },
 "profileRecentActivitySection": {
     "title": "Недавняя активность",

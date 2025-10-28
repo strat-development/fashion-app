@@ -199,6 +199,15 @@
       "created-outfits": "Created",
       "saved-outfits": "Saved"
     }
+    ,
+    "reportBug": "Report a bug",
+    "send": "Send",
+    "reportSubject": "Subject",
+    "reportSubjectPlaceholder": "Short summary",
+    "reportDescription": "Description",
+    "reportDescriptionPlaceholder": "Describe the issue...",
+    "reportSent": "Report sent successfully",
+    "reportFailed": "Failed to send report"
   },
   "profileRecentActivitySection": {
     "title": "Recent Activity",

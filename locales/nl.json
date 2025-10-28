@@ -191,6 +191,15 @@
         "created-outfits": "Gecreëerd",
         "saved-outfits": "Opgeslagen"
       }
+      ,
+      "reportBug": "Fout rapporteren",
+      "send": "Verzenden",
+      "reportSubject": "Onderwerp",
+      "reportSubjectPlaceholder": "Korte samenvatting",
+      "reportDescription": "Beschrijving",
+      "reportDescriptionPlaceholder": "Omschrijf het probleem...",
+      "reportSent": "Rapport succesvol verzonden",
+      "reportFailed": "Verzenden van rapport mislukt"
     },
 "profileRecentActivitySection": {
     "title": "Recente activiteit",

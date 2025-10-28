@@ -191,6 +191,15 @@
         "created-outfits": "Skapade",
         "saved-outfits": "Sparade"
       }
+      ,
+      "reportBug": "Rapportera ett fel",
+      "send": "Skicka",
+      "reportSubject": "Ämne",
+      "reportSubjectPlaceholder": "Kort sammanfattning",
+      "reportDescription": "Beskrivning",
+      "reportDescriptionPlaceholder": "Beskriv problemet...",
+      "reportSent": "Rapport skickad",
+      "reportFailed": "Kunde inte skicka rapport"
     },
 "profileRecentActivitySection": {
     "title": "Senaste aktivitet",

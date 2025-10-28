@@ -191,6 +191,15 @@
       "created-outfits": "Créées",
       "saved-outfits": "Enregistrées"
     }
+    ,
+    "reportBug": "Signaler un bug",
+    "send": "Envoyer",
+    "reportSubject": "Sujet",
+    "reportSubjectPlaceholder": "Résumé court",
+    "reportDescription": "Description",
+    "reportDescriptionPlaceholder": "Décrivez le problème...",
+    "reportSent": "Signalement envoyé avec succès",
+    "reportFailed": "Échec de l'envoi du signalement"
   },
 "profileRecentActivitySection": {
     "title": "Activité récente",

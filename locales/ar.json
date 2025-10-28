@@ -531,13 +531,6 @@
         "old money": "المال القديم",
         "athleisure": "أثليجر",
         "minimalist": "بسيط",
-        "gothic": "غوثيك",
-        "preppy": "بريبي",
-        "punk": "بانك",
-        "grunge": "غرانج",
-        "smart casual": "كاجوال ذكي",
-        "business casual": "كاجوال أعمال",
-        "chic": "أنيق",
         "resort": "منتجع",
         "cottagecore": "كوتجكور",
         "normcore": "نورمكور",
@@ -549,6 +542,13 @@
         "retro": "رجعي",
         "y2k": "Y2K",
         "maximalist": "ماكسيماليست"
+      },
+      "errors": {
+        "userIdRequired": "معرف المستخدم مطلوب",
+        "emailRequired": "أدخل بريدك الإلكتروني حتى نتمكن من الرد عليك",
+        "emailInvalid": "يرجى إدخال بريد إلكتروني صالح",
+        "reasonRequired": "السبب مطلوب",
+        "descriptionRequired": "الوصف مطلوب"
       },
       "fits": {
         "slim": "نحيف",

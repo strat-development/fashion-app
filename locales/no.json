@@ -191,6 +191,15 @@
         "created-outfits": "Opprettet",
         "saved-outfits": "Lagret"
       }
+      ,
+      "reportBug": "Rapporter en feil",
+      "send": "Send",
+      "reportSubject": "Emne",
+      "reportSubjectPlaceholder": "Kort oppsummering",
+      "reportDescription": "Beskrivelse",
+      "reportDescriptionPlaceholder": "Beskriv problemet...",
+      "reportSent": "Rapport sendt",
+      "reportFailed": "Kunne ikke sende rapport"
     },
 "profileRecentActivitySection": {
     "title": "Nylig aktivitet",
