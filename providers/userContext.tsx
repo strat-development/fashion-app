@@ -59,7 +59,7 @@ export default function UserContextProvider({ children }: { children: React.Reac
             setNickname(userData.nickname || "");
             setUserBio(userData.bio || "");
             setUserImage(userData.user_avatar || "");
-            setUserEmail(userData.email || "");
+            setUserEmail(userData.email || session?.user?.email || "");
             setUserSocials(
                 Array.isArray(userData.socials)
                     ? userData.socials.map(String)
@@ -71,6 +71,12 @@ export default function UserContextProvider({ children }: { children: React.Reac
             setPreferredCurrency(userData.preferred_currency || "USD");
         }
     }, [userData]);
+
+    useEffect(() => {
+        if (!userEmail && session?.user?.email) {
+            setUserEmail(session.user.email);
+        }
+    }, [session?.user?.email]);
 
     return (
         <UserContext.Provider value={{

@@ -29,24 +29,59 @@ export function ProfileHeader({
   const [showReportModal, setShowReportModal] = React.useState(false);
   const [reportSubject, setReportSubject] = React.useState('');
   const [reportMessage, setReportMessage] = React.useState('');
-  const { userId } = useUserContext();
+  const { userId, userName: currentUserName, userEmail: currentUserEmail } = useUserContext();
 
   const handleSendReport = async () => {
-    const payload = { user_id: userId || null, subject: reportSubject || 'Bug report', message: reportMessage || '', created_at: new Date().toISOString() };
-    console.log('Sending report (client):', payload);
+    const funcPayload = {
+      userId: userId || null,
+      name: currentUserName || null,
+      email: currentUserEmail || null,
+      subject: reportSubject || 'Bug report',
+      description: reportMessage || ''
+    };
+
+    console.log('Sending report (client):', funcPayload);
 
     try {
-      // Try inserting into Supabase if configured
-        if ((process.env.EXPO_PUBLIC_SUPABASE_URL || '') !== '') {
-          const { error } = await supabase.from('reports' as any).insert(payload as any);
-        if (error) {
-          console.warn('Supabase insert error', error);
-          // fallback to server API
-          await fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      const candidates = [
+        process.env.EXPO_PUBLIC_REPORT_FUNCTION_NAME,
+        'report',
+        'report-handler',
+      ].filter(Boolean) as string[];
+
+      let invoked = false;
+      let lastError: any = null;
+      for (const fnName of candidates) {
+        try {
+          const { data, error } = await supabase.functions.invoke(fnName, {
+            body: funcPayload,
+          } as any);
+          if (!error) {
+            invoked = true;
+            break;
+          }
+          lastError = error;
+          console.warn(`Edge Function '${fnName}' invoke error:`, error);
+        } catch (err) {
+          lastError = err;
+          console.warn(`Edge Function '${fnName}' invoke threw:`, err);
         }
-      } else {
-        // fallback for environments without supabase config
-        await fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      }
+
+      if (!invoked) {
+        console.warn('No Edge Function invocation succeeded, falling back to direct insert.', lastError);
+        const insertPayload = {
+          user_id: userId || null,
+          name: currentUserName || null,
+          email: currentUserEmail || null,
+          subject: reportSubject || 'Bug report',
+          message: reportMessage || '',
+          created_at: new Date().toISOString(),
+        } as any;
+        const { error: insertErr } = await supabase.from('reports' as any).insert(insertPayload);
+        if (insertErr) {
+          throw insertErr;
+        }
       }
 
       Alert.alert(t('profileHeader.reportSent') || 'Report sent');
