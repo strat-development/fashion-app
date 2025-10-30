@@ -1,6 +1,9 @@
 {
   "common": {
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "approve": "Approve",
+    "decline": "Decline",
+    "close": "Close"
   },
   "homeScreen": {
     "welcomeMessage": "Welcome, how would you like to create an outfit?",
@@ -180,12 +183,7 @@
     "unfollow": "Unfollow",
     "pending": "Follow Request Pending"
   },
-  "common": {
-    "loading": "Loading…",
-    "approve": "Approve",
-    "decline": "Decline",
-    "close": "Close"
-  },
+  
   "profileBioSection": {
     "title": "About",
     "noBio": "No bio available yet. Add one by editing your profile!"
