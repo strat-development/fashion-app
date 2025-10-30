@@ -480,6 +480,23 @@
         "error": "无法发送报告。请稍后再试。"
       }
     },
+    "reportPost": {
+      "title": "举报帖子",
+      "send": "发送",
+      "post": "帖子",
+      "reasons": "原因",
+      "commentOptional": "附加详细信息（可选）",
+      "commentPlaceholder": "请描述问题或提供上下文...",
+      "success": "举报已发送",
+      "failure": "举报发送失败",
+      "reason": {
+        "sexual": "色情内容",
+        "racism": "种族歧视",
+        "vulgar": "粗俗或低俗",
+        "non_outfit": "与穿搭无关",
+        "other": "其他"
+      }
+    },
     "shareModal": {
       "title": "分享服装",
       "cancel": "取消",

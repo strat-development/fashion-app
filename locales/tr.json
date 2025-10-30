@@ -480,6 +480,23 @@
         "error": "Rapor gönderilemedi. Lütfen daha sonra tekrar deneyin."
       }
     },
+    "reportPost": {
+      "title": "Gönderiyi bildir",
+      "send": "Gönder",
+      "post": "Gönderi",
+      "reasons": "Nedenler",
+      "commentOptional": "Ek ayrıntılar (isteğe bağlı)",
+      "commentPlaceholder": "Sorunu açıklayın veya bağlam ekleyin...",
+      "success": "Bildirim gönderildi",
+      "failure": "Bildirim gönderilemedi",
+      "reason": {
+        "sexual": "Cinsel içerik",
+        "racism": "Irkçılık",
+        "vulgar": "Kaba veya müstehcen",
+        "non_outfit": "Kıyafetlerle ilgili değil",
+        "other": "Diğer"
+      }
+    },
     "shareModal": {
       "title": "Kıyafeti Paylaş",
       "cancel": "İptal",

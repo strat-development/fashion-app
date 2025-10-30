@@ -663,5 +663,22 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Skaber"
+    },
+    "reportPost": {
+      "title": "Anmeld opslag",
+      "send": "Send",
+      "post": "Opslag",
+      "reasons": "Årsager",
+      "commentOptional": "Yderligere detaljer (valgfrit)",
+      "commentPlaceholder": "Beskriv problemet eller tilføj kontekst...",
+      "success": "Anmeldelse sendt",
+      "failure": "Kunne ikke sende anmeldelsen",
+      "reason": {
+        "sexual": "Seksuelt indhold",
+        "racism": "Racisme",
+        "vulgar": "Vulgær eller obskøn",
+        "non_outfit": "Ikke relateret til outfits",
+        "other": "Andet"
+      }
     }
   }

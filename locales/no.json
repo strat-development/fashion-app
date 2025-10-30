@@ -655,5 +655,22 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Skaper"
+    },
+    "reportPost": {
+      "title": "Rapporter innlegg",
+      "send": "Send",
+      "post": "Innlegg",
+      "reasons": "Årsaker",
+      "commentOptional": "Ytterligere detaljer (valgfritt)",
+      "commentPlaceholder": "Beskriv problemet eller legg til kontekst...",
+      "success": "Rapport sendt",
+      "failure": "Klarte ikke å sende rapporten",
+      "reason": {
+        "sexual": "Seksuelt innhold",
+        "racism": "Rasisme",
+        "vulgar": "Vulgært eller obskønt",
+        "non_outfit": "Ikke relatert til antrekk",
+        "other": "Annet"
+      }
     }
   }

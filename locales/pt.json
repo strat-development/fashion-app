@@ -655,5 +655,22 @@
     "chatSwitch": {
       "ai": "IA",
       "creator": "Criador"
+    },
+    "reportPost": {
+      "title": "Denunciar publicação",
+      "send": "Enviar",
+      "post": "Publicação",
+      "reasons": "Motivos",
+      "commentOptional": "Detalhes adicionais (opcional)",
+      "commentPlaceholder": "Descreva o problema ou adicione contexto...",
+      "success": "Denúncia enviada",
+      "failure": "Falha ao enviar a denúncia",
+      "reason": {
+        "sexual": "Conteúdo sexual",
+        "racism": "Racismo",
+        "vulgar": "Vulgar ou obsceno",
+        "non_outfit": "Não relacionado a outfits",
+        "other": "Outro"
+      }
     }
   }

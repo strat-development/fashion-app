@@ -2,7 +2,7 @@ import { formatDate } from "@/helpers/helpers";
 import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { Database } from "@/types/supabase";
 import { Link } from "expo-router";
-import { Delete, User } from "lucide-react-native";
+import { Delete, User, Flag } from "lucide-react-native";
 import { Image, Pressable, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import React from "react";
@@ -17,6 +17,7 @@ interface OutfitHeaderProps {
   isDeleteVisible?: boolean;
   onDelete?: (outfitId: string) => void;
   outfitId: string;
+  onReport?: () => void;
 }
 
 export const OutfitHeader = ({
@@ -27,6 +28,7 @@ export const OutfitHeader = ({
   isDeleteVisible,
   onDelete,
   outfitId,
+  onReport,
 }: OutfitHeaderProps) => {
   const { t } = useTranslation();
   const { colors } = useTheme();
@@ -96,7 +98,7 @@ export const OutfitHeader = ({
         </View>
       </View>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
         {createdBy === currentUserId && (
           <ThemedGradient
             style={{
@@ -125,6 +127,21 @@ export const OutfitHeader = ({
             onPress={() => onDelete?.(outfitId)}
           >
             <Delete size={16} color={colors.error} />
+          </Pressable>
+        )}
+
+        {createdBy !== currentUserId && (
+          <Pressable
+            onPress={onReport}
+            style={{
+              backgroundColor: colors.surface,
+              borderWidth: 1,
+              borderColor: colors.border,
+              padding: 8,
+              borderRadius: 999
+            }}
+          >
+            <Flag size={16} color={colors.textSecondary} />
           </Pressable>
         )}
       </View>

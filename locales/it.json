@@ -480,6 +480,23 @@
       "error": "Impossibile inviare la segnalazione. Riprova più tardi."
     }
   },
+  "reportPost": {
+    "title": "Segnala post",
+    "send": "Invia",
+    "post": "Post",
+    "reasons": "Motivi",
+    "commentOptional": "Dettagli aggiuntivi (opzionale)",
+    "commentPlaceholder": "Descrivi il problema o aggiungi contesto...",
+    "success": "Segnalazione inviata",
+    "failure": "Invio della segnalazione non riuscito",
+    "reason": {
+      "sexual": "Contenuti sessuali",
+      "racism": "Razzismo",
+      "vulgar": "Volgare o osceno",
+      "non_outfit": "Non relativo agli outfit",
+      "other": "Altro"
+    }
+  },
   "shareModal": {
     "title": "Condividi Outfit",
     "cancel": "Annulla",

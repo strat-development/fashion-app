@@ -664,5 +664,22 @@
   "chatSwitch": {
     "ai": "AI",
     "creator": "Creator"
+  },
+  "reportPost": {
+    "title": "Report post",
+    "send": "Send",
+    "post": "Post",
+    "reasons": "Reasons",
+    "commentOptional": "Additional details (optional)",
+    "commentPlaceholder": "Describe the issue or add context...",
+    "success": "Report sent",
+    "failure": "Failed to send report",
+    "reason": {
+      "sexual": "Sexual content",
+      "racism": "Racism",
+      "vulgar": "Vulgar or obscene",
+      "non_outfit": "Not related to outfits",
+      "other": "Other"
+    }
   }
 }

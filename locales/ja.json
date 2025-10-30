@@ -655,5 +655,22 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "クリエイター"
+    },
+    "reportPost": {
+      "title": "投稿を報告",
+      "send": "送信",
+      "post": "投稿",
+      "reasons": "理由",
+      "commentOptional": "追加の詳細（任意）",
+      "commentPlaceholder": "問題を説明するか、文脈を追加してください...",
+      "success": "送信しました",
+      "failure": "送信に失敗しました",
+      "reason": {
+        "sexual": "性的なコンテンツ",
+        "racism": "人種差別",
+        "vulgar": "低俗またはわいせつ",
+        "non_outfit": "コーディネートに無関係",
+        "other": "その他"
+      }
     }
   }

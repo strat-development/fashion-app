@@ -655,5 +655,22 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Maker"
+    },
+    "reportPost": {
+      "title": "Bericht rapporteren",
+      "send": "Verzenden",
+      "post": "Bericht",
+      "reasons": "Redenen",
+      "commentOptional": "Aanvullende details (optioneel)",
+      "commentPlaceholder": "Beschrijf het probleem of voeg context toe...",
+      "success": "Rapport verzonden",
+      "failure": "Rapport verzenden mislukt",
+      "reason": {
+        "sexual": "Seksuele inhoud",
+        "racism": "Racisme",
+        "vulgar": "Vulgair of obsceen",
+        "non_outfit": "Niet gerelateerd aan outfits",
+        "other": "Overig"
+      }
     }
   }

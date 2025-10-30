@@ -655,5 +655,22 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Skapare"
+    },
+    "reportPost": {
+      "title": "Anmäl inlägg",
+      "send": "Skicka",
+      "post": "Inlägg",
+      "reasons": "Anledningar",
+      "commentOptional": "Ytterligare detaljer (valfritt)",
+      "commentPlaceholder": "Beskriv problemet eller lägg till sammanhang...",
+      "success": "Anmälan skickad",
+      "failure": "Misslyckades att skicka anmälan",
+      "reason": {
+        "sexual": "Sexuellt innehåll",
+        "racism": "Rasism",
+        "vulgar": "Vulgärt eller obscent",
+        "non_outfit": "Inte relaterat till outfits",
+        "other": "Annat"
+      }
     }
   }

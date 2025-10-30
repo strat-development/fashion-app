@@ -655,5 +655,22 @@
   "chatSwitch": {
     "ai": "KI",
     "creator": "Ersteller"
+  },
+  "reportPost": {
+    "title": "Beitrag melden",
+    "send": "Senden",
+    "post": "Beitrag",
+    "reasons": "Gründe",
+    "commentOptional": "Zusätzliche Details (optional)",
+    "commentPlaceholder": "Beschreiben Sie das Problem oder fügen Sie Kontext hinzu...",
+    "success": "Meldung gesendet",
+    "failure": "Senden der Meldung fehlgeschlagen",
+    "reason": {
+      "sexual": "Sexuelle Inhalte",
+      "racism": "Rassismus",
+      "vulgar": "Vulgär oder obszön",
+      "non_outfit": "Nicht bezogen auf Outfits",
+      "other": "Sonstiges"
+    }
   }
 }
