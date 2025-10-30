@@ -10,7 +10,8 @@ import { buildSystemPrompt as buildSystemPromptUtil, generateUserLikePrompt } fr
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { ScrollView, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -35,6 +36,17 @@ export default function HomeScreen() {
   const abortRef = useRef<AbortController | null>(null);
   const lastAutoPromptRef = useRef<string>('');
   const [selectedConversationTitle, setSelectedConversationTitle] = useState<string | undefined>(undefined);
+  const insets = useSafeAreaInsets();
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSub = Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    const hideSub = Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
+    return () => {
+      try { showSub.remove(); } catch {}
+      try { hideSub.remove(); } catch {}
+    };
+  }, []);
 
   function getCleanAssistantText(text: string) {
     let cleaned = text.replace(/```[\s\S]*?```/g, '').trim();
@@ -230,64 +242,159 @@ export default function HomeScreen() {
 
   return (
     <>
-      <View className='flex-1' style={{ backgroundColor: colors.background }}>
-        <View style={{ backgroundColor: colors.background, }}>
-          <ChatHeader
-            filtersExpanded={filtersExpanded}
-            onToggleFilters={() => setFiltersExpanded((v) => !v)}
-            t={(k) => t(k)}
-            title={selectedConversationTitle}
-            conversationId={conversationId}
-            setConversationId={setConversationId}
-            setSelectedConversationTitle={setSelectedConversationTitle}
-            setMessages={setMessages}
-          />
-        </View>
+      {(Platform.OS === 'ios') ? (
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior='padding'
+          keyboardVerticalOffset={insets.top}
+        >
+          <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['bottom']}>
+            <View className='flex-1' style={{ backgroundColor: colors.background }}>
+              <View style={{ backgroundColor: colors.background, }}>
+                <ChatHeader
+                  filtersExpanded={filtersExpanded}
+                  onToggleFilters={() => setFiltersExpanded((v) => !v)}
+                  t={(k) => t(k)}
+                  title={selectedConversationTitle}
+                  conversationId={conversationId}
+                  setConversationId={setConversationId}
+                  setSelectedConversationTitle={setSelectedConversationTitle}
+                  setMessages={setMessages}
+                />
+              </View>
 
-        {filtersExpanded && (
-          <AIChatFilters
-            outfitGender={outfitGender}
-            setOutfitGender={setOutfitGender}
-            outfitTag={outfitTag}
-            setOutfitTag={setOutfitTag}
-            outfitFit={outfitFit}
-            setOutfitFit={setOutfitFit}
-            outfitColor={outfitColor}
-            setOutfitColor={setOutfitColor}
-            outfitElement={outfitElement}
-            setOutfitElement={setOutfitElement}
-            lowestPrice={lowestPrice}
-            setLowestPrice={setLowestPrice}
-            highestPrice={highestPrice}
-            setHighestPrice={setHighestPrice}
-            currency={currency}
-            setCurrency={setCurrency}
-            isOpen={filtersExpanded}
-            onToggle={() => setFiltersExpanded((v) => !v)}
-          />
-        )}
+              {filtersExpanded && (
+                <AIChatFilters
+                  outfitGender={outfitGender}
+                  setOutfitGender={setOutfitGender}
+                  outfitTag={outfitTag}
+                  setOutfitTag={setOutfitTag}
+                  outfitFit={outfitFit}
+                  setOutfitFit={setOutfitFit}
+                  outfitColor={outfitColor}
+                  setOutfitColor={setOutfitColor}
+                  outfitElement={outfitElement}
+                  setOutfitElement={setOutfitElement}
+                  lowestPrice={lowestPrice}
+                  setLowestPrice={setLowestPrice}
+                  highestPrice={highestPrice}
+                  setHighestPrice={setHighestPrice}
+                  currency={currency}
+                  setCurrency={setCurrency}
+                  isOpen={filtersExpanded}
+                  onToggle={() => setFiltersExpanded((v) => !v)}
+                />
+              )}
 
-        <View className='flex-1 pb-24'>
-          <ChatMessages
-            messages={messages}
-            isStreaming={isStreaming}
-            getCleanAssistantText={getCleanAssistantText}
-            t={(k) => t(k)}
-            scrollRef={scrollRef}
-          />
-        </View>
+              <View className='flex-1'>
+                <ChatMessages
+                  messages={messages}
+                  isStreaming={isStreaming}
+                  getCleanAssistantText={getCleanAssistantText}
+                  t={(k) => t(k)}
+                  scrollRef={scrollRef}
+                />
+              </View>
 
-        <View className='absolute bottom-0 left-0 right-0 px-4 py-3 z-20' style={{ backgroundColor: colors.background, borderTopWidth: 1, borderTopColor: colors.border, paddingBottom: 34 }}>
-          <ChatComposer
-            value={searchQuery}
-            onChange={setSearchQuery}
-            onSend={handleSend}
-            onStop={handleStop}
-            sending={sending}
-            placeholder={t('chatSection.placeholders.outfitDescription')}
-          />
-        </View>
-      </View>
+              <View
+                className='px-4 py-3'
+                style={{
+                  backgroundColor: colors.background,
+                  borderTopWidth: 1,
+                  borderTopColor: colors.border,
+                  paddingBottom: 8,
+                }}
+              >
+                <ChatComposer
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  onSend={handleSend}
+                  onStop={handleStop}
+                  sending={sending}
+                  placeholder={t('chatSection.placeholders.outfitDescription')}
+                  bottomSpacing={isKeyboardVisible ? 12 : 64}
+                />
+              </View>
+            </View>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
+      ) : (
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior='height'
+          keyboardVerticalOffset={0}
+        >
+        <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['bottom']}>
+          <View className='flex-1' style={{ backgroundColor: colors.background }}>
+            <View style={{ backgroundColor: colors.background, }}>
+              <ChatHeader
+                filtersExpanded={filtersExpanded}
+                onToggleFilters={() => setFiltersExpanded((v) => !v)}
+                t={(k) => t(k)}
+                title={selectedConversationTitle}
+                conversationId={conversationId}
+                setConversationId={setConversationId}
+                setSelectedConversationTitle={setSelectedConversationTitle}
+                setMessages={setMessages}
+              />
+            </View>
+
+            {filtersExpanded && (
+              <AIChatFilters
+                outfitGender={outfitGender}
+                setOutfitGender={setOutfitGender}
+                outfitTag={outfitTag}
+                setOutfitTag={setOutfitTag}
+                outfitFit={outfitFit}
+                setOutfitFit={setOutfitFit}
+                outfitColor={outfitColor}
+                setOutfitColor={setOutfitColor}
+                outfitElement={outfitElement}
+                setOutfitElement={setOutfitElement}
+                lowestPrice={lowestPrice}
+                setLowestPrice={setLowestPrice}
+                highestPrice={highestPrice}
+                setHighestPrice={setHighestPrice}
+                currency={currency}
+                setCurrency={setCurrency}
+                isOpen={filtersExpanded}
+                onToggle={() => setFiltersExpanded((v) => !v)}
+              />
+            )}
+
+            <View className='flex-1'>
+              <ChatMessages
+                messages={messages}
+                isStreaming={isStreaming}
+                getCleanAssistantText={getCleanAssistantText}
+                t={(k) => t(k)}
+                scrollRef={scrollRef}
+              />
+            </View>
+
+            <View
+              className='px-4 py-3'
+              style={{
+                backgroundColor: colors.background,
+                borderTopWidth: 1,
+                borderTopColor: colors.border,
+                paddingBottom: 8,
+              }}
+            >
+              <ChatComposer
+                value={searchQuery}
+                onChange={setSearchQuery}
+                onSend={handleSend}
+                onStop={handleStop}
+                sending={sending}
+                placeholder={t('chatSection.placeholders.outfitDescription')}
+                bottomSpacing={isKeyboardVisible ? 12 : 64}
+              />
+            </View>
+          </View>
+        </SafeAreaView>
+        </KeyboardAvoidingView>
+      )}
     </>
   );
 }

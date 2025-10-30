@@ -4,7 +4,7 @@ import { ImageResult, searchImages } from '@/fetchers/searchImages';
 import { useTheme } from '@/providers/themeContext';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Image, Linking, Pressable, ScrollView, Text, View } from 'react-native';
+import { Image, Linking, Pressable, ScrollView, Text, View, Platform } from 'react-native';
 
 type Message = { id: string; role: 'user' | 'assistant'; content: string };
 
@@ -320,9 +320,11 @@ export const ChatMessages = ({ messages, isStreaming, getCleanAssistantText, t, 
   return (
     <ScrollView
       ref={scrollRef}
-      className='flex-1 px-4 py-2 mb-24'
+      className='flex-1 px-4 py-2'
       contentContainerStyle={{ paddingBottom: 10 }}
       showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
     >
       {messages.length === 0 && (
         <View className='flex-1 items-center justify-center py-20'>
