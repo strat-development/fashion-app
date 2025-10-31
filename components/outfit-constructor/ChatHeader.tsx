@@ -119,7 +119,11 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
           }}
         >
           <MessageSquare size={18} color={colors.textSecondary} />
-          <Text style={{ fontSize: 16, color: colors.textSecondary, marginLeft: 8 }}>
+          <Text
+            style={{ fontSize: 16, color: colors.textSecondary, marginLeft: 8, flex: 1 }}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
             {title || t('chatSection.conversations')}
           </Text>
         </TouchableOpacity>
@@ -201,8 +205,8 @@ export const ChatHeader = ({ filtersExpanded, onToggleFilters, t, title, convers
             <ScrollView style={{ maxHeight: 420 }} showsVerticalScrollIndicator={false}>
               {list.map((c) => (
                 <View key={c.id} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                  <TouchableOpacity onPress={() => handlePickConversation({ id: c.id, title: c.title })} style={{ paddingVertical: 6, flex: 1 }}>
-                    <Text style={{ color: colors.text }}>{c.title || c.id}</Text>
+                  <TouchableOpacity onPress={() => handlePickConversation({ id: c.id, title: c.title })} style={{ paddingVertical: 6, flex: 1, paddingRight: 12 }}>
+                    <Text style={{ color: colors.text }} numberOfLines={1} ellipsizeMode="tail">{c.title || c.id}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
