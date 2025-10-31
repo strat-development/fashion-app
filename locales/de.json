@@ -129,7 +129,7 @@
     "link": "Zum Startbildschirm!"
   },
   "themeSettings": {
-    "title": "Themen-Einstellungen",
+  "title": "Einstellungen",
     "appearance": {
       "title": "Aussehen",
       "description": "Wähle, wie die Fashion-App für dich aussieht. Wähle ein einziges Thema oder synchronisiere es mit deinen Systemeinstellungen.",
@@ -191,6 +191,15 @@
       "created-outfits": "Erstellt",
       "saved-outfits": "Gespeichert"
     }
+    ,
+    "reportBug": "Fehler melden",
+    "send": "Senden",
+    "reportSubject": "Betreff",
+    "reportSubjectPlaceholder": "Kurze Zusammenfassung",
+    "reportDescription": "Beschreibung",
+    "reportDescriptionPlaceholder": "Beschreibe das Problem...",
+    "reportSent": "Bericht erfolgreich gesendet",
+    "reportFailed": "Senden des Berichts fehlgeschlagen"
   },
 "profileRecentActivitySection": {
     "title": "Letzte Aktivität",
@@ -246,7 +255,7 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Themen-Einstellungen",
+    "themeSettings": "Einstellungen",
     "logout": "Abmelden"
   },
   "savedOutfitsSection": {
@@ -402,6 +411,7 @@
     }
   },
   "registrationModal": {
+    "title": "Registrierung Abschließen",
     "welcome": "Willkommen in der App!",
     "welcomeDescription": "Um die App zu nutzen, musst du den Registrierungsprozess abschließen.",
     "provideDetails": "Bitte gib in den nächsten Schritten deine Profildaten an.",
@@ -645,5 +655,22 @@
   "chatSwitch": {
     "ai": "KI",
     "creator": "Ersteller"
+  },
+  "reportPost": {
+    "title": "Beitrag melden",
+    "send": "Senden",
+    "post": "Beitrag",
+    "reasons": "Gründe",
+    "commentOptional": "Zusätzliche Details (optional)",
+    "commentPlaceholder": "Beschreiben Sie das Problem oder fügen Sie Kontext hinzu...",
+    "success": "Meldung gesendet",
+    "failure": "Senden der Meldung fehlgeschlagen",
+    "reason": {
+      "sexual": "Sexuelle Inhalte",
+      "racism": "Rassismus",
+      "vulgar": "Vulgär oder obszön",
+      "non_outfit": "Nicht bezogen auf Outfits",
+      "other": "Sonstiges"
+    }
   }
 }

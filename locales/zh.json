@@ -129,7 +129,7 @@
       "link": "前往首页！"
     },
     "themeSettings": {
-      "title": "主题设置",
+      "title": "设置",
       "appearance": {
         "title": "外观",
         "description": "选择时尚应用的外观。选择单一主题，或与您的系统设置同步。",
@@ -191,6 +191,15 @@
         "created-outfits": "已创建",
         "saved-outfits": "已保存"
       }
+      ,
+      "reportBug": "报告错误",
+      "send": "发送",
+      "reportSubject": "主题",
+      "reportSubjectPlaceholder": "简要说明",
+      "reportDescription": "描述",
+      "reportDescriptionPlaceholder": "描述问题...",
+      "reportSent": "报告已发送",
+      "reportFailed": "报告发送失败"
     },
 "profileRecentActivitySection": {
     "title": "最近活动",
@@ -246,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "主题设置",
+      "themeSettings": "设置",
       "logout": "退出"
     },
     "savedOutfitsSection": {
@@ -402,6 +411,7 @@
       }
     },
     "registrationModal": {
+      "title": "完成注册",
       "welcome": "欢迎使用应用！",
       "welcomeDescription": "要使用应用，您需要完成注册过程。",
       "provideDetails": "请在接下来的步骤中提供您的个人资料详情。",
@@ -468,6 +478,23 @@
         "apiKeyMissing": "API密钥缺失。请联系支持。",
         "success": "报告发送成功！",
         "error": "无法发送报告。请稍后再试。"
+      }
+    },
+    "reportPost": {
+      "title": "举报帖子",
+      "send": "发送",
+      "post": "帖子",
+      "reasons": "原因",
+      "commentOptional": "附加详细信息（可选）",
+      "commentPlaceholder": "请描述问题或提供上下文...",
+      "success": "举报已发送",
+      "failure": "举报发送失败",
+      "reason": {
+        "sexual": "色情内容",
+        "racism": "种族歧视",
+        "vulgar": "粗俗或低俗",
+        "non_outfit": "与穿搭无关",
+        "other": "其他"
       }
     },
     "shareModal": {

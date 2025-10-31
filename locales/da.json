@@ -129,7 +129,7 @@
       "link": "Gå til startsiden!"
     },
     "themeSettings": {
-      "title": "Temaindstillinger",
+      "title": "Indstillinger",
       "appearance": {
         "title": "Udseende",
         "description": "Vælg, hvordan Modeappen skal se ud for dig. Vælg et tema eller synkroniser med dine systemindstillinger.",
@@ -191,6 +191,15 @@
         "created-outfits": "Skabte",
         "saved-outfits": "Gemte"
       }
+      ,
+      "reportBug": "Rapporter en fejl",
+      "send": "Send",
+      "reportSubject": "Emne",
+      "reportSubjectPlaceholder": "Kort resumé",
+      "reportDescription": "Beskrivelse",
+      "reportDescriptionPlaceholder": "Beskriv problemet...",
+      "reportSent": "Rapport sendt",
+      "reportFailed": "Kunne ikke sende rapport"
     },
 "profileRecentActivitySection": {
       "title": "Seneste aktivitet",
@@ -246,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Temaindstillinger",
+      "themeSettings": "Indstillinger",
       "logout": "Log ud"
     },
     "savedOutfitsSection": {
@@ -402,6 +411,7 @@
       }
     },
     "registrationModal": {
+      "title": "Fuldfør Registrering",
       "welcome": "Velkommen til Appen!",
       "welcomeDescription": "For at bruge appen skal du gennemføre registreringsprocessen.",
       "provideDetails": "Angiv dine profildetaljer i næste trin.",
@@ -452,6 +462,14 @@
       "email": "E-mail",
       "reason": "Årsag",
       "description": "Beskrivelse",
+       "reportBug": "Rapporter en fejl",
+       "send": "Send",
+       "reportSubject": "Emne",
+       "reportSubjectPlaceholder": "Kort resumé",
+       "reportDescription": "Beskrivelse",
+       "reportDescriptionPlaceholder": "Beskriv problemet...",
+       "reportSent": "Rapport sendt",
+       "reportFailed": "Kunne ikke sende rapport",
       "placeholders": {
         "email": "Indtast din e-mail",
         "reason": "Vælg årsag",
@@ -645,5 +663,22 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Skaber"
+    },
+    "reportPost": {
+      "title": "Anmeld opslag",
+      "send": "Send",
+      "post": "Opslag",
+      "reasons": "Årsager",
+      "commentOptional": "Yderligere detaljer (valgfrit)",
+      "commentPlaceholder": "Beskriv problemet eller tilføj kontekst...",
+      "success": "Anmeldelse sendt",
+      "failure": "Kunne ikke sende anmeldelsen",
+      "reason": {
+        "sexual": "Seksuelt indhold",
+        "racism": "Racisme",
+        "vulgar": "Vulgær eller obskøn",
+        "non_outfit": "Ikke relateret til outfits",
+        "other": "Andet"
+      }
     }
   }

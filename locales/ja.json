@@ -129,7 +129,7 @@
       "link": "ホーム画面へ！"
     },
     "themeSettings": {
-      "title": "テーマ設定",
+      "title": "設定",
       "appearance": {
         "title": "外観",
         "description": "ファッションアプリの見た目を選択してください。単一のテーマを選ぶか、システム設定と同期してください。",
@@ -191,6 +191,15 @@
         "created-outfits": "作成済み",
         "saved-outfits": "保存済み"
       }
+      ,
+      "reportBug": "不具合を報告",
+      "send": "送信",
+      "reportSubject": "件名",
+      "reportSubjectPlaceholder": "簡単な要約",
+      "reportDescription": "説明",
+      "reportDescriptionPlaceholder": "問題を説明してください...",
+      "reportSent": "報告が送信されました",
+      "reportFailed": "報告の送信に失敗しました"
     },
 "profileRecentActivitySection": {
     "title": "最近のアクティビティ",
@@ -246,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "テーマ設定",
+      "themeSettings": "設定",
       "logout": "ログアウト"
     },
     "savedOutfitsSection": {
@@ -402,6 +411,7 @@
       }
     },
     "registrationModal": {
+      "title": "登録を完了",
       "welcome": "アプリへようこそ！",
       "welcomeDescription": "アプリを使用するには、登録プロセスを完了する必要があります。",
       "provideDetails": "次のステップでプロフィールの詳細を入力してください。",
@@ -645,5 +655,22 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "クリエイター"
+    },
+    "reportPost": {
+      "title": "投稿を報告",
+      "send": "送信",
+      "post": "投稿",
+      "reasons": "理由",
+      "commentOptional": "追加の詳細（任意）",
+      "commentPlaceholder": "問題を説明するか、文脈を追加してください...",
+      "success": "送信しました",
+      "failure": "送信に失敗しました",
+      "reason": {
+        "sexual": "性的なコンテンツ",
+        "racism": "人種差別",
+        "vulgar": "低俗またはわいせつ",
+        "non_outfit": "コーディネートに無関係",
+        "other": "その他"
+      }
     }
   }

@@ -129,7 +129,7 @@
       "link": "Ga naar het startscherm!"
     },
     "themeSettings": {
-      "title": "Thema-instellingen",
+      "title": "Instellingen",
       "appearance": {
         "title": "Uiterlijk",
         "description": "Kies hoe de Mode App er voor jou uitziet. Selecteer een enkel thema of synchroniseer met je systeeminstellingen.",
@@ -191,6 +191,15 @@
         "created-outfits": "Gecreëerd",
         "saved-outfits": "Opgeslagen"
       }
+      ,
+      "reportBug": "Fout rapporteren",
+      "send": "Verzenden",
+      "reportSubject": "Onderwerp",
+      "reportSubjectPlaceholder": "Korte samenvatting",
+      "reportDescription": "Beschrijving",
+      "reportDescriptionPlaceholder": "Omschrijf het probleem...",
+      "reportSent": "Rapport succesvol verzonden",
+      "reportFailed": "Verzenden van rapport mislukt"
     },
 "profileRecentActivitySection": {
     "title": "Recente activiteit",
@@ -246,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Thema-instellingen",
+      "themeSettings": "Instellingen",
       "logout": "Uitloggen"
     },
     "savedOutfitsSection": {
@@ -402,6 +411,7 @@
       }
     },
     "registrationModal": {
+      "title": "Registratie Voltooien",
       "welcome": "Welkom bij de App!",
       "welcomeDescription": "Om de app te gebruiken, moet je het registratieproces voltooien.",
       "provideDetails": "Geef je profielgegevens op in de volgende stappen.",
@@ -645,5 +655,22 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Maker"
+    },
+    "reportPost": {
+      "title": "Bericht rapporteren",
+      "send": "Verzenden",
+      "post": "Bericht",
+      "reasons": "Redenen",
+      "commentOptional": "Aanvullende details (optioneel)",
+      "commentPlaceholder": "Beschrijf het probleem of voeg context toe...",
+      "success": "Rapport verzonden",
+      "failure": "Rapport verzenden mislukt",
+      "reason": {
+        "sexual": "Seksuele inhoud",
+        "racism": "Racisme",
+        "vulgar": "Vulgair of obsceen",
+        "non_outfit": "Niet gerelateerd aan outfits",
+        "other": "Overig"
+      }
     }
   }

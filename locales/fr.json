@@ -129,7 +129,7 @@
     "link": "Aller à l'écran d'accueil !"
   },
   "themeSettings": {
-    "title": "Paramètres de Thème",
+    "title": "Paramètres",
     "appearance": {
       "title": "Apparence",
       "description": "Choisissez l'apparence de l'application Mode. Sélectionnez un thème unique ou synchronisez avec les paramètres de votre système.",
@@ -191,6 +191,15 @@
       "created-outfits": "Créées",
       "saved-outfits": "Enregistrées"
     }
+    ,
+    "reportBug": "Signaler un bug",
+    "send": "Envoyer",
+    "reportSubject": "Sujet",
+    "reportSubjectPlaceholder": "Résumé court",
+    "reportDescription": "Description",
+    "reportDescriptionPlaceholder": "Décrivez le problème...",
+    "reportSent": "Signalement envoyé avec succès",
+    "reportFailed": "Échec de l'envoi du signalement"
   },
 "profileRecentActivitySection": {
     "title": "Activité récente",
@@ -246,7 +255,7 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Paramètres de Thème",
+    "themeSettings": "Paramètres",
     "logout": "Déconnexion"
   },
   "savedOutfitsSection": {
@@ -402,6 +411,7 @@
     }
   },
   "registrationModal": {
+    "title": "Terminer l'Inscription",
     "welcome": "Bienvenue dans l'Application !",
     "welcomeDescription": "Pour utiliser l'application, vous devez compléter le processus d'inscription.",
     "provideDetails": "Veuillez fournir les détails de votre profil dans les étapes suivantes.",
@@ -631,5 +641,22 @@
   "chatSwitch": {
     "ai": "IA",
     "creator": "Créateur"
+  },
+  "reportPost": {
+    "title": "Signaler la publication",
+    "send": "Envoyer",
+    "post": "Publication",
+    "reasons": "Motifs",
+    "commentOptional": "Détails supplémentaires (optionnel)",
+    "commentPlaceholder": "Décrivez le problème ou ajoutez du contexte...",
+    "success": "Signalement envoyé",
+    "failure": "Échec de l’envoi du signalement",
+    "reason": {
+      "sexual": "Contenu sexuel",
+      "racism": "Racisme",
+      "vulgar": "Vulgaire ou obscène",
+      "non_outfit": "Sans lien avec les tenues",
+      "other": "Autre"
+    }
   }
 }

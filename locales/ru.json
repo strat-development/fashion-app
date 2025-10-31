@@ -129,7 +129,7 @@
       "link": "Перейти на главный экран!"
     },
     "themeSettings": {
-      "title": "Настройки темы",
+      "title": "Настройки",
       "appearance": {
         "title": "Внешний вид",
         "description": "Выберите, как будет выглядеть приложение Fashion. Выберите одну тему или синхронизируйте с настройками системы.",
@@ -191,6 +191,15 @@
         "created-outfits": "Создано",
         "saved-outfits": "Сохранено"
       }
+      ,
+      "reportBug": "Сообщить об ошибке",
+      "send": "Отправить",
+      "reportSubject": "Тема",
+      "reportSubjectPlaceholder": "Краткое описание",
+      "reportDescription": "Описание",
+      "reportDescriptionPlaceholder": "Опишите проблему...",
+      "reportSent": "Сообщение отправлено",
+      "reportFailed": "Не удалось отправить сообщение"
     },
 "profileRecentActivitySection": {
     "title": "Недавняя активность",
@@ -246,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Настройки темы",
+      "themeSettings": "Настройки",
       "logout": "Выйти"
     },
     "savedOutfitsSection": {
@@ -402,6 +411,7 @@
       }
     },
     "registrationModal": {
+      "title": "Завершить Регистрацию",
       "welcome": "Добро пожаловать в приложение!",
       "welcomeDescription": "Чтобы использовать приложение, вам нужно завершить процесс регистрации.",
       "provideDetails": "Пожалуйста, укажите данные вашего профиля на следующих шагах.",
@@ -645,5 +655,22 @@
     "chatSwitch": {
       "ai": "ИИ",
       "creator": "Создатель"
+    },
+    "reportPost": {
+      "title": "Пожаловаться на пост",
+      "send": "Отправить",
+      "post": "Пост",
+      "reasons": "Причины",
+      "commentOptional": "Дополнительные сведения (необязательно)",
+      "commentPlaceholder": "Опишите проблему или добавьте контекст...",
+      "success": "Жалоба отправлена",
+      "failure": "Не удалось отправить жалобу",
+      "reason": {
+        "sexual": "Сексуальный контент",
+        "racism": "Расизм",
+        "vulgar": "Вульгарный или непристойный",
+        "non_outfit": "Не относится к образам",
+        "other": "Другое"
+      }
     }
   }

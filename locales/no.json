@@ -129,7 +129,7 @@
       "link": "Gå til startsiden!"
     },
     "themeSettings": {
-      "title": "Temainnstillinger",
+      "title": "Innstillinger",
       "appearance": {
         "title": "Utseende",
         "description": "Velg hvordan Moteappen skal se ut for deg. Velg ett tema eller synkroniser med systeminnstillingene dine.",
@@ -191,6 +191,15 @@
         "created-outfits": "Opprettet",
         "saved-outfits": "Lagret"
       }
+      ,
+      "reportBug": "Rapporter en feil",
+      "send": "Send",
+      "reportSubject": "Emne",
+      "reportSubjectPlaceholder": "Kort oppsummering",
+      "reportDescription": "Beskrivelse",
+      "reportDescriptionPlaceholder": "Beskriv problemet...",
+      "reportSent": "Rapport sendt",
+      "reportFailed": "Kunne ikke sende rapport"
     },
 "profileRecentActivitySection": {
     "title": "Nylig aktivitet",
@@ -246,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Temainnstillinger",
+      "themeSettings": "Innstillinger",
       "logout": "Logg ut"
     },
     "savedOutfitsSection": {
@@ -402,6 +411,7 @@
       }
     },
     "registrationModal": {
+      "title": "Fullfør Registrering",
       "welcome": "Velkommen til Appen!",
       "welcomeDescription": "For å bruke appen må du fullføre registreringsprosessen.",
       "provideDetails": "Oppgi profildetaljene dine i neste trinn.",
@@ -645,5 +655,22 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Skaper"
+    },
+    "reportPost": {
+      "title": "Rapporter innlegg",
+      "send": "Send",
+      "post": "Innlegg",
+      "reasons": "Årsaker",
+      "commentOptional": "Ytterligere detaljer (valgfritt)",
+      "commentPlaceholder": "Beskriv problemet eller legg til kontekst...",
+      "success": "Rapport sendt",
+      "failure": "Klarte ikke å sende rapporten",
+      "reason": {
+        "sexual": "Seksuelt innhold",
+        "racism": "Rasisme",
+        "vulgar": "Vulgært eller obskønt",
+        "non_outfit": "Ikke relatert til antrekk",
+        "other": "Annet"
+      }
     }
   }

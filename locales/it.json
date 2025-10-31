@@ -129,7 +129,7 @@
     "link": "Vai alla schermata iniziale!"
   },
   "themeSettings": {
-    "title": "Impostazioni del Tema",
+    "title": "Impostazioni",
     "appearance": {
       "title": "Aspetto",
       "description": "Scegli come appare l'app di Moda. Seleziona un tema singolo o sincronizza con le impostazioni del tuo sistema.",
@@ -191,6 +191,15 @@
       "created-outfits": "Creati",
       "saved-outfits": "Salvati"
     }
+    ,
+    "reportBug": "Segnala un bug",
+    "send": "Invia",
+    "reportSubject": "Oggetto",
+    "reportSubjectPlaceholder": "Breve riepilogo",
+    "reportDescription": "Descrizione",
+    "reportDescriptionPlaceholder": "Descrivi il problema...",
+    "reportSent": "Segnalazione inviata con successo",
+    "reportFailed": "Invio della segnalazione non riuscito"
   },
 "profileRecentActivitySection": {
     "title": "Attività recente",
@@ -246,7 +255,7 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Impostazioni del Tema",
+    "themeSettings": "Impostazioni",
     "logout": "Esci"
   },
   "savedOutfitsSection": {
@@ -402,6 +411,7 @@
     }
   },
   "registrationModal": {
+    "title": "Completa Registrazione",
     "welcome": "Benvenuto nell'App!",
     "welcomeDescription": "Per utilizzare l'app, devi completare il processo di registrazione.",
     "provideDetails": "Fornisci i dettagli del tuo profilo nei passaggi successivi.",
@@ -468,6 +478,23 @@
       "apiKeyMissing": "La chiave API è mancante. Contatta il supporto.",
       "success": "Segnalazione inviata con successo!",
       "error": "Impossibile inviare la segnalazione. Riprova più tardi."
+    }
+  },
+  "reportPost": {
+    "title": "Segnala post",
+    "send": "Invia",
+    "post": "Post",
+    "reasons": "Motivi",
+    "commentOptional": "Dettagli aggiuntivi (opzionale)",
+    "commentPlaceholder": "Descrivi il problema o aggiungi contesto...",
+    "success": "Segnalazione inviata",
+    "failure": "Invio della segnalazione non riuscito",
+    "reason": {
+      "sexual": "Contenuti sessuali",
+      "racism": "Razzismo",
+      "vulgar": "Volgare o osceno",
+      "non_outfit": "Non relativo agli outfit",
+      "other": "Altro"
     }
   },
   "shareModal": {

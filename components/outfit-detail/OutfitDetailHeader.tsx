@@ -1,12 +1,12 @@
 import { useTheme } from "@/providers/themeContext";
 import { router } from "expo-router";
-import { ArrowLeft } from "lucide-react-native";
+import { ArrowLeft, Flag } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function OutfitDetailHeader() {
+export default function OutfitDetailHeader({ canReport, onReport }: { canReport?: boolean; onReport?: () => void }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -42,7 +42,25 @@ export default function OutfitDetailHeader() {
         {t('outfitDetail.header.title')}
       </Text>
       
-      <View style={{ width: 44 }} />
+      {canReport ? (
+        <Pressable
+          onPress={onReport}
+          style={{
+            width: 44,
+            height: 44,
+            backgroundColor: colors.surface,
+            borderRadius: 22,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderWidth: 1,
+            borderColor: colors.border,
+          }}
+        >
+          <Flag size={18} color={colors.textSecondary} />
+        </Pressable>
+      ) : (
+        <View style={{ width: 44 }} />
+      )}
     </View>
   );
 }

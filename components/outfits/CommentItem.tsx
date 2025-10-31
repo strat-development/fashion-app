@@ -7,10 +7,11 @@ import { useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
-import { Send, Trash } from "lucide-react-native";
+import { AlertTriangle, Send, Trash, X } from "lucide-react-native";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, Pressable, Text, TextInput, View } from "react-native";
+import { Alert, Modal, Pressable, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { BlurView } from 'expo-blur';
 import { CommentReactions } from "./CommentReactions";
 
 
@@ -26,7 +27,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
     const [text, setText] = useState('');
 
     const { userId } = useUserContext();
-    const { colors } = useTheme();
+    const { colors, isDark } = useTheme();
     const avatar = comment.user_info?.user_avatar;
     const name = comment.user_info?.nickname || t('outfitDetail.info.anonymous');
 
@@ -60,6 +61,8 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
         }
     };
 
+    const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+
     return (
         <View className={`flex-row mb-3 ${depth > 0 ? 'ml-4 pl-2 border-l border-gray-700/50' : 'px-4'}`}>
             <View className="mr-3 mt-0.5">
@@ -81,7 +84,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                         </View>
                         {userId === comment.user_id && (
                             <Pressable
-                                onPress={() => deleteComment()}
+                                onPress={() => setConfirmDeleteVisible(true)}
                                 hitSlop={8}
                                 style={{ paddingHorizontal: 8, paddingVertical: 4, marginRight: -4, marginTop: -4, borderRadius: 6 }}
                             >
@@ -134,7 +137,7 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                             <TextInput
                                 value={text}
                                 onChangeText={setText}
-                                placeholder={t('commentItem.replyPlaceholder' + name )}
+                                placeholder={t('commentItem.replyPlaceholder') + name}
                                 placeholderTextColor={colors.textMuted}
                                 style={{ flex: 1, color: colors.text, fontSize: 13, maxHeight: 128 }}
                                 multiline
@@ -153,6 +156,42 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                         </Pressable>
                     </View>
                 )}
+
+                {/* Delete confirmation modal - styled to match AI chat delete */}
+                <Modal
+                    visible={confirmDeleteVisible}
+                    animationType={'fade'}
+                    transparent={true}
+                    onRequestClose={() => setConfirmDeleteVisible(false)}
+                >
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24, backgroundColor: isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.4)' }}>
+                        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+                            <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={{ flex: 1 }} />
+                        </View>
+                        <View style={{ width: '100%', maxWidth: 520, borderRadius: 18, padding: 18, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.border }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginRight: 10, backgroundColor: `${colors.error}20` }}>
+                                        <AlertTriangle size={18} color={colors.error} />
+                                    </View>
+                                    <Text style={{ color: colors.text, fontWeight: '600' }}>{t('deleteModalOutfit.title')}</Text>
+                                </View>
+                                <TouchableOpacity onPress={() => setConfirmDeleteVisible(false)} style={{ padding: 6 }}>
+                                    <X size={20} color={colors.text} />
+                                </TouchableOpacity>
+                            </View>
+                            <Text style={{ color: colors.textSecondary, marginBottom: 18 }}>{t('deleteModalOutfit.message')}</Text>
+                            <View style={{ flexDirection: 'row', gap: 8 }}>
+                                <TouchableOpacity onPress={() => setConfirmDeleteVisible(false)} style={{ flex: 1, paddingVertical: 12, borderRadius: 12, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface, alignItems: 'center' }}>
+                                    <Text style={{ color: colors.text }}>{t('deleteModalOutfit.cancel')}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => { setConfirmDeleteVisible(false); deleteComment(); }} style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: colors.error, alignItems: 'center' }}>
+                                    <Text style={{ color: colors.white }}>{t('deleteModalOutfit.delete')}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         </View>
     );

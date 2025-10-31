@@ -157,7 +157,7 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
         <Text className="font-medium text-base mb-2" style={{ color: colors.text }}>
           {t('outfitCreateModal.price')}
         </Text>
-        <View className="flex-row space-x-2">
+          <View className="flex-row space-x-2">
           <View className="flex-1">
             <Controller
               control={elementControl}
@@ -179,13 +179,16 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
                     backgroundColor: colors.surfaceVariant,
                     borderWidth: 1,
                     borderColor: elementErrors.price ? colors.error : colors.border,
-                    color: colors.text
+                    color: colors.text,
+                    height: 44,
+                    paddingVertical: 0,
+                    textAlignVertical: 'center'
                   }}
                 />
               )}
             />
           </View>
-          <View className="w-20">
+          <View className="w-20" style={{ marginLeft: 8 }}>
             <Controller
               control={elementControl}
               name="currency"
@@ -200,8 +203,10 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
                         borderColor: colors.border,
                         borderWidth: 1,
                         borderRadius: 8,
-                        paddingVertical: 10,
+                        height: 44,
+                        paddingHorizontal: 12,
                         alignItems: 'center',
+                        justifyContent: 'center'
                       }}
                     >
                       <Text style={{ color: colors.text }}>{value || 'USD'}</Text>
@@ -230,18 +235,20 @@ export const ElementFormFields: React.FC<ElementFormFieldsProps> = ({
                 ) : (
                   <Select onValueChange={onChange} selectedValue={value}>
                     <SelectTrigger
-                      variant="outline"
-                      size="xl"
-                      style={{
-                        backgroundColor: colors.surfaceVariant,
-                        borderColor: colors.border,
-                        borderWidth: 1,
-                        borderRadius: 8,
-                        paddingVertical: 6,
-                      }}
-                    >
-                      <SelectInput style={{ color: colors.text, textAlign: 'center' }} />
-                    </SelectTrigger>
+                        variant="outline"
+                        size="xl"
+                        style={{
+                          backgroundColor: colors.surfaceVariant,
+                          borderColor: colors.border,
+                          borderWidth: 1,
+                          borderRadius: 8,
+                          height: 44,
+                          justifyContent: 'center',
+                          paddingVertical: 0,
+                        }}
+                      >
+                        <SelectInput style={{ color: colors.text, textAlign: 'center' }} />
+                      </SelectTrigger>
                     <SelectPortal>
                       <SelectBackdrop />
                       <SelectContent>

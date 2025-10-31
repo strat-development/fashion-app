@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "windowSoftInputMode": "adjustResize"
     },
     "web": {
       "bundler": "metro",
@@ -43,6 +44,11 @@
       "expo-font",
       "expo-web-browser"
     ],
+    "androidNavigationBar": {
+      "backgroundColor": "#00000000",
+      "barStyle": "light-content",
+      "translucent": true
+    },
     "experiments": {
       "typedRoutes": true
     }

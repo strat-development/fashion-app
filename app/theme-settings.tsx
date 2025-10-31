@@ -107,7 +107,7 @@ export default function ThemeSettings() {
               backgroundColor: colors.surfaceVariant,
             }}
           >
-            <ChevronLeft size={20} color={colors.text} />
+          <ChevronLeft size={20} color={colors.text} />
           </Pressable>
           <Text
             style={{
@@ -226,108 +226,6 @@ export default function ThemeSettings() {
             );
           })}
 
-          {/* Preview Section */}
-          <View style={{ marginTop: 32 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: '600',
-                color: colors.text,
-                marginBottom: 16,
-              }}
-            >
-              {t('themeSettings.preview.title')}
-            </Text>
-
-            <View
-              style={{
-                padding: 20,
-                borderRadius: 16,
-                backgroundColor: colors.surface,
-                borderWidth: 1,
-                borderColor: colors.border,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginBottom: 12,
-                }}
-              >
-                <View
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 16,
-                    backgroundColor: colors.accent,
-                    marginRight: 12,
-                  }}
-                />
-                <View>
-                  <Text
-                    style={{ fontSize: 16, fontWeight: '600', color: colors.text }}
-                  >
-                    {t('themeSettings.preview.appName')}
-                  </Text>
-                  <Text style={{ fontSize: 14, color: colors.textMuted }}>
-                    {isDark ? 'Dark' : 'Light' + t('themeSettings.preview.themePreview' )}
-                  </Text>
-                </View>
-              </View>
-
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: colors.textSecondary,
-                  lineHeight: 20,
-                }}
-              >
-                {t('themeSettings.preview.description')}
-              </Text>
-
-              <View style={{ flexDirection: 'row', gap: 8, marginTop: 16 }}>
-                <View
-                  style={{
-                    flex: 1,
-                    height: 32,
-                    borderRadius: 8,
-                    backgroundColor: colors.accent,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: colors.white,
-                      fontWeight: '600',
-                      fontSize: 14,
-                    }}
-                  >
-                    {t('themeSettings.preview.primaryButton')}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    height: 32,
-                    borderRadius: 8,
-                    backgroundColor: colors.surfaceVariant,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderWidth: 1,
-                    borderColor: colors.border,
-                  }}
-                >
-                  <Text
-                    style={{ color: colors.text, fontWeight: '600', fontSize: 14 }}
-                  >
-                    {t('themeSettings.preview.secondaryButton')}
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
 
           {/* Language & Currency Section */}
           <View style={{ marginTop: 32 }}>

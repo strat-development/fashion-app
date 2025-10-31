@@ -29,6 +29,7 @@ export const useCreateCommentMutation = ({ outfitId, userId }: Omit<CreateCommen
         user_id: userId,
         activity_type: 'new_comment',
         outfit_id: outfitId,
+        created_at: new Date().toISOString(),
       });
 
       if (activityError) throw activityError;

@@ -129,7 +129,7 @@
     "link": "¡Ir a la pantalla de inicio!"
   },
   "themeSettings": {
-    "title": "Configuración de Tema",
+    "title": "Configuración",
     "appearance": {
       "title": "Apariencia",
       "description": "Elige cómo se ve la aplicación de Moda. Selecciona un tema único o sincroniza con la configuración de tu sistema.",
@@ -191,6 +191,15 @@
       "created-outfits": "Creados",
       "saved-outfits": "Guardados"
     }
+    ,
+    "reportBug": "Reportar un error",
+    "send": "Enviar",
+    "reportSubject": "Asunto",
+    "reportSubjectPlaceholder": "Resumen breve",
+    "reportDescription": "Descripción",
+    "reportDescriptionPlaceholder": "Describe el problema...",
+    "reportSent": "Informe enviado con éxito",
+    "reportFailed": "No se pudo enviar el informe"
   },
 "profileRecentActivitySection": {
     "title": "Actividad reciente",
@@ -246,8 +255,8 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Configuración de Tema",
-    "logout": "Cerrar Sesión"
+    "themeSettings": "Configuración",
+    "logout": "Cerrar sesión"
   },
   "savedOutfitsSection": {
     "loading": "Cargando atuendos guardados...",
@@ -402,6 +411,7 @@
     }
   },
   "registrationModal": {
+    "title": "Completar Registro",
     "welcome": "¡Bienvenido a la Aplicación!",
     "welcomeDescription": "Para usar la aplicación, necesitas completar el proceso de registro.",
     "provideDetails": "Por favor, proporciona los detalles de tu perfil en los siguientes pasos.",
@@ -645,5 +655,22 @@
   "chatSwitch": {
     "ai": "IA",
     "creator": "Creador"
+  },
+  "reportPost": {
+    "title": "Reportar publicación",
+    "send": "Enviar",
+    "post": "Publicación",
+    "reasons": "Motivos",
+    "commentOptional": "Detalles adicionales (opcional)",
+    "commentPlaceholder": "Describe el problema o agrega contexto...",
+    "success": "Informe enviado",
+    "failure": "No se pudo enviar el informe",
+    "reason": {
+      "sexual": "Contenido sexual",
+      "racism": "Racismo",
+      "vulgar": "Vulgar u obsceno",
+      "non_outfit": "No relacionado con atuendos",
+      "other": "Otro"
+    }
   }
 }

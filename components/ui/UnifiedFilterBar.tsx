@@ -12,28 +12,17 @@ export interface FilterSection {
 }
 
 interface UnifiedFilterBarProps {
-  // Search props
   searchValue?: string;
   onSearchChange?: (value: string) => void;
   searchPlaceholder?: string;
   showSearch?: boolean;
-
-  // Filter sections
   filterSections: FilterSection[];
   selectedFilters: Record<string, string[]>;
   onFilterToggle: (filterKey: string, value: string) => void;
   onClearFilters: () => void;
-
-  // Custom content (for price inputs, dropdowns, etc.)
   customFilterContent?: ReactNode;
-
-  // Helper to check if filters are active
   hasActiveFilters: () => boolean;
-
-  // Translation function
   t: (key: string) => string;
-
-  // Control whether to show the top bar or just the overlay
   showTopBar?: boolean;
   isOpen?: boolean;
   onToggle?: () => void;
@@ -58,7 +47,6 @@ export const UnifiedFilterBar = ({
   const { colors, isDark } = useTheme();
   const [internalShowFilters, setInternalShowFilters] = useState(false);
   
-  // Use external control if provided, otherwise use internal state
   const showFilters = isOpen !== undefined ? isOpen : internalShowFilters;
   const toggleFilters = onToggle || (() => setInternalShowFilters(!internalShowFilters));
 
@@ -103,6 +91,7 @@ export const UnifiedFilterBar = ({
             <TouchableOpacity
               key={item.name}
               onPress={() => onFilterToggle(section.filterKey, item.name)}
+              activeOpacity={0.8}
               style={{
                 marginRight: 8,
                 marginBottom: 8,
@@ -111,9 +100,7 @@ export const UnifiedFilterBar = ({
                 borderRadius: 999,
                 borderWidth: 1,
                 borderColor: isSelected ? colors.accent : colors.border,
-                backgroundColor: isSelected
-                  ? hexToRgba(colors.accent, 0.15)
-                  : hexToRgba(colors.surface, 0.6),
+                backgroundColor: isSelected ? colors.accent : colors.surface,
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -124,14 +111,16 @@ export const UnifiedFilterBar = ({
                       height: 12,
                       borderRadius: 6,
                       marginRight: 8,
-                      backgroundColor: item.hex
+                      backgroundColor: item.hex,
+                      borderWidth: isSelected ? 1 : 0,
+                      borderColor: isSelected ? colors.white : 'transparent',
                     }}
                   />
                 )}
                 <Text style={{
                   fontSize: 14,
                   fontWeight: '500',
-                  color: isSelected ? colors.text : colors.textSecondary
+                  color: isSelected ? colors.white : colors.textSecondary
                 }}>
                   {item.name}
                 </Text>
@@ -145,7 +134,6 @@ export const UnifiedFilterBar = ({
 
   return (
     <>
-      {/* Top Search + Filter Bar */}
       {showTopBar && (
         <View
           style={{
@@ -176,7 +164,6 @@ export const UnifiedFilterBar = ({
             paddingBottom: 12,
             gap: 12,
           }}>
-            {/* Search Field */}
             {showSearch && (
               <View
                 style={{
@@ -218,7 +205,6 @@ export const UnifiedFilterBar = ({
 
             {!showSearch && <View style={{ flex: 1 }} />}
 
-            {/* Filter Button */}
             <TouchableOpacity
               onPress={toggleFilters}
               activeOpacity={1}
@@ -246,7 +232,6 @@ export const UnifiedFilterBar = ({
         </View>
       )}
 
-      {/* Filters Overlay */}
       {showFilters && (
         <View
           style={{

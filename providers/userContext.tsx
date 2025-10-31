@@ -8,6 +8,8 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 type UserContextType = {
     userName: string;
     setUserName: (userName: string) => void;
+    nickname: string;
+    setNickname: (nickname: string) => void;
     userBio: string;
     setUserBio: (userBio: string) => void;
     userImage: string;
@@ -32,6 +34,7 @@ export const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export default function UserContextProvider({ children }: { children: React.ReactNode }) {
     const [userName, setUserName] = useState<string>("");
+    const [nickname, setNickname] = useState<string>("");
     const [userBio, setUserBio] = useState<string>("");
     const [userImage, setUserImage] = useState<string>("");
     const [userEmail, setUserEmail] = useState<string>("");
@@ -53,9 +56,10 @@ export default function UserContextProvider({ children }: { children: React.Reac
     useEffect(() => {
         if (userData) {
             setUserName(userData.full_name || "");
+            setNickname(userData.nickname || "");
             setUserBio(userData.bio || "");
             setUserImage(userData.user_avatar || "");
-            setUserEmail(userData.email || "");
+            setUserEmail(userData.email || session?.user?.email || "");
             setUserSocials(
                 Array.isArray(userData.socials)
                     ? userData.socials.map(String)
@@ -68,9 +72,16 @@ export default function UserContextProvider({ children }: { children: React.Reac
         }
     }, [userData]);
 
+    useEffect(() => {
+        if (!userEmail && session?.user?.email) {
+            setUserEmail(session.user.email);
+        }
+    }, [session?.user?.email]);
+
     return (
         <UserContext.Provider value={{
             userName, setUserName,
+            nickname, setNickname,
             userBio, setUserBio,
             userImage, setUserImage,
             userEmail, setUserEmail,

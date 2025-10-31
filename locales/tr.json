@@ -129,7 +129,7 @@
       "link": "Ana ekrana git!"
     },
     "themeSettings": {
-      "title": "Tema Ayarları",
+      "title": "Ayarlar",
       "appearance": {
         "title": "Görünüm",
         "description": "Moda Uygulamasının nasıl görüneceğini seçin. Tek bir tema seçin veya sistem ayarlarıyla senkronize edin.",
@@ -191,6 +191,15 @@
         "created-outfits": "Oluşturulanlar",
         "saved-outfits": "Kaydedilenler"
       }
+      ,
+      "reportBug": "Hata bildir",
+      "send": "Gönder",
+      "reportSubject": "Konu",
+      "reportSubjectPlaceholder": "Kısa özet",
+      "reportDescription": "Açıklama",
+      "reportDescriptionPlaceholder": "Sorunu açıklayın...",
+      "reportSent": "Rapor gönderildi",
+      "reportFailed": "Rapor gönderilemedi"
     },
 "profileRecentActivitySection": {
     "title": "Son Etkinlik",
@@ -246,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Tema Ayarları",
+      "themeSettings": "Ayarlar",
       "logout": "Çıkış Yap"
     },
     "savedOutfitsSection": {
@@ -402,6 +411,7 @@
       }
     },
     "registrationModal": {
+      "title": "Kaydı Tamamla",
       "welcome": "Uygulamaya Hoş Geldiniz!",
       "welcomeDescription": "Uygulamayı kullanmak için kayıt işlemini tamamlamanız gerekiyor.",
       "provideDetails": "Lütfen bir sonraki adımlarda profil detaylarınızı sağlayın.",
@@ -468,6 +478,23 @@
         "apiKeyMissing": "API anahtarı eksik. Lütfen destek ile iletişime geçin.",
         "success": "Rapor başarıyla gönderildi!",
         "error": "Rapor gönderilemedi. Lütfen daha sonra tekrar deneyin."
+      }
+    },
+    "reportPost": {
+      "title": "Gönderiyi bildir",
+      "send": "Gönder",
+      "post": "Gönderi",
+      "reasons": "Nedenler",
+      "commentOptional": "Ek ayrıntılar (isteğe bağlı)",
+      "commentPlaceholder": "Sorunu açıklayın veya bağlam ekleyin...",
+      "success": "Bildirim gönderildi",
+      "failure": "Bildirim gönderilemedi",
+      "reason": {
+        "sexual": "Cinsel içerik",
+        "racism": "Irkçılık",
+        "vulgar": "Kaba veya müstehcen",
+        "non_outfit": "Kıyafetlerle ilgili değil",
+        "other": "Diğer"
       }
     },
     "shareModal": {

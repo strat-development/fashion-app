@@ -2,7 +2,7 @@ import { supabase } from '@/lib/supabase';
 import { RedGradient, ThemedGradient, useTheme } from '@/providers/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
-import { LogOut, Palette } from 'lucide-react-native';
+import { LogOut, Settings as SettingsIcon } from 'lucide-react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';
@@ -41,7 +41,7 @@ export function ProfileSettingsButtons() {
             justifyContent: 'center',
           }}
         >
-          <Palette size={18} color={colors.white} />
+          <SettingsIcon size={18} color={colors.white} />
           <Text style={{ color: colors.white, fontWeight: '500', marginLeft: 8 }}>
             {t('profileSettingsButtons.themeSettings')}
           </Text>

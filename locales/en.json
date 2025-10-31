@@ -1,6 +1,9 @@
 {
   "common": {
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "approve": "Approve",
+    "decline": "Decline",
+    "close": "Close"
   },
   "homeScreen": {
     "welcomeMessage": "Welcome, how would you like to create an outfit?",
@@ -131,7 +134,7 @@
     "link": "Go to home screen!"
   },
   "themeSettings": {
-    "title": "Theme Settings",
+    "title": "Settings",
     "appearance": {
       "title": "Appearance",
       "description": "Choose how Fashion App looks to you. Select a single theme, or sync with your system settings.",
@@ -180,12 +183,7 @@
     "unfollow": "Unfollow",
     "pending": "Follow Request Pending"
   },
-  "common": {
-    "loading": "Loading…",
-    "approve": "Approve",
-    "decline": "Decline",
-    "close": "Close"
-  },
+  
   "profileBioSection": {
     "title": "About",
     "noBio": "No bio available yet. Add one by editing your profile!"
@@ -199,6 +197,15 @@
       "created-outfits": "Created",
       "saved-outfits": "Saved"
     }
+    ,
+    "reportBug": "Report a bug",
+    "send": "Send",
+    "reportSubject": "Subject",
+    "reportSubjectPlaceholder": "Short summary",
+    "reportDescription": "Description",
+    "reportDescriptionPlaceholder": "Describe the issue...",
+    "reportSent": "Report sent successfully",
+    "reportFailed": "Failed to send report"
   },
   "profileRecentActivitySection": {
     "title": "Recent Activity",
@@ -254,7 +261,7 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Theme Settings",
+    "themeSettings": "Settings",
     "logout": "Logout"
   },
   "savedOutfitsSection": {
@@ -413,6 +420,7 @@
     }
   },
   "registrationModal": {
+    "title": "Complete Registration",
     "welcome": "Welcome to the App!",
     "welcomeDescription": "To use the app, you need to complete the registration process.",
     "provideDetails": "Please provide your profile details in the next steps.",
@@ -656,5 +664,22 @@
   "chatSwitch": {
     "ai": "AI",
     "creator": "Creator"
+  },
+  "reportPost": {
+    "title": "Report post",
+    "send": "Send",
+    "post": "Post",
+    "reasons": "Reasons",
+    "commentOptional": "Additional details (optional)",
+    "commentPlaceholder": "Describe the issue or add context...",
+    "success": "Report sent",
+    "failure": "Failed to send report",
+    "reason": {
+      "sexual": "Sexual content",
+      "racism": "Racism",
+      "vulgar": "Vulgar or obscene",
+      "non_outfit": "Not related to outfits",
+      "other": "Other"
+    }
   }
 }

@@ -129,7 +129,7 @@
       "link": "Gå till startsidan!"
     },
     "themeSettings": {
-      "title": "Temainställningar",
+      "title": "Inställningar",
       "appearance": {
         "title": "Utseende",
         "description": "Välj hur Modeappen ska se ut för dig. Välj ett tema eller synkronisera med dina systeminställningar.",
@@ -191,6 +191,15 @@
         "created-outfits": "Skapade",
         "saved-outfits": "Sparade"
       }
+      ,
+      "reportBug": "Rapportera ett fel",
+      "send": "Skicka",
+      "reportSubject": "Ämne",
+      "reportSubjectPlaceholder": "Kort sammanfattning",
+      "reportDescription": "Beskrivning",
+      "reportDescriptionPlaceholder": "Beskriv problemet...",
+      "reportSent": "Rapport skickad",
+      "reportFailed": "Kunde inte skicka rapport"
     },
 "profileRecentActivitySection": {
     "title": "Senaste aktivitet",
@@ -246,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Temainställningar",
+      "themeSettings": "Inställningar",
       "logout": "Logga ut"
     },
     "savedOutfitsSection": {
@@ -402,6 +411,7 @@
       }
     },
     "registrationModal": {
+      "title": "Slutför Registrering",
       "welcome": "Välkommen till Appen!",
       "welcomeDescription": "För att använda appen måste du slutföra registreringsprocessen.",
       "provideDetails": "Ange dina profildetaljer i nästa steg.",
@@ -645,5 +655,22 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Skapare"
+    },
+    "reportPost": {
+      "title": "Anmäl inlägg",
+      "send": "Skicka",
+      "post": "Inlägg",
+      "reasons": "Anledningar",
+      "commentOptional": "Ytterligare detaljer (valfritt)",
+      "commentPlaceholder": "Beskriv problemet eller lägg till sammanhang...",
+      "success": "Anmälan skickad",
+      "failure": "Misslyckades att skicka anmälan",
+      "reason": {
+        "sexual": "Sexuellt innehåll",
+        "racism": "Rasism",
+        "vulgar": "Vulgärt eller obscent",
+        "non_outfit": "Inte relaterat till outfits",
+        "other": "Annat"
+      }
     }
   }
