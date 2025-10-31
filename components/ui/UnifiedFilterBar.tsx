@@ -91,6 +91,7 @@ export const UnifiedFilterBar = ({
             <TouchableOpacity
               key={item.name}
               onPress={() => onFilterToggle(section.filterKey, item.name)}
+              activeOpacity={0.8}
               style={{
                 marginRight: 8,
                 marginBottom: 8,
@@ -99,9 +100,7 @@ export const UnifiedFilterBar = ({
                 borderRadius: 999,
                 borderWidth: 1,
                 borderColor: isSelected ? colors.accent : colors.border,
-                backgroundColor: isSelected
-                  ? hexToRgba(colors.accent, 0.15)
-                  : hexToRgba(colors.surface, 0.6),
+                backgroundColor: isSelected ? colors.accent : colors.surface,
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -112,14 +111,16 @@ export const UnifiedFilterBar = ({
                       height: 12,
                       borderRadius: 6,
                       marginRight: 8,
-                      backgroundColor: item.hex
+                      backgroundColor: item.hex,
+                      borderWidth: isSelected ? 1 : 0,
+                      borderColor: isSelected ? colors.white : 'transparent',
                     }}
                   />
                 )}
                 <Text style={{
                   fontSize: 14,
                   fontWeight: '500',
-                  color: isSelected ? colors.text : colors.textSecondary
+                  color: isSelected ? colors.white : colors.textSecondary
                 }}>
                   {item.name}
                 </Text>
