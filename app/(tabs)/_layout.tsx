@@ -41,7 +41,7 @@ export default function TabLayout() {
   const tabGradients: Record<string, [string, string]> = {
     index: ['#5F94FF', '#6F31FF'],
     chat: ['#A45FFF', '#7C31FF'],
-    ranking: ['#FF6A5F', '#FF9131'],
+    ranking: ['#5F94FF', '#6F31FF'],
     userProfile: ['#A75FFF', '#D631FF'],
   };
 
