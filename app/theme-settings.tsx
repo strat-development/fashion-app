@@ -107,7 +107,7 @@ export default function ThemeSettings() {
               backgroundColor: colors.surfaceVariant,
             }}
           >
-            <ChevronLeft size={20} color={colors.text} />
+          <ChevronLeft size={20} color={colors.text} />
           </Pressable>
           <Text
             style={{

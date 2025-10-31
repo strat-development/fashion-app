@@ -129,7 +129,7 @@
     "link": "Zum Startbildschirm!"
   },
   "themeSettings": {
-    "title": "Themen-Einstellungen",
+  "title": "Einstellungen",
     "appearance": {
       "title": "Aussehen",
       "description": "Wähle, wie die Fashion-App für dich aussieht. Wähle ein einziges Thema oder synchronisiere es mit deinen Systemeinstellungen.",
@@ -255,7 +255,7 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Themen-Einstellungen",
+    "themeSettings": "Einstellungen",
     "logout": "Abmelden"
   },
   "savedOutfitsSection": {

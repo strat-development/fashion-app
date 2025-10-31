@@ -129,7 +129,7 @@
       "link": "Gå til startsiden!"
     },
     "themeSettings": {
-      "title": "Temaindstillinger",
+      "title": "Indstillinger",
       "appearance": {
         "title": "Udseende",
         "description": "Vælg, hvordan Modeappen skal se ud for dig. Vælg et tema eller synkroniser med dine systemindstillinger.",
@@ -255,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Temaindstillinger",
+      "themeSettings": "Indstillinger",
       "logout": "Log ud"
     },
     "savedOutfitsSection": {

@@ -129,7 +129,7 @@
     "link": "¡Ir a la pantalla de inicio!"
   },
   "themeSettings": {
-    "title": "Configuración de Tema",
+    "title": "Configuración",
     "appearance": {
       "title": "Apariencia",
       "description": "Elige cómo se ve la aplicación de Moda. Selecciona un tema único o sincroniza con la configuración de tu sistema.",
@@ -255,8 +255,8 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Configuración de Tema",
-    "logout": "Cerrar Sesión"
+    "themeSettings": "Configuración",
+    "logout": "Cerrar sesión"
   },
   "savedOutfitsSection": {
     "loading": "Cargando atuendos guardados...",

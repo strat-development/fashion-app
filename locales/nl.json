@@ -129,7 +129,7 @@
       "link": "Ga naar het startscherm!"
     },
     "themeSettings": {
-      "title": "Thema-instellingen",
+      "title": "Instellingen",
       "appearance": {
         "title": "Uiterlijk",
         "description": "Kies hoe de Mode App er voor jou uitziet. Selecteer een enkel thema of synchroniseer met je systeeminstellingen.",
@@ -255,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Thema-instellingen",
+      "themeSettings": "Instellingen",
       "logout": "Uitloggen"
     },
     "savedOutfitsSection": {

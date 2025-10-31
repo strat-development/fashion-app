@@ -129,7 +129,7 @@
       "link": "Przejdź do ekranu głównego!"
     },
     "themeSettings": {
-      "title": "Ustawienia Motywu",
+      "title": "Ustawienia",
       "appearance": {
         "title": "Wygląd",
         "description": "Wybierz, jak ma wyglądać aplikacja Moda. Wybierz jeden motyw lub zsynchronizuj z ustawieniami systemowymi.",
@@ -255,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Ustawienia Motywu",
+      "themeSettings": "Ustawienia",
       "logout": "Wyloguj się"
     },
     "savedOutfitsSection": {

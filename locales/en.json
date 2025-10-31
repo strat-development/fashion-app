@@ -134,7 +134,7 @@
     "link": "Go to home screen!"
   },
   "themeSettings": {
-    "title": "Theme Settings",
+    "title": "Settings",
     "appearance": {
       "title": "Appearance",
       "description": "Choose how Fashion App looks to you. Select a single theme, or sync with your system settings.",
@@ -261,7 +261,7 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Theme Settings",
+    "themeSettings": "Settings",
     "logout": "Logout"
   },
   "savedOutfitsSection": {

@@ -129,7 +129,7 @@
     "link": "Aller à l'écran d'accueil !"
   },
   "themeSettings": {
-    "title": "Paramètres de Thème",
+    "title": "Paramètres",
     "appearance": {
       "title": "Apparence",
       "description": "Choisissez l'apparence de l'application Mode. Sélectionnez un thème unique ou synchronisez avec les paramètres de votre système.",
@@ -255,7 +255,7 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Paramètres de Thème",
+    "themeSettings": "Paramètres",
     "logout": "Déconnexion"
   },
   "savedOutfitsSection": {

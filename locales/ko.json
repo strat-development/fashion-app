@@ -129,7 +129,7 @@
       "link": "홈 화면으로 이동!"
     },
     "themeSettings": {
-      "title": "테마 설정",
+      "title": "설정",
       "appearance": {
         "title": "외관",
         "description": "패션 앱의 외관을 선택하세요. 단일 테마를 선택하거나 시스템 설정과 동기화하세요.",
@@ -255,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "테마 설정",
+      "themeSettings": "설정",
       "logout": "로그아웃"
     },
     "savedOutfitsSection": {

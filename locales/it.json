@@ -129,7 +129,7 @@
     "link": "Vai alla schermata iniziale!"
   },
   "themeSettings": {
-    "title": "Impostazioni del Tema",
+    "title": "Impostazioni",
     "appearance": {
       "title": "Aspetto",
       "description": "Scegli come appare l'app di Moda. Seleziona un tema singolo o sincronizza con le impostazioni del tuo sistema.",
@@ -255,7 +255,7 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Impostazioni del Tema",
+    "themeSettings": "Impostazioni",
     "logout": "Esci"
   },
   "savedOutfitsSection": {

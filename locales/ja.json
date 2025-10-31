@@ -129,7 +129,7 @@
       "link": "ホーム画面へ！"
     },
     "themeSettings": {
-      "title": "テーマ設定",
+      "title": "設定",
       "appearance": {
         "title": "外観",
         "description": "ファッションアプリの見た目を選択してください。単一のテーマを選ぶか、システム設定と同期してください。",
@@ -255,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "テーマ設定",
+      "themeSettings": "設定",
       "logout": "ログアウト"
     },
     "savedOutfitsSection": {

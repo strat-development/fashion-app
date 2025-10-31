@@ -129,7 +129,7 @@
       "link": "اذهب إلى الشاشة الرئيسية!"
     },
     "themeSettings": {
-      "title": "إعدادات الثيم",
+      "title": "الإعدادات",
       "appearance": {
         "title": "المظهر",
         "description": "اختر كيف يبدو تطبيق الموضة بالنسبة لك. اختر ثيمًا واحدًا، أو قم بمزامنته مع إعدادات نظامك.",
@@ -246,7 +246,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "إعدادات الثيم",
+      "themeSettings": "الإعدادات",
       "logout": "تسجيل الخروج"
     },
     "savedOutfitsSection": {

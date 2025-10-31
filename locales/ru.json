@@ -129,7 +129,7 @@
       "link": "Перейти на главный экран!"
     },
     "themeSettings": {
-      "title": "Настройки темы",
+      "title": "Настройки",
       "appearance": {
         "title": "Внешний вид",
         "description": "Выберите, как будет выглядеть приложение Fashion. Выберите одну тему или синхронизируйте с настройками системы.",
@@ -255,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Настройки темы",
+      "themeSettings": "Настройки",
       "logout": "Выйти"
     },
     "savedOutfitsSection": {

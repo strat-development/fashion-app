@@ -129,7 +129,7 @@
       "link": "Ana ekrana git!"
     },
     "themeSettings": {
-      "title": "Tema Ayarları",
+      "title": "Ayarlar",
       "appearance": {
         "title": "Görünüm",
         "description": "Moda Uygulamasının nasıl görüneceğini seçin. Tek bir tema seçin veya sistem ayarlarıyla senkronize edin.",
@@ -255,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Tema Ayarları",
+      "themeSettings": "Ayarlar",
       "logout": "Çıkış Yap"
     },
     "savedOutfitsSection": {
