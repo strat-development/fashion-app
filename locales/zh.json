@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "加载中…"
+      "loading": "加载中…",
+      "ok": "好的"
     },
     "homeScreen": {
       "welcomeMessage": "欢迎，您想如何创建一套服装？",
@@ -489,6 +490,8 @@
       "commentPlaceholder": "请描述问题或提供上下文...",
       "success": "举报已发送",
       "failure": "举报发送失败",
+      "thanksTitle": "谢谢！",
+      "thanksBody": "感谢您的举报。我们的团队正在审核。",
       "reason": {
         "sexual": "色情内容",
         "racism": "种族歧视",

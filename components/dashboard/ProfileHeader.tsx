@@ -2,7 +2,7 @@ import { supabase } from '@/lib/supabase';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
 import { Image } from 'expo-image';
-import { BookOpen, Bug, Edit3, Heart, User, User2, X } from 'lucide-react-native';
+import { BookOpen, Bug, Edit3, Heart, User, User2, X, CheckCircle } from 'lucide-react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Modal, Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
@@ -25,10 +25,11 @@ export function ProfileHeader({
   onEditProfile,
 }: ProfileHeaderProps) {
   const { t } = useTranslation();
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const [showReportModal, setShowReportModal] = React.useState(false);
   const [reportSubject, setReportSubject] = React.useState('');
   const [reportMessage, setReportMessage] = React.useState('');
+  const [showThanks, setShowThanks] = React.useState(false);
   const { userId, userName: currentUserName, userEmail: currentUserEmail } = useUserContext();
 
   const handleSendReport = async () => {
@@ -84,14 +85,13 @@ export function ProfileHeader({
         }
       }
 
-      Alert.alert(t('profileHeader.reportSent') || 'Report sent');
+      // Show thank-you popup styled like delete confirmation modal
+      setShowThanks(true);
     } catch (e) {
       console.error('Report send failed', e);
       Alert.alert(t('profileHeader.reportFailed') || 'Failed to send report');
     }
-    setShowReportModal(false);
-    setReportSubject('');
-    setReportMessage('');
+    // Defer closing and clearing until user acknowledges in the thank-you modal
   };
 
   const tabs = [
@@ -233,6 +233,44 @@ export function ProfileHeader({
             />
           </ScrollView>
         </SafeAreaView>
+      </Modal>
+
+      {/* Thank you popup - styled like delete confirmation modal with single OK button */}
+      <Modal
+        visible={showThanks}
+        animationType={'fade'}
+        transparent={true}
+        onRequestClose={() => setShowThanks(false)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24, backgroundColor: isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.4)' }}>
+          <View style={{ width: '100%', maxWidth: 520, borderRadius: 18, padding: 18, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.border }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginRight: 10, backgroundColor: `${colors.accent}20` }}>
+                  <CheckCircle size={18} color={colors.accent} />
+                </View>
+                <Text style={{ color: colors.text, fontWeight: '600' }}>{t('reportPost.thanksTitle') || 'Thank you!'}</Text>
+              </View>
+              <Pressable onPress={() => setShowThanks(false)} style={{ padding: 6 }}>
+                <X size={20} color={colors.text} />
+              </Pressable>
+            </View>
+            <Text style={{ color: colors.textSecondary, marginBottom: 18 }}>{t('reportPost.thanksBody') || 'Thanks for your report. Our team is reviewing it.'}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Pressable
+                onPress={() => {
+                  setShowThanks(false);
+                  setShowReportModal(false);
+                  setReportSubject('');
+                  setReportMessage('');
+                }}
+                style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: colors.accent, alignItems: 'center' }}
+              >
+                <Text style={{ color: colors.white, fontWeight: '600' }}>{t('common.ok') || 'OK'}</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
       </Modal>
       <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 16, paddingHorizontal: 24 }}>
         <View

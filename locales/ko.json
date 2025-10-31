@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "로딩 중..."
+      "loading": "로딩 중...",
+      "ok": "확인"
     },
     "homeScreen": {
       "welcomeMessage": "환영합니다, 어떤 방식으로 의상을 만들고 싶으신가요?",
@@ -665,6 +666,8 @@
       "commentPlaceholder": "문제를 설명하거나 추가 정보를 입력하세요...",
       "success": "신고가 전송되었습니다",
       "failure": "신고 전송 실패",
+      "thanksTitle": "감사합니다!",
+      "thanksBody": "신고해 주셔서 감사합니다. 담당 팀이 검토 중입니다.",
       "reason": {
         "sexual": "성적인 콘텐츠",
         "racism": "인종차별",

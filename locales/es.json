@@ -1,6 +1,7 @@
 {
   "common": {
-    "loading": "Cargando…"
+    "loading": "Cargando…",
+    "ok": "OK"
   },
   "homeScreen": {
     "welcomeMessage": "Bienvenido, ¿cómo te gustaría crear un atuendo?",
@@ -665,6 +666,8 @@
     "commentPlaceholder": "Describe el problema o agrega contexto...",
     "success": "Informe enviado",
     "failure": "No se pudo enviar el informe",
+      "thanksTitle": "¡Gracias!",
+      "thanksBody": "Gracias por tu reporte. Nuestro equipo lo está revisando.",
     "reason": {
       "sexual": "Contenido sexual",
       "racism": "Racismo",

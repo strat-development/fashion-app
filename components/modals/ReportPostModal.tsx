@@ -6,7 +6,7 @@ import React, { useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, Text, TextInput, View, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ThemedGradient } from '@/providers/themeContext';
-import { X, Flag } from 'lucide-react-native';
+import { X, CheckCircle } from 'lucide-react-native';
 
 export type ReportPostPayload = {
   postId: string;
@@ -26,12 +26,13 @@ interface ReportPostModalProps {
 
 export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwnerId }: ReportPostModalProps) => {
   const { t } = useTranslation();
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const { userId, userName, userEmail } = useUserContext();
 
   const [selected, setSelected] = useState<string[]>([]); // stores topic keys
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [showThanks, setShowThanks] = useState(false);
 
   const toggle = (topicKey: string) => {
     setSelected(prev => prev.includes(topicKey) ? prev.filter(t => t !== topicKey) : [...prev, topicKey]);
@@ -94,8 +95,8 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
         if (insertErr) throw insertErr;
       }
 
-      Alert.alert(t('reportPost.success') || 'Report sent');
-      onClose();
+      // Show friendly thank-you popup instead of a plain alert
+      setShowThanks(true);
       setSelected([]);
       setComment('');
     } catch (e) {
@@ -129,22 +130,30 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
           )}
 
           <Text style={{ color: colors.text, marginBottom: 8 }}>{t('reportPost.reasons') || 'Reasons'}</Text>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 16 }}>
             {reportTopics.map((topic) => {
               const active = selected.includes(topic.key);
               const label = t(`reportPost.reason.${topic.key}`) || topic.label;
               return (
-                <Pressable key={topic.key} onPress={() => toggle(topic.key)}
+                <Pressable
+                  key={topic.key}
+                  onPress={() => toggle(topic.key)}
                   style={{
-                    paddingHorizontal: 12,
+                    marginRight: 8,
+                    marginBottom: 8,
+                    paddingHorizontal: 16,
                     paddingVertical: 8,
                     borderRadius: 999,
                     borderWidth: 1,
                     borderColor: active ? colors.accent : colors.border,
-                    backgroundColor: active ? colors.accent + '20' : colors.surfaceVariant,
+                    backgroundColor: active ? colors.accent : colors.surface,
                   }}
                 >
-                  <Text style={{ color: active ? colors.accent : colors.text }}>{label}</Text>
+                  <Text style={{
+                    color: active ? colors.white : colors.textSecondary,
+                    fontSize: 14,
+                    fontWeight: '500',
+                  }}>{label}</Text>
                 </Pressable>
               );
             })}
@@ -161,6 +170,38 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
             style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: colors.border, padding: 12, borderRadius: 8, color: colors.text, textAlignVertical: 'top', minHeight: 120 }}
           />
         </ScrollView>
+        {/* Thank you popup - styled like delete confirmation modal, with single OK */}
+        <Modal
+          visible={showThanks}
+          animationType={'fade'}
+          transparent={true}
+          onRequestClose={() => setShowThanks(false)}
+        >
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24, backgroundColor: isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.4)' }}>
+            <View style={{ width: '100%', maxWidth: 520, borderRadius: 18, padding: 18, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.border }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{ width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginRight: 10, backgroundColor: `${colors.accent}20` }}>
+                    <CheckCircle size={18} color={colors.accent} />
+                  </View>
+                  <Text style={{ color: colors.text, fontWeight: '600' }}>{t('reportPost.thanksTitle') || 'Thank you!'}</Text>
+                </View>
+                <Pressable onPress={() => setShowThanks(false)} style={{ padding: 6 }}>
+                  <X size={20} color={colors.text} />
+                </Pressable>
+              </View>
+              <Text style={{ color: colors.textSecondary, marginBottom: 18 }}>{t('reportPost.thanksBody') || 'Thanks for your report. Our team is reviewing it.'}</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Pressable
+                  onPress={() => { setShowThanks(false); onClose(); }}
+                  style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: colors.accent, alignItems: 'center' }}
+                >
+                  <Text style={{ color: colors.white, fontWeight: '600' }}>{t('common.ok') || 'OK'}</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </Modal>
   );

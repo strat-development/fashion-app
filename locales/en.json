@@ -3,7 +3,8 @@
     "loading": "Loading…",
     "approve": "Approve",
     "decline": "Decline",
-    "close": "Close"
+    "close": "Close",
+    "ok": "OK"
   },
   "homeScreen": {
     "welcomeMessage": "Welcome, how would you like to create an outfit?",
@@ -674,6 +675,8 @@
     "commentPlaceholder": "Describe the issue or add context...",
     "success": "Report sent",
     "failure": "Failed to send report",
+    "thanksTitle": "Thank you!",
+    "thanksBody": "Thanks for your report. Our team is reviewing it.",
     "reason": {
       "sexual": "Sexual content",
       "racism": "Racism",

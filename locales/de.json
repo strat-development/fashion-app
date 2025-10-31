@@ -1,6 +1,7 @@
 {
   "common": {
-    "loading": "Laden…"
+    "loading": "Wird geladen…",
+    "ok": "OK"
   },
   "homeScreen": {
     "welcomeMessage": "Willkommen, wie möchtest du ein Outfit erstellen?",
@@ -665,6 +666,8 @@
     "commentPlaceholder": "Beschreiben Sie das Problem oder fügen Sie Kontext hinzu...",
     "success": "Meldung gesendet",
     "failure": "Senden der Meldung fehlgeschlagen",
+    "thanksTitle": "Danke!",
+    "thanksBody": "Danke für deine Meldung. Unser Team prüft sie.",
     "reason": {
       "sexual": "Sexuelle Inhalte",
       "racism": "Rassismus",
