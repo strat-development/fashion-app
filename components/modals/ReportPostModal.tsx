@@ -116,8 +116,14 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
             <X size={24} color={colors.textMuted} />
           </Pressable>
           <Text style={{ color: colors.text, fontWeight: '600' }}>{t('reportPost.title') || 'Report post'}</Text>
-          <Pressable onPress={handleSubmit} disabled={!canSubmit || submitting} style={{ padding: 8, opacity: !canSubmit || submitting ? 0.5 : 1 }}>
-            <Text style={{ color: colors.primary }}>{t('reportPost.send') || 'Send'}</Text>
+          <Pressable
+            onPress={handleSubmit}
+            disabled={!canSubmit || submitting}
+            className="px-4 py-2 rounded-full overflow-hidden"
+            style={{ opacity: !canSubmit || submitting ? 0.5 : 1 }}
+          >
+            <ThemedGradient active={canSubmit && !submitting} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+            <Text className="font-medium text-sm" style={{ color: colors.white }}>{t('reportPost.send') || 'Send'}</Text>
           </Pressable>
         </View>
 

@@ -31,6 +31,7 @@ export function ProfileHeader({
   const [reportMessage, setReportMessage] = React.useState('');
   const [showThanks, setShowThanks] = React.useState(false);
   const { userId, userName: currentUserName, userEmail: currentUserEmail } = useUserContext();
+  const canSendBug = (reportSubject?.trim()?.length || 0) > 0 || (reportMessage?.trim()?.length || 0) > 0;
 
   const handleSendReport = async () => {
     const funcPayload = {
@@ -204,8 +205,14 @@ export function ProfileHeader({
               <X size={24} color={colors.textMuted} />
             </Pressable>
             <Text style={{ color: colors.text, fontWeight: '600' }}>{t('profileHeader.reportBug') || 'Report a bug'}</Text>
-            <Pressable onPress={handleSendReport} style={{ padding: 8 }}>
-              <Text style={{ color: colors.primary }}>{t('profileHeader.send') || 'Send'}</Text>
+            <Pressable
+              onPress={handleSendReport}
+              disabled={!canSendBug}
+              className="px-4 py-2 rounded-full overflow-hidden"
+              style={{ opacity: canSendBug ? 1 : 0.5 }}
+            >
+              <ThemedGradient active={canSendBug} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+              <Text className="font-medium text-sm" style={{ color: colors.white }}>{t('profileHeader.send') || 'Send'}</Text>
             </Pressable>
           </View>
           <ScrollView contentContainerStyle={{ padding: 16 }}>
