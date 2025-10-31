@@ -102,12 +102,12 @@ export const CommentItem = ({ comment, isReply = false, depth = 0, parentComment
                         </Pressable>
                         {!isReply && replies && replies.length > 0 && !repliesVisible && (
                             <Pressable onPress={() => setRepliesVisible(true)} hitSlop={8} style={{ borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4, marginLeft: 4 }}>
-                                <Text style={{ color: colors.primary, fontSize: 11, letterSpacing: 0.2 }}>{t('commentItem.viewReplies')} { replies.length }</Text>
+                                <Text style={{ color: isDark ? colors.primary : colors.accent, fontSize: 11, letterSpacing: 0.2 }}>{t('commentItem.viewReplies')} { replies.length }</Text>
                             </Pressable>
                         )}
                         {!isReply && repliesVisible && replies && replies.length > 0 && (
                             <Pressable onPress={() => setRepliesVisible(false)} hitSlop={8} style={{ borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4, marginLeft: 4 }}>
-                                <Text style={{ color: colors.primary, fontSize: 11, letterSpacing: 0.2 }}>{t('commentItem.hideReplies')}</Text>
+                                <Text style={{ color: isDark ? colors.primary : colors.accent, fontSize: 11, letterSpacing: 0.2 }}>{t('commentItem.hideReplies')}</Text>
                             </Pressable>
                         )}
                     </View>
