@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "加载中…"
+      "loading": "加载中…",
+      "ok": "好的"
     },
     "homeScreen": {
       "welcomeMessage": "欢迎，您想如何创建一套服装？",
@@ -129,7 +130,7 @@
       "link": "前往首页！"
     },
     "themeSettings": {
-      "title": "主题设置",
+      "title": "设置",
       "appearance": {
         "title": "外观",
         "description": "选择时尚应用的外观。选择单一主题，或与您的系统设置同步。",
@@ -255,7 +256,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "主题设置",
+      "themeSettings": "设置",
       "logout": "退出"
     },
     "savedOutfitsSection": {
@@ -478,6 +479,25 @@
         "apiKeyMissing": "API密钥缺失。请联系支持。",
         "success": "报告发送成功！",
         "error": "无法发送报告。请稍后再试。"
+      }
+    },
+    "reportPost": {
+      "title": "举报帖子",
+      "send": "发送",
+      "post": "帖子",
+      "reasons": "原因",
+      "commentOptional": "附加详细信息（可选）",
+      "commentPlaceholder": "请描述问题或提供上下文...",
+      "success": "举报已发送",
+      "failure": "举报发送失败",
+      "thanksTitle": "谢谢！",
+      "thanksBody": "感谢您的举报。我们的团队正在审核。",
+      "reason": {
+        "sexual": "色情内容",
+        "racism": "种族歧视",
+        "vulgar": "粗俗或低俗",
+        "non_outfit": "与穿搭无关",
+        "other": "其他"
       }
     },
     "shareModal": {

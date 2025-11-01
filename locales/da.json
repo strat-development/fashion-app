@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "Indlæser..."
+      "loading": "Indlæser...",
+      "ok": "OK"
     },
     "homeScreen": {
       "welcomeMessage": "Velkommen, hvordan vil du skabe et outfit?",
@@ -129,7 +130,7 @@
       "link": "Gå til startsiden!"
     },
     "themeSettings": {
-      "title": "Temaindstillinger",
+      "title": "Indstillinger",
       "appearance": {
         "title": "Udseende",
         "description": "Vælg, hvordan Modeappen skal se ud for dig. Vælg et tema eller synkroniser med dine systemindstillinger.",
@@ -255,7 +256,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Temaindstillinger",
+      "themeSettings": "Indstillinger",
       "logout": "Log ud"
     },
     "savedOutfitsSection": {
@@ -663,5 +664,24 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Skaber"
+    },
+    "reportPost": {
+      "title": "Anmeld opslag",
+      "send": "Send",
+      "post": "Opslag",
+      "reasons": "Årsager",
+      "commentOptional": "Yderligere detaljer (valgfrit)",
+      "commentPlaceholder": "Beskriv problemet eller tilføj kontekst...",
+      "success": "Anmeldelse sendt",
+      "failure": "Kunne ikke sende anmeldelsen",
+      "thanksTitle": "Tak!",
+      "thanksBody": "Tak for din anmeldelse. Vores team gennemgår den.",
+      "reason": {
+        "sexual": "Seksuelt indhold",
+        "racism": "Racisme",
+        "vulgar": "Vulgær eller obskøn",
+        "non_outfit": "Ikke relateret til outfits",
+        "other": "Andet"
+      }
     }
   }

@@ -1,6 +1,7 @@
 {
   "common": {
-    "loading": "Laden…"
+    "loading": "Wird geladen…",
+    "ok": "OK"
   },
   "homeScreen": {
     "welcomeMessage": "Willkommen, wie möchtest du ein Outfit erstellen?",
@@ -129,7 +130,7 @@
     "link": "Zum Startbildschirm!"
   },
   "themeSettings": {
-    "title": "Themen-Einstellungen",
+  "title": "Einstellungen",
     "appearance": {
       "title": "Aussehen",
       "description": "Wähle, wie die Fashion-App für dich aussieht. Wähle ein einziges Thema oder synchronisiere es mit deinen Systemeinstellungen.",
@@ -255,7 +256,7 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Themen-Einstellungen",
+    "themeSettings": "Einstellungen",
     "logout": "Abmelden"
   },
   "savedOutfitsSection": {
@@ -655,5 +656,24 @@
   "chatSwitch": {
     "ai": "KI",
     "creator": "Ersteller"
+  },
+  "reportPost": {
+    "title": "Beitrag melden",
+    "send": "Senden",
+    "post": "Beitrag",
+    "reasons": "Gründe",
+    "commentOptional": "Zusätzliche Details (optional)",
+    "commentPlaceholder": "Beschreiben Sie das Problem oder fügen Sie Kontext hinzu...",
+    "success": "Meldung gesendet",
+    "failure": "Senden der Meldung fehlgeschlagen",
+    "thanksTitle": "Danke!",
+    "thanksBody": "Danke für deine Meldung. Unser Team prüft sie.",
+    "reason": {
+      "sexual": "Sexuelle Inhalte",
+      "racism": "Rassismus",
+      "vulgar": "Vulgär oder obszön",
+      "non_outfit": "Nicht bezogen auf Outfits",
+      "other": "Sonstiges"
+    }
   }
 }

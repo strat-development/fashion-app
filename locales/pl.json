@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "Ładowanie..."
+      "loading": "Ładowanie...",
+      "ok": "OK"
     },
     "homeScreen": {
       "welcomeMessage": "Witaj, jak chcesz stworzyć stylizację?",
@@ -129,7 +130,7 @@
       "link": "Przejdź do ekranu głównego!"
     },
     "themeSettings": {
-      "title": "Ustawienia Motywu",
+      "title": "Ustawienia",
       "appearance": {
         "title": "Wygląd",
         "description": "Wybierz, jak ma wyglądać aplikacja Moda. Wybierz jeden motyw lub zsynchronizuj z ustawieniami systemowymi.",
@@ -255,7 +256,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Ustawienia Motywu",
+      "themeSettings": "Ustawienia",
       "logout": "Wyloguj się"
     },
     "savedOutfitsSection": {
@@ -658,5 +659,24 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Twórca"
+    },
+    "reportPost": {
+      "title": "Zgłoś post",
+      "send": "Wyślij",
+      "post": "Post",
+      "reasons": "Powody",
+      "commentOptional": "Dodatkowe informacje (opcjonalnie)",
+      "commentPlaceholder": "Opisz problem lub dodaj kontekst...",
+      "success": "Zgłoszenie wysłane",
+      "failure": "Nie udało się wysłać zgłoszenia",
+      "thanksTitle": "Dziękujemy!",
+      "thanksBody": "Dziękujemy za zgłoszenie. Nasz zespół je przegląda.",
+      "reason": {
+        "sexual": "Treści seksualne",
+        "racism": "Rasizm",
+        "vulgar": "Wulgarne lub obsceniczne",
+        "non_outfit": "Nie dotyczy stylizacji",
+        "other": "Inne"
+      }
     }
   }

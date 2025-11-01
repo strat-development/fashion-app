@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "読み込み中…"
+      "loading": "読み込み中…",
+      "ok": "OK"
     },
     "homeScreen": {
       "welcomeMessage": "ようこそ、どのように服を作成しますか？",
@@ -30,7 +31,7 @@
       },
       "loading": "読み込み中…",
       "error": "読み込みに失敗しました",
-      "tryAgain": "もう一度試す",
+    "tryAgain": "もう一度試す",
       "rankRow": {
         "untitledOutfit": "タイトルなしの服",
         "unknownCreator": "不明",
@@ -129,7 +130,7 @@
       "link": "ホーム画面へ！"
     },
     "themeSettings": {
-      "title": "テーマ設定",
+      "title": "設定",
       "appearance": {
         "title": "外観",
         "description": "ファッションアプリの見た目を選択してください。単一のテーマを選ぶか、システム設定と同期してください。",
@@ -255,7 +256,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "テーマ設定",
+      "themeSettings": "設定",
       "logout": "ログアウト"
     },
     "savedOutfitsSection": {
@@ -655,5 +656,22 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "クリエイター"
+    },
+    "reportPost": {
+      "title": "投稿を報告",
+      "send": "送信",
+      "post": "投稿",
+      "reasons": "理由",
+      "commentOptional": "追加の詳細（任意）",
+      "commentPlaceholder": "問題を説明するか、文脈を追加してください...",
+      "success": "送信しました",
+      "failure": "送信に失敗しました",
+      "reason": {
+        "sexual": "性的なコンテンツ",
+        "racism": "人種差別",
+        "vulgar": "低俗またはわいせつ",
+        "non_outfit": "コーディネートに無関係",
+        "other": "その他"
+      }
     }
   }

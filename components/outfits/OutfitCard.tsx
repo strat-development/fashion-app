@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Pressable, ScrollView, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { OutfitFooter, OutfitHeader, OutfitImageCarousel } from "./OutfitCard/index";
+import { ReportPostModal } from "@/components/modals/ReportPostModal";
 
 export type OutfitData = Database["public"]["Tables"]["created-outfits"]["Row"] & {
   likes: number;
@@ -181,6 +182,7 @@ export const OutfitCard = ({
   // Inline detail modal state and animations
   const [showDetail, setShowDetail] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
   const likeScale = useSharedValue(1);
   const dislikeScale = useSharedValue(1);
   const commentScale = useSharedValue(1);
@@ -228,6 +230,7 @@ export const OutfitCard = ({
         isDeleteVisible={isDeleteVisible}
         onDelete={onDelete}
         outfitId={outfit.outfit_id}
+        onReport={() => setShowReportModal(true)}
       />
 
       <OutfitImageCarousel
@@ -326,6 +329,14 @@ export const OutfitCard = ({
       )}
 
       <ShareModal isVisible={showShareModal} onClose={() => setShowShareModal(false)} outfit={outfit} isAnimated />
+
+      <ReportPostModal
+        isVisible={showReportModal}
+        onClose={() => setShowReportModal(false)}
+        postId={outfit.outfit_id}
+        postTitle={outfit.outfit_name}
+        postOwnerId={outfit.created_by}
+      />
     </View>
   );
 };

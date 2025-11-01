@@ -1,6 +1,7 @@
 {
   "common": {
-    "loading": "Chargement…"
+    "loading": "Chargement…",
+    "ok": "OK"
   },
   "homeScreen": {
     "welcomeMessage": "Bienvenue, comment souhaitez-vous créer une tenue ?",
@@ -129,7 +130,7 @@
     "link": "Aller à l'écran d'accueil !"
   },
   "themeSettings": {
-    "title": "Paramètres de Thème",
+    "title": "Paramètres",
     "appearance": {
       "title": "Apparence",
       "description": "Choisissez l'apparence de l'application Mode. Sélectionnez un thème unique ou synchronisez avec les paramètres de votre système.",
@@ -255,7 +256,7 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Paramètres de Thème",
+    "themeSettings": "Paramètres",
     "logout": "Déconnexion"
   },
   "savedOutfitsSection": {
@@ -641,5 +642,24 @@
   "chatSwitch": {
     "ai": "IA",
     "creator": "Créateur"
+  },
+  "reportPost": {
+    "title": "Signaler la publication",
+    "send": "Envoyer",
+    "post": "Publication",
+    "reasons": "Motifs",
+    "commentOptional": "Détails supplémentaires (optionnel)",
+    "commentPlaceholder": "Décrivez le problème ou ajoutez du contexte...",
+    "success": "Signalement envoyé",
+    "failure": "Échec de l’envoi du signalement",
+    "thanksTitle": "Merci !",
+    "thanksBody": "Merci pour votre signalement. Notre équipe l'examine.",
+    "reason": {
+      "sexual": "Contenu sexuel",
+      "racism": "Racisme",
+      "vulgar": "Vulgaire ou obscène",
+      "non_outfit": "Sans lien avec les tenues",
+      "other": "Autre"
+    }
   }
 }

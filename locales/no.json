@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "Laster..."
+      "loading": "Laster...",
+      "ok": "OK"
     },
     "homeScreen": {
       "welcomeMessage": "Velkommen, hvordan vil du lage et antrekk?",
@@ -129,7 +130,7 @@
       "link": "Gå til startsiden!"
     },
     "themeSettings": {
-      "title": "Temainnstillinger",
+      "title": "Innstillinger",
       "appearance": {
         "title": "Utseende",
         "description": "Velg hvordan Moteappen skal se ut for deg. Velg ett tema eller synkroniser med systeminnstillingene dine.",
@@ -255,7 +256,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Temainnstillinger",
+      "themeSettings": "Innstillinger",
       "logout": "Logg ut"
     },
     "savedOutfitsSection": {
@@ -655,5 +656,24 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Skaper"
+    },
+    "reportPost": {
+      "title": "Rapporter innlegg",
+      "send": "Send",
+      "post": "Innlegg",
+      "reasons": "Årsaker",
+      "commentOptional": "Ytterligere detaljer (valgfritt)",
+      "commentPlaceholder": "Beskriv problemet eller legg til kontekst...",
+      "success": "Rapport sendt",
+      "failure": "Klarte ikke å sende rapporten",
+      "thanksTitle": "Takk!",
+      "thanksBody": "Takk for rapporten. Teamet vårt gjennomgår den.",
+      "reason": {
+        "sexual": "Seksuelt innhold",
+        "racism": "Rasisme",
+        "vulgar": "Vulgært eller obskønt",
+        "non_outfit": "Ikke relatert til antrekk",
+        "other": "Annet"
+      }
     }
   }

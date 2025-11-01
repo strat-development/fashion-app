@@ -3,7 +3,8 @@
     "loading": "Loading…",
     "approve": "Approve",
     "decline": "Decline",
-    "close": "Close"
+    "close": "Close",
+    "ok": "OK"
   },
   "homeScreen": {
     "welcomeMessage": "Welcome, how would you like to create an outfit?",
@@ -134,7 +135,7 @@
     "link": "Go to home screen!"
   },
   "themeSettings": {
-    "title": "Theme Settings",
+    "title": "Settings",
     "appearance": {
       "title": "Appearance",
       "description": "Choose how Fashion App looks to you. Select a single theme, or sync with your system settings.",
@@ -261,7 +262,7 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Theme Settings",
+    "themeSettings": "Settings",
     "logout": "Logout"
   },
   "savedOutfitsSection": {
@@ -664,5 +665,24 @@
   "chatSwitch": {
     "ai": "AI",
     "creator": "Creator"
+  },
+  "reportPost": {
+    "title": "Report post",
+    "send": "Send",
+    "post": "Post",
+    "reasons": "Reasons",
+    "commentOptional": "Additional details (optional)",
+    "commentPlaceholder": "Describe the issue or add context...",
+    "success": "Report sent",
+    "failure": "Failed to send report",
+    "thanksTitle": "Thank you!",
+    "thanksBody": "Thanks for your report. Our team is reviewing it.",
+    "reason": {
+      "sexual": "Sexual content",
+      "racism": "Racism",
+      "vulgar": "Vulgar or obscene",
+      "non_outfit": "Not related to outfits",
+      "other": "Other"
+    }
   }
 }

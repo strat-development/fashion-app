@@ -1,6 +1,7 @@
 {
   "common": {
-    "loading": "Cargando…"
+    "loading": "Cargando…",
+    "ok": "OK"
   },
   "homeScreen": {
     "welcomeMessage": "Bienvenido, ¿cómo te gustaría crear un atuendo?",
@@ -129,7 +130,7 @@
     "link": "¡Ir a la pantalla de inicio!"
   },
   "themeSettings": {
-    "title": "Configuración de Tema",
+    "title": "Configuración",
     "appearance": {
       "title": "Apariencia",
       "description": "Elige cómo se ve la aplicación de Moda. Selecciona un tema único o sincroniza con la configuración de tu sistema.",
@@ -255,8 +256,8 @@
     }
   },
   "profileSettingsButtons": {
-    "themeSettings": "Configuración de Tema",
-    "logout": "Cerrar Sesión"
+    "themeSettings": "Configuración",
+    "logout": "Cerrar sesión"
   },
   "savedOutfitsSection": {
     "loading": "Cargando atuendos guardados...",
@@ -655,5 +656,24 @@
   "chatSwitch": {
     "ai": "IA",
     "creator": "Creador"
+  },
+  "reportPost": {
+    "title": "Reportar publicación",
+    "send": "Enviar",
+    "post": "Publicación",
+    "reasons": "Motivos",
+    "commentOptional": "Detalles adicionales (opcional)",
+    "commentPlaceholder": "Describe el problema o agrega contexto...",
+    "success": "Informe enviado",
+    "failure": "No se pudo enviar el informe",
+      "thanksTitle": "¡Gracias!",
+      "thanksBody": "Gracias por tu reporte. Nuestro equipo lo está revisando.",
+    "reason": {
+      "sexual": "Contenido sexual",
+      "racism": "Racismo",
+      "vulgar": "Vulgar u obsceno",
+      "non_outfit": "No relacionado con atuendos",
+      "other": "Otro"
+    }
   }
 }

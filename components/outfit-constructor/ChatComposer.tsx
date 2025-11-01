@@ -10,13 +10,14 @@ type ChatComposerProps = {
   onStop?: () => void;
   sending: boolean;
   placeholder: string;
+  bottomSpacing?: number; // dynamic bottom margin to avoid tab bar; set to 0 when keyboard visible
 };
 
-export const ChatComposer = ({ value, onChange, onSend, onStop, sending, placeholder }: ChatComposerProps) => {
+export const ChatComposer = ({ value, onChange, onSend, onStop, sending, placeholder, bottomSpacing }: ChatComposerProps) => {
   const { colors } = useTheme();
   
   return (
-    <View className='w-full mb-16'>
+    <View className='w-full' style={{ marginBottom: bottomSpacing ?? 64 }}>
       <View className='flex-row items-end gap-3'>
         <View className='flex-1 rounded-2xl' style={{ backgroundColor: colors.surfaceVariant, borderWidth: 1, borderColor: colors.border }}>
           <TextInput

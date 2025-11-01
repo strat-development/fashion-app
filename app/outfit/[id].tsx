@@ -1,4 +1,5 @@
 import { ShareModal } from "@/components/modals/ShareModal";
+import { ReportPostModal } from "@/components/modals/ReportPostModal";
 import OutfitDetailHeader from "@/components/outfit-detail/OutfitDetailHeader";
 import OutfitDetailImages from "@/components/outfit-detail/OutfitDetailImages";
 import OutfitDetailInfo from "@/components/outfit-detail/OutfitDetailInfo";
@@ -56,6 +57,7 @@ function OutfitDetailContent() {
   const [error, setError] = useState<string | null>(null);
   const [showComments, setShowComments] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
   
   const { data: userData } = useFetchUser(outfit?.created_by || "");
   const { data: ratingStats } = useFetchRatingStats(id || "");
@@ -235,7 +237,10 @@ function OutfitDetailContent() {
           style={{ flex: 1 }}
           contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
         >
-          <OutfitDetailHeader />
+          <OutfitDetailHeader
+            canReport={!!outfit && userId !== outfit.created_by}
+            onReport={() => setShowReportModal(true)}
+          />
 
           <View style={{ paddingHorizontal: 16 }}>
             <OutfitDetailInfo 
@@ -288,6 +293,14 @@ function OutfitDetailContent() {
         onClose={() => setShowShareModal(false)}
         outfit={outfit as any}
         isAnimated={true}
+      />
+
+      <ReportPostModal
+        isVisible={showReportModal}
+        onClose={() => setShowReportModal(false)}
+        postId={id || ''}
+        postTitle={outfit?.outfit_name || ''}
+        postOwnerId={outfit?.created_by || ''}
       />
     </>
   );

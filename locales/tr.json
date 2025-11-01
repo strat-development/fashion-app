@@ -129,7 +129,7 @@
       "link": "Ana ekrana git!"
     },
     "themeSettings": {
-      "title": "Tema Ayarları",
+      "title": "Ayarlar",
       "appearance": {
         "title": "Görünüm",
         "description": "Moda Uygulamasının nasıl görüneceğini seçin. Tek bir tema seçin veya sistem ayarlarıyla senkronize edin.",
@@ -255,7 +255,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Tema Ayarları",
+      "themeSettings": "Ayarlar",
       "logout": "Çıkış Yap"
     },
     "savedOutfitsSection": {
@@ -478,6 +478,23 @@
         "apiKeyMissing": "API anahtarı eksik. Lütfen destek ile iletişime geçin.",
         "success": "Rapor başarıyla gönderildi!",
         "error": "Rapor gönderilemedi. Lütfen daha sonra tekrar deneyin."
+      }
+    },
+    "reportPost": {
+      "title": "Gönderiyi bildir",
+      "send": "Gönder",
+      "post": "Gönderi",
+      "reasons": "Nedenler",
+      "commentOptional": "Ek ayrıntılar (isteğe bağlı)",
+      "commentPlaceholder": "Sorunu açıklayın veya bağlam ekleyin...",
+      "success": "Bildirim gönderildi",
+      "failure": "Bildirim gönderilemedi",
+      "reason": {
+        "sexual": "Cinsel içerik",
+        "racism": "Irkçılık",
+        "vulgar": "Kaba veya müstehcen",
+        "non_outfit": "Kıyafetlerle ilgili değil",
+        "other": "Diğer"
       }
     },
     "shareModal": {

@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "로딩 중..."
+      "loading": "로딩 중...",
+      "ok": "확인"
     },
     "homeScreen": {
       "welcomeMessage": "환영합니다, 어떤 방식으로 의상을 만들고 싶으신가요?",
@@ -129,7 +130,7 @@
       "link": "홈 화면으로 이동!"
     },
     "themeSettings": {
-      "title": "테마 설정",
+      "title": "설정",
       "appearance": {
         "title": "외관",
         "description": "패션 앱의 외관을 선택하세요. 단일 테마를 선택하거나 시스템 설정과 동기화하세요.",
@@ -255,7 +256,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "테마 설정",
+      "themeSettings": "설정",
       "logout": "로그아웃"
     },
     "savedOutfitsSection": {
@@ -655,5 +656,24 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "크리에이터"
+    },
+    "reportPost": {
+      "title": "게시물 신고",
+      "send": "보내기",
+      "post": "게시물",
+      "reasons": "사유",
+      "commentOptional": "추가 상세(선택 사항)",
+      "commentPlaceholder": "문제를 설명하거나 추가 정보를 입력하세요...",
+      "success": "신고가 전송되었습니다",
+      "failure": "신고 전송 실패",
+      "thanksTitle": "감사합니다!",
+      "thanksBody": "신고해 주셔서 감사합니다. 담당 팀이 검토 중입니다.",
+      "reason": {
+        "sexual": "성적인 콘텐츠",
+        "racism": "인종차별",
+        "vulgar": "저속하거나 외설적",
+        "non_outfit": "코디와 관련 없음",
+        "other": "기타"
+      }
     }
   }

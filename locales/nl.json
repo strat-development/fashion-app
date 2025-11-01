@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "Laden..."
+      "loading": "Laden...",
+      "ok": "OK"
     },
     "homeScreen": {
       "welcomeMessage": "Welkom, hoe wil je een outfit maken?",
@@ -129,7 +130,7 @@
       "link": "Ga naar het startscherm!"
     },
     "themeSettings": {
-      "title": "Thema-instellingen",
+      "title": "Instellingen",
       "appearance": {
         "title": "Uiterlijk",
         "description": "Kies hoe de Mode App er voor jou uitziet. Selecteer een enkel thema of synchroniseer met je systeeminstellingen.",
@@ -255,7 +256,7 @@
       }
     },
     "profileSettingsButtons": {
-      "themeSettings": "Thema-instellingen",
+      "themeSettings": "Instellingen",
       "logout": "Uitloggen"
     },
     "savedOutfitsSection": {
@@ -655,5 +656,24 @@
     "chatSwitch": {
       "ai": "AI",
       "creator": "Maker"
+    },
+    "reportPost": {
+      "title": "Bericht rapporteren",
+      "send": "Verzenden",
+      "post": "Bericht",
+      "reasons": "Redenen",
+      "commentOptional": "Aanvullende details (optioneel)",
+      "commentPlaceholder": "Beschrijf het probleem of voeg context toe...",
+      "success": "Rapport verzonden",
+      "failure": "Rapport verzenden mislukt",
+      "thanksTitle": "Bedankt!",
+      "thanksBody": "Bedankt voor je melding. Ons team bekijkt het.",
+      "reason": {
+        "sexual": "Seksuele inhoud",
+        "racism": "Racisme",
+        "vulgar": "Vulgair of obsceen",
+        "non_outfit": "Niet gerelateerd aan outfits",
+        "other": "Overig"
+      }
     }
   }
