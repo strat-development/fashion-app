@@ -1,12 +1,11 @@
 import { reportTopics } from '@/consts/reportTopics';
 import { supabase } from '@/lib/supabase';
-import { useTheme } from '@/providers/themeContext';
+import { ThemedGradient, useTheme } from '@/providers/themeContext';
 import { useUserContext } from '@/providers/userContext';
-import React, { useMemo, useState } from 'react';
-import { Modal, Pressable, ScrollView, Text, TextInput, View, Alert } from 'react-native';
+import { CheckCircle, X } from 'lucide-react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ThemedGradient } from '@/providers/themeContext';
-import { X, CheckCircle } from 'lucide-react-native';
+import { Alert, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 
 export type ReportPostPayload = {
   postId: string;
@@ -29,10 +28,11 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
   const { colors, isDark } = useTheme();
   const { userId, userName, userEmail } = useUserContext();
 
-  const [selected, setSelected] = useState<string[]>([]); // stores topic keys
+  const [selected, setSelected] = useState<string[]>([]); 
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [showThanks, setShowThanks] = useState(false);
+  const hasShownThanks = useRef(false);
 
   const toggle = (topicKey: string) => {
     setSelected(prev => prev.includes(topicKey) ? prev.filter(t => t !== topicKey) : [...prev, topicKey]);
@@ -40,11 +40,38 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
 
   const canSubmit = useMemo(() => selected.length > 0 && !!userId, [selected, userId]);
 
+  useEffect(() => {
+    if (!isVisible) {
+      setSelected([]);
+      setComment('');
+      setSubmitting(false);
+      setShowThanks(false);
+      hasShownThanks.current = false;
+    }
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (showThanks) {
+      hasShownThanks.current = true;
+    }
+  }, [showThanks]);
+
+  useEffect(() => {
+    if (!showThanks && isVisible && hasShownThanks.current) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 300);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [showThanks, isVisible, onClose]);
+
   const handleSubmit = async () => {
     if (!canSubmit) return;
+    
     setSubmitting(true);
+    
     try {
-      // Map keys to English labels for consistent Discord/DB entries
       const reasonLabels = selected
         .map(key => reportTopics.find(rt => rt.key === key)?.label)
         .filter(Boolean) as string[];
@@ -69,10 +96,13 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
 
       let invoked = false;
       let lastError: any = null;
+      
       for (const fnName of candidates) {
         try {
           const { error } = await supabase.functions.invoke(fnName, { body: payload } as any);
+         
           if (!error) { invoked = true; break; }
+         
           lastError = error;
           console.warn(`Edge Function '${fnName}' invoke error:`, error);
         } catch (err) {
@@ -82,7 +112,6 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
       }
 
       if (!invoked) {
-        // Fallback: insert into generic reports table
         const insertPayload = {
           user_id: userId,
           name: userName || null,
@@ -91,16 +120,18 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
           message: JSON.stringify({ postId, postTitle, postOwnerId, reasons: selected, comment: comment || null }),
           created_at: new Date().toISOString(),
         } as any;
+
         const { error: insertErr } = await (supabase as any).from('reports').insert(insertPayload);
+        
         if (insertErr) throw insertErr;
       }
 
-      // Show friendly thank-you popup instead of a plain alert
       setShowThanks(true);
       setSelected([]);
       setComment('');
     } catch (e) {
       console.error('Report post failed', e);
+
       Alert.alert(t('reportPost.failure') || 'Failed to send report');
     } finally {
       setSubmitting(false);
@@ -199,7 +230,7 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
               <Text style={{ color: colors.textSecondary, marginBottom: 18 }}>{t('reportPost.thanksBody') || 'Thanks for your report. Our team is reviewing it.'}</Text>
               <View style={{ flexDirection: 'row' }}>
                 <Pressable
-                  onPress={() => { setShowThanks(false); onClose(); }}
+                  onPress={() => setShowThanks(false)}
                   style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: colors.accent, alignItems: 'center' }}
                 >
                   <Text style={{ color: colors.white, fontWeight: '600' }}>{t('common.ok') || 'OK'}</Text>
