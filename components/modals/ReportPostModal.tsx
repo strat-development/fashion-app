@@ -1,7 +1,7 @@
 import { reportTopics } from '@/consts/reportTopics';
+import { useUserContext } from '@/features/auth/context/UserContext';
 import { supabase } from '@/lib/supabase';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
-import { useUserContext } from '@/providers/userContext';
 import { CheckCircle, X } from 'lucide-react-native';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +28,7 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
   const { colors, isDark } = useTheme();
   const { userId, userName, userEmail } = useUserContext();
 
-  const [selected, setSelected] = useState<string[]>([]); 
+  const [selected, setSelected] = useState<string[]>([]);
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [showThanks, setShowThanks] = useState(false);
@@ -61,16 +61,16 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
       const timer = setTimeout(() => {
         onClose();
       }, 300);
-      
+
       return () => clearTimeout(timer);
     }
   }, [showThanks, isVisible, onClose]);
 
   const handleSubmit = async () => {
     if (!canSubmit) return;
-    
+
     setSubmitting(true);
-    
+
     try {
       const reasonLabels = selected
         .map(key => reportTopics.find(rt => rt.key === key)?.label)
@@ -96,13 +96,13 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
 
       let invoked = false;
       let lastError: any = null;
-      
+
       for (const fnName of candidates) {
         try {
           const { error } = await supabase.functions.invoke(fnName, { body: payload } as any);
-         
+
           if (!error) { invoked = true; break; }
-         
+
           lastError = error;
           console.warn(`Edge Function '${fnName}' invoke error:`, error);
         } catch (err) {
@@ -122,7 +122,7 @@ export const ReportPostModal = ({ isVisible, onClose, postId, postTitle, postOwn
         } as any;
 
         const { error: insertErr } = await (supabase as any).from('reports').insert(insertPayload);
-        
+
         if (insertErr) throw insertErr;
       }
 

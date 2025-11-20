@@ -1,22 +1,18 @@
-import { useRouter } from "expo-router";
-import { useFetchUser } from "@/fetchers/fetchUser";
+import { useUserContext } from "@/features/auth/context/UserContext";
 import { useFetchCreatedOutfitsByUser } from "@/fetchers/outfits/fetchCreatedOutfitsByUser";
 import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { useDeleteOutfitMutation } from "@/mutations/outfits/DeleteOutfitMutation";
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { ThemedGradient, useTheme } from "@/providers/themeContext";
-import { useUserContext } from "@/providers/userContext";
-import { Plus, X } from "lucide-react-native";
+import { useRouter } from "expo-router";
+import { Plus } from "lucide-react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, Modal, Pressable, RefreshControl, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Pressable, RefreshControl, Text, View } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { DeleteModalOutfit } from "../modals/DeleteOutfitModal";
 import { OutfitCreateModal } from "../modals/OutfitCreateModal";
 import { ShareModal } from "../modals/ShareModal";
-import OutfitDetailImages from "../outfit-detail/OutfitDetailImages";
-import OutfitDetailInfo from "../outfit-detail/OutfitDetailInfo";
-import OutfitDetailSections from "../outfit-detail/OutfitDetailSections";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
 import { EmptyState } from "./EmptyState";
@@ -43,8 +39,8 @@ export const CreatedOutfitsSection = ({ refreshing, profileId }: CreatedOutfitsS
     const { data: fetchedOutfits = [], isLoading } = useFetchCreatedOutfitsByUser(profileId, page, pageSize);
     const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
 
-    const savedOutfitIds = useMemo(() => 
-        new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []), 
+    const savedOutfitIds = useMemo(() =>
+        new Set(savedOutfits?.map(outfit => outfit.outfit_id) || []),
         [savedOutfits]
     );
 

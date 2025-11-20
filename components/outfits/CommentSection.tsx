@@ -1,3 +1,4 @@
+import { useUserContext } from '@/features/auth/context/UserContext';
 import { useCreateCommentMutation } from '@/mutations/CreateCommentMutation';
 import { Send, X } from 'lucide-react-native';
 import React, { useState } from 'react';
@@ -6,7 +7,6 @@ import { Alert, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, Te
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CommentData, useFetchComments } from '../../fetchers/fetchComments';
 import { useTheme } from '../../providers/themeContext';
-import { useUserContext } from '../../providers/userContext';
 import { CommentItem } from './CommentItem';
 
 interface CommentSectionProps {
@@ -62,17 +62,17 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
               <Text style={{ color: colors.textMuted, textAlign: 'center', marginTop: 16 }}>{t('commentSection.empty')}</Text>
             )}
             {!isLoading && comments.map((c: CommentData) => (
-              <CommentItem 
-                key={c.id} 
-                comment={c} 
-                depth={0} 
-                parentCommentId={undefined}
+              <CommentItem
+                key={c.id}
+                comment={c}
+                outfitId={outfitId}
+                depth={0}
               />
             ))}
           </ScrollView>
 
           <View style={{ paddingHorizontal: 16, paddingVertical: 12, borderTopWidth: 1, borderTopColor: colors.border, backgroundColor: colors.background }}>
-            <View 
+            <View
               style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.borderVariant, borderRadius: 999, paddingHorizontal: 12, backgroundColor: colors.surfaceVariant, minHeight: 44 }}
             >
               <TextInput

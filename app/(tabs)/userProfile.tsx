@@ -7,12 +7,12 @@ import { PendingRequestsModal } from '@/components/modals/PendingRequestsModal';
 import { ProfileEdit } from '@/components/modals/ProfileEditModal';
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
 import { NotificationBell } from '@/components/ui/NotificationBell';
+import { useFetchUser } from '@/features/auth/api/fetchUser';
+import { useUserContext } from '@/features/auth/context/UserContext';
 import { useFetchIsFollowed, useFetchPendingFollowersDetailed } from '@/fetchers/fetchIsFollowed';
-import { useFetchUser } from '@/fetchers/fetchUser';
 import { useAcceptFollowerMutation } from '@/mutations/AcceptFollower';
 import { useUnFollowUserMutation } from '@/mutations/UnfollowUserMutation';
 import { useTheme } from '@/providers/themeContext';
-import { useUserContext } from '@/providers/userContext';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
@@ -20,18 +20,18 @@ import { RefreshControl, ScrollView, Text, View } from 'react-native';
 type TabType = 'user-info' | 'created-outfits' | 'saved-outfits';
 
 interface UserProfileProps {
-  isOwnProfile?: boolean;
+  isOwnProfile: boolean;
   profileId: string;
 }
 
-export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps) {
+export function UserProfile({ isOwnProfile, profileId }: UserProfileProps) {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState<TabType>('user-info');
+  const { colors } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabType>('user-info');
   const [showEditModal, setShowEditModal] = useState(false);
   const [showRequestsModal, setShowRequestsModal] = useState(false);
 
-  const { colors } = useTheme();
   const { data: userData, isLoading } = useFetchUser(profileId);
   const { data: pendingFollowers = [] } = useFetchPendingFollowersDetailed(profileId);
   const { mutate: acceptFollower } = useAcceptFollowerMutation();
@@ -57,12 +57,12 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
         <View style={{ paddingTop: 32, paddingBottom: 80 }}>
           <View style={{ position: 'relative' }}>
             <ProfileHeader
-            userImage={user_avatar}
-            userName={full_name}
-            isOwnProfile={isOwnProfile}
-            activeTab={''}
-            onTabPress={() => {}}
-            onEditProfile={() => {}}
+              userImage={user_avatar}
+              userName={full_name}
+              isOwnProfile={isOwnProfile}
+              activeTab={''}
+              onTabPress={() => { }}
+              onEditProfile={() => { }}
             />
             {!isOwnProfile && pendingFollowers.length > 0 && (
               <View style={{ position: 'absolute', top: 8, right: 24 }}>
@@ -111,8 +111,6 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
     }
   };
 
-  
-
   return (
     <>
       <View style={{ flex: 1, backgroundColor: colors.background }}>
@@ -124,12 +122,12 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
             <View style={{ paddingTop: 32, paddingBottom: 80 }}>
               <View style={{ position: 'relative' }}>
                 <ProfileHeader
-                userImage={user_avatar}
-                userName={full_name}
-                isOwnProfile={isOwnProfile}
-                activeTab={activeTab}
-                onTabPress={setActiveTab}
-                onEditProfile={() => setShowEditModal(true)}
+                  userImage={user_avatar}
+                  userName={full_name}
+                  isOwnProfile={isOwnProfile}
+                  activeTab={activeTab}
+                  onTabPress={setActiveTab}
+                  onEditProfile={() => setShowEditModal(true)}
                 />
                 {isOwnProfile && pendingFollowers.length > 0 && (
                   <View style={{ position: 'absolute', top: 8, right: 24 }}>
@@ -144,12 +142,12 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
           <View style={{ flex: 1, paddingTop: 32 }}>
             <View style={{ position: 'relative' }}>
               <ProfileHeader
-              userImage={user_avatar}
-              userName={full_name}
-              isOwnProfile={isOwnProfile}
-              activeTab={activeTab}
-              onTabPress={setActiveTab}
-              onEditProfile={() => setShowEditModal(true)}
+                userImage={user_avatar}
+                userName={full_name}
+                isOwnProfile={isOwnProfile}
+                activeTab={activeTab}
+                onTabPress={setActiveTab}
+                onEditProfile={() => setShowEditModal(true)}
               />
               {isOwnProfile && pendingFollowers.length > 0 && (
                 <View style={{ position: 'absolute', top: 8, right: 24 }}>
@@ -189,7 +187,7 @@ export function UserProfile({ isOwnProfile = true, profileId }: UserProfileProps
 
 export default function TabUserProfile() {
   const { userId } = useUserContext();
-  
+
   if (!userId) {
     return null;
   }

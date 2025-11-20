@@ -1,10 +1,10 @@
+
 import { Currencies } from "@/consts/userSettings";
+import { useUserContext } from "@/features/auth/context/UserContext";
 import { ThemedGradient, useTheme } from "@/providers/themeContext";
-import { useUserContext } from "@/providers/userContext";
 import { OutfitElementData } from "@/types/createOutfitTypes";
 import { ExternalLink, Shirt, Tag } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
-
 import { FlatList, Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
 
 const exchangeRateCache: Record<string, number> = {};

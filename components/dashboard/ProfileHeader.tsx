@@ -1,8 +1,8 @@
+import { useUserContext } from '@/features/auth/context/UserContext';
 import { supabase } from '@/lib/supabase';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
-import { useUserContext } from '@/providers/userContext';
 import { Image } from 'expo-image';
-import { BookOpen, Bug, Edit3, Heart, User, User2, X, CheckCircle } from 'lucide-react-native';
+import { BookOpen, Bug, CheckCircle, Edit3, Heart, User, User2, X } from 'lucide-react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Modal, Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';

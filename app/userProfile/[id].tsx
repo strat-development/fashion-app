@@ -1,6 +1,6 @@
 import { UserProfile } from '@/app/(tabs)/userProfile';
+import { useUserContext } from '@/features/auth/context/UserContext';
 import { useLocalSearchParams } from 'expo-router';
-import { useUserContext } from '@/providers/userContext';
 import React from 'react';
 
 

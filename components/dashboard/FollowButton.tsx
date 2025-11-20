@@ -1,8 +1,8 @@
+import { useUserContext } from '@/features/auth/context/UserContext';
 import { useFetchIsFollowed } from '@/fetchers/fetchIsFollowed';
 import { useFollowUserMutation } from '@/mutations/FollowUserMutation';
 import { useUnFollowUserMutation } from '@/mutations/UnfollowUserMutation';
 import { useTheme } from '@/providers/themeContext';
-import { useUserContext } from '@/providers/userContext';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';

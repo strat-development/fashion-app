@@ -1,198 +1,192 @@
-import { CommentData } from "@/fetchers/fetchComments";
-import { useFetchCommentsReplies } from "@/fetchers/fetchCommentsReplies";
-import { formatDate } from "@/helpers/helpers";
-import { useCreateReplyMutation } from "@/mutations/CreateReplyMutation";
-import { useDeleteCommentMutation } from "@/mutations/DeleteCommentMutation";
-import { useTheme } from "@/providers/themeContext";
-import { useUserContext } from "@/providers/userContext";
-import { Image } from "expo-image";
-import { Link } from "expo-router";
-import { AlertTriangle, Send, Trash, X } from "lucide-react-native";
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Alert, Modal, Pressable, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { BlurView } from 'expo-blur';
-import { CommentReactions } from "./CommentReactions";
+import { useUserContext } from '@/features/auth/context/UserContext';
+import { CommentData, useFetchCommentsReplies } from '@/fetchers/fetchComments';
+import { useCreateReplyMutation } from '@/mutations/CreateReplyMutation';
+import { useDeleteCommentMutation } from '@/mutations/DeleteCommentMutation';
+import { ReactionData } from '@/mutations/UpdateCommentReactionMutation';
+import { useTheme } from '@/providers/themeContext';
+import { formatDate } from '@/utils/dateUtils';
+import { Link, useRouter } from 'expo-router';
+import { AlertTriangle, Send, Trash } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Image, Modal, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { CommentReactions } from './CommentReactions';
 
-
-export const CommentItem = ({ comment, isReply = false, depth = 0, parentCommentId }: {
+interface CommentItemProps {
     comment: CommentData;
-    isReply?: boolean;
+    outfitId: string;
     depth?: number;
-    parentCommentId?: string;
-}) => {
-    const { t } = useTranslation();
-    const [isSetToReply, setIsSetToReply] = useState(false);
-    const [repliesVisible, setRepliesVisible] = useState(isReply);
-    const [text, setText] = useState('');
+}
 
+export const CommentItem = ({ comment, outfitId, depth = 0 }: CommentItemProps) => {
+    const { t } = useTranslation();
+    const [showReplyInput, setShowReplyInput] = useState(false);
+    const [replyText, setReplyText] = useState('');
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const { userId } = useUserContext();
-    const { colors, isDark } = useTheme();
-    const avatar = comment.user_info?.user_avatar;
-    const name = comment.user_info?.nickname || t('outfitDetail.info.anonymous');
+    const { colors } = useTheme();
+    const router = useRouter();
 
     const { data: replies } = useFetchCommentsReplies(comment.id);
 
-    const { mutate: deleteComment } = useDeleteCommentMutation({
-        userId: comment.user_id || '',
+    const { mutate: deleteComment, isPending: isDeleting } = useDeleteCommentMutation({
         commentId: comment.id,
+        userId: userId || ''
     });
 
-    const targetParentId = isReply ? (parentCommentId || comment.parent_comment) : comment.id;
-
-    const { mutateAsync: createReply, isPending } = useCreateReplyMutation({
-        outfitId: comment.outfit_id || '',
+    const { mutate: createReply, isPending: isReplying } = useCreateReplyMutation({
+        outfitId,
         userId: userId || '',
-        parentCommentId: targetParentId || comment.id,
+        parentCommentId: comment.id
     });
 
-    const handleSend = async () => {
-        if (!userId) {
-            Alert.alert(t('commentItem.alerts.notLoggedIn.title'), t('commentItem.alerts.notLoggedIn.message'));
-            return;
-        }
-        if (!text.trim()) return;
-        try {
-            await createReply("@" + name + " " + text);
-            setText('');
-            setIsSetToReply(false);
-        } catch (e: any) {
-            Alert.alert(t('commentItem.alerts.error.title'), e?.message || t('commentItem.alerts.error.message'));
-        }
+    const handleDelete = () => {
+        deleteComment();
+        setShowDeleteModal(false);
     };
 
-    const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+    const handleReply = () => {
+        if (!replyText.trim()) return;
+
+        createReply(replyText, {
+            onSuccess: () => {
+                setReplyText('');
+                setShowReplyInput(false);
+            }
+        });
+    };
+
+    const isOwner = userId === comment.user_id;
 
     return (
-        <View className={`flex-row mb-3 ${depth > 0 ? 'ml-4 pl-2 border-l border-gray-700/50' : 'px-4'}`}>
-            <View className="mr-3 mt-0.5">
-                {avatar ? (
-                    <Image source={{ uri: avatar }} className="w-9 h-9 rounded-full" />
-                ) : (
-                    <View className="w-9 h-9 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full" />
-                )}
-            </View>
-            <View className="flex-1">
-                <View style={{ borderWidth: 1, borderColor: colors.borderVariant, borderRadius: 16, paddingHorizontal: 14, paddingVertical: 12, backgroundColor: colors.surface }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                        <View style={{ flex: 1, paddingRight: 8 }}>
-                            <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 4 }}>
-                                <Link href={{ pathname: "/userProfile/[id]", params: { id: comment.user_id } }} style={{ color: colors.text, fontWeight: '500', fontSize: 13, lineHeight: 16 }}>{name}</Link>
-                                <Text style={{ color: colors.textMuted, fontSize: 10 }}>{formatDate(comment.created_at || '')}</Text>
-                            </View>
-                            <Text style={{ color: colors.text, fontSize: 13, lineHeight: 18, marginTop: 4 }}>{comment.comment_content}</Text>
-                        </View>
-                        {userId === comment.user_id && (
-                            <Pressable
-                                onPress={() => setConfirmDeleteVisible(true)}
-                                hitSlop={8}
-                                style={{ paddingHorizontal: 8, paddingVertical: 4, marginRight: -4, marginTop: -4, borderRadius: 6 }}
-                            >
-                                <Trash size={16} color="#ef4444" />
+        <View style={{ marginLeft: depth * 16, marginBottom: 16 }}>
+            <View style={{ flexDirection: 'row' }}>
+                <Link href={`/userProfile/${comment.user_id}`} asChild>
+                    <Pressable>
+                        <Image
+                            source={{ uri: comment.profiles?.user_avatar || 'https://via.placeholder.com/40' }}
+                            style={{ width: 40, height: 40, borderRadius: 20, marginRight: 12 }}
+                        />
+                    </Pressable>
+                </Link>
+
+                <View style={{ flex: 1 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Link href={`/userProfile/${comment.user_id}`} asChild>
+                            <Pressable>
+                                <Text style={{ color: colors.text, fontWeight: 'bold', fontSize: 14 }}>
+                                    {comment.profiles?.nickname || 'User'}
+                                </Text>
                             </Pressable>
-                        )}
+                        </Link>
+                        <Text style={{ color: colors.textSecondary, fontSize: 12 }}>
+                            {formatDate(comment.created_at)}
+                        </Text>
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-                        <Pressable
-                            onPress={() => setIsSetToReply(!isSetToReply)}
-                            hitSlop={8}
-                            style={{ borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4 }}
-                        >
-                            <Text style={{ color: colors.textMuted, fontSize: 11, letterSpacing: 0.2 }}>{t('commentItem.reply')}</Text>
+
+                    <Text style={{ color: colors.text, marginTop: 4, fontSize: 14 }}>{comment.comment_content}</Text>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, gap: 16 }}>
+                        <Pressable onPress={() => setShowReplyInput(!showReplyInput)}>
+                            <Text style={{ color: colors.textSecondary, fontSize: 12, fontWeight: '600' }}>
+                                {t('comments.reply')}
+                            </Text>
                         </Pressable>
-                        {!isReply && replies && replies.length > 0 && !repliesVisible && (
-                            <Pressable onPress={() => setRepliesVisible(true)} hitSlop={8} style={{ borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4, marginLeft: 4 }}>
-                                <Text style={{ color: isDark ? colors.primary : colors.accent, fontSize: 11, letterSpacing: 0.2 }}>{t('commentItem.viewReplies')} { replies.length }</Text>
-                            </Pressable>
-                        )}
-                        {!isReply && repliesVisible && replies && replies.length > 0 && (
-                            <Pressable onPress={() => setRepliesVisible(false)} hitSlop={8} style={{ borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4, marginLeft: 4 }}>
-                                <Text style={{ color: isDark ? colors.primary : colors.accent, fontSize: 11, letterSpacing: 0.2 }}>{t('commentItem.hideReplies')}</Text>
+
+                        {isOwner && (
+                            <Pressable onPress={() => setShowDeleteModal(true)}>
+                                <Trash size={14} color={colors.error} />
                             </Pressable>
                         )}
                     </View>
-                    <CommentReactions
-                        commentId={comment.id}
-                        reactions={comment.reactions as any}
-                    />
-                </View>
 
-                {!isReply && repliesVisible && replies && replies.length > 0 && (
-                    <View className="mt-3 space-y-2">
-                        {replies.map(reply => (
-                            <CommentItem
-                                key={reply.id}
-                                comment={reply}
-                                isReply={true}
-                                depth={1}
-                                parentCommentId={comment.id}
-                            />
-                        ))}
-                    </View>
-                )}
+                    <CommentReactions commentId={comment.id} reactions={comment.reactions as unknown as ReactionData} />
 
-                {isSetToReply && (
-                    <View style={{ marginTop: 8 }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', borderWidth: 1, borderColor: colors.borderVariant, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 8, backgroundColor: colors.surface }}>
+                    {showReplyInput && (
+                        <View style={{ marginTop: 12, flexDirection: 'row', alignItems: 'center' }}>
                             <TextInput
-                                value={text}
-                                onChangeText={setText}
-                                placeholder={t('commentItem.replyPlaceholder') + name}
-                                placeholderTextColor={colors.textMuted}
-                                style={{ flex: 1, color: colors.text, fontSize: 13, maxHeight: 128 }}
-                                multiline
+                                value={replyText}
+                                onChangeText={setReplyText}
+                                placeholder={t('comments.writeReply')}
+                                placeholderTextColor={colors.textSecondary}
+                                style={{
+                                    flex: 1,
+                                    backgroundColor: colors.surface,
+                                    borderRadius: 20,
+                                    paddingHorizontal: 16,
+                                    paddingVertical: 8,
+                                    color: colors.text,
+                                    marginRight: 8,
+                                }}
                             />
                             <Pressable
-                                onPress={handleSend}
-                                disabled={isPending || !text.trim()}
-                                hitSlop={8}
-                                style={{ marginLeft: 8, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8 }}
+                                onPress={handleReply}
+                                disabled={isReplying || !replyText.trim()}
+                                style={{
+                                    backgroundColor: colors.primary,
+                                    padding: 8,
+                                    borderRadius: 20,
+                                    opacity: isReplying || !replyText.trim() ? 0.5 : 1,
+                                }}
                             >
-                                <Send size={16} color={text.trim() ? colors.primary : colors.textMuted} />
+                                <Send size={16} color="#FFF" />
                             </Pressable>
                         </View>
-                        <Pressable onPress={() => setIsSetToReply(false)} hitSlop={8} style={{ alignSelf: 'flex-end', marginTop: 4, paddingHorizontal: 8, paddingVertical: 4 }}>
-                            <Text style={{ color: colors.textMuted, fontSize: 11 }}>{t('commentItem.cancel')}</Text>
-                        </Pressable>
-                    </View>
-                )}
-
-                {/* Delete confirmation modal - styled to match AI chat delete */}
-                <Modal
-                    visible={confirmDeleteVisible}
-                    animationType={'fade'}
-                    transparent={true}
-                    onRequestClose={() => setConfirmDeleteVisible(false)}
-                >
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24, backgroundColor: isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.4)' }}>
-                        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-                            <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={{ flex: 1 }} />
-                        </View>
-                        <View style={{ width: '100%', maxWidth: 520, borderRadius: 18, padding: 18, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.border }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <View style={{ width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginRight: 10, backgroundColor: `${colors.error}20` }}>
-                                        <AlertTriangle size={18} color={colors.error} />
-                                    </View>
-                                    <Text style={{ color: colors.text, fontWeight: '600' }}>{t('deleteModalOutfit.title')}</Text>
-                                </View>
-                                <TouchableOpacity onPress={() => setConfirmDeleteVisible(false)} style={{ padding: 6 }}>
-                                    <X size={20} color={colors.text} />
-                                </TouchableOpacity>
-                            </View>
-                            <Text style={{ color: colors.textSecondary, marginBottom: 18 }}>{t('deleteModalOutfit.message')}</Text>
-                            <View style={{ flexDirection: 'row', gap: 8 }}>
-                                <TouchableOpacity onPress={() => setConfirmDeleteVisible(false)} style={{ flex: 1, paddingVertical: 12, borderRadius: 12, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface, alignItems: 'center' }}>
-                                    <Text style={{ color: colors.text }}>{t('deleteModalOutfit.cancel')}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { setConfirmDeleteVisible(false); deleteComment(); }} style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: colors.error, alignItems: 'center' }}>
-                                    <Text style={{ color: colors.white }}>{t('deleteModalOutfit.delete')}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
+                    )}
+                </View>
             </View>
+
+            {replies?.map((reply: CommentData) => (
+                <CommentItem
+                    key={reply.id}
+                    comment={reply}
+                    outfitId={outfitId}
+                    depth={depth + 1}
+                />
+            ))}
+
+            <Modal
+                visible={showDeleteModal}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setShowDeleteModal(false)}
+            >
+                <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ backgroundColor: colors.surface, borderRadius: 16, padding: 24, width: '80%', maxWidth: 320 }}>
+                        <View style={{ alignItems: 'center', marginBottom: 16 }}>
+                            <View style={{ backgroundColor: '#FEE2E2', padding: 12, borderRadius: 999, marginBottom: 16 }}>
+                                <AlertTriangle size={24} color="#EF4444" />
+                            </View>
+                            <Text style={{ color: colors.text, fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginBottom: 8 }}>
+                                {t('comments.deleteTitle')}
+                            </Text>
+                            <Text style={{ color: colors.textSecondary, textAlign: 'center' }}>
+                                {t('comments.deleteMessage')}
+                            </Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', gap: 12 }}>
+                            <TouchableOpacity
+                                onPress={() => setShowDeleteModal(false)}
+                                style={{ flex: 1, paddingVertical: 12, borderRadius: 8, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.border }}
+                            >
+                                <Text style={{ color: colors.text, textAlign: 'center', fontWeight: '600' }}>
+                                    {t('common.cancel')}
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={handleDelete}
+                                disabled={isDeleting}
+                                style={{ flex: 1, paddingVertical: 12, borderRadius: 8, backgroundColor: '#EF4444' }}
+                            >
+                                <Text style={{ color: '#FFF', textAlign: 'center', fontWeight: '600' }}>
+                                    {isDeleting ? t('common.deleting') : t('common.delete')}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };

@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { Alert, Modal, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useUserContext } from '@/features/auth/context/UserContext';
 import { useCreateOutfitMutation } from '@/mutations/outfits/CreateOutfitMutation';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
-import { useUserContext } from '@/providers/userContext';
 import { ModalProps, OutfitElementData } from '@/types/createOutfitTypes';
 
 import { ElementModal } from './ElementModal';
@@ -150,7 +150,7 @@ export const OutfitCreateModal = ({
         presentationStyle="pageSheet"
       >
         <SafeAreaView className="flex-1" style={{ backgroundColor: colors.background }}>
-          <View 
+          <View
             className="flex-row items-center justify-between px-4 py-3"
             style={{ borderBottomWidth: 1, borderBottomColor: colors.border, backgroundColor: colors.surface }}
           >
@@ -160,17 +160,17 @@ export const OutfitCreateModal = ({
             <Pressable
               onPress={handleSubmit(onSubmit)}
               disabled={!isValid || outfitElements.length === 0 || isPending}
-              style={{ 
-                paddingHorizontal: 16, 
-                paddingVertical: 8, 
-                borderRadius: 9999, 
-                overflow: 'hidden', 
+              style={{
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+                borderRadius: 9999,
+                overflow: 'hidden',
                 backgroundColor: (!isValid || outfitElements.length === 0 || isPending) ? colors.borderVariant : 'transparent'
               }}
             >
-              <ThemedGradient 
-                active={isValid && outfitElements.length > 0 && !isPending} 
-                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} 
+              <ThemedGradient
+                active={isValid && outfitElements.length > 0 && !isPending}
+                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
               />
               <Text className="font-medium text-sm" style={{ color: colors.white }}>
                 {isPending ? t('outfitCreateModal.saving') : t('outfitCreateModal.save')}

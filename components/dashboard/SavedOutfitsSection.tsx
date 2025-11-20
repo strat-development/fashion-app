@@ -1,18 +1,14 @@
-import { useRouter } from "expo-router";
-import { useFetchUser } from "@/fetchers/fetchUser";
+import { useUserContext } from "@/features/auth/context/UserContext";
 import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation";
 import { useTheme } from "@/providers/themeContext";
-import { useUserContext } from "@/providers/userContext";
-import { Bookmark, X } from "lucide-react-native";
+import { useRouter } from "expo-router";
+import { Bookmark } from "lucide-react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, Modal, Pressable, RefreshControl, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
 import { enrichOutfit } from '../../utils/enrichOutfit';
 import { ShareModal } from "../modals/ShareModal";
-import OutfitDetailImages from "../outfit-detail/OutfitDetailImages";
-import OutfitDetailInfo from "../outfit-detail/OutfitDetailInfo";
-import OutfitDetailSections from "../outfit-detail/OutfitDetailSections";
 import CommentSection from "../outfits/CommentSection";
 import { OutfitCard, OutfitData } from "../outfits/OutfitCard";
 import { EmptyState } from "./EmptyState";
@@ -38,8 +34,8 @@ export const SavedOutfitsSection = ({ refreshing, profileId }: SavedOutfitsSecti
 
     const { data: savedOutfits = [], isLoading } = useFetchSavedOutfits(profileId, page, pageSize);
 
-    const savedOutfitIds = useMemo(() => 
-        new Set(savedOutfits.map(outfit => outfit.outfit_id)), 
+    const savedOutfitIds = useMemo(() =>
+        new Set(savedOutfits.map(outfit => outfit.outfit_id)),
         [savedOutfits]
     );
 

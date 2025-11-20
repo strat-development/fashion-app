@@ -1,7 +1,7 @@
-import RegistrationModal from '@/components/modals/RegistrationModal';
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
+import RegistrationModal from '@/features/auth/components/RegistrationModal';
+import { useUserContext } from '@/features/auth/context/UserContext';
 import { useTheme } from '@/providers/themeContext';
-import { useUserContext } from '@/providers/userContext';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs, usePathname } from 'expo-router';
@@ -74,7 +74,7 @@ export default function TabLayout() {
           onClose={() => setShowRegistrationModal(false)}
           userId={userId}
         />
-      )}  
+      )}
       <Tabs
         screenOptions={{
           headerShown: false,

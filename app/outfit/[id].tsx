@@ -1,5 +1,5 @@
-import { ShareModal } from "@/components/modals/ShareModal";
 import { ReportPostModal } from "@/components/modals/ReportPostModal";
+import { ShareModal } from "@/components/modals/ShareModal";
 import OutfitDetailHeader from "@/components/outfit-detail/OutfitDetailHeader";
 import OutfitDetailImages from "@/components/outfit-detail/OutfitDetailImages";
 import OutfitDetailInfo from "@/components/outfit-detail/OutfitDetailInfo";
@@ -7,7 +7,8 @@ import OutfitDetailSections from "@/components/outfit-detail/OutfitDetailSection
 import OutfitInteractionButtons from "@/components/outfit-detail/OutfitInteractionButtons";
 import CommentSection from "@/components/outfits/CommentSection";
 import { FullScreenLoader } from "@/components/ui/FullScreenLoader";
-import { useFetchUser } from "@/fetchers/fetchUser";
+import { useFetchUser } from "@/features/auth/api/fetchUser";
+import { useUserContext } from "@/features/auth/context/UserContext";
 import { useFetchRatingStats } from "@/fetchers/outfits/fetchRatedOutfits";
 import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { supabase } from "@/lib/supabase";
@@ -16,7 +17,6 @@ import { useRateOutfitMutation } from "@/mutations/outfits/RateOutfitMutation";
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useUnrateOutfitMutation } from "@/mutations/outfits/UnrateOutfitMutation";
 import { ThemedGradient, useTheme } from "@/providers/themeContext";
-import { useUserContext } from "@/providers/userContext";
 import { Database } from "@/types/supabase";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
@@ -35,7 +35,7 @@ type OutfitDetailData = Database["public"]["Tables"]["created-outfits"]["Row"] &
 export default function OutfitDetail() {
   return (
     <>
-      <Stack.Screen 
+      <Stack.Screen
         options={{
           headerShown: false,
         }}
@@ -51,24 +51,24 @@ function OutfitDetailContent() {
   const { userId } = useUserContext();
   const { colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
-  
+
   const [outfit, setOutfit] = useState<OutfitDetailData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showComments, setShowComments] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
-  
+
   const { data: userData } = useFetchUser(outfit?.created_by || "");
   const { data: ratingStats } = useFetchRatingStats(id || "");
   const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
-  
+
   const { mutate: rateOutfit } = useRateOutfitMutation({
     outfitId: id || "",
     userId: userId || "",
     outfitCreatorId: outfit?.created_by || "",
   });
-  
+
   const { mutate: unrateOutfit } = useUnrateOutfitMutation({
     outfitId: id || "",
     userId: userId || "",
@@ -88,7 +88,7 @@ function OutfitDetailContent() {
   useEffect(() => {
     const fetchOutfit = async () => {
       if (!id) return;
-      
+
       setLoading(true);
       setError(null);
 
@@ -148,7 +148,7 @@ function OutfitDetailContent() {
       withSpring(1.2, { damping: 14, stiffness: 220 }),
       withSpring(1, { damping: 14, stiffness: 220 })
     );
-    
+
     const currentUserRating = ratingStats?.data?.find(rating => rating.rated_by === userId);
     if (currentUserRating?.top_rated === false) {
       unrateOutfit();
@@ -207,11 +207,11 @@ function OutfitDetailContent() {
     );
   }
 
-  const tags = Array.isArray(outfit.outfit_tags) 
-    ? outfit.outfit_tags 
+  const tags = Array.isArray(outfit.outfit_tags)
+    ? outfit.outfit_tags
     : typeof outfit.outfit_tags === "string"
-    ? [outfit.outfit_tags]
-    : [];
+      ? [outfit.outfit_tags]
+      : [];
 
   const imageUrls = Array.isArray(outfit.outfit_elements_data)
     ? (outfit.outfit_elements_data as any[])
@@ -233,7 +233,7 @@ function OutfitDetailContent() {
     <>
       <View style={{ flex: 1, backgroundColor: colors.background }}>
         <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={colors.background} translucent={false} />
-        <ScrollView 
+        <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
         >
@@ -243,19 +243,19 @@ function OutfitDetailContent() {
           />
 
           <View style={{ paddingHorizontal: 16 }}>
-            <OutfitDetailInfo 
+            <OutfitDetailInfo
               outfit={outfit}
               userData={userData}
               tags={tags}
             />
 
-            <OutfitDetailImages 
-              imageUrls={imageUrls} 
+            <OutfitDetailImages
+              imageUrls={imageUrls}
               elementsData={elementsData}
             />
           </View>
-            
-          <OutfitDetailSections 
+
+          <OutfitDetailSections
             description={outfit.description}
             tags={tags}
           />

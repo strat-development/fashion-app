@@ -7,14 +7,14 @@ import { Text } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 
-import Auth from '@/components/Auth';
+import Auth from '@/features/auth/components/Auth';
+import UserContextProvider from '@/features/auth/context/UserContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import i18n from '@/i18n';
 import { supabase } from '@/lib/supabase';
 import ViewContextProvider from '@/providers/chatViewContext';
 import { ThemeProvider as CustomThemeProvider } from '@/providers/themeContext';
 import { ToastProvider } from '@/providers/toastContext';
-import UserContextProvider from '@/providers/userContext';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import type { Session } from '@supabase/supabase-js';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';

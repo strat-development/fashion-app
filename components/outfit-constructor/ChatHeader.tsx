@@ -1,9 +1,9 @@
+import { useUserContext } from '@/features/auth/context/UserContext';
 import { fetchConversationMessages, fetchConversations } from '@/fetchers/fetchConversations';
 import { deleteConversationMutation } from '@/mutations/DeleteConversationMutation';
 import { useTheme } from '@/providers/themeContext';
-import { useUserContext } from '@/providers/userContext';
 import { BlurView } from 'expo-blur';
-import { MessageSquare, Plus, SlidersHorizontal, AlertTriangle, X, Trash } from 'lucide-react-native';
+import { AlertTriangle, MessageSquare, Plus, SlidersHorizontal, Trash, X } from 'lucide-react-native';
 import React from 'react';
 import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 

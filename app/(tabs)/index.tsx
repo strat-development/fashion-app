@@ -3,13 +3,13 @@ import { ShareModal } from "@/components/modals/ShareModal";
 import CommentSection from "@/components/outfits/CommentSection";
 import { FeedFilters, FilterOptions } from "@/components/outfits/FeedFilters";
 import { OutfitCard, OutfitData } from "@/components/outfits/OutfitCard";
+import { useUserContext } from "@/features/auth/context/UserContext";
 import { useFetchFeedOutfits } from "@/fetchers/outfits/fetchFeedOutfits";
 import { useFetchFilteredFeedOutfits } from "@/fetchers/outfits/fetchFilteredFeedOutfits";
 import { useFetchSavedOutfits } from "@/fetchers/outfits/fetchSavedOutfits";
 import { useDeleteSavedOutfitMutation } from "@/mutations/outfits/DeleteSavedOutfitMutation";
 import { useSaveOutfitMutation } from "@/mutations/outfits/SaveOutfitMutation";
 import { useTheme } from "@/providers/themeContext";
-import { useUserContext } from "@/providers/userContext";
 import { enrichOutfit } from "@/utils/enrichOutfit";
 import { useRouter } from "expo-router";
 import { Grid } from "lucide-react-native";
@@ -26,7 +26,7 @@ export default function FeedScreen() {
     const { mutate: saveOutfit } = useSaveOutfitMutation();
     const { data: savedOutfits = [] } = useFetchSavedOutfits(userId || '');
     const { mutate: unsaveOutfit } = useDeleteSavedOutfitMutation();
-    
+
     const [refreshing, setRefreshing] = useState(false);
     const [filters, setFilters] = useState<FilterOptions>({ search: '', tags: [], elements: [] });
     const [debouncedFilters, setDebouncedFilters] = useState<FilterOptions>(filters);
@@ -144,7 +144,7 @@ export default function FeedScreen() {
             setShowShareModal(true);
         }
     };
-    
+
     const handleOutfitPress = (outfit: OutfitData) => {
         router.push(`/outfit/${outfit.outfit_id}`);
     };

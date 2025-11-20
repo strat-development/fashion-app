@@ -1,6 +1,6 @@
+import { useUserContext } from "@/features/auth/context/UserContext";
 import { ReactionData, ReactionType, useUpdateCommentReactionMutation } from "@/mutations/UpdateCommentReactionMutation";
 import { useTheme } from "@/providers/themeContext";
-import { useUserContext } from "@/providers/userContext";
 import { Frown, Heart, Laugh, Plus } from "lucide-react-native";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -36,7 +36,7 @@ export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps
 
   const getUserReaction = (): ReactionType | null => {
     if (!reactions || !userId) return null;
-    
+
     for (const [reactionType, userIds] of Object.entries(reactions)) {
       if (Array.isArray(userIds) && userIds.includes(userId)) {
         return reactionType as ReactionType;
@@ -49,7 +49,7 @@ export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps
 
   const getReactionCounts = () => {
     if (!reactions) return {};
-    
+
     const counts: { [key: string]: number } = {};
     Object.entries(reactions).forEach(([reactionType, userIds]) => {
       if (Array.isArray(userIds) && userIds.length > 0) {
@@ -69,7 +69,7 @@ export const CommentReactions = ({ commentId, reactions }: CommentReactionsProps
           {Object.entries(reactionCounts).map(([reactionType, count]) => {
             const config = reactionConfig[reactionType as ReactionType];
             if (!config || count === 0) return null;
-            
+
             return (
               <Pressable
                 key={reactionType}

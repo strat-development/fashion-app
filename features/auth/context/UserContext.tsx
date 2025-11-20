@@ -1,9 +1,8 @@
-import { useFetchUser } from "@/fetchers/fetchUser";
-import i18n from "@/i18n";
 import {
     useSessionContext
 } from "@supabase/auth-helpers-react";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useFetchUser } from '../api/fetchUser';
 
 type UserContextType = {
     userName: string;
@@ -46,12 +45,6 @@ export default function UserContextProvider({ children }: { children: React.Reac
     const { supabaseClient: supabase, session } = useSessionContext();
     const userId = session?.user?.id || "";
     const { data: userData, isLoading: loading } = useFetchUser(userId);
-
-    useEffect(() => {
-        if (preferredLanguage) {
-            i18n.changeLanguage(preferredLanguage);
-        }
-    }, [preferredLanguage]);
 
     useEffect(() => {
         if (userData) {

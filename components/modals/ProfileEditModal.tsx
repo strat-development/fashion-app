@@ -1,9 +1,9 @@
 
 import { ThemedText } from '@/components/ThemedText';
+import { useUserContext } from '@/features/auth/context/UserContext';
 import { supabase } from '@/lib/supabase';
 import { useEditProfileMutation } from '@/mutations/dashboard/EditProfileMutation';
 import { ThemedGradient, useTheme } from '@/providers/themeContext';
-import { useUserContext } from '@/providers/userContext';
 import { decode } from 'base64-arraybuffer';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as ImagePicker from 'expo-image-picker';

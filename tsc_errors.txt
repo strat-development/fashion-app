@@ -1,0 +1,11 @@
+components/outfits/CommentItem.tsx(7,28): error TS2307: Cannot find module '@/utils/dateUtils' or its corresponding type declarations.
+components/outfits/CommentItem.tsx(32,62): error TS2554: Expected 1 arguments, but got 0.
+components/outfits/CommentItem.tsx(40,23): error TS2345: Argument of type 'string' is not assignable to parameter of type 'void'.
+components/outfits/CommentItem.tsx(79,50): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(value: string | number | Date): Date', gave the following error.
+    Argument of type 'string | null' is not assignable to parameter of type 'string | number | Date'.
+      Type 'null' is not assignable to type 'string | number | Date'.
+  Overload 2 of 4, '(value: string | number): Date', gave the following error.
+    Argument of type 'string | null' is not assignable to parameter of type 'string | number'.
+      Type 'null' is not assignable to type 'string | number'.
+components/outfits/CommentItem.tsx(83,95): error TS2339: Property 'content' does not exist on type 'CommentData'.
