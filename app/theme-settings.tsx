@@ -14,7 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function ThemeSettings() {
   const { t } = useTranslation();
   const { userId, preferredLanguage: userLanguage, preferredCurrency: userCurrency } = useUserContext();
-  const { mode, setMode, colors, isDark } = useTheme();
+  const { mode, setMode, colors } = useTheme();
   const insets = useSafeAreaInsets();
 
   const [selectedCurrency, setSelectedCurrency] = useState(userCurrency || Currencies[0].name);
@@ -62,16 +62,6 @@ export default function ThemeSettings() {
       icon: Smartphone,
     },
   ];
-
-  const languageIcons = Languages.reduce((acc, lang) => ({
-    ...acc,
-    [lang.code]: Globe,
-  }), {} as Record<string, any>);
-
-  const currencyIcons = Currencies.reduce((acc, currency) => ({
-    ...acc,
-    [currency.name]: DollarSign,
-  }), {} as Record<string, any>);
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.background, paddingTop: insets.top }}>
@@ -258,9 +248,9 @@ export default function ThemeSettings() {
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                  paddingVertical: 16,
+                  paddingVertical: 12,
                   paddingHorizontal: 16,
-                  height: 72,
+                  height: 56,
                   borderWidth: 0,
                   backgroundColor: "transparent"
                 }}
@@ -307,8 +297,9 @@ export default function ThemeSettings() {
                     backgroundColor: colors.surface, 
                     borderWidth: 1, 
                     borderColor: colors.border,
-                    marginTop: 64,
-                    marginBottom: 64 }}>
+                    maxHeight: '70%',
+                    marginTop: 32,
+                    marginBottom: 32 }}>
                     <FlatList
                       data={Languages}
                       keyExtractor={(item) => item.code}
@@ -330,8 +321,7 @@ export default function ThemeSettings() {
                 </Pressable>
               </Modal>
             </View>
-
-            {/* Currency Select */}
+            
             <View
               style={{
                 marginBottom: 16,
@@ -347,9 +337,9 @@ export default function ThemeSettings() {
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                  paddingVertical: 16,
+                  paddingVertical: 12,
                   paddingHorizontal: 16,
-                  height: 72,
+                  height: 56,
                   borderWidth: 0,
                   backgroundColor: "transparent"
                 }}
@@ -398,8 +388,9 @@ export default function ThemeSettings() {
                     backgroundColor: colors.surface, 
                     borderWidth: 1, 
                     borderColor: colors.border,
-                    marginTop: 64,
-                    marginBottom: 64 }}>
+                    maxHeight: '70%',
+                    marginTop: 32,
+                    marginBottom: 32 }}>
                     <FlatList
                       data={Currencies}
                       keyExtractor={(item) => item.name}
