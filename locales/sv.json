@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "Laddar..."
+      "loading": "Laddar...",
+      "ok": "OK"
     },
     "homeScreen": {
       "welcomeMessage": "Välkommen, hur vill du skapa en outfit?",
@@ -665,6 +666,8 @@
       "commentPlaceholder": "Beskriv problemet eller lägg till sammanhang...",
       "success": "Anmälan skickad",
       "failure": "Misslyckades att skicka anmälan",
+      "thanksTitle": "Tack!",
+      "thanksBody": "Tack för din anmälan. Vårt team granskar den.",
       "reason": {
         "sexual": "Sexuellt innehåll",
         "racism": "Rasism",

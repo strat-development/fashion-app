@@ -19,7 +19,7 @@ interface CommentSectionProps {
 
 export default function CommentSection({ isVisible, onClose, outfitId, outfitTitle, asInline = false }: CommentSectionProps) {
   const { t } = useTranslation();
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const { userId } = useUserContext();
   const { data: comments = [], isLoading } = useFetchComments(outfitId);
   const [text, setText] = useState('');
@@ -84,7 +84,7 @@ export default function CommentSection({ isVisible, onClose, outfitId, outfitTit
                 multiline={false}
               />
               <Pressable onPress={handleSend} disabled={isPending || !text.trim()} style={{ marginLeft: 8, padding: 8 }}>
-                <Send size={18} color={text.trim() ? colors.secondary : colors.textMuted} />
+                <Send size={18} color={text.trim() ? (isDark ? colors.primary : colors.accent) : colors.textMuted} />
               </Pressable>
             </View>
           </View>

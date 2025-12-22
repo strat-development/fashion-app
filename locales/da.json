@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "Indlæser..."
+      "loading": "Indlæser...",
+      "ok": "OK"
     },
     "homeScreen": {
       "welcomeMessage": "Velkommen, hvordan vil du skabe et outfit?",
@@ -673,6 +674,8 @@
       "commentPlaceholder": "Beskriv problemet eller tilføj kontekst...",
       "success": "Anmeldelse sendt",
       "failure": "Kunne ikke sende anmeldelsen",
+      "thanksTitle": "Tak!",
+      "thanksBody": "Tak for din anmeldelse. Vores team gennemgår den.",
       "reason": {
         "sexual": "Seksuelt indhold",
         "racism": "Racisme",

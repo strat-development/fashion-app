@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "Laster..."
+      "loading": "Laster...",
+      "ok": "OK"
     },
     "homeScreen": {
       "welcomeMessage": "Velkommen, hvordan vil du lage et antrekk?",
@@ -665,6 +666,8 @@
       "commentPlaceholder": "Beskriv problemet eller legg til kontekst...",
       "success": "Rapport sendt",
       "failure": "Klarte ikke å sende rapporten",
+      "thanksTitle": "Takk!",
+      "thanksBody": "Takk for rapporten. Teamet vårt gjennomgår den.",
       "reason": {
         "sexual": "Seksuelt innhold",
         "racism": "Rasisme",

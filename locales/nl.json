@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "Laden..."
+      "loading": "Laden...",
+      "ok": "OK"
     },
     "homeScreen": {
       "welcomeMessage": "Welkom, hoe wil je een outfit maken?",
@@ -665,6 +666,8 @@
       "commentPlaceholder": "Beschrijf het probleem of voeg context toe...",
       "success": "Rapport verzonden",
       "failure": "Rapport verzenden mislukt",
+      "thanksTitle": "Bedankt!",
+      "thanksBody": "Bedankt voor je melding. Ons team bekijkt het.",
       "reason": {
         "sexual": "Seksuele inhoud",
         "racism": "Racisme",

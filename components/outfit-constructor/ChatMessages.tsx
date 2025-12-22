@@ -4,7 +4,7 @@ import { ImageResult, searchImages } from '@/fetchers/searchImages';
 import { useTheme } from '@/providers/themeContext';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Image, Linking, Pressable, ScrollView, Text, View, Platform } from 'react-native';
+import { Image, Linking, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 
 type Message = { id: string; role: 'user' | 'assistant'; content: string };
 

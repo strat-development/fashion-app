@@ -1,6 +1,7 @@
 {
     "common": {
-      "loading": "読み込み中…"
+      "loading": "読み込み中…",
+      "ok": "OK"
     },
     "homeScreen": {
       "welcomeMessage": "ようこそ、どのように服を作成しますか？",
@@ -30,7 +31,7 @@
       },
       "loading": "読み込み中…",
       "error": "読み込みに失敗しました",
-      "tryAgain": "もう一度試す",
+    "tryAgain": "もう一度試す",
       "rankRow": {
         "untitledOutfit": "タイトルなしの服",
         "unknownCreator": "不明",
