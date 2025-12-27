@@ -24,6 +24,10 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
     }
   }).current;
 
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50
+  }).current;
+
   if (imageUrls.length === 0) {
     return (
       <View style={{
@@ -56,9 +60,7 @@ export const OutfitImageCarousel = ({ imageUrls, onPress, outfit }: OutfitImageC
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
         onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 50
-        }}
+        viewabilityConfig={viewabilityConfig}
         renderItem={({ item }) => (
           <Pressable onPress={() => onPress?.(outfit)} style={{ width: screenWidth, height: 384 }}>
             <Image
