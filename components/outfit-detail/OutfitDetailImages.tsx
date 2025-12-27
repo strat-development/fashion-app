@@ -3,7 +3,7 @@ import { ThemedGradient, useTheme } from "@/providers/themeContext";
 import { useUserContext } from "@/providers/userContext";
 import { OutfitElementData } from "@/types/createOutfitTypes";
 import { ExternalLink, Shirt, Tag } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { FlatList, Image, Linking, Pressable, Text, View, useWindowDimensions } from "react-native";
 
@@ -29,6 +29,20 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
   const singleH = Math.min(520, Math.max(280, Math.floor(height * 0.5)));
   const multiH = Math.min(420, Math.max(260, Math.floor(height * 0.4)));
   const cardW = width - 32;
+
+  const viewabilityConfig = useMemo(() => ({
+    itemVisiblePercentThreshold: 50
+  }), []);
+
+  const handleViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: Array<{ index: number | null }> }) => {
+    function updateCurrentIndexFromViewableItems() {
+      if (viewableItems.length > 0) {
+        setCurrentIndex(viewableItems[0].index ?? 0);
+      }
+    }
+
+    updateCurrentIndexFromViewableItems();
+  }, []);
 
   useEffect(() => {
     const convertPrices = async () => {
@@ -241,14 +255,8 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
-            onViewableItemsChanged={({ viewableItems }) => {
-              if (viewableItems.length > 0) {
-                setCurrentIndex(viewableItems[0].index ?? 0);
-              }
-            }}
-            viewabilityConfig={{
-              itemVisiblePercentThreshold: 50
-            }}
+            onViewableItemsChanged={handleViewableItemsChanged}
+            viewabilityConfig={viewabilityConfig}
             style={{
               width: cardW,
               overflow: 'visible',
