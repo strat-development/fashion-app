@@ -109,16 +109,6 @@ export default function OutfitDetailImages({ imageUrls, elementsData }: OutfitDe
     convertPrices();
   }, [elementsData, preferredCurrency]);
 
-  const viewabilityConfig = useRef({
-    itemVisiblePercentThreshold: 50
-  }).current;
-
-  const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
-    if (viewableItems.length > 0) {
-      setCurrentIndex(viewableItems[0].index ?? 0);
-    }
-  }).current;
-
   if (imageUrls.length === 0) return null;
 
   const displaySymbol = Currencies.find(c => c.name === preferredCurrency)?.symbol || preferredCurrency;
